@@ -44,34 +44,36 @@
     --color-text-primary: #FFFFFF;
     --color-text-secondary: #959AA4;
 
-    /* ==========================================================
-       Scrimly — Statuts des devoirs
-       ========================================================== */
+    /* Inputs */
+    --color-input-bg: #0D0E12;
+    --color-input-border: #2C2D34;
+    
+
+    /* Scrimly — Statuts des devoirs */
     --color-task-done: #02E676;
     --color-task-in-progress: #3B82F6;
     --color-task-todo: #959AA4;
 
-    /* ==========================================================
-       Scrimly — Absences
-       ========================================================== */
+    /* Scrimly — Absences */
     --color-absence-medical: #EF4444;
     --color-absence-exam: #8B5CF6;
     --color-absence-vacation: #F59E0B;
     --color-absence-other: #959AA4;
 
-    /* ==========================================================
-       Scrimly — Tags équipe
-       ========================================================== */
+    /* Scrimly — Tags équipe */
     --color-tag-server: #3B82F6;
     --color-tag-language: #8B5CF6;
     --color-objective-fun: #10B981;
     --color-objective-semi-competitive: #F59E0B;
     --color-objective-competitive: #EF4444;
 
-    /* ==========================================================
-       Scrimly — Gradients
-       ========================================================== */
+    /* Scrimly — Gradients */
     --gradient-gold: linear-gradient(135deg, #C99C3D 0%, #F4C25D 100%);
+
+    /* Scrimly - Typographie */
+
+    --font-space-grotesk: 'Space Grotesk', sans-serif;
+
 }
 
 @layer theme {
@@ -107,6 +109,49 @@ select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
 
+.cta-primary {
+    cursor: pointer;
+    font-weight: 700;
+    padding: .5em 1em;
+    background: var(--gradient-gold);
+    border: 1px solid var(--color-gold-border);
+    transition: all 0.2s ease-in-out;
+    outline: none;
+    &:hover {
+        background: transparent;
+        border-color: var(--color-gold-border);
+        color: white;
+        transition: all 0.2s ease-in-out;
+    }
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px var(--color-gold);
+    }
+}
+
+.cta-secondary {
+    cursor: pointer;
+    font-weight: 700;
+    padding: .5em 1em;
+    background: transparent;
+    border: 1px solid var(--color-gold-border);
+    transition: all 0.2s ease-in-out;
+    &:hover {
+        background: var(--gradient-gold);
+        border-color: var(--color-gold-border);
+    }
+}
+
+.cta-underline {
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--color-gold);
+    transition: all 0.2s ease-in-out;
+    &:hover {
+        text-decoration: underline;
+        transition: all 0.2s ease-in-out;
+    }
+}
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */
