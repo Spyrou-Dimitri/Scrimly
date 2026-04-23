@@ -9,6 +9,14 @@ test('login screen can be rendered', function () {
     $response->assertOk();
 });
 
+test('authenticated users are redirected away from the login screen', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->get(route('login'));
+
+    $response->assertRedirect(route('dashboard', absolute: false));
+});
+
 test('users can authenticate using the login screen', function () {
     $user = User::factory()->create();
 
@@ -21,10 +29,10 @@ test('users can authenticate using the login screen', function () {
         ->assertSessionHasNoErrors()
         ->assertRedirect(route('dashboard', absolute: false));
 
-    $this->assertAuthenticated();
+    $this->assertAuthenticatedAs($user);
 });
 
-test('users can not authenticate with invalid password', function () {
+test('users cannot authenticate with invalid password', function () {
     $user = User::factory()->create();
 
     $response = $this->post(route('login.store'), [
@@ -32,7 +40,29 @@ test('users can not authenticate with invalid password', function () {
         'password' => 'wrong-password',
     ]);
 
-    $response->assertSessionHasErrorsIn('email');
+    $response->assertSessionHasErrors('email');
+
+    $this->assertGuest();
+});
+
+test('users cannot authenticate with unknown email', function () {
+    $response = $this->post(route('login.store'), [
+        'email' => 'unknown@example.com',
+        'password' => 'password',
+    ]);
+
+    $response->assertSessionHasErrors('email');
+
+    $this->assertGuest();
+});
+
+test('email and password are required to authenticate', function () {
+    $response = $this->post(route('login.store'), [
+        'email' => '',
+        'password' => '',
+    ]);
+
+    $response->assertSessionHasErrors(['email', 'password']);
 
     $this->assertGuest();
 });

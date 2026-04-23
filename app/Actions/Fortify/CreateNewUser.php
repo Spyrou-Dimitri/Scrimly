@@ -21,11 +21,14 @@ class CreateNewUser implements CreatesNewUsers
     {
         Validator::make($input, [
             ...$this->profileRules(),
+            'username' => $this->usernameRules(),
+            'riot_tag' => $this->riotTagRules(),
             'password' => $this->passwordRules(),
         ])->validate();
 
         return User::create([
-            'name' => $input['name'],
+            'username' => $input['username'],
+            'riot_tag' => $input['riot_tag'] ?? null,
             'email' => $input['email'],
             'password' => $input['password'],
         ]);

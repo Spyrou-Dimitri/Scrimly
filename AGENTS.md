@@ -1,3 +1,8 @@
+---
+description: 
+alwaysApply: true
+---
+
 <laravel-boost-guidelines>
 === foundation rules ===
 

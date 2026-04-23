@@ -16,7 +16,7 @@ trait ProfileValidationRules
     protected function profileRules(?int $userId = null): array
     {
         return [
-            'name' => $this->nameRules(),
+            'username' => $this->usernameRules(),
             'email' => $this->emailRules($userId),
         ];
     }
@@ -46,6 +46,29 @@ trait ProfileValidationRules
             $userId === null
                 ? Rule::unique(User::class)
                 : Rule::unique(User::class)->ignore($userId),
+        ];
+    }
+
+    protected function usernameRules(): array
+    {
+        return ['required', 'string', 'max:20', 'min:3', 'unique:users'];
+    }
+
+    /**
+     * Get the validation rules used to validate the user's Riot tag.
+     *
+     * @return array<int, ValidationRule|array<mixed>|string>
+     */
+    protected function riotTagRules(?int $userId = null): array
+    {
+        return [
+            'nullable',
+            'string',
+            'max:50',
+            'regex:/^.{3,16}#[A-Za-z0-9]{2,5}$/',
+            $userId === null
+                ? Rule::unique(User::class, 'riot_tag')
+                : Rule::unique(User::class, 'riot_tag')->ignore($userId),
         ];
     }
 }

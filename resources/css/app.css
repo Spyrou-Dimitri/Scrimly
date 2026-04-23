@@ -47,6 +47,7 @@
     /* Inputs */
     --color-input-bg: #0D0E12;
     --color-input-border: #2C2D34;
+    --color-input-error: #F23E3A;
     
 
     /* Scrimly — Statuts des devoirs */
@@ -70,9 +71,15 @@
     /* Scrimly — Gradients */
     --gradient-gold: linear-gradient(135deg, #C99C3D 0%, #F4C25D 100%);
 
+    /* Scrimly — Ombres */
+    --shadow-basic: 0 4px 4px rgba(0, 0, 0, 0.25);
+
     /* Scrimly - Typographie */
 
     --font-space-grotesk: 'Space Grotesk', sans-serif;
+
+    /* Border colors */
+    --border-gold: #F0E6D2;
 
 }
 
