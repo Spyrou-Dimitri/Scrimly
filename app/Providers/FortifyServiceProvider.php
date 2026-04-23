@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
+use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -29,6 +30,15 @@ class FortifyServiceProvider extends ServiceProvider
         $this->configureActions();
         $this->configureViews();
         $this->configureRateLimiting();
+        $this->configureRedirects();
+    }
+
+    /**
+     * Configure the URI authenticated users are redirected to.
+     */
+    private function configureRedirects(): void
+    {
+        RedirectIfAuthenticated::redirectUsing(fn (): string => route('team.index'));
     }
 
     /**

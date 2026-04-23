@@ -23,7 +23,7 @@ test('new users can register without a riot tag', function () {
 
     $response
         ->assertSessionHasNoErrors()
-        ->assertRedirect(route('dashboard', absolute: false));
+        ->assertRedirect(route('team.index', absolute: false));
 
     $this->assertAuthenticated();
 
@@ -45,7 +45,7 @@ test('new users can register with a valid riot tag', function () {
 
     $response
         ->assertSessionHasNoErrors()
-        ->assertRedirect(route('dashboard', absolute: false));
+        ->assertRedirect(route('team.index', absolute: false));
 
     $this->assertAuthenticated();
 

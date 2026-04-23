@@ -9,6 +9,7 @@
             'secondary' => 'cta-secondary',
             'nav' => 'nav-link',
             'underline' => 'cta-underline',
+            
         ];
 
     $class_variant = $classes_variants[$class] ?? $classes_variants['primary']

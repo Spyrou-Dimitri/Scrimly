@@ -14,7 +14,7 @@ test('authenticated users are redirected away from the login screen', function (
 
     $response = $this->actingAs($user)->get(route('login'));
 
-    $response->assertRedirect(route('dashboard', absolute: false));
+    $response->assertRedirect(route('team.index', absolute: false));
 });
 
 test('users can authenticate using the login screen', function () {
@@ -27,7 +27,7 @@ test('users can authenticate using the login screen', function () {
 
     $response
         ->assertSessionHasNoErrors()
-        ->assertRedirect(route('dashboard', absolute: false));
+        ->assertRedirect(route('team.index', absolute: false));
 
     $this->assertAuthenticatedAs($user);
 });
