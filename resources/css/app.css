@@ -120,27 +120,18 @@ select:focus[data-flux-control] {
     position: relative;
     cursor: pointer;
     font-weight: 700;
+    background: var(--gradient-gold);
     padding: .5em 1em;
     color: var(--color-gold-contrast);
-    background: transparent;
     border: 1px solid var(--color-gold-border);
     transition: color 0.2s ease-in-out;
     outline: none;
-    &::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        z-index: -1;
-        background: var(--gradient-gold);
-        opacity: 1;
-        transition: opacity 0.2s ease-in-out;
-    }
+    
     &:hover {
         color: white;
+        background: transparent;
     }
-    &:hover::before {
-        opacity: 0;
-    }
+    
     &:focus {
         outline: none;
         box-shadow: 0 0 0 2px var(--color-gold);
@@ -155,21 +146,12 @@ select:focus[data-flux-control] {
     background: transparent;
     border: 1px solid var(--color-gold-border);
     transition: color 0.2s ease-in-out;
-    &::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        z-index: -1;
-        background: var(--gradient-gold);
-        opacity: 0;
-        transition: opacity 0.2s ease-in-out;
-    }
+    
     &:hover {
         color: var(--color-gold-contrast);
+        background: var(--gradient-gold);
     }
-    &:hover::before {
-        opacity: 1;
-    }
+   
 }
 
 .cta-underline {

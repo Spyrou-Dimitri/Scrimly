@@ -1,0 +1,20 @@
+<?php   
+return [
+    'title' => 'Créer une équipe',
+    'description' => 'Description',
+    'description_placeholder' => 'Description de votre équipe',
+    'team_name' => 'Nom de l\'équipe',
+    'team_name_placeholder' => 'Telecom 1',
+    'team_tag' => 'Tag de l\'équipe',
+    'team_tag_placeholder' => 'T1',
+    'server' => 'Serveur',
+    'server_placeholder' => 'Serveur',
+    'goal' => 'But',
+    'goal_placeholder' => 'But',
+    'language' => 'Langue',
+    'roleInTeam' => 'Rôle dans l\'équipe',
+    'roleInGame' => 'Rôle dans le jeu',
+    'cancel' => 'Annuler',
+    'create' => 'Créer l\'équipe',
+    'logo' => 'Logo de votre équipe',
+];

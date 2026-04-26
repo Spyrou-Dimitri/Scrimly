@@ -9,6 +9,7 @@ Route::view('/register', 'register')->name('register')->middleware('guest');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
     Route::livewire('team', 'pages.team.index')->name('team.index');
+    Route::livewire('team.create', 'pages.team.create')->name('team.create');
 });
 
 require __DIR__.'/settings.php';

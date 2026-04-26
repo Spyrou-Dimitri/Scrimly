@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Enums\RoleInTeam;
+use App\Enums\RoleInGame;
 
 return new class extends Migration
 {
@@ -10,16 +12,15 @@ return new class extends Migration
     {
         Schema::create('team_members', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->enum('role', ['coach', 'player', 'staff']);
-            $table->enum('game_role', ['top', 'jungle', 'mid', 'adc', 'support'])->nullable();
+            $table->enum('roleInTeam', RoleInTeam::cases());
+            $table->enum('roleInGame', RoleInGame::cases())->nullable();
             $table->boolean('is_starter')->default(true);
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
             $table->text('message')->nullable();
+            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->timestamp('joined_at')->nullable();
             $table->timestamps();
-
             $table->unique(['user_id', 'team_id']);
         });
     }

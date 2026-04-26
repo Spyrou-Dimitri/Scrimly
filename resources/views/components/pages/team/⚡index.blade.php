@@ -26,10 +26,10 @@ new #[Layout('layouts::choose_a_team')] class extends Component
             </p>
         </div>
         <div class="flex flex-row gap-4">
-            <x-cta href="#" :title="__('pages/team/index.join_team_title')" :class="'secondary'">
+            <x-cta :href="route('team.create')" :title="__('pages/team/index.join_team_title')" :class="'secondary'">
                 {{ __('pages/team/index.join_team_cta') }}
             </x-cta>
-            <x-cta href="#" :title="__('pages/team/index.create_team_title')" :class="'primary'">
+            <x-cta :href="route('team.create')" :title="__('pages/team/index.create_team_title')" :class="'primary'">
                 {{ __('pages/team/index.create_team_cta') }}
             </x-cta>
 

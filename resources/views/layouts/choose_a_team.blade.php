@@ -25,7 +25,7 @@
         </nav>
     </header>
 
-    <main class="flex-1 flex flex-col items-center justify-center px-6">
+    <main class="flex-1 flex flex-col items-center justify-center py-12 px-6">
         {{ $slot }}
     </main>
 
