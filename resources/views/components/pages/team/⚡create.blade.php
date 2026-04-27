@@ -152,10 +152,7 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
                     {{ __('pages/team/create.create') }}
                 </x-forms.submit>
             </div>
-
         </form>
-
-        @dump($form)
     </section>
 
 </div>

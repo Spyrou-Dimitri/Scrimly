@@ -23,8 +23,10 @@ class ProcessUploadImageLogoTeam implements ShouldQueue
 
     public function handle(): void
     {
+        $disk = Storage::disk('public');
+
         $image = Image::decodeBinary(
-            Storage::get($this->full_path_to_original)
+            $disk->get($this->full_path_to_original)
         );
 
         $sizes = config('logoTeam.sizes');
@@ -37,7 +39,7 @@ class ProcessUploadImageLogoTeam implements ShouldQueue
             $variant->scale($size['width']);
 
             $path = sprintf($variant_pattern, $size['width'], $size['height']);
-            Storage::put(
+            $disk->put(
                 $path . '/' . $this->new_original_file_name,
                 $variant->encodeUsingFileExtension($image_type, quality: $jpeg_compression),
             );
