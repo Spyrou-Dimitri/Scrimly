@@ -36,6 +36,7 @@
     --color-gold-border: #F0E6D2;
 
     /* Backgrounds sombres */
+    --color-bg-gold: #C99C3D;
     --color-bg-main: #13131B;
     --color-bg-widget: #1B1B23;
     --color-bg-card: #333237;
@@ -73,6 +74,7 @@
 
     /* Scrimly — Ombres */
     --shadow-basic: 0 4px 4px rgba(0, 0, 0, 0.25);
+    --shadow-modal: 0 0px 16px rgba(255, 255, 255, 0.25);
 
     /* Scrimly - Typographie */
 
@@ -118,6 +120,7 @@ select:focus[data-flux-control] {
 
 .cta-primary {
     position: relative;
+    text-align: center;
     cursor: pointer;
     font-weight: 700;
     background: var(--gradient-gold);
@@ -140,6 +143,7 @@ select:focus[data-flux-control] {
 
 .cta-secondary {
     position: relative;
+    text-align: center;
     cursor: pointer;
     font-weight: 700;
     padding: .5em 1em;

@@ -39,7 +39,7 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
                     Informations de l'équipe
                 </legend>
                 <div class="flex flex-col gap-4">
-                    <div class="flex flex gap-6 md:">
+                    <div class="flex flex gap-6">
                         <x-forms.input wire:model.live="form.team_name" :required="true" :placeholder="__('pages/team/create.team_name_placeholder')" :type="'text'" :name="'team_name'" class="w-full" :label="__('pages/team/create.team_name')">
                             @error('form.team_name')
                             <span class="font-spaceGrotesk text-input-error font-semibold">
@@ -119,7 +119,7 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
                     'border-transparent': !hovering && !focused
                     }"
                     class="relative min-h-full flex flex-col items-center justify-center 
-           bg-input-bg border transition-colors duration-200">
+                    bg-input-bg border transition-colors duration-200">
                     <label for="logo" class="font-medium flex flex-col items-center justify-center gap-2 pointer-events-none">
                         @if($form->logo)
                         <img src="{{ $form->logo->temporaryUrl() }}" alt="Logo" class="w-full h-auto" />

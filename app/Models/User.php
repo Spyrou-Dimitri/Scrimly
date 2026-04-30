@@ -7,6 +7,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -51,14 +52,24 @@ class User extends Authenticatable
         return Str::of($this->username)
             ->explode(' ')
             ->take(2)
-            ->map(fn($word) => Str::substr($word, 0, 1))
+            ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
 
     public function teams(): BelongsToMany
     {
         return $this->belongsToMany(Team::class, 'team_members')
-        ->withPivot('roleInTeam', 'roleInGame', 'joined_at')
-        ->withTimestamps();
+            ->withPivot('roleInTeam', 'roleInGame', 'joined_at')
+            ->withTimestamps();
+    }
+
+    public function teamApplications(): HasMany
+    {
+        return $this->hasMany(TeamApplication::class);
+    }
+
+    public function currentTeam(): BelongsTo
+    {
+        return $this->belongsTo(Team::class, 'current_team_id');
     }
 }

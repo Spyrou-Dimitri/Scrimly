@@ -12,6 +12,22 @@ new #[Layout('layouts::choose_a_team')] class extends Component
 {
     public User $currentUser;
     public Collection $teams;
+
+    public function selectTeam($teamId)
+    {
+        $team = $this->teams->firstWhere('id', $teamId);
+
+        if (! $team) {
+            return;
+        }
+
+        $this->currentUser->current_team_id = $team->id;
+        $this->currentUser->save();
+
+        Auth::user()->current_team_id = $team->id;
+
+        $this->redirect(route('roster.index', ['slug' => $team->slug]));
+    }
     public function mount()
     {
         $this->currentUser = Auth::user();
@@ -45,7 +61,7 @@ new #[Layout('layouts::choose_a_team')] class extends Component
             @foreach ($currentUser->teams as $team)
             <li class="w-full md:w-[calc(33.33%-1.125rem)] xl:w-[calc(20%-1.125rem)] min-h-[350px] border border-[rgba(255,255,255,0.3)] hover:border-gold transition-all  ease-in-out duration-150 hover:translate-y-[-10px]">
                 <article class="flex w-full flex-col items-center justify-between min-h-full gap-4 p-6 bg-[#333237] relative ">
-                    <a href="" class="absolute inset-0 cursor-pointer"></a>
+                    <button type="button" wire:click="selectTeam({{ $team->id }})" class="absolute inset-0 cursor-pointer" aria-label="{{ $team->name }}"></button>
                     <img src="{{ Storage::disk('public')->url('images/logoTeam/variants/480x480/' . $team->logo) }}" class="w-[250px] h-auto m-auto object-fit" alt="{{ $team->name }}">
                     <h3 class="text-2xl font-bold text-center">{{ $team->name }}</h3>
                 </article>
@@ -53,7 +69,7 @@ new #[Layout('layouts::choose_a_team')] class extends Component
             @endforeach
         </ul>
         <div class="flex flex-row gap-6">
-            <x-cta :href="route('team.create')" :title="__('pages/team/index.join_team_title')" :class="'secondary'">
+            <x-cta :href="route('team.join')" :title="__('pages/team/index.join_team_title')" :class="'secondary'">
                 {{ __('pages/team/index.join_team_cta') }}
             </x-cta>
             <x-cta :href="route('team.create')" :title="__('pages/team/index.create_team_title')" :class="'primary'">

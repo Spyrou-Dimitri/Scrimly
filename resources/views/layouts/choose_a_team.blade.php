@@ -21,7 +21,7 @@
 
         <nav class="flex items-center gap-6">
             <h2 class="sr-only">{{ __('layouts/choose_a_team.navigation_title') }}</h2>
-            <x-cta href="#" :title="__('layouts/choose_a_team.mon_compte_title')" :class="'nav'">{{ __('layouts/choose_a_team.mon_compte') }}</x-cta>
+            <x-cta :href="route('profile.show')" :title="__('layouts/choose_a_team.mon_compte_title')" :class="'nav'">{{ __('layouts/choose_a_team.mon_compte') }}</x-cta>
         </nav>
     </header>
 
@@ -39,7 +39,7 @@
             <x-cta href="#" :title="__('layouts/choose_a_team.conditions_utilisation_title')" :class="'nav'">Conditions d'utilisation</x-cta>
         </div>
     </footer>
-
+    <livewire:widgets::modal/>
 </body>
 
 </html>

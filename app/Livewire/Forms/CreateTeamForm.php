@@ -5,16 +5,16 @@ namespace App\Livewire\Forms;
 use App\Enums\Language;
 use App\Enums\LolGoal;
 use App\Enums\LolServeur;
+use App\Enums\RoleInGame;
 use App\Enums\RoleInTeam;
+use App\Jobs\ProcessUploadImageLogoTeam;
 use App\Models\Team;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
-use App\Models\TeamMember;
-use App\Enums\RoleInGame;
-use App\Jobs\ProcessUploadImageLogoTeam;
-use Illuminate\Support\Facades\Storage;
 
 class CreateTeamForm extends Form
 {
@@ -45,8 +45,7 @@ class CreateTeamForm extends Form
     #[Validate]
     public $logo = null;
 
-
-    public function updatedRoleInTeam():void
+    public function updatedRoleInTeam(): void
     {
         if ($this->roleInTeam !== RoleInTeam::PLAYER) {
             $this->roleInGame = null;
@@ -82,15 +81,13 @@ class CreateTeamForm extends Form
         ];
     }
 
-
     public function store(): void
     {
         $validated = $this->validate();
 
-
         if ($validated['logo']) {
             $extension = $validated['logo']->extension() ?: $validated['logo']->getClientOriginalExtension();
-            $new_original_file_name = uniqid() . '.' . $extension;
+            $new_original_file_name = uniqid().'.'.$extension;
             $full_path_to_original = Storage::disk('public')->putFileAs(
                 config('logoTeam.original_path'),
                 $validated['logo'],
@@ -106,6 +103,7 @@ class CreateTeamForm extends Form
 
         $team = Team::create([
             'name' => $validated['team_name'],
+            'slug' => Str::slug($validated['team_name']),
             'tag' => $validated['tag'],
             'logo' => $validated['logo'],
             'description' => $validated['description'],
