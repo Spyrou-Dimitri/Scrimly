@@ -9,4 +9,6 @@ return [
     'roleInGame' => 'Rôle dans le jeu',
     'motivation' => 'Motivation',
     'motivation_placeholder' => 'Entrez votre motivation',
+    'cancel' => 'Annuler',
+    'join' => 'Postuler',
 ];

@@ -13,9 +13,15 @@ new #[Layout('layouts::choose_a_team')] class extends Component
     public User $currentUser;
     public Collection $teams;
 
+    public function mount()
+    {
+        $this->currentUser = Auth::user();
+    
+    }
+
     public function selectTeam($teamId)
     {
-        $team = $this->teams->firstWhere('id', $teamId);
+        $team = $this->currentUser->teams->firstWhere('id', $teamId);
 
         if (! $team) {
             return;
@@ -28,13 +34,8 @@ new #[Layout('layouts::choose_a_team')] class extends Component
 
         $this->redirect(route('roster.index', ['slug' => $team->slug]));
     }
-    public function mount()
-    {
-        $this->currentUser = Auth::user();
-        $this->teams = Team::whereHas('members', function ($query) {
-            $query->where('user_id', $this->currentUser->id);
-        })->get();
-    }
+    
+    
 };
 ?>
 

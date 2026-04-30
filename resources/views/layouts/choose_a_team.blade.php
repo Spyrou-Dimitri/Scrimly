@@ -71,6 +71,7 @@
             <x-cta href="#" :title="__('layouts/choose_a_team.conditions_utilisation_title')" :class="'nav'">Conditions d'utilisation</x-cta>
         </div>
     </footer>
+    <livewire:widgets::toast />
     <livewire:widgets::modal />
 </body>
 

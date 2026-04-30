@@ -20,7 +20,10 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
     {
         $this->form->store();
 
-        session()->flash('success', __('pages/team/create.team_created'));
+        session()->flash('toast', [
+            'type' => 'success',
+            'message' => $this->form->team_name . ' ' . __('toasts/toasts.team_created'),
+        ]);
 
         $this->redirect(route('team.index'));
     }

@@ -9,6 +9,8 @@ use App\Enums\RoleInTeam;
 use App\Enums\RoleInGame;
 use App\Livewire\Forms\JoinTeamForm;
 use Livewire\WithFileUploads;
+use App\Models\Team;
+use Livewire\Attributes\Computed;
 
 new #[Layout('layouts::choose_a_team')] class extends Component {
     public JoinTeamForm $form;
@@ -16,8 +18,16 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
     public function joinTeam(): void
     {
         $this->form->store();
-        session()->flash('success', __('pages/team/create.team_created'));
+        session()->flash('toast', [
+            'type' => 'success',
+            'message' => __('toasts/toasts.team_applied'),
+        ]);
         $this->redirect(route('team.index'));
+    }
+    #[Computed]
+    public function teamFinder(): Team|null
+    {
+        return Team::where('code', $this->form->team_code)->first();
     }
    
 }
@@ -71,16 +81,33 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
                 </div>
             </fieldset>
             <div class="flex flex-col gap-4 bg-bg-widget p-6 shadow-basic lg:col-span-4 w-full">
-                <h3 class="text-[20px] font-bold">
-                    {{ __('pages/team/join.title') }}
+                <h3 class="text-[20px] font-bold text-center">
+                    @if($this->teamFinder)
+                    Equipe sélectionnée :
+                    @else
+                    Equipe non trouvée
+                    @endif
                 </h3>
+                @if($this->teamFinder)
+                <img src="{{ Storage::disk('public')->url('images/logoTeam/variants/480x480/' . $this->teamFinder->logo) }}" class=" p-16 w-full h-auto object-fit" alt="{{ $this->teamFinder->name }}">
+                @else
+                <div class="p-16 w-full h-auto object-fit">
+                    <x-flux::icon name="eye" class="size-full text-gold" />
+                </div>
+                @endif
+                @if($this->teamFinder)
+                <p class="text-center text-2xl font-bold text-gold">
+                    {{  $this->teamFinder->name }}
+                </p>
+                @endif
+                
             </div>
             <div class="flex col-span-full flex-row justify-between gap-4 p-6 bg-bg-widget shadow-basic">
                 <x-cta :href="route('team.index')" class="secondary" :title="__('pages/team/create.cancel')">
-                    {{ __('pages/team/create.cancel') }}
+                    {{ __('pages/team/join.cancel') }}
                 </x-cta>
                 <x-forms.submit type="submit" variant="primary" :title="__('pages/team/create.create')" class="w-fit" data-test="create-team-button">
-                    {{ __('pages/team/create.create') }}
+                    {{ __('pages/team/join.join') }}
                 </x-forms.submit>
             </div>
         </form>

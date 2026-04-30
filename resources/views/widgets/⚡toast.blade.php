@@ -6,6 +6,13 @@ use Livewire\Component;
 new class extends Component {
     public array $toasts = [];
 
+    public function mount(): void
+    {
+        if (session()->has('toast')) {
+            $this->add(session()->get('toast'));
+        }
+    }
+
     #[On('toast')]
     public function add(array $payload): void
     {
