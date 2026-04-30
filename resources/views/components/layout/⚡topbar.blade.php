@@ -130,7 +130,7 @@ new class extends Component
                 class="flex items-center gap-2 lg:gap-3 group">
 
                 @if ($this->currentUser->avatar)
-                <img src="{{ Storage::disk('public')->url($this->currentUser->avatar) }}"
+                <img src="{{ Storage::disk('public')->url('images/avatar/variants/128x128/' . $this->currentUser->avatar) }}"
                     alt="{{ $this->currentUser->username }}"
                     class="size-9 rounded-full object-cover flex-shrink-0">
                 @else

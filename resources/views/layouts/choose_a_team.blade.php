@@ -3,9 +3,12 @@
 
 <head>
     @include('partials.head')
-    
+
 </head>
 
+@php
+    $currentUser = auth()->user();
+@endphp
 <body
     class="min-h-screen flex flex-col bg-bg-main text-text-primary font-sans">
     <header class="flex items-center shadow-basic justify-between bg-bg-widget px-8 py-6">
@@ -21,7 +24,36 @@
 
         <nav class="flex items-center gap-6">
             <h2 class="sr-only">{{ __('layouts/choose_a_team.navigation_title') }}</h2>
-            <x-cta :href="route('profile.show')" :title="__('layouts/choose_a_team.mon_compte_title')" :class="'nav'">{{ __('layouts/choose_a_team.mon_compte') }}</x-cta>
+            @if ($currentUser)
+            <div class="flex items-center gap-2 lg:gap-3">
+                <a href="{{ route('profile.show') }}"
+                    title="{{ __('layouts/team.edit_profile_cta_title') }}"
+                    class="flex items-center g ap-2 lg:gap-3 group">
+
+                    @if ($currentUser->avatar)
+                    <img src="{{ Storage::disk('public')->url('images/avatar/variants/128x128/' . $currentUser->avatar) }}"
+                        alt="{{ $currentUser->username }}"
+                        class="size-9 rounded-full object-cover flex-shrink-0">
+                    @else
+                    <div class="size-9 rounded-full bg-bg-card flex items-center justify-center 
+                    text-gold font-bold text-sm flex-shrink-0">
+                        {{ $currentUser->initials() }}
+                    </div>
+                    @endif
+
+                    <span class="hidden sm:inline-block relative text-white font-medium max-w-[160px]
+                 before:content-[''] before:absolute before:bottom-0 before:left-0 
+                 group-hover:text-gold
+                 before:w-full before:h-[2px] before:bg-gold
+                 before:scale-x-0 before:origin-left
+                 before:transition-transform before:duration-150 before:ease-in-out 
+                 group-hover:before:scale-x-100">
+                        {{ $currentUser->username }}
+                    </span>
+                </a>
+            </div>
+            @endif
+
         </nav>
     </header>
 
@@ -39,7 +71,7 @@
             <x-cta href="#" :title="__('layouts/choose_a_team.conditions_utilisation_title')" :class="'nav'">Conditions d'utilisation</x-cta>
         </div>
     </footer>
-    <livewire:widgets::modal/>
+    <livewire:widgets::modal />
 </body>
 
 </html>
