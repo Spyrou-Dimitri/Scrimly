@@ -32,6 +32,10 @@ new class extends Component
     public function updateProfil(): void
     {
         $this->form->edit();
+        $this->dispatch('toast', [
+            'type' => 'success',
+            'message' => __('toasts/toasts.profil_updated'),
+        ]);
     }
     public function openChangePasswordModal(): void
     {

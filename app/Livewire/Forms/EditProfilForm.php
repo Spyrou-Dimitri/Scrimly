@@ -47,6 +47,8 @@ class EditProfilForm extends Form
     public function edit(): void
     {
         $validated = $this->validate();
+
+        $user = User::where('id', Auth::id())->first();
         if ($validated['avatar']) {
             $extension = $validated['avatar']->extension() ?: $validated['avatar']->getClientOriginalExtension();
             $new_original_file_name = uniqid().'.'.$extension;
@@ -62,18 +64,22 @@ class EditProfilForm extends Form
                 $validated['avatar'] = '';
             }
 
-            $user = User::where('id', Auth::id())->first();
             if ($user->avatar) {
-                
+
                 Storage::disk('public')->delete('images/avatar/variants/480x480/' . $user->avatar);
             }
         }
+       
 
-        $user = User::where('id', Auth::id())->update([
+        $user->update([
             'username' => $validated['username'],
             'email' => $validated['email'],
             'riot_tag' => $validated['riot_tag'],
-            'avatar' => $validated['avatar'],
         ]);
+
+        if ($validated['avatar']) {
+            $user->avatar = $validated['avatar'];
+            $user->save();
+        }
     }
 }
