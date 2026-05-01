@@ -202,7 +202,7 @@ return [
         'name' => 'nom',
         'first_name' => 'prénom',
         'last_name' => 'nom de famille',
-        'username' => 'nom d\'utilisateur',
+        'username' => 'Pseudo',
         'riot_tag' => 'Riot ID',
         'phone' => 'téléphone',
         'address' => 'adresse',
@@ -217,6 +217,8 @@ return [
         'content' => 'contenu',
         'price' => 'prix',
         'quantity' => 'quantité',
+        'riot_tag' => 'Riot ID',
+
     ],
 
 ];

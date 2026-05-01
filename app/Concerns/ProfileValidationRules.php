@@ -3,6 +3,7 @@
 namespace App\Concerns;
 
 use App\Models\User;
+use App\Rules\ValidRiotId;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Validation\Rule;
 
@@ -59,16 +60,16 @@ trait ProfileValidationRules
      *
      * @return array<int, ValidationRule|array<mixed>|string>
      */
-    protected function riotTagRules(?int $userId = null): array
+    protected function riotTagRules(?int $userId = null, bool $required = true): array
     {
         return [
+            'bail',
             'nullable',
             'string',
-            'max:50',
-            'regex:/^.{3,16}#[A-Za-z0-9]{2,5}$/',
-            $userId === null
-                ? Rule::unique(User::class, 'riot_tag')
-                : Rule::unique(User::class, 'riot_tag')->ignore($userId),
+            'min:7',
+            'max:22',
+            'regex:/^[\p{L}\p{N}][\p{L}\p{N} ]{1,14}[\p{L}\p{N}]#[A-Za-z0-9]{3,5}$/u',
+            new ValidRiotId,
         ];
     }
 }

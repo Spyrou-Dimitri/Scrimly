@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             $table->string('riot_tag', 50)->nullable();
             $table->string('riot_puuid', 100)->nullable();
-            $table->string('riot_summoner_id', 100)->nullable();
+            $table->string('tier')->nullable();
+            $table->string('rank')->nullable();
+            $table->integer('lp')->nullable();
             $table->unsignedBigInteger('current_team_id')->nullable()->index();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

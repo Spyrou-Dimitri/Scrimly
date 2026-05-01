@@ -5,6 +5,7 @@ namespace App\Actions\Fortify;
 use App\Concerns\PasswordValidationRules;
 use App\Concerns\ProfileValidationRules;
 use App\Models\User;
+use App\Rules\ValidRiotId;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
@@ -24,13 +25,20 @@ class CreateNewUser implements CreatesNewUsers
             'username' => $this->usernameRules(),
             'riot_tag' => $this->riotTagRules(),
             'password' => $this->passwordRules(),
+
         ])->validate();
+
+        $riotAccount = ValidRiotId::$validatedAccount;
 
         return User::create([
             'username' => $input['username'],
-            'riot_tag' => $input['riot_tag'] ?? null,
             'email' => $input['email'],
             'password' => $input['password'],
+            'riot_tag' => $input['riot_tag'],
+            'riot_puuid' => $riotAccount['puuid'] ?? null,
+            'tier' => $riotAccount['soloQueue']['tier'] ?? null,
+            'rank' => $riotAccount['soloQueue']['rank'] ?? null,
+            'lp' => $riotAccount['soloQueue']['leaguePoints'] ?? null,
         ]);
     }
 }
