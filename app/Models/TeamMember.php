@@ -4,9 +4,12 @@ namespace App\Models;
 
 use App\Enums\RoleInGame;
 use App\Enums\RoleInTeam;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Observers\TeamMemberObserver;
 
+#[ObservedBy(TeamMemberObserver::class)]
 class TeamMember extends Model
 {
     protected $fillable = [

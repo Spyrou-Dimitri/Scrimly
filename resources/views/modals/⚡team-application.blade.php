@@ -8,6 +8,7 @@ use App\Enums\StatusApplication;
 use App\Models\TeamMember;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Computed;
 
 new class extends Component
 {
@@ -68,6 +69,17 @@ new class extends Component
             'message' => 'Candidature acceptée',
         ]);
     }
+    #[Computed]
+    public function existingStarterRoleInGame()
+    {
+        if ($this->is_starter !== true || $this->candidate->roleInTeam !== RoleInTeam::PLAYER) {
+            return null;
+        }
+        return TeamMember::where('team_id', $this->candidate->team_id)
+            ->where('roleInGame', $this->candidate->roleInGame)
+            ->where('is_starter', true)
+            ->first();
+    }
 };
 ?>
 
@@ -100,8 +112,14 @@ new class extends Component
                 <div class="text-center lg:col-span-3">
                     <p class="text-text-gray">Rang actuel</p>
                     <div class="text-xl font-bold text-white flex justify-center items-center gap-2">
+                        @if ($this->candidate->user->tier)
                         <img src="{{ asset($this->candidate->user->tier->icon()) }}" class="w-8 h-8" alt="{{ $this->candidate->user->tier->label() }}">
+                        @endif
+                        @if ($this->candidate->user->tier)
                         <p>{{ $this->candidate->user->tier->label() }} {{ $this->candidate->user->rank }}</p>
+                        @else
+                        <p>-</p>
+                        @endif
                     </div>
                 </div>
                 <div class="text-center lg:col-span-3">
@@ -134,10 +152,18 @@ new class extends Component
                             ['value' => false, 'label' => 'Remplaçant'],
                         ]" />
                         @error('is_starter')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
                 </div>
+                @if ($this->existingStarterRoleInGame)
+                <div class="flex items-center bg-red-900/60 mt-2 text-white p-2 gap-2">
+                    <flux:icon name="exclamation-triangle" variant="outline" class="w-12 h-12" />
+                    <p>
+                        <span class="font-bold">{{$this->existingStarterRoleInGame->user->username}}</span> est déjà titulaire <span class="font-bold">{{$this->existingStarterRoleInGame->roleInGame->label()}}</span>. Il sera automatiquement passé en remplaçant si vous acceptez <span class="font-bold">{{$this->candidate->user->username}}</span> comme titulaire.
+                    </p>
+                </div>
+                @endif
                 <div class="flex justify-between gap-2 mt-6">
                     <button wire:click="refuse" class="cta-secondary">
                         Refuser
