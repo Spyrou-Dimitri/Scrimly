@@ -44,6 +44,7 @@
     /* Textes */
     --color-text-primary: #FFFFFF;
     --color-text-secondary: #959AA4;
+    --color-text-gray: #B5BDCA;
 
     /* Inputs */
     --color-input-bg: #0D0E12;
@@ -82,6 +83,7 @@
 
     /* Border colors */
     --border-gold: #F0E6D2;
+    --border-gray: #B5BDCA;
 
 }
 
@@ -194,6 +196,95 @@ select:focus[data-flux-control] {
         transition: transform 0.2s ease;
     }
 }
-/* \[:where(&)\]:size-4 {
-    @apply size-4;
-} */
+
+.card-animated-border {
+    isolation: isolate;
+    --roster-border-draw-duration: 200ms;
+}
+
+.card-animated-border::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -2px;
+    right: 0;
+    height: 2px;
+    background: var(--color-gold);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--roster-border-draw-duration) ease-in-out;
+    transition-delay: var(--roster-border-draw-duration);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.card-animated-border:hover::before,
+.card-animated-border:focus-within::before {
+    transform: scaleX(1);
+    transition-delay: 0s;
+}
+
+.card-animated-border::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: -2px;
+    pointer-events: none;
+    z-index: 0;
+    background: linear-gradient(var(--color-gold), var(--color-gold)) left bottom / 0% 2px no-repeat;
+    transition: background-size var(--roster-border-draw-duration) ease-in-out;
+    transition-delay: var(--roster-border-draw-duration);
+}
+
+.card-animated-border:hover::after,
+.card-animated-border:focus-within::after {
+    background-size: 100% 2px;
+    transition-delay: 0s;
+}
+
+.card-animated-border-right-edge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 2px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.card-animated-border-right-edge::before,
+.card-animated-border-right-edge::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: var(--color-gold);
+    transition: transform var(--roster-border-draw-duration) ease-in-out;
+    transition-delay: 0s;
+}
+
+.card-animated-border-right-edge::before {
+    top: 0;
+    height: 50%;
+    transform: scaleY(0);
+    transform-origin: top center;
+}
+
+.card-animated-border-right-edge::after {
+    bottom: 0;
+    height: 50%;
+    transform: scaleY(0);
+    transform-origin: bottom center;
+}
+
+.card-animated-border:hover .card-animated-border-right-edge::before,
+.card-animated-border:hover .card-animated-border-right-edge::after,
+.card-animated-border:focus-within .card-animated-border-right-edge::before,
+.card-animated-border:focus-within .card-animated-border-right-edge::after {
+    transform: scaleY(1);
+    transition-delay: var(--roster-border-draw-duration);
+}
+
