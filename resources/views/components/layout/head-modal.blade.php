@@ -1,9 +1,21 @@
-@props(['title'])
+@props(['title', 'width' => 'md', 'height' => 'auto'])
+@php
+    $width_variants = [
+            'md' => 'w-[90%] md:w-full max-w-md',
+            '5xl' => 'w-[95%] lg:w-[90%] xl:w-full max-w-7xl',
+        ];
+        $height_variants = [
+            'auto' => '',
+            '75' => 'max-h-[75vh] overflow-y-auto',
+        ];
+    $width_variant = $width_variants[$width] ?? $width_variants['md'];
+    $height_variant = $height_variants[$height] ?? $height_variants['auto'];
+@endphp
 <div wire:click="dispatch('close_modal')"
     @keydown.escape.window="$wire.dispatch('close_modal')"
     x-trap.inert.noscroll="true"
     class="fixed flex justify-center items-center w-full min-h-screen top-0 z-60 right-0 bg-black/80">
-    <section class="w-full bg-bg-widget shadow-modal max-w-md flex flex-col gap-6 py-8 px-6" @click.stop>
+    <section class="{{$width_variant}} {{$height_variant}} bg-bg-widget shadow-modal flex flex-col gap-6 py-6 px-4 md:py-8 md:px-6" @click.stop>
         <div class="flex justify-between items-center pb-4 border-b border-gold">
             <h2 class="text-2xl font-bold">{{$title}}</h2>
             <button type="button" wire:click="dispatch('close_modal')"

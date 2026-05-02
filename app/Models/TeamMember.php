@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use App\Enums\RoleInTeam;
 use App\Enums\RoleInGame;
+use App\Enums\RoleInTeam;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TeamMember extends Model
@@ -16,13 +16,13 @@ class TeamMember extends Model
         'status',
         'message',
         'team_id',
-        'creator_id',
+        'user_id',
+        'joined_at',
     ];
 
     protected $casts = [
         'roleInTeam' => RoleInTeam::class,
         'roleInGame' => RoleInGame::class,
-        'roleInTeam' => RoleInTeam::class,
         'is_starter' => 'boolean',
         'status' => 'string',
         'message' => 'string',

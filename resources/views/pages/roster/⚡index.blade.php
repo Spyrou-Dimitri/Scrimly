@@ -2,16 +2,27 @@
 
 use Livewire\Component;
 use Livewire\Attributes\Layout;
-use Illuminate\Support\Collection;
-use App\Models\Team;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use App\Models\TeamApplication;
 use App\Enums\RoleInTeam;
+use App\Enums\StatusApplication;
 
 new #[Layout('layouts::team')] class extends Component {
-    public Collection $candidates;
-    public function mount()
+
+    #[Computed]
+    public function candidates(): \Illuminate\Database\Eloquent\Collection
     {
-        $this->candidates = TeamApplication::where('team_id', currentTeam()->id)->with('user')->get();
+        return TeamApplication::where('team_id', currentTeam()->id)
+            ->where('status', StatusApplication::PENDING)
+            ->with('user')
+            ->get();
+    }
+
+    #[On('refresh_candidates')]
+    public function refreshCandidates(): void
+    {
+        unset($this->candidates);
     }
 
     public function openTeamApplicationModal($candidateId): void
@@ -21,8 +32,6 @@ new #[Layout('layouts::team')] class extends Component {
             'model_id' => $candidateId,
         ]);
     }
-
-
 };
 ?>
 
@@ -45,7 +54,11 @@ new #[Layout('layouts::team')] class extends Component {
                 <span class="card-animated-border-right-edge" aria-hidden="true"></span>
                 <div class="relative z-[1] flex justify-between items-center gap-4">
                     <div class="flex items-center gap-4">
-                        <img class="w-[96px] h-auto object-cover" src="{{Storage::disk('public')->url('images/avatar/variants/480x480/' . $candidate->user->avatar)}}" alt="Photo de profil de {{ $candidate->user->username }}">
+                        @if ($candidate->user->avatar)
+                        <img class="w-[96px] h-auto aspect-square object-cover" src="{{Storage::disk('public')->url('images/avatar/variants/480x480/' . $candidate->user->avatar)}}" alt="Photo de profil de {{ $candidate->user->username }}">
+                        @else
+                        <img src="{{ asset('/img/basicIcon.webp') }}" class="w-[96px] h-auto aspect-square object-cover" alt="Photo de profil de {{ $candidate->user->username }}">
+                        @endif
                         <div>
                             <h3 class="text-2xl text-gold font-bold">{{ $candidate->user->username }}</h3>
                             <p class="text-text-gray">{{ $candidate->user->riot_tag }}</p>
