@@ -61,6 +61,8 @@ new class extends Component {
             <flux:icon.check-circle class="w-6 h-6 text-green-500" />
             @elseif($toast['type'] === 'error')
             <flux:icon.x-circle class="w-6 h-6 text-red-500" />
+            @elseif($toast['type'] === 'trash')
+            <flux:icon.trash class="w-6 h-6 text-red-500" />
             @else
             <flux:icon.information-circle class="w-6 h-6 text-blue-500" />
             @endif

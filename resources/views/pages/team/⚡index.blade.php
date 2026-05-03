@@ -5,18 +5,20 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Collection;
-use App\Models\Team;
-use Illuminate\Support\Facades\Storage;
-
+use App\Models\TeamMember;
+use App\Enums\StatusInTeam;
 new #[Layout('layouts::choose_a_team')] class extends Component
 {
     public User $currentUser;
-    public Collection $teams;
+    public Collection $teamMembers;
 
     public function mount()
     {
         $this->currentUser = Auth::user();
-    
+        $this->teamMembers = TeamMember::where('user_id', $this->currentUser->id)
+            ->where('status', StatusInTeam::ACCEPTED)
+            ->with('team')
+            ->get();
     }
 
     public function selectTeam($teamId)
@@ -59,12 +61,12 @@ new #[Layout('layouts::choose_a_team')] class extends Component
             @endif
         </div>
         <ul class="flex w-full flex-row gap-6 justify-center flex-wrap">
-            @foreach ($currentUser->teams as $team)
+            @foreach ($teamMembers as $teamMember)
             <li class="w-full md:w-[calc(33.33%-1.125rem)] xl:w-[calc(20%-1.125rem)] min-h-[350px] border border-[rgba(255,255,255,0.3)] hover:border-gold transition-all  ease-in-out duration-150 hover:translate-y-[-10px]">
                 <article class="flex w-full flex-col items-center justify-between min-h-full gap-4 p-6 bg-[#333237] relative ">
-                    <button type="button" wire:click="selectTeam({{ $team->id }})" class="absolute inset-0 cursor-pointer" aria-label="{{ $team->name }}"></button>
-                    <img src="{{ Storage::disk('public')->url('images/logoTeam/variants/480x480/' . $team->logo) }}" class="w-[250px] h-auto m-auto object-fit" alt="{{ $team->name }}">
-                    <h3 class="text-2xl font-bold text-center">{{ $team->name }}</h3>
+                    <button type="button" wire:click="selectTeam({{ $teamMember->team_id }})" class="absolute inset-0 cursor-pointer" aria-label="{{ $teamMember->team->name }}"></button>
+                    <img src="{{ Storage::disk('public')->url('images/logoTeam/variants/480x480/' . $teamMember->team->logo) }}" class="w-[250px] h-auto m-auto object-fit" alt="{{ $teamMember->team->name }}">
+                    <h3 class="text-2xl font-bold text-center">{{ $teamMember->team->name }}</h3>
                 </article>
             </li>
             @endforeach

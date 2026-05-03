@@ -1,20 +1,22 @@
 @props(['href' => '',
- 'title' => '',
-  'cta_title' => '',
-   'class' => ''])
+'widthFull' => false,
+'title' => '',
+'cta_title' => '',
+'class' => ''])
+
 
 @php
-    $classes_variants = [
-            'primary' => 'cta-primary',
-            'secondary' => 'cta-secondary',
-            'nav' => 'nav-link',
-            'underline' => 'cta-underline',
-            
-        ];
+$classes_variants = [
+'primary' => 'cta-primary',
+'secondary' => 'cta-secondary',
+'nav' => 'nav-link',
+'underline' => 'cta-underline',
 
-    $class_variant = $classes_variants[$class] ?? $classes_variants['primary']
+];
+
+$class_variant = $classes_variants[$class] ?? $classes_variants['primary']
 @endphp
 
-<a href="{{ $href }}" title=" {{$title}}" class="{{$class_variant}}">
+<a href="{{ $href }}" title=" {{$title}}" class="{{$class_variant}} {{ $widthFull ? 'block' : '' }}">
     {{$slot}}
 </a>

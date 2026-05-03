@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\RoleInGame;
 use App\Enums\RoleInTeam;
+use App\Enums\StatusInTeam;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,7 +28,7 @@ class TeamMember extends Model
         'roleInTeam' => RoleInTeam::class,
         'roleInGame' => RoleInGame::class,
         'is_starter' => 'boolean',
-        'status' => 'string',
+        'status' => StatusInTeam::class,
         'message' => 'string',
     ];
 

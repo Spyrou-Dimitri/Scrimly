@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Enums\StatusInTeam;
 
 class EnsureUserHasActiveTeam
 {
@@ -27,6 +28,12 @@ class EnsureUserHasActiveTeam
         if (! $team) {
             $user->update(['current_team_id' => null]);
 
+            return redirect()->route('team.index')->with('error', 'Vous ne faites pas partie de cette équipe.');
+        }
+
+        $isAccepted = $user->teams()->where('team_id', $team->id)->where('status', StatusInTeam::ACCEPTED)->exists();
+
+        if (! $isAccepted) {
             return redirect()->route('team.index')->with('error', 'Vous ne faites pas partie de cette équipe.');
         }
 

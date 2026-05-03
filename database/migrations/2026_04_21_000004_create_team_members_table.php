@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Enums\RoleInTeam;
 use App\Enums\RoleInGame;
-
+use App\Enums\StatusInTeam;
 return new class extends Migration
 {
     public function up(): void
@@ -15,7 +15,7 @@ return new class extends Migration
             $table->enum('roleInTeam', RoleInTeam::cases());
             $table->enum('roleInGame', RoleInGame::cases())->nullable();
             $table->boolean('is_starter')->default(true);
-            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
+            $table->enum('status', StatusInTeam::cases())->required();
             $table->text('message')->nullable();
             $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();

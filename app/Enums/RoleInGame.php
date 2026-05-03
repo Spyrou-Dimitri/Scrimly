@@ -27,7 +27,7 @@ enum RoleInGame: string
             self::TOP => 'img/Role/top.png',
             self::JUNGLE => 'img/Role/jungle.png',
             self::MID => 'img/Role/mid.png',
-            self::ADC => 'img/Role/adc.png',
+            self::ADC => 'img/Role/bot.png',
             self::SUPPORT => 'img/Role/support.png',
         };
     }

@@ -9,13 +9,14 @@ use App\Models\TeamMember;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
+use App\Enums\StatusInTeam;
 
 new class extends Component
 {
     public TeamApplication $candidate;
     public ?RoleInTeam $roleInTeam = null;
     public ?RoleInGame $roleInGame = null;
-    public ?bool $is_starter = null;
+    public ?string $is_starter = null;
 
     public function mount($model_id)
     {
@@ -52,15 +53,19 @@ new class extends Component
             $this->candidate->update([
                 'status' => StatusApplication::ACCEPTED,
             ]);
-            TeamMember::create([
-                'user_id' => $this->candidate->user_id,
-                'team_id' => $this->candidate->team_id,
-                'roleInTeam' => $this->roleInTeam,
-                'roleInGame' => $this->roleInGame,
-                'is_starter' => $this->is_starter,
-                'status' => StatusApplication::ACCEPTED,
-                'joined_at' => now(),
-            ]);
+            TeamMember::updateOrCreate(
+                [
+                    'user_id' => $this->candidate->user_id,
+                    'team_id' => $this->candidate->team_id,
+                ],
+                [
+                    'roleInTeam' => $this->roleInTeam,
+                    'roleInGame' => $this->roleInGame,
+                    'is_starter' => (bool) $this->is_starter,
+                    'status' => StatusInTeam::ACCEPTED,
+                    'joined_at' => now(),
+                ]
+            );
         });
         $this->dispatch('refresh_candidates');
         $this->dispatch('close_modal');
@@ -72,7 +77,7 @@ new class extends Component
     #[Computed]
     public function existingStarterRoleInGame()
     {
-        if ($this->is_starter !== true || $this->candidate->roleInTeam !== RoleInTeam::PLAYER) {
+        if ($this->is_starter !== '1' || $this->candidate->roleInTeam !== RoleInTeam::PLAYER) {
             return null;
         }
         return TeamMember::where('team_id', $this->candidate->team_id)
@@ -148,8 +153,8 @@ new class extends Component
                             :columns="2"
                             :required="true"
                             :options="[
-                            ['value' => true, 'label' => 'Titulaire'],
-                            ['value' => false, 'label' => 'Remplaçant'],
+                            ['value' => '1', 'label' => 'Titulaire'],
+                            ['value' => '0', 'label' => 'Remplaçant'],
                         ]" />
                         @error('is_starter')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
