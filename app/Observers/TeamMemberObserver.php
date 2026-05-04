@@ -2,8 +2,9 @@
 
 namespace App\Observers;
 
-use App\Models\TeamMember;
 use App\Enums\RoleInTeam;
+use App\Enums\StatusInTeam;
+use App\Models\TeamMember;
 
 class TeamMemberObserver
 {
@@ -26,7 +27,20 @@ class TeamMemberObserver
      */
     public function updated(TeamMember $teamMember): void
     {
-        //
+        if ($teamMember->is_starter && $teamMember->roleInTeam === RoleInTeam::PLAYER && $teamMember->wasChanged('is_starter')) {
+            TeamMember::where('team_id', $teamMember->team_id)
+                ->where('roleInGame', $teamMember->roleInGame)
+                ->where('is_starter', true)
+                ->where('id', '!=', $teamMember->id)
+                ->update(['is_starter' => false]);
+        }
+
+        if ($teamMember->status === StatusInTeam::REJECTED && $teamMember->wasChanged('status')) {
+            $user = $teamMember->user;
+            if ($user->current_team_id === $teamMember->team_id) {
+                $user->update(['current_team_id' => null]);
+            }
+        }
     }
 
     /**

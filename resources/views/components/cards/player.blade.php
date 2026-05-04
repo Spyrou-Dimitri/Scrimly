@@ -82,7 +82,7 @@ $tierLine .= ' • '.$memberUser->rank;
                         type="button"
                         class="flex w-full cursor-pointer items-center justify-end gap-2 whitespace-nowrap px-3 py-2.5 text-right text-sm font-medium text-white transition-colors duration-150 hover:bg-white/5 hover:text-gold"
                         role="menuitem"
-                        wire:click="openModalDemoteToBench({{ $teamMember->id }})"
+                        wire:click="openModalSendToBench({{ $teamMember->id }})"
                         @click="open = false">
                         <flux:icon name="user-minus" class="size-4 hover:text-gold" />
                         {{ __('pages/roster/index.menu_demote_to_bench') }}

@@ -53,9 +53,19 @@ new #[Layout('layouts::team')] class extends Component {
         ]);
     }
 
-    public function promoteToStarter(int $teamMemberId): void
+    public function openModalPromoteToStarter(int $teamMemberId): void
     {
-        //
+        $this->dispatch('open_modal', [
+            'form' => 'promote-to-starter',
+            'model_id' => $teamMemberId,
+        ]);
+    }
+    public function openModalSendToBench(int $teamMemberId): void
+    {
+        $this->dispatch('open_modal', [
+            'form' => 'send-to-bench',
+            'model_id' => $teamMemberId,
+        ]);
     }
 
     public function openModalKickTeamMember(int $teamMemberId): void
@@ -69,10 +79,11 @@ new #[Layout('layouts::team')] class extends Component {
 ?>
 
 <div class="flex flex-col gap-6">
+    {{-- Candidatures --}}
     <section x-data="{ openCandidates: true }" class="p-6 bg-bg-widget basic-shadow flex flex-col">
         <div class="flex items-center gap-4 justify-between">
             <h2 class="text-[32px] font-bold">
-                {{ __('pages/roster/index.application_title') }} <span class="text-gold font-bold">({{ $this->candidates->count() }})</span>
+                {{ __('pages/roster/index.application_title') }} <span class="text-gold font-bold">({{ $this->candidates->where('status', StatusApplication::PENDING)->count() }})</span>
             </h2>
 
             <button class="group cursor-pointer" x-on:click.prevent="openCandidates = !openCandidates">
@@ -146,7 +157,7 @@ new #[Layout('layouts::team')] class extends Component {
     <section x-data="{ openIsStarter: true }" class="p-6 bg-bg-widget basic-shadow flex flex-col">
         <div class="flex items-center gap-4 justify-between">
             <h2 class="text-[32px] font-bold">
-                {{ __('pages/roster/index.is_starter_title') }} <span class="text-gold font-bold">({{ $this->candidates->count() }})</span>
+                {{ __('pages/roster/index.is_starter_title') }} <span class="text-gold font-bold">({{ $this->isStarter->where('is_starter', true)->where('roleInTeam', RoleInTeam::PLAYER)->count() }})</span>
             </h2>
             <button class="group cursor-pointer" x-on:click.prevent="openIsStarter = !openIsStarter">
                 <flux:icon.chevron-down
@@ -171,10 +182,10 @@ new #[Layout('layouts::team')] class extends Component {
     </section>
 
     {{-- Remplacants--}}
-    <section x-data="{ openBench: true }" class="p-6 bg-bg-widget basic-shadow flex flex-col">
+    <section x-data="{ openBench: false }" class="p-6 bg-bg-widget basic-shadow flex flex-col">
         <div class="flex items-center gap-4 justify-between">
             <h2 class="text-[32px] font-bold">
-                {{ __('pages/team/index.bench_title') }} <span class="text-gold font-bold">({{ $this->candidates->count() }})</span>
+                {{ __('pages/team/index.bench_title') }} <span class="text-gold font-bold">({{ $this->isStarter->where('is_starter', false)->where('roleInTeam', RoleInTeam::PLAYER)->count() }})</span>
             </h2>
             <button class="group cursor-pointer" x-on:click.prevent="openBench = !openBench">
                 <flux:icon.chevron-down
@@ -191,6 +202,33 @@ new #[Layout('layouts::team')] class extends Component {
             x-transition:leave-start="opacity-100 translate-y-0"
             x-transition:leave-end="opacity-0 -translate-y-2">
             @foreach ($this->isStarter->where('is_starter', false)->where('roleInTeam', RoleInTeam::PLAYER) as $teamMember)
+            <li class="col-span-12 md:col-span-4">
+                <x-cards.player :team-member="$teamMember" />
+            </li>
+            @endforeach
+        </ul>
+    </section>
+    {{-- Staff --}}
+    <section x-data="{ openStaff: false }" class="p-6 bg-bg-widget basic-shadow flex flex-col">
+        <div class="flex items-center gap-4 justify-between">
+            <h2 class="text-[32px] font-bold">
+                {{ __('pages/team/index.staff_title') }} <span class="text-gold font-bold">({{ $this->isStarter->whereIn('roleInTeam', [RoleInTeam::STAFF, RoleInTeam::COACH])->count() }})</span>
+            </h2>
+            <button class="group cursor-pointer" x-on:click.prevent="openStaff = !openStaff">
+                <flux:icon.chevron-down
+                    class="size-8 transition-all duration-150 ease-in-out text-text-gray group-hover:text-gold"
+                    ::class="openStaff ? 'rotate-0 text-gold' : '-rotate-90 text-text-gray'" />
+            </button>
+        </div>
+        <ul class="mt-6 grid grid-cols-12 gap-4 md:gap-6"
+            x-show="openStaff"
+            x-transition:enter="transition ease-out duration-150"
+            x-transition:enter-start="opacity-0 -translate-y-2"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100 translate-y-0"
+            x-transition:leave-end="opacity-0 -translate-y-2">
+            @foreach ($this->isStarter->whereIn('roleInTeam', [RoleInTeam::STAFF, RoleInTeam::COACH]) as $teamMember)
             <li class="col-span-12 md:col-span-4">
                 <x-cards.player :team-member="$teamMember" />
             </li>

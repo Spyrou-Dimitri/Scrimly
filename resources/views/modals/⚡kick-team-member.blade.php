@@ -19,18 +19,10 @@ new class extends Component
     }
     public function kickTeamMember()
     {
-        DB::transaction(function () {
-
-            $this->member->update([
-                'status' => StatusInTeam::REJECTED,
-            ]);
-
-            if ($this->member->user->current_team_id === $this->member->team_id) {
-                $this->member->user->update([
-                    'current_team_id' => null,
-                ]);
-            }
-        });
+        $this->member->update([
+            'status' => StatusInTeam::REJECTED,
+        ]);
+        
         $this->dispatch('close_modal');
         $this->dispatch('refresh_roster');
         $this->dispatch('toast', [
@@ -48,8 +40,7 @@ new class extends Component
         <form wire:submit.prevent="kickTeamMember" class="flex flex-col items-center gap-6 pt-2 text-center">
             <div
                 class="flex size-14 shrink-0 items-center justify-center rounded-none bg-red-950/40 ring-1 ring-red-900/60"
-                aria-hidden="true"
-            >
+                aria-hidden="true">
                 <flux:icon name="trash" class="size-8 text-red-700/90" />
             </div>
 
@@ -67,15 +58,13 @@ new class extends Component
                     wire:click.prevent="closeModal"
                     type="button"
                     title="{{ __('modals/kick-team-member.cancel_button') }}"
-                    class="cta-secondary"
-                >
+                    class="cta-secondary">
                     {{ __('modals/kick-team-member.cancel_button') }}
                 </button>
                 <button
                     type="submit"
                     title="{{ __('modals/kick-team-member.confirm_button') }}"
-                    class="cursor-pointer rounded-none border border-red-900 bg-red-950/70 px-4 py-2 font-bold text-white transition-colors hover:bg-red-900/90"
-                >
+                    class="cursor-pointer rounded-none border border-red-900 bg-red-950/70 px-4 py-2 font-bold text-white transition-colors hover:bg-red-900/90">
                     {{ __('modals/kick-team-member.confirm_button') }}
                 </button>
             </div>

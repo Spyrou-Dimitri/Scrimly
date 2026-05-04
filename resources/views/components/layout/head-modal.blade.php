@@ -2,6 +2,9 @@
 @php
     $width_variants = [
         'md' => 'w-[90%] md:w-full max-w-md',
+        'xl' => 'w-[90%] md:w-full max-w-xl',
+        '2xl' => 'w-[90%] md:w-full max-w-2xl',
+        '3xl' => 'w-[90%] md:w-full max-w-3xl',
         '5xl' => 'w-[95%] lg:w-[90%] xl:w-full max-w-7xl',
         ];
     $height_variants = [
