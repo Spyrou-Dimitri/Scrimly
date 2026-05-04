@@ -2,8 +2,8 @@
 
 return [
     'title' => 'Exclusion de',
-    'legend_title' => 'Exclusion d\'un joueur',
-    'legend_form' => 'Voulez-vous vraiment virer ce joueur de l\'équipe ?',
+    'body_heading' => 'Exclure',
+    'legend_form' => 'Êtes-vous sûr de vouloir exclure ce joueur de l\'équipe ?',
     'confirm_button' => 'Exclure',
     'cancel_button' => 'Annuler',
     'success_title' => 'Joueur exclu',

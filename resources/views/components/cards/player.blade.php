@@ -100,37 +100,40 @@ $tierLine .= ' • '.$memberUser->rank;
                     </button>
                     @endif
                 </div>
-            </div>  
+            </div>
         </div>
     </div>
-    <div class="mt-4 flex min-w-0 flex-1 flex-col gap-4">
-        <div class="relative z-[1] flex min-w-0 flex-col gap-1 sm:flex-row md:flex-col lg:items-start lg:gap-3 xl:flex-row xl:gap-4">
-            <div class="flex min-w-0 flex-1 flex-col gap-1 sm:flex-1 xl:w-1/2 xl:max-w-[50%] xl:flex-none">
-                <h3 class="truncate text-2xl font-bold text-gold">{{ $memberUser->username }}</h3>
-                @if ($memberUser->riot_tag)
-                <p class="truncate font-mono text-sm text-text-gray">{{ $memberUser->riot_tag }}</p>
-                @endif
-            </div>
-            <div class="flex w-full flex-row items-center justify-between gap-1 sm:w-fit sm:flex-col sm:items-start sm:justify-end md:items-start lg:w-auto lg:shrink-0 lg:items-start xl:w-1/2 xl:max-w-[50%] xl:shrink xl:items-end">
-                <div class="flex items-center gap-2 text-lg font-semibold text-white">
-                    @if ($teamMember->roleInTeam === RoleInTeam::COACH || $teamMember->roleInTeam === RoleInTeam::STAFF)
-                    <span class="max-w-full truncate whitespace-nowrap lg:max-w-[12rem]">{{ $teamMember->roleInTeam->label() }}</span>
-                    @elseif ($teamMember->roleInGame)
-                    <img src="{{ asset($teamMember->roleInGame->icon()) }}" class="size-7 shrink-0" alt="{{ $teamMember->roleInGame->label() }}">
-                    <span class="whitespace-nowrap">{{ $teamMember->roleInGame->label() }}</span>
-                    @else
-                    <span class="text-text-secondary">—</span>
+    <div class="mt-4 flex min-w-0 flex-1 flex-col gap-4 justify-center">
+        <div class="flex min-w-0 flex-1 flex-col gap-3">
+            <div class="relative z-[1] flex min-w-0 flex-row items-stretch gap-2 md:flex-col md:gap-3 lg:flex-row lg:items-stretch lg:gap-3 xl:gap-4">
+                <div class="flex min-w-0 flex-1 flex-col gap-1 lg:basis-0 lg:grow-[3]">
+                    <h3 class="truncate text-2xl font-bold text-gold">{{ $memberUser->username }}</h3>
+                    @if ($memberUser->riot_tag)
+                    <p class="truncate font-mono text-sm lg:text-xs 2xl:text-sm text-text-gray">{{ $memberUser->riot_tag }}</p>
                     @endif
+                    <div class="flex w-full min-w-0 items-center gap-2 text-sm text-white">
+                        @if ($memberUser->tier && $tierLine)
+                        <img src="{{ asset($memberUser->tier->icon()) }}" class="size-7 shrink-0" alt="{{ $memberUser->tier->label() }}">
+                        <p class="min-w-0 flex-1 truncate">{{ $tierLine }}</p>
+                        @else
+                        <p class="flex-1">—</p>
+                        @endif
+                    </div>
                 </div>
-                <div class="flex min-w-0 items-center gap-2 text-text-gray">
-                    @if ($memberUser->tier && $tierLine)
-                    <img src="{{ asset($memberUser->tier->icon()) }}" class="size-7 shrink-0" alt="{{ $memberUser->tier->label() }}">
-                    <p class="min-w-0 truncate">{{ $tierLine }}</p>
-                    @else
-                    <p>—</p>
-                    @endif
+                <div class="flex min-h-0 min-w-0 w-fit shrink-0 flex-col justify-center self-stretch items-end md:w-full md:items-start lg:w-auto lg:basis-0 lg:grow lg:shrink lg:min-w-0 lg:items-end">
+                    <div class="flex max-w-full min-w-0 flex-col items-center gap-1 text-lg font-semibold text-white md:items-start lg:items-center">
+                        @if ($teamMember->roleInTeam === RoleInTeam::COACH || $teamMember->roleInTeam === RoleInTeam::STAFF)
+                        <span class="min-w-0 max-w-full truncate text-center md:text-start lg:text-end">{{ $teamMember->roleInTeam->label() }}</span>
+                        @elseif ($teamMember->roleInGame)
+                        <img src="{{ asset($teamMember->roleInGame->icon()) }}" class="size-7 shrink-0" alt="{{ $teamMember->roleInGame->label() }}">
+                        <span class="min-w-0 max-w-full truncate text-center md:text-start lg:text-end">{{ $teamMember->roleInGame->label() }}</span>
+                        @else
+                        <span class="text-text-secondary">—</span>
+                        @endif
+                    </div>
                 </div>
             </div>
+
         </div>
 
         <div class="mt-auto">

@@ -14,4 +14,5 @@ return [
     'join_team_cta' => 'Rejoindre une équipe',
     'onboarding_title' => 'Bienvenue sur Scrimly',
     'onboarding_description' => 'Créez votre équipe ou rejoignez-en une !',
+    'bench_title' => 'Remplacants',
 ];
