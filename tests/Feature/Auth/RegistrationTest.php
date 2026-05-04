@@ -30,8 +30,11 @@ test('new users can register without a riot tag', function () {
     $this->assertDatabaseHas('users', [
         'username' => 'Faker',
         'email' => 'faker@example.com',
-        'riot_tag' => null,
     ]);
+
+    $user = User::query()->where('email', 'faker@example.com')->first();
+    expect($user)->not->toBeNull();
+    $this->assertDatabaseMissing('riot_profiles', ['user_id' => $user->id]);
 });
 
 test('new users can register with a valid riot tag', function () {
@@ -51,6 +54,13 @@ test('new users can register with a valid riot tag', function () {
 
     $this->assertDatabaseHas('users', [
         'username' => 'HideOnBush',
+        'email' => 'hideonbush@example.com',
+    ]);
+
+    $user = User::query()->where('email', 'hideonbush@example.com')->first();
+    expect($user)->not->toBeNull();
+    $this->assertDatabaseHas('riot_profiles', [
+        'user_id' => $user->id,
         'riot_tag' => 'HideOnBush#KR1',
     ]);
 });

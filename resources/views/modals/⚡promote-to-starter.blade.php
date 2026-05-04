@@ -12,7 +12,7 @@ new class extends Component
     public function mount($model_id): void
     {
         $this->member = TeamMember::query()
-            ->with('user')
+            ->with(['user.riotProfile'])
             ->findOrFail($model_id);
     }
 
@@ -52,7 +52,7 @@ new class extends Component
             ->where('roleInGame', $this->member->roleInGame)
             ->where('is_starter', true)
             ->whereKeyNot($this->member->id)
-            ->with('user')
+            ->with(['user.riotProfile'])
             ->first();
     }
 };

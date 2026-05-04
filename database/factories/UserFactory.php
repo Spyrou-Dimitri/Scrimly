@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\RiotProfile;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -30,11 +31,6 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'avatar' => null,
-            'riot_tag' => null,
-            'riot_puuid' => null,
-            'tier' => null,
-            'rank' => null,
-            'lp' => null,
             'current_team_id' => null,
             'remember_token' => Str::random(10),
             'two_factor_secret' => null,
@@ -63,5 +59,18 @@ class UserFactory extends Factory
             'two_factor_recovery_codes' => encrypt(json_encode(['recovery-code-1'])),
             'two_factor_confirmed_at' => now(),
         ]);
+    }
+
+    /**
+     * @param  array<string, mixed>  $attributes
+     */
+    public function withRiotProfile(array $attributes = []): static
+    {
+        return $this->afterCreating(function (User $user) use ($attributes): void {
+            RiotProfile::factory()->create(array_merge(
+                ['user_id' => $user->id],
+                $attributes
+            ));
+        });
     }
 }

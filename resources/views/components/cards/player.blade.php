@@ -18,7 +18,7 @@ $tierLine .= ' • '.$memberUser->rank;
 }
 @endphp
 
-<article {{ $attributes->merge(['class' => 'relative cursor-pointer border-l-2 border-gold flex min-h-full flex-col bg-bg-card p-4 basic-shadow md:p-5 card-animated-border']) }}>
+<article @click="$el.querySelector('[data-profil-link]')?.click()" {{ $attributes->merge(['class' => 'relative cursor-pointer border-l-2 border-gold flex min-h-full flex-col bg-bg-card p-4 basic-shadow md:p-5 card-animated-border']) }}>
     <span class="card-animated-border-right-edge" aria-hidden="true"></span>
     <div class="relative">
         <div class="relative overflow-hidden">
@@ -137,7 +137,7 @@ $tierLine .= ' • '.$memberUser->rank;
         </div>
 
         <div class="mt-auto">
-            <x-cta :class="'cta-primary'" :widthFull="true" :href="'#'" :title="__('pages/roster/index.view_profile_title') . ' ' . $memberUser->username">
+            <x-cta  wire:navigate data-profil-link :class="'cta-primary'" :widthFull="true" :href="route('roster.show', [$teamMember->team->slug, $teamMember->id])" :title="__('pages/roster/index.view_profile_title') . ' ' . $memberUser->username">
                 {{ __('pages/roster/index.view_profile') }}
             </x-cta>
         </div>

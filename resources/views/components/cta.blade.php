@@ -17,6 +17,6 @@ $classes_variants = [
 $class_variant = $classes_variants[$class] ?? $classes_variants['primary']
 @endphp
 
-<a href="{{ $href }}" title=" {{$title}}" class="{{$class_variant}} {{ $widthFull ? 'block' : '' }}">
+<a {{ $attributes->merge(['href' => $href, 'title' => $title, 'class' => $class_variant . ($widthFull ? ' block' : '')]) }}>
     {{$slot}}
 </a>

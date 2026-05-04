@@ -10,7 +10,7 @@ new class extends Component
     public function mount($model_id): void
     {
         $this->member = TeamMember::query()
-            ->with('user')
+            ->with(['user.riotProfile'])
             ->findOrFail($model_id);
     }
 

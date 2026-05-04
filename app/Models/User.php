@@ -5,10 +5,12 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\LolTier;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -24,19 +26,38 @@ class User extends Authenticatable
         'email',
         'password',
         'avatar',
-        'riot_tag',
-        'riot_puuid',
-        'tier',
-        'rank',
-        'lp',
         'current_team_id',
     ];
 
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'tier' => LolTier::class,
     ];
+
+    protected function riotTag(): Attribute
+    {
+        return Attribute::get(fn (): ?string => $this->riotProfile?->riot_tag);
+    }
+
+    protected function riotPuuid(): Attribute
+    {
+        return Attribute::get(fn (): ?string => $this->riotProfile?->riot_puuid);
+    }
+
+    protected function tier(): Attribute
+    {
+        return Attribute::get(fn (): ?LolTier => $this->riotProfile?->tier);
+    }
+
+    protected function rank(): Attribute
+    {
+        return Attribute::get(fn (): ?string => $this->riotProfile?->rank);
+    }
+
+    protected function lp(): Attribute
+    {
+        return Attribute::get(fn (): ?int => $this->riotProfile?->lp);
+    }
 
     /**
      * Get the user's initials
@@ -48,6 +69,11 @@ class User extends Authenticatable
             ->take(2)
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
+    }
+
+    public function riotProfile(): HasOne
+    {
+        return $this->hasOne(RiotProfile::class);
     }
 
     public function teams(): BelongsToMany

@@ -20,7 +20,7 @@ new #[Layout('layouts::team')] class extends Component {
     {
         return TeamApplication::where('team_id', currentTeam()->id)
             ->where('status', StatusApplication::PENDING)
-            ->with('user')
+            ->with(['user.riotProfile'])
             ->get();
     }
 
@@ -30,7 +30,7 @@ new #[Layout('layouts::team')] class extends Component {
         return TeamMember::where('status', StatusInTeam::ACCEPTED)
             ->where('team_id', currentTeam()->id)
             ->where('status', StatusInTeam::ACCEPTED)
-            ->with('user')
+            ->with(['user.riotProfile'])
             ->get();
     }
 

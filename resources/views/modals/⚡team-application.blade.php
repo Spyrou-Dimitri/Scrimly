@@ -20,7 +20,9 @@ new class extends Component
 
     public function mount($model_id)
     {
-        $this->candidate = TeamApplication::find($model_id);
+        $this->candidate = TeamApplication::query()
+            ->with(['user.riotProfile'])
+            ->findOrFail($model_id);
         $this->roleInTeam = $this->candidate->roleInTeam;
         $this->roleInGame = $this->candidate->roleInGame;
     }

@@ -30,15 +30,22 @@ class CreateNewUser implements CreatesNewUsers
 
         $riotAccount = ValidRiotId::$validatedAccount;
 
-        return User::create([
+        $user = User::create([
             'username' => $input['username'],
             'email' => $input['email'],
             'password' => $input['password'],
-            'riot_tag' => $input['riot_tag'],
-            'riot_puuid' => $riotAccount['puuid'] ?? null,
-            'tier' => $riotAccount['soloQueue']['tier'] ?? null,
-            'rank' => $riotAccount['soloQueue']['rank'] ?? null,
-            'lp' => $riotAccount['soloQueue']['leaguePoints'] ?? null,
         ]);
+
+        if (! empty($input['riot_tag'])) {
+            $user->riotProfile()->create([
+                'riot_tag' => $input['riot_tag'],
+                'riot_puuid' => $riotAccount['puuid'] ?? null,
+                'tier' => $riotAccount['soloQueue']['tier'] ?? null,
+                'rank' => $riotAccount['soloQueue']['rank'] ?? null,
+                'lp' => $riotAccount['soloQueue']['leaguePoints'] ?? null,
+            ]);
+        }
+
+        return $user;
     }
 }

@@ -66,16 +66,23 @@ class EditProfilForm extends Form
 
             if ($user->avatar) {
 
-                Storage::disk('public')->delete('images/avatar/variants/480x480/' . $user->avatar);
+                Storage::disk('public')->delete('images/avatar/variants/480x480/'.$user->avatar);
             }
         }
-       
 
         $user->update([
             'username' => $validated['username'],
             'email' => $validated['email'],
-            'riot_tag' => $validated['riot_tag'],
         ]);
+
+        if (blank($validated['riot_tag'])) {
+            $user->riotProfile?->delete();
+        } else {
+            $user->riotProfile()->updateOrCreate(
+                ['user_id' => $user->id],
+                ['riot_tag' => $validated['riot_tag']]
+            );
+        }
 
         if ($validated['avatar']) {
             $user->avatar = $validated['avatar'];
