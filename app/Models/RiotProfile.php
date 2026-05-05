@@ -45,4 +45,27 @@ class RiotProfile extends Model
     {
         return $this->hasMany(RiotMatch::class);
     }
+    public function getWinratePercentage()
+    {
+        $totalMatches = $this->wins + $this->losses;
+        if ($totalMatches === 0) {
+            return 0;
+        }
+        return round(($this->wins / $totalMatches) * 100);
+    }
+    public function getGeneralKda(): float
+    {
+        $allMatches = $this->riotMatches;
+        if ($allMatches->count() === 0) {
+            return 0;
+        }
+        $numberOfDeaths = $allMatches->sum('deaths');
+        $numberOfKills = $allMatches->sum('kills');
+        $numberOfAssists = $allMatches->sum('assists');
+        $totalKda = $numberOfKills + $numberOfAssists;
+        if ($numberOfDeaths === 0) {
+            return 0;
+        }
+        return round($totalKda / $numberOfDeaths, 2);
+    }
 }

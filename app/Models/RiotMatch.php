@@ -37,4 +37,9 @@ class RiotMatch extends Model
     {
         return $this->belongsTo(RiotProfile::class);
     }
+    public function getKda()
+    {
+        return round(($this->kills + $this->assists) / $this->deaths, 2);
+    }
+    
 }
