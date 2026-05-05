@@ -7,6 +7,7 @@ use Database\Factories\RiotProfileFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class RiotProfile extends Model
 {
@@ -20,6 +21,9 @@ class RiotProfile extends Model
         'tier',
         'rank',
         'lp',
+        'wins',
+        'losses',
+        'synced_at',
     ];
 
     /**
@@ -35,5 +39,10 @@ class RiotProfile extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function riotMatches(): HasMany
+    {
+        return $this->hasMany(RiotMatch::class);
     }
 }

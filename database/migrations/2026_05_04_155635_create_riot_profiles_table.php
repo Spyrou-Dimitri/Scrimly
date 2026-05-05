@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('tier')->nullable();
             $table->string('rank')->nullable();
             $table->integer('lp')->nullable();
+            $table->integer('wins')->default(0);
+            $table->integer('losses')->default(0);
+            $table->timestamp('synced_at')->nullable();
             $table->timestamps();
         });
     }

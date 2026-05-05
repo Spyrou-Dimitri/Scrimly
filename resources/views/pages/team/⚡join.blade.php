@@ -99,7 +99,7 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
                 <img src="{{ Storage::disk('public')->url('images/logoTeam/variants/480x480/' . $this->teamFinder->logo) }}" class=" px-16 py-4 w-full h-auto object-fit" alt="{{ $this->teamFinder->name }}">
                 @else
                 <div class="px-16 py-4 w-full h-auto object-fit">
-                    <x-flux::icon name="eye" class="size-full text-gold" />
+                    <x-flux::icon name="eye-slash" class="size-full text-gold" />
                 </div>
                 @endif
                 @if($this->teamFinder)
@@ -107,9 +107,7 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
                     {{ $this->teamFinder->name }}
                 </p>
                 @endif
-
             </div>
-
         </form>
     </section>
 </div>

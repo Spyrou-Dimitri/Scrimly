@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Rules\ValidRiotId;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
+use App\Services\Riot\RiotApiClient;
+use Illuminate\Support\Facades\DB;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -30,22 +32,39 @@ class CreateNewUser implements CreatesNewUsers
 
         $riotAccount = ValidRiotId::$validatedAccount;
 
-        $user = User::create([
-            'username' => $input['username'],
-            'email' => $input['email'],
-            'password' => $input['password'],
-        ]);
 
-        if (! empty($input['riot_tag'])) {
-            $user->riotProfile()->create([
-                'riot_tag' => $input['riot_tag'],
-                'riot_puuid' => $riotAccount['puuid'] ?? null,
-                'tier' => $riotAccount['soloQueue']['tier'] ?? null,
-                'rank' => $riotAccount['soloQueue']['rank'] ?? null,
-                'lp' => $riotAccount['soloQueue']['leaguePoints'] ?? null,
+        return DB::transaction(function () use ($input, $riotAccount) {
+            $user = User::create([
+                'username' => $input['username'],
+                'email' => $input['email'],
+                'password' => $input['password'],
             ]);
-        }
 
-        return $user;
+            if (! empty($input['riot_tag'])) {
+                $riotProfile = $user->riotProfile()->create([
+                    'riot_tag' => $input['riot_tag'],
+                    'riot_puuid' => $riotAccount['puuid'] ?? null,
+                    'tier' => $riotAccount['soloQueue']['tier'] ?? null,
+                    'rank' => $riotAccount['soloQueue']['rank'] ?? null,
+                    'lp' => $riotAccount['soloQueue']['leaguePoints'] ?? null,
+                    'wins' => $riotAccount['soloQueue']['wins'] ?? null,
+                    'losses' => $riotAccount['soloQueue']['losses'] ?? null,
+                    'synced_at' => now(),
+                ]);
+
+                $riotClient = new RiotApiClient();
+                $recentMatches = $riotClient->getRecentMatches($riotAccount['puuid']);
+
+                if ($recentMatches) {
+                    foreach ($recentMatches as $match) {
+                        $riotProfile->riotMatches()->create($match);
+                    }
+                }
+            }
+            
+
+            return $user;
+        });
+
     }
 }
