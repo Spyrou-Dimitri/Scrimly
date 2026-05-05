@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Carbon\CarbonInterval;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Carbon\CarbonInterval;
 
 class RiotMatch extends Model
 {
@@ -25,6 +25,9 @@ class RiotMatch extends Model
         'items',
     ];
 
+    /**
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [
@@ -38,22 +41,30 @@ class RiotMatch extends Model
     {
         return $this->belongsTo(RiotProfile::class);
     }
-    public function getKda()
+
+    /**
+     * Match KDA: (K+A)/D, or K+A when deaths are zero (perfect KDA convention).
+     */
+    public function getKda(): float
     {
+        if ($this->deaths === 0) {
+            return round($this->kills + $this->assists, 2);
+        }
+
         return round(($this->kills + $this->assists) / $this->deaths, 2);
     }
-    public function getDurationGameMinutes() 
+
+    public function getDurationGameMinutes(): CarbonInterval
     {
         return CarbonInterval::seconds($this->game_duration)->cascade();
-
-
     }
-    public function getCsPerMinute()
+
+    public function getCsPerMinute(): float
     {
-        $csPerSeconds = $this->cs * 60;
-        return round($csPerSeconds / $this->game_duration, 1);
+        if ($this->game_duration === 0) {
+            return 0.0;
+        }
 
+        return round(($this->cs * 60) / $this->game_duration, 1);
     }
-
-    
 }

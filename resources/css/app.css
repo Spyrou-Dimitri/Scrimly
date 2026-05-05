@@ -57,6 +57,11 @@
     --color-task-in-progress: #3B82F6;
     --color-task-todo: #959AA4;
 
+    /* Scrimly - Victoire defaite */
+
+    --color-victory: #02E676;
+    --color-defeat: #f87171;
+
     /* Scrimly — Absences */
     --color-absence-medical: #EF4444;
     --color-absence-exam: #8B5CF6;

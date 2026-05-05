@@ -16,4 +16,15 @@ return [
         'availability' => 'Disponibilités',
     ],
     'tabs_nav_label' => 'Sections du profil',
+    'matches' => [
+        'section_title' => 'Historiques des parties',
+        'no_riot_profile' => 'Aucun profil Riot lié à ce compte.',
+        'empty' => 'Aucune partie enregistrée pour le moment.',
+        'win' => 'Victoire',
+        'loss' => 'Défaite',
+        'kda_ratio_label' => 'Ratio KDA :',
+        'cs_unit' => 'CS',
+        'cs_per_min_suffix' => '/ min',
+        'level_badge' => 'Niv. :level',
+    ],
 ];

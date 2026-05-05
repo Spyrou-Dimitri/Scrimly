@@ -13,4 +13,5 @@ return [
     ],
     'timeout' => 5,
     'number_of_matches' => 3, 
+    'ddragon_version' => '16.9.1',
 ];
