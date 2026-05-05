@@ -4,6 +4,7 @@ use App\Models\TeamMember;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use App\Models\RiotMatch;
 
 new #[Layout('layouts::team')] class extends Component
 {
@@ -168,6 +169,7 @@ $tierHeadingIconClass = 'size-10 shrink-0 object-contain';
                     ])
                     >{{ __('pages/roster/show.tabs.availability') }}</a>
             </li>
+        
         </ul>
     </nav>
 </div>

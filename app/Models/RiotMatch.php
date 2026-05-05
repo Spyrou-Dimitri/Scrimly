@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Carbon\CarbonInterval;
 
 class RiotMatch extends Model
 {
@@ -41,5 +42,18 @@ class RiotMatch extends Model
     {
         return round(($this->kills + $this->assists) / $this->deaths, 2);
     }
+    public function getDurationGameMinutes() 
+    {
+        return CarbonInterval::seconds($this->game_duration)->cascade();
+
+
+    }
+    public function getCsPerMinute()
+    {
+        $csPerSeconds = $this->cs * 60;
+        return round($csPerSeconds / $this->game_duration, 1);
+
+    }
+
     
 }
