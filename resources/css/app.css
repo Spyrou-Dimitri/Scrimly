@@ -196,6 +196,13 @@ select:focus[data-flux-control] {
         transition: transform 0.2s ease;
     }
 }
+.nav-link-active {
+    color: var(--color-gold);
+
+    &::before {
+        transform: scaleX(1);
+    }
+}
 
 .card-animated-border {
     isolation: isolate;
