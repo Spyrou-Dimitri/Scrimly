@@ -1,33 +1,30 @@
 <?php
 
+use App\Models\Absence;
 use Livewire\Component;
-use App\Models\TeamMember;
-use Illuminate\Support\Facades\DB;
-use App\Enums\StatusInTeam;
 
 new class extends Component
 {
-    public TeamMember $member;
+    public Absence $absence;
 
-    public function mount($model_id)
+    public function mount(int $model_id): void
     {
-        $this->member = TeamMember::findOrFail($model_id);
+        $this->absence = Absence::findOrFail($model_id);
     }
+
     public function closeModal()
     {
         $this->dispatch('close_modal');
     }
-    public function kickTeamMember()
+
+    public function deleteAbsence()
     {
-        $this->member->update([
-            'status' => StatusInTeam::REJECTED,
-        ]);
-        
+        $this->absence->delete();
         $this->dispatch('close_modal');
-        $this->dispatch('refresh_roster');
+        $this->dispatch('refresh_absences');
         $this->dispatch('toast', [
-            'title' => __('modals/kick-team-member.success_title'),
-            'message' => __('modals/kick-team-member.success_message'),
+            'title' => __('modals/absence/delete-absence.success_title'),
+            'message' => __('modals/absence/delete-absence.success_message'),
             'type' => 'trash',
         ]);
     }
@@ -35,8 +32,8 @@ new class extends Component
 ?>
 
 <div>
-    <x-layout.head-modal :title="__('modals/kick-team-member.title') . ' ' . $this->member->user->username" :destroy="true">
-        <form wire:submit.prevent="kickTeamMember" class="flex flex-col items-center gap-6 pt-2 text-center">
+    <x-layout.head-modal :title="__('modals/absence/delete-absence.title')" :destroy="true">
+        <form wire:submit.prevent="deleteAbsence" class="flex flex-col items-center gap-6 pt-2 text-center">
             <div
                 class="flex size-14 shrink-0 items-center justify-center rounded-none bg-red-950/40 ring-1 ring-red-900/60"
                 aria-hidden="true">
@@ -45,26 +42,26 @@ new class extends Component
 
             <div class="flex max-w-sm flex-col gap-2">
                 <p class="text-2xl font-bold text-text-primary">
-                    {{ __('modals/kick-team-member.body_heading') }}
+                    {{ __('modals/absence/delete-absence.message') }}
                 </p>
                 <p class="text-base font-normal text-text-secondary">
-                    {{ __('modals/kick-team-member.legend_form') }}
+                    {{ __('modals/absence/delete-absence.message') }}
                 </p>
             </div>
 
-            <div class="flex w-full max-w-md justify-center gap-3 sm:justify-between">
+            <div class="flex w-full max-w-md gap-3 justify-between">
                 <button
                     wire:click.prevent="closeModal"
                     type="button"
-                    title="{{ __('modals/kick-team-member.cancel_button') }}"
+                    title="{{ __('modals/absence/delete-absence.cancel') }}"
                     class="cta-secondary">
-                    {{ __('modals/kick-team-member.cancel_button') }}
+                    {{ __('modals/absence/delete-absence.cancel') }}
                 </button>
                 <button
                     type="submit"
-                    title="{{ __('modals/kick-team-member.confirm_button') }}"
+                    title="{{ __('modals/absence/delete-absence.delete') }}"
                     class="cursor-pointer rounded-none border border-red-900 bg-red-950/70 px-4 py-2 font-bold text-white transition-colors hover:bg-red-900/90">
-                    {{ __('modals/kick-team-member.confirm_button') }}
+                    {{ __('modals/absence/delete-absence.delete') }}
                 </button>
             </div>
         </form>

@@ -23,4 +23,7 @@ return [
     'sunday_short' => 'Dim',
     'success_title' => 'Disponibilités enregistrées',
     'success_message' => 'Les disponibilités ont été enregistrées avec succès.',
+    'absence_title' => 'Absences',
+    'add_absence' => 'Ajouter',
+    'no_absence' => 'Aucune absence trouvée',
 ];

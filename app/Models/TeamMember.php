@@ -48,4 +48,9 @@ class TeamMember extends Model
     {
         return $this->hasMany(PlayerDefaultSchedule::class);
     }
+
+    public function absences(): HasMany
+    {
+        return $this->hasMany(Absence::class);
+    }
 }
