@@ -1,11 +1,13 @@
 <?php
 
+use App\Enums\DayOfTheWeek;
 use App\Enums\Language;
 use App\Enums\LolGoal;
 use App\Enums\LolServeur;
 use App\Enums\RoleInGame;
 use App\Enums\RoleInTeam;
 use App\Enums\StatusInTeam;
+use App\Models\PlayerDefaultSchedule;
 use App\Models\RiotMatch;
 use App\Models\RiotProfile;
 use App\Models\Team;
@@ -18,6 +20,242 @@ use Livewire\Livewire;
 
 beforeEach(function (): void {
     App::setLocale('fr');
+});
+
+test('le paramètre d’URL tab=availability affiche la section disponibilités', function (): void {
+    $creator = User::factory()->create();
+    $team = Team::create([
+        'name' => 'Équipe disponibilités',
+        'slug' => 'equipe-dispo-'.Str::random(8),
+        'tag' => 'DSP',
+        'language' => Language::FR,
+        'server' => LolServeur::EUW,
+        'goal' => LolGoal::FUN,
+        'creator_id' => $creator->id,
+    ]);
+
+    $player = User::factory()->create([
+        'username' => 'joueur_dispo_tab',
+        'current_team_id' => $team->id,
+    ]);
+
+    $teamMember = TeamMember::create([
+        'team_id' => $team->id,
+        'user_id' => $player->id,
+        'roleInTeam' => RoleInTeam::PLAYER,
+        'roleInGame' => RoleInGame::MID,
+        'is_starter' => true,
+        'status' => StatusInTeam::ACCEPTED,
+        'joined_at' => now(),
+    ]);
+
+    $url = route('roster.show', ['slug' => $team->slug, 'id' => $teamMember->id]).'?tab=availability';
+
+    $response = $this->actingAs($player)->get($url);
+
+    $response->assertSuccessful()
+        ->assertSee(__('pages/roster/show.availability.section_title'), escape: false)
+        ->assertDontSee(__('pages/roster/show.matches.section_title'), escape: false);
+});
+
+test('l’événement refresh_default_schedules recharge les créneaux sur l’onglet disponibilités', function (): void {
+    $creator = User::factory()->create();
+    $team = Team::create([
+        'name' => 'Équipe refresh créneaux',
+        'slug' => 'equipe-refresh-creneaux-'.Str::random(8),
+        'tag' => 'RFC',
+        'language' => Language::FR,
+        'server' => LolServeur::EUW,
+        'goal' => LolGoal::FUN,
+        'creator_id' => $creator->id,
+    ]);
+
+    $player = User::factory()->create([
+        'username' => 'joueur_refresh_creneaux',
+        'current_team_id' => $team->id,
+    ]);
+
+    $teamMember = TeamMember::create([
+        'team_id' => $team->id,
+        'user_id' => $player->id,
+        'roleInTeam' => RoleInTeam::PLAYER,
+        'roleInGame' => RoleInGame::MID,
+        'is_starter' => true,
+        'status' => StatusInTeam::ACCEPTED,
+        'joined_at' => now(),
+    ]);
+
+    PlayerDefaultSchedule::query()->create([
+        'team_member_id' => $teamMember->id,
+        'day_of_week' => DayOfTheWeek::MONDAY->value,
+        'start_time' => '10:30',
+        'end_time' => '11:45',
+    ]);
+
+    $component = Livewire::actingAs($player)
+        ->test('tabs::roster.availability', ['teamMember' => $teamMember]);
+
+    $component->assertSuccessful()
+        ->assertSee('10:30', escape: false)
+        ->assertSee('11:45', escape: false);
+
+    PlayerDefaultSchedule::query()->where('team_member_id', $teamMember->id)->update([
+        'start_time' => '14:15',
+        'end_time' => '15:30',
+    ]);
+
+    $component->assertSee('10:30', escape: false);
+
+    $component->dispatch('refresh_default_schedules');
+
+    $component->assertSee('14:15', escape: false)
+        ->assertSee('15:30', escape: false)
+        ->assertDontSee('10:30', escape: false)
+        ->assertDontSee('11:45', escape: false);
+});
+
+test('le modal de créneaux habituels affiche le titre et les libellés des jours', function (): void {
+    $creator = User::factory()->create();
+    $team = Team::create([
+        'name' => 'Équipe modal créneaux',
+        'slug' => 'equipe-creneaux-'.Str::random(8),
+        'tag' => 'CRN',
+        'language' => Language::FR,
+        'server' => LolServeur::EUW,
+        'goal' => LolGoal::FUN,
+        'creator_id' => $creator->id,
+    ]);
+
+    $player = User::factory()->create([
+        'username' => 'joueur_creneaux_modal',
+        'current_team_id' => $team->id,
+    ]);
+
+    $teamMember = TeamMember::create([
+        'team_id' => $team->id,
+        'user_id' => $player->id,
+        'roleInTeam' => RoleInTeam::PLAYER,
+        'roleInGame' => RoleInGame::MID,
+        'is_starter' => true,
+        'status' => StatusInTeam::ACCEPTED,
+        'joined_at' => now(),
+    ]);
+
+    Livewire::actingAs($player)
+        ->test('modals::edit-availabilities', ['model_id' => $teamMember->id])
+        ->assertSuccessful()
+        ->assertSee(__('modals/edit-availabilities.title'), escape: false)
+        ->assertSee(__('modals/edit-availabilities.monday'), escape: false)
+        ->assertSee(__('modals/edit-availabilities.save'), escape: false);
+});
+
+test('le modal créneaux habituels refuse une heure de fin avant le début', function (): void {
+    $creator = User::factory()->create();
+    $team = Team::create([
+        'name' => 'Équipe validation fin avant début',
+        'slug' => 'equipe-val-fin-'.Str::random(8),
+        'tag' => 'VFD',
+        'language' => Language::FR,
+        'server' => LolServeur::EUW,
+        'goal' => LolGoal::FUN,
+        'creator_id' => $creator->id,
+    ]);
+
+    $player = User::factory()->create([
+        'username' => 'joueur_val_fin',
+        'current_team_id' => $team->id,
+    ]);
+
+    $teamMember = TeamMember::create([
+        'team_id' => $team->id,
+        'user_id' => $player->id,
+        'roleInTeam' => RoleInTeam::PLAYER,
+        'roleInGame' => RoleInGame::MID,
+        'is_starter' => true,
+        'status' => StatusInTeam::ACCEPTED,
+        'joined_at' => now(),
+    ]);
+
+    $monday = (string) DayOfTheWeek::MONDAY->value;
+
+    Livewire::actingAs($player)
+        ->test('modals::edit-availabilities', ['model_id' => $teamMember->id])
+        ->set('form.slotEnabled.'.$monday, true)
+        ->set('form.startTimes.'.$monday, '18:00')
+        ->set('form.endTimes.'.$monday, '13:00')
+        ->call('saveAvailabilities')
+        ->assertHasErrors(['form.endTimes.'.$monday]);
+});
+
+test('le modal créneaux habituels refuse un jour coché sans heure de début', function (): void {
+    $creator = User::factory()->create();
+    $team = Team::create([
+        'name' => 'Équipe validation heure manquante',
+        'slug' => 'equipe-val-heure-'.Str::random(8),
+        'tag' => 'VHM',
+        'language' => Language::FR,
+        'server' => LolServeur::EUW,
+        'goal' => LolGoal::FUN,
+        'creator_id' => $creator->id,
+    ]);
+
+    $player = User::factory()->create([
+        'username' => 'joueur_val_heure',
+        'current_team_id' => $team->id,
+    ]);
+
+    $teamMember = TeamMember::create([
+        'team_id' => $team->id,
+        'user_id' => $player->id,
+        'roleInTeam' => RoleInTeam::PLAYER,
+        'roleInGame' => RoleInGame::MID,
+        'is_starter' => true,
+        'status' => StatusInTeam::ACCEPTED,
+        'joined_at' => now(),
+    ]);
+
+    $monday = (string) DayOfTheWeek::MONDAY->value;
+
+    Livewire::actingAs($player)
+        ->test('modals::edit-availabilities', ['model_id' => $teamMember->id])
+        ->set('form.slotEnabled.'.$monday, true)
+        ->set('form.startTimes.'.$monday, '')
+        ->set('form.endTimes.'.$monday, '23:00')
+        ->call('saveAvailabilities')
+        ->assertHasErrors(['form.startTimes.'.$monday]);
+});
+
+test('ouvrir le modal disponibilités dispatch l’événement open_modal', function (): void {
+    $creator = User::factory()->create();
+    $team = Team::create([
+        'name' => 'Équipe modal disponibilités',
+        'slug' => 'equipe-modal-dispo-'.Str::random(8),
+        'tag' => 'DMD',
+        'language' => Language::FR,
+        'server' => LolServeur::EUW,
+        'goal' => LolGoal::FUN,
+        'creator_id' => $creator->id,
+    ]);
+
+    $player = User::factory()->create([
+        'username' => 'joueur_modal_dispo',
+        'current_team_id' => $team->id,
+    ]);
+
+    $teamMember = TeamMember::create([
+        'team_id' => $team->id,
+        'user_id' => $player->id,
+        'roleInTeam' => RoleInTeam::PLAYER,
+        'roleInGame' => RoleInGame::MID,
+        'is_starter' => true,
+        'status' => StatusInTeam::ACCEPTED,
+        'joined_at' => now(),
+    ]);
+
+    Livewire::actingAs($player)
+        ->test('tabs::roster.availability', ['teamMember' => $teamMember])
+        ->call('openModalAddAvailability')
+        ->assertDispatched('open_modal');
 });
 
 test('la page profil roster affiche le membre et les libellés', function (): void {

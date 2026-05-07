@@ -27,4 +27,11 @@ return [
         'cs_per_min_suffix' => '/ min',
         'level_badge' => 'Lvl :level',
     ],
+    'availability' => [
+        'section_title' => 'Availability',
+        'add_availability' => 'Add availability',
+    ],
+    'homework' => [
+        'empty' => 'No homework in progress.',
+    ],
 ];

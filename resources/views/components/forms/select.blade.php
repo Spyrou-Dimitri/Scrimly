@@ -6,12 +6,14 @@
     'multiple' => false,
     'required' => false,
     'disabled' => null,
+    'inputDisabled' => false,
     'new_instance' => false,
     'new_instance_value' => false,
     'new_instance_label' => false,
+    'labelNextToSelect' => false,
 ])
 
-<div class="flex flex-col gap-2 w-full">
+<div @class([ 'flex flex-col gap-2 w-full', 'sm:flex-row sm:items-center' => $labelNextToSelect ])>
     @if($hasLabel)
         <label for="{{ $name }}" class="block font-medium">
             {{ $label }}
@@ -31,9 +33,16 @@
             multiple
         @endif
         id="{{ $name }}"
-        class="bg-input-bg border-input-border border-1 py-2 px-4 w-full focus:outline-none focus:ring-1 focus:ring-gold-light"
-        {{$attributes->whereStartsWith('wire:model')}}
+        @disabled($inputDisabled)
+        @class([
+            'border-1 py-2 px-4 w-full border',
+            'bg-input-bg border-input-border focus:outline-none focus:ring-1 focus:ring-gold-light' => ! $inputDisabled,
+            'cursor-not-allowed border-white/10 bg-black/40 text-text-secondary opacity-70 shadow-none focus:ring-0' => $inputDisabled,
+            'min-w-[10rem]' => $labelNextToSelect,
+        ])
+        {{ $attributes->whereStartsWith('wire:model') }}
     >
+    
         @if($disabled)
         <option selected
                 value="">{{$disabled}}

@@ -218,6 +218,8 @@ return [
         'price' => 'prix',
         'quantity' => 'quantité',
         'riot_tag' => 'Riot ID',
+        'startTime.*' => 'heure de début',
+        'endTime.*' => 'heure de fin',
 
     ],
 

@@ -9,6 +9,7 @@ use App\Observers\TeamMemberObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[ObservedBy(TeamMemberObserver::class)]
 class TeamMember extends Model
@@ -41,5 +42,10 @@ class TeamMember extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function playerDefaultSchedules(): HasMany
+    {
+        return $this->hasMany(PlayerDefaultSchedule::class);
     }
 }

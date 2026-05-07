@@ -23,7 +23,7 @@
     @keydown.escape.window="$wire.dispatch('close_modal')"
     x-trap.inert.noscroll="true"
     class="fixed flex justify-center items-center w-full min-h-screen top-0 z-60 right-0 bg-black/80">
-    <section class="{{$width_variant}} {{$height_variant}} bg-bg-widget shadow-modal flex flex-col gap-4 py-6 px-4 md:py-8 md:px-6" @click.stop>
+    <section class="{{$width_variant}} {{$height_variant}} bg-bg-main shadow-modal flex flex-col gap-4 py-6 px-4 md:py-8 md:px-6" @click.stop>
         <div class="flex justify-between items-center pb-4 {{$destroy_variant}}">
             <h2 class="text-2xl font-bold">{{$title}}</h2>
             <button type="button" wire:click="dispatch('close_modal')"

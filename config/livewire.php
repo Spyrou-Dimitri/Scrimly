@@ -18,6 +18,7 @@ return [
         resource_path('views/widgets'),
         resource_path('views/modals'),
         resource_path('views/pages'),
+        resource_path('views/tabs'),
         resource_path('views/livewire'),
     ],
 
@@ -37,6 +38,7 @@ return [
         'pages' => resource_path('views/pages'),
         'modals' => resource_path('views/modals'),
         'widgets' => resource_path('views/widgets'),
+        'tabs' => resource_path('views/tabs'),
         'livewire' => resource_path('views/livewire'),
     ],
 
