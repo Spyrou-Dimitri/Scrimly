@@ -137,7 +137,7 @@ $tierLine .= ' • '.$memberUser->rank;
         </div>
 
         <div class="mt-auto">
-            <x-cta  wire:navigate data-profil-link :class="'cta-primary'" :widthFull="true" :href="route('roster.show', [$teamMember->team->slug, $teamMember->id])" :title="__('pages/roster/index.view_profile_title') . ' ' . $memberUser->username">
+            <x-cta  wire:navigate data-profil-link :class="'cta-primary'" :widthFull="true" :href="route('roster.show', [currentTeam()->slug, $teamMember->id])" :title="__('pages/roster/index.view_profile_title') . ' ' . $memberUser->username">
                 {{ __('pages/roster/index.view_profile') }}
             </x-cta>
         </div>

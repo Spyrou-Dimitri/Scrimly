@@ -24,19 +24,45 @@ new class extends Component
         $this->team = currentTeam();
         $this->userTeams = collect();
     }
-    public function loadTeams()
-    {
 
-        $this->userTeams = $this->currentUser->teams()->select('teams.id', 'teams.name', 'teams.logo')->where('teams.id', '!=', $this->currentUser->current_team_id)->get();
+    public function loadTeams(): void
+    {
+        $this->userTeams = $this->currentUser
+            ->teams()
+            ->select('teams.id', 'teams.name', 'teams.slug', 'teams.logo')
+            ->where('teams.id', '!=', $this->currentUser->current_team_id)
+            ->get();
     }
-    public function unloadTeams()
+
+    public function unloadTeams(): void
     {
         $this->userTeams = collect();
+    }
+
+    public function switchTeam(int $teamId): void
+    {
+        $user = $this->currentUser;
+
+        $belongsToTeam = $user->teams()
+            ->where('teams.id', $teamId)
+            ->exists();
+
+        if (! $belongsToTeam) {
+            abort(403);
+        }
+
+        $user->update(['current_team_id' => $teamId]);
+
+        $team = Team::select('slug')->findOrFail($teamId);
+
+        $this->redirectRoute('roster.index', ['slug' => $team->slug]);
+            
     }
 };
 ?>
 
 <header
+
     class="flex-shrink-0 h-16 flex items-center justify-between
            px-4 lg:px-6
            bg-bg-main border-b basic-shadow border-[#2C2D34]">
@@ -88,6 +114,7 @@ new class extends Component
                 </li>
                 @foreach ($userTeams as $userTeam)
                 <li class="">
+                    
                     <button wire:click="switchTeam({{ $userTeam->id }})" class="px-3 hover:text-gold transition ease-in-out duration-150 flex items-center gap-2 cursor-pointer">
                         <img src="{{ Storage::disk('public')->url('images/logoTeam/variants/128x128/' . $userTeam->logo) }}"
                             alt="{{ $userTeam->name }}"
