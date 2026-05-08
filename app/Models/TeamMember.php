@@ -53,4 +53,9 @@ class TeamMember extends Model
     {
         return $this->hasMany(Absence::class);
     }
+
+    public function tasks(): HasMany
+    {
+        return $this->hasMany(Task::class);
+    }
 }
