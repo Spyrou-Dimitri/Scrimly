@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use App\Enums\StatusTask;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Enums\StatusTask;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+
 class Task extends Model
 {
     protected $fillable = [
@@ -15,6 +16,7 @@ class Task extends Model
         'deadline',
         'created_by',
         'team_member_id',
+        'team_id',
         'completed_at',
     ];
 
@@ -23,6 +25,7 @@ class Task extends Model
         'deadline' => 'date',
         'completed_at' => 'datetime',
     ];
+
 
     public function createdBy(): BelongsTo
     {
@@ -47,5 +50,15 @@ class Task extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(TaskComment::class);
+    }
+
+    public function files(): HasMany
+    {
+        return $this->hasMany(TaskFile::class);
+    }
+
+    public function links(): HasMany
+    {
+        return $this->hasMany(TaskLink::class);
     }
 }

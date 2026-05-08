@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('created_by')->constrained('team_members')->cascadeOnDelete();
             $table->foreignId('team_member_id')->constrained('team_members')->cascadeOnDelete();
             $table->timestamp('completed_at')->nullable();
+            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
             $table->timestamps();
         });
     }

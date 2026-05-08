@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Subtask extends Model
 {
@@ -28,5 +29,10 @@ class Subtask extends Model
     public function task(): BelongsTo
     {
         return $this->belongsTo(Task::class);
+    }
+
+    public function progression(): Attribute
+    {
+        return Attribute::get(fn () => $this->is_completed ? 100 : 0);
     }
 }

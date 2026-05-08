@@ -2,10 +2,13 @@
 
 namespace App\Livewire\Forms;
 
+use App\Jobs\ProcessUploadTaskFile;
 use App\Models\Subtask;
 use App\Models\Task;
+use App\Models\TaskLink;
 use App\Models\TeamMember;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -26,6 +29,12 @@ class CreateTaskForm extends Form
     #[Validate]
     public array $subtasks = [];
 
+    #[Validate]
+    public array $files = [];
+
+    #[Validate]
+    public array $links = [];
+
     public function rules(): array
     {
         return [
@@ -36,6 +45,11 @@ class CreateTaskForm extends Form
             'subtasks' => ['required', 'array', 'min:1'],
             'subtasks.*.title' => ['required', 'string', 'max:150', 'min:3'],
             'subtasks.*.is_completed' => ['required', 'boolean'],
+            'files' => ['array'],
+            'files.*' => ['file', 'max:10240', 'mimes:pdf,jpg,jpeg,png,webp'],
+            'links' => ['array'],
+            'links.*.url' => ['required', 'url', 'max:2048'],
+            'links.*.title' => ['nullable', 'string', 'max:150'],
         ];
     }
 
@@ -60,7 +74,9 @@ class CreateTaskForm extends Form
             'deadline' => $this->dueDate,
             'created_by' => $creatorMembership->id,
             'team_member_id' => $this->assigneeUserId,
+            'team_id' => $team->id,
         ]);
+
         foreach ($this->subtasks as $subtask) {
             Subtask::create([
                 'title' => $subtask['title'],
@@ -68,5 +84,38 @@ class CreateTaskForm extends Form
                 'task_id' => $task->id,
             ]);
         }
+
+        foreach ($this->files as $temporaryFile) {
+            $extension = $temporaryFile->extension() ?: $temporaryFile->getClientOriginalExtension();
+            $newName = uniqid().'.'.$extension;
+
+            $fullPath = Storage::disk('public')->putFileAs(
+                config('taskFiles.original_path').'/'.$task->id,
+                $temporaryFile,
+                $newName,
+            );
+
+            if ($fullPath === false || $fullPath === null) {
+                continue;
+            }
+
+            ProcessUploadTaskFile::dispatchSync(
+                $fullPath,
+                $temporaryFile->getClientOriginalName(),
+                (int) $temporaryFile->getSize(),
+                $task->id,
+                Auth::id(),
+            );
+        }
+
+        foreach ($this->links as $link) {
+            TaskLink::create([
+                'task_id' => $task->id,
+                'url' => $link['url'],
+                'title' => ! empty($link['title']) ? $link['title'] : null,
+            ]);
+        }
+
+        $this->files = [];
     }
 }

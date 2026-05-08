@@ -224,6 +224,9 @@ return [
         'absenceDay' => 'date d\'absence',
         'dueDate' => 'Echéance',
         'assigneeUserId' => 'Joueur',
+        'files.*' => 'fichier',
+        'links.*.url' => 'lien',
+        'links.*.title' => 'titre du lien',
 
     ],
 

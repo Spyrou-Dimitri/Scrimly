@@ -16,12 +16,13 @@ enum StatusTask: string
         };
     }
 
-    public function color(): string
+    public function macaron(): string
     {
         return match ($this) {
-            self::TODO => 'text-task-todo',
-            self::IN_PROGRESS => 'text-task-in-progress',
-            self::DONE => 'text-task-done',
+            self::TODO => 'text-white bg-task-todo font-bold p-2 rounded-md',
+            self::IN_PROGRESS => 'text-white bg-task-in-progress font-bold p-2 rounded-md',
+            self::DONE => 'text-white bg-task-done font-bold p-2 rounded-md',
         };
     }
+
 }   
