@@ -28,6 +28,7 @@ new class extends Component
         $this->dispatch('open_modal', [
             'form' => 'edit-availabilities',
             'model_id' => $this->teamMember->id,
+            
         ]);
     }
 
@@ -92,7 +93,6 @@ new class extends Component
 
         <div class="grid grid-cols-[auto_repeat(7,1fr)] gap-x-4 bg-bg-widget p-6 shadow-basic"
              style="grid-template-rows: auto repeat({{ $totalSlots }}, minmax(20px, 1fr));">
-
             {{-- En-tête des jour --}}
             @foreach ($days as $day)
                 <div class="row-start-1 border-b border-[#2A2A2A] py-3 text-center font-semibold text-white"

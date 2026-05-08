@@ -15,4 +15,9 @@ return [
     'add_subtask' => 'Ajouter',
     'upload_drag' => 'Glisser-déposez vos fichiers ici ou',
     'upload_browse' => 'parcourez vos dossiers',
+    'submit' => 'Créer le devoir',
+    'no_subtasks' => 'Aucune sous-tâche',
+    'field_subtask_title' => 'Titre de la sous-tâche',
+    'field_subtask_title_placeholder' => 'Analyse VOD',
+    'error_empty_subtask' => 'Impossible d\'ajouter une sous-tâche vide',
 ];

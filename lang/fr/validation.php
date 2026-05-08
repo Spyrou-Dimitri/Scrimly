@@ -222,6 +222,8 @@ return [
         'endTime.*' => 'heure de fin',
         'justification' => 'justification',
         'absenceDay' => 'date d\'absence',
+        'dueDate' => 'Echéance',
+        'assigneeUserId' => 'Joueur',
 
     ],
 
