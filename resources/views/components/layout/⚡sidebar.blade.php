@@ -45,7 +45,7 @@ new class extends Component
                 'label' => __('layouts/team.nav.homework'),
                 'icon' => 'book-open',
                 'route' => null,
-                'href' => '#',
+                'href' => route('tasks.index', ['slug' => currentTeam()->slug]),
             ],
             [
                 'label' => __('layouts/team.nav.statistics'),

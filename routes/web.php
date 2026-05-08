@@ -14,9 +14,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::livewire('profile.show', 'pages::profile.show')->name('profile.show');
 
     Route::middleware('ensure.user.has.active.team')->group(function () {
+
         // Roster
         Route::livewire('/{slug}/roster', 'pages::roster.index')->name('roster.index');
         Route::livewire('/{slug}/roster/{id}', 'pages::roster.show')->name('roster.show');
+
+        // Devoir
+        Route::livewire('/{slug}/tasks', 'pages::tasks.index')->name('tasks.index');
+        Route::livewire('/{slug}/tasks/create', 'pages::tasks.create')->name('tasks.create');
+
     });
 });
 
