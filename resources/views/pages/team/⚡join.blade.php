@@ -96,7 +96,11 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
                     @endif
                 </h3>
                 @if($this->teamFinder)
-                <img src="{{ Storage::disk('public')->url('images/logoTeam/variants/480x480/' . $this->teamFinder->logo) }}" class=" px-16 py-4 w-full h-auto object-fit" alt="{{ $this->teamFinder->name }}">
+                    @if ($this->teamFinder->logo)
+                    <img src="{{ Storage::disk('public')->url('images/logoTeam/variants/480x480/' . $this->teamFinder->logo) }}" class=" px-16 py-4 w-full h-auto object-fit" alt="{{ $this->teamFinder->name }}">
+                    @else
+                    <img src="{{ asset('/img/basicIcon.webp') }}" class=" px-16 py-4 w-full h-auto object-fit" alt="{{ $this->teamFinder->name }}">
+                    @endif
                 @else
                 <div class="px-16 py-4 w-full h-auto object-fit">
                     <x-flux::icon name="eye-slash" class="size-full text-gold" />

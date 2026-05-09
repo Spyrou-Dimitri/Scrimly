@@ -19,8 +19,8 @@ class RiotApiClient
     public function __construct()
     {
         $this->apiKey = config('riot.api_key');
-        $this->baseUrlRouting = config('riot.base_urls.routing'); //https://europe.api.riotgames.com
-        $this->baseUrlPlatform = config('riot.base_urls.platform'); //https://euw1.api.riotgames.com
+        $this->baseUrlRouting = config('riot.base_urls.routing'); // https://europe.api.riotgames.com
+        $this->baseUrlPlatform = config('riot.base_urls.platform'); // https://euw1.api.riotgames.com
         $this->timeout = config('riot.timeout');
         $this->numberOfMatches = config('riot.number_of_matches');
     }
@@ -30,7 +30,7 @@ class RiotApiClient
         $response = Http::withHeaders([
             'X-Riot-Token' => $this->apiKey,
         ])->timeout($this->timeout)->get(
-            $this->baseUrlRouting . '/riot/account/v1/accounts/by-riot-id/' . $gameName . '/' . $tagLine
+            $this->baseUrlRouting.'/riot/account/v1/accounts/by-riot-id/'.$gameName.'/'.$tagLine
         );
 
         if (! $response->successful()) {
@@ -55,7 +55,7 @@ class RiotApiClient
         $response = Http::withHeaders([
             'X-Riot-Token' => $this->apiKey,
         ])->timeout($this->timeout)->get(
-            $this->baseUrlPlatform . '/lol/league/v4/entries/by-puuid/' . $puuid
+            $this->baseUrlPlatform.'/lol/league/v4/entries/by-puuid/'.$puuid
         );
 
         if (! $response->successful()) {
@@ -68,6 +68,7 @@ class RiotApiClient
         if (! $soloQueue) {
             return null;
         }
+
         return [
             'tier' => $soloQueue['tier'],
             'rank' => $soloQueue['rank'],
@@ -102,7 +103,6 @@ class RiotApiClient
         ])->timeout($this->timeout)
             ->get($url);
 
-
         if (! $response->successful()) {
             return null;
         }
@@ -110,9 +110,9 @@ class RiotApiClient
         return $response->json();
     }
 
-    public function getRecentMatches(string $puuid, ?int $count = null): ?array
+    public function getRecentMatches(string $puuid, ?int $count = null): array
     {
-        $matchesIds = $this->getMatchId($puuid, $count ?? $this->numberOfMatches);
+        $matchesIds = $this->getMatchId($puuid, $count ?? $this->numberOfMatches) ?? [];
         $matches = [];
         foreach ($matchesIds as $matchId) {
             $matchData = $this->getMatchDetail($matchId);
@@ -152,6 +152,7 @@ class RiotApiClient
                 ],
             ];
         }
+
         return $matches;
     }
 }

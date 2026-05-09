@@ -5,25 +5,24 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use App\Models\Task;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use App\Enums\StatusTask;
 use Illuminate\Support\Facades\Auth;
 
-
 new #[Layout('layouts::team')] class extends Component
 {
     public string $term = '';
+
     public string $status = '';
+
     public string $selected_member = '';
+
     public string $selected_status = '';
-
-
 
     #[Computed]
     public function allTasks(): Collection
     {
-        $tasks = Task::where('team_id', currentTeam()->id)->with('subtasks', 'teamMember.user');
+        $tasks = Task::where('team_id', currentTeam()->id)->with('subtasks', 'teamMember.user', 'comments', 'links');
 
         //Barre de recherche
         if ($this->term !== '') {
@@ -39,7 +38,6 @@ new #[Layout('layouts::team')] class extends Component
                 $query->where('username', $this->selected_member);
             });
         }
-
 
         return $tasks->orderBy('created_at', 'desc')->get();
     }
@@ -92,7 +90,7 @@ new #[Layout('layouts::team')] class extends Component
                 <tr>
                     <td class="p-6">
                         <p class="block truncate font-bold text-gold">{{ $task->title }} </p>
-                        <p class="text-xs font-bold text-text-secondary">Echéance : {{ $task->deadline->format('d/m/Y') }}</p>
+                        <p class="text-xs font-bold text-text-secondary">Echéance : @if($task->deadline) {{ $task->deadline->translatedFormat('d M Y') }} @else - @endif</p>
                     </td>
                     <td class="p-6">{{ $task->teamMember->user->username }}</td>
                     <td class="p-6"> <span class="{{ $task->status->macaron() }}">{{ $task->status->label() }}</span></td>
@@ -116,6 +114,33 @@ new #[Layout('layouts::team')] class extends Component
         </table>
     </section>
     @else
+        @php
+            $playerColumnOrder = [\App\Enums\StatusTask::DONE, \App\Enums\StatusTask::IN_PROGRESS, \App\Enums\StatusTask::TODO];
+        @endphp
+        <section class="flex flex-col gap-8" aria-labelledby="tasks-player-heading">
+            <h2 id="tasks-player-heading" class="text-2xl font-bold">{{ __('pages/tasks/index.player_title') }}</h2>
+            <div class="grid gap-6 md:grid-cols-3 md:gap-8">
+                @foreach ($playerColumnOrder as $columnStatus)
+                    <div class="flex min-w-0 flex-col gap-4">
+                        <div class="flex flex-wrap items-center gap-3 pb-4 border-b-2 {{ $columnStatus->borderColor() }}">
+                            <h3 class="min-w-0 flex-1 text-lg font-semibold pl-4 border-l-8 {{ $columnStatus->borderColor() }} text-white">{{ $columnStatus->label() }}</h3>
+                            <div class="flex items-center justify-between bg-bg-widget px-3 py-1">
+                                <p class="{{ $columnStatus->textColor() }} font-bold">
+                                    {{ $this->allTasks->where('status', $columnStatus)->count() }}
+                                </p>
+                            </div>
+                        </div>
+                        <ul class="flex min-h-40 flex-col gap-4 pb-6" role="list">
+                            @foreach ($this->allTasks->where('status', $columnStatus) as $task)
+                                <li>
+                                    <x-cards.task :task="$task" />
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endforeach
+            </div>
+        </section>
     @endif
 
 </div>

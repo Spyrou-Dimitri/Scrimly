@@ -65,7 +65,11 @@ new #[Layout('layouts::choose_a_team')] class extends Component
             <li class="w-full md:w-[calc(33.33%-1.125rem)] xl:w-[calc(20%-1.125rem)] min-h-[350px] border border-[rgba(255,255,255,0.3)] hover:border-gold transition-all  ease-in-out duration-150 hover:translate-y-[-10px]">
                 <article class="flex w-full flex-col items-center justify-between min-h-full gap-4 p-6 bg-[#333237] relative ">
                     <button type="button" wire:click="selectTeam({{ $teamMember->team_id }})" class="absolute inset-0 cursor-pointer" aria-label="{{ $teamMember->team->name }}"></button>
+                    @if ($teamMember->team->logo)
                     <img src="{{ Storage::disk('public')->url('images/logoTeam/variants/480x480/' . $teamMember->team->logo) }}" class="w-[250px] h-auto m-auto object-fit" alt="{{ $teamMember->team->name }}">
+                    @else
+                    <img src="{{ asset('/img/basicIcon.webp') }}" class="w-[250px] h-auto m-auto object-fit" alt="{{ $teamMember->team->name }}">
+                    @endif
                     <h3 class="text-2xl font-bold text-center">{{ $teamMember->team->name }}</h3>
                 </article>
             </li>

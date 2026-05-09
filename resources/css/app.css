@@ -2,6 +2,7 @@
 @import '../../vendor/livewire/flux/dist/flux.css';
 
 @source '../views';
+
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
 @source '../../vendor/livewire/flux/stubs/**/*.blade.php';
@@ -212,6 +213,19 @@ select:focus[data-flux-control] {
 .card-animated-border {
     isolation: isolate;
     --roster-border-draw-duration: 200ms;
+    --card-animated-border-color: var(--color-gold);
+}
+
+.card-animated-border[data-task-status='todo'] {
+    --card-animated-border-color: var(--color-task-todo);
+}
+
+.card-animated-border[data-task-status='in_progress'] {
+    --card-animated-border-color: var(--color-task-in-progress);
+}
+
+.card-animated-border[data-task-status='done'] {
+    --card-animated-border-color: var(--color-task-done);
 }
 
 .card-animated-border::before {
@@ -221,7 +235,7 @@ select:focus[data-flux-control] {
     left: -2px;
     right: 0;
     height: 2px;
-    background: var(--color-gold);
+    background: var(--card-animated-border-color);
     transform: scaleX(0);
     transform-origin: left center;
     transition: transform var(--roster-border-draw-duration) ease-in-out;
@@ -245,7 +259,7 @@ select:focus[data-flux-control] {
     left: -2px;
     pointer-events: none;
     z-index: 0;
-    background: linear-gradient(var(--color-gold), var(--color-gold)) left bottom / 0% 2px no-repeat;
+    background: linear-gradient(var(--card-animated-border-color), var(--card-animated-border-color)) left bottom / 0% 2px no-repeat;
     transition: background-size var(--roster-border-draw-duration) ease-in-out;
     transition-delay: var(--roster-border-draw-duration);
 }
@@ -273,7 +287,7 @@ select:focus[data-flux-control] {
     left: 0;
     right: 0;
     width: 100%;
-    background: var(--color-gold);
+    background: var(--card-animated-border-color);
     transition: transform var(--roster-border-draw-duration) ease-in-out;
     transition-delay: 0s;
 }

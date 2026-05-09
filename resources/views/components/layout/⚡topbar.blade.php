@@ -88,9 +88,10 @@ new class extends Component
                         alt="{{ $team->name }}"
                         class="w-9 h-9 object-contain">
                     @else
-                    <div class="flex items-center justify-center bg-bg-card text-gold font-bold flex-shrink-0">
-                        {{ strtoupper(substr($team->name, 0, 1)) }}
-                    </div>
+                    <img
+                        src="{{ asset('/img/basicIcon.webp') }}"
+                        alt="{{ $team->name }}"
+                        class="w-9 h-9 object-contain flex-shrink-0">
                     @endif
                     <div class="flex items-center relative gap-2 transition ease-in-out duration-150 hover:text-gold">
                         <span class="text-inherit font-semibold text-base lg:text-lg truncate">
@@ -116,9 +117,15 @@ new class extends Component
                 <li class="">
                     
                     <button wire:click="switchTeam({{ $userTeam->id }})" class="px-3 hover:text-gold transition ease-in-out duration-150 flex items-center gap-2 cursor-pointer">
+                        @if ($userTeam->logo)
                         <img src="{{ Storage::disk('public')->url('images/logoTeam/variants/128x128/' . $userTeam->logo) }}"
                             alt="{{ $userTeam->name }}"
                             class="size-6 object-cover">
+                        @else
+                        <img src="{{ asset('/img/basicIcon.webp') }}"
+                            alt="{{ $userTeam->name }}"
+                            class="size-6 object-cover">
+                        @endif
                         <span class="relative
                  before:content-[''] before:w-full before:h-[2px]
                  before:scale-x-0 before:bg-gold
