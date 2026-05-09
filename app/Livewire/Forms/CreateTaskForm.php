@@ -102,7 +102,7 @@ class CreateTaskForm extends Form
             ProcessUploadTaskFile::dispatchSync(
                 $fullPath,
                 $temporaryFile->getClientOriginalName(),
-                (int) $temporaryFile->getSize(),
+                $temporaryFile->getSize(),
                 $task->id,
                 Auth::id(),
             );

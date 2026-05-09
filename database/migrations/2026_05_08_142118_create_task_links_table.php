@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('task_links', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('task_id')->constrained('tasks')->cascadeOnDelete();
             $table->string('url');
             $table->string('title')->nullable();
+            $table->foreignId('task_id')->constrained('tasks')->cascadeOnDelete();
             $table->timestamps();
         });
     }

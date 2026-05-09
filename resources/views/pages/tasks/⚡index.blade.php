@@ -3,6 +3,7 @@
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -42,6 +43,21 @@ new #[Layout('layouts::team')] class extends Component
 
         return $tasks->orderBy('created_at', 'desc')->get();
     }
+
+    #[On('refresh_tasks')]
+    public function refreshTasks(): void
+    {
+        unset($this->allTasks);
+    }
+
+    public function openModalDeleteTask(int $taskId): void
+    {
+        $this->dispatch('open_modal', [
+            'form' => 'modals::tasks.delete-task',
+            'model_id' => $taskId,
+        ]);
+    }
+
 };
 ?>
 
@@ -82,12 +98,24 @@ new #[Layout('layouts::team')] class extends Component
                     <td class="p-6"> <span class="{{ $task->status->macaron() }}">{{ $task->status->label() }}</span></td>
                     <td class="p-6">{{ $task->subtasks->sum('progression') / $task->subtasks->count() * 100 }}%</td>
                     <td class="p-6">
-                        #
+                        <div class="flex items-center gap-4">
+                            <a href="#" title="{{ __('pages/tasks/index.coach_view_task_title') }}" class="hover:text-gold transition-all duration-150">
+                                <flux:icon name="eye" class="w-5 h-5" />
+                            </a>
+                            <a href="{{ route('tasks.edit', ['slug' => currentTeam()->slug, 'id' => $task->id]) }}" title="{{ __('pages/tasks/index.coach_edit_task_title') }}" class="hover:text-gold transition-all duration-150">
+                                <flux:icon name="pencil" class="w-5 h-5" />
+                            </a>
+                            <button wire:click="openModalDeleteTask({{ $task->id }})" title="{{ __('pages/tasks/index.coach_delete_task_title') }}" class="hover:text-red-700/90 transition-all duration-150 cursor-pointer">
+                                <flux:icon name="trash" class="w-5 h-5" />
+                            </button>
+                        </div>
+                        
                     </td>
                 </tr>
                 @endforeach
         </table>
     </section>
+    @else
     @endif
 
 </div>

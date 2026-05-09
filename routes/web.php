@@ -22,6 +22,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Devoir
         Route::livewire('/{slug}/tasks', 'pages::tasks.index')->name('tasks.index');
         Route::livewire('/{slug}/tasks/create', 'pages::tasks.create')->name('tasks.create');
+        Route::livewire('/{slug}/tasks/{id}', 'pages::tasks.edit')->name('tasks.edit');
 
     });
 });
