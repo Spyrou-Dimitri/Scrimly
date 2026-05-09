@@ -132,8 +132,20 @@ new class extends Component
                 </div>
                 <div class="text-center lg:col-span-3">
                     <p class="text-text-gray">Winrate</p>
-                    <p class="text-gold text-xl font-bold">{{ $this->candidate->user->riotProfile->getWinratePercentage() }}%</p>
-                    <p class="text-text-white text-sm">{{ $this->candidate->user->riotProfile->wins }}V / {{ $this->candidate->user->riotProfile->losses }}D</p>
+                    <p class="text-gold text-xl font-bold">
+                        @if ($this->candidate->user->riotProfile)
+                        {{ $this->candidate->user->riotProfile->getWinratePercentage() }}% 
+                        @else
+                        -
+                        @endif
+                    </p>
+                    <p class="text-text-white text-sm">
+                        @if ($this->candidate->user->riotProfile)
+                        {{ $this->candidate->user->riotProfile->wins }}V / {{ $this->candidate->user->riotProfile->losses }}D
+                        @else
+                        -
+                        @endif
+                    </p>
                 </div>
             </div>
         </div>

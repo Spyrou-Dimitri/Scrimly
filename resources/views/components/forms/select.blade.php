@@ -35,7 +35,7 @@
         id="{{ $name }}"
         @disabled($inputDisabled)
         @class([
-            'border-1 py-2 px-4 w-full border',
+            'box-border min-h-11 border-1 py-2 px-4 w-full border text-base text-white leading-normal',
             'bg-input-bg border-input-border focus:outline-none focus:ring-1 focus:ring-gold-light' => ! $inputDisabled,
             'cursor-not-allowed border-white/10 bg-black/40 text-text-secondary opacity-70 shadow-none focus:ring-0' => $inputDisabled,
             'min-w-[10rem]' => $labelNextToSelect,

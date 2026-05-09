@@ -58,4 +58,9 @@ class TeamMember extends Model
     {
         return $this->hasMany(Task::class);
     }
+
+    public function isCoachOrStaff(): bool
+    {
+        return $this->roleInTeam === RoleInTeam::COACH || $this->roleInTeam === RoleInTeam::STAFF;
+    }
 }
