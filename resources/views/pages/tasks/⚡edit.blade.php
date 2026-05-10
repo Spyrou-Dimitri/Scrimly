@@ -152,9 +152,9 @@ new #[Layout('layouts::team')] class extends Component
             {{ __('pages/tasks/edit.title') }}
         </h2>
         <form wire:submit.prevent="update" class="flex flex-col gap-6">
-            <div class="grid grid-cols-1 gap-6 xl:grid-cols-12">
+            <div class="flex flex-col gap-6">
                 {{-- Informations principales --}}
-                <fieldset class="flex flex-col self-start gap-6 bg-bg-widget p-6 shadow-basic xl:col-span-8">
+                <fieldset class="flex flex-col gap-6 bg-bg-widget p-6 shadow-basic">
                     <legend class="sr-only">
                         {{ __('pages/tasks/edit.main_legend') }}
                     </legend>
@@ -212,9 +212,9 @@ new #[Layout('layouts::team')] class extends Component
                     </div>
                 </fieldset>
 
-                <div class="flex flex-col gap-6 xl:col-span-4">
+                <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
                     {{-- Sous-tâches --}}
-                    <fieldset x-data="{ addNewSubtasks: false }" class="flex flex-col gap-6 bg-bg-widget p-6 shadow-basic">
+                    <fieldset x-data="{ addNewSubtasks: false }" class="flex flex-col gap-6 self-start bg-bg-widget p-6 shadow-basic">
                         <div class="flex  gap-4 items-center justify-between border-b border-gold pb-4">
                             <legend class="sr-only">
                                 {{ __('pages/tasks/edit.subtasks_legend') }}
@@ -336,7 +336,7 @@ new #[Layout('layouts::team')] class extends Component
                     </fieldset>
 
                     {{-- Liens vidéo --}}
-                    <fieldset x-data="{ addNewLink: false }" class="flex flex-col gap-6 bg-bg-widget p-6 shadow-basic">
+                    <fieldset x-data="{ addNewLink: false }" class="flex flex-col gap-6 self-start bg-bg-widget p-6 shadow-basic">
                         <div class="flex gap-4 items-center justify-between border-b border-gold pb-4">
                             <legend class="sr-only">
                                 {{ __('pages/tasks/edit.links_legend') }}
@@ -400,7 +400,7 @@ new #[Layout('layouts::team')] class extends Component
                     </fieldset>
                 </div>
             </div>
-            <div class="flex col-span-full flex-row justify-between gap-4 p-6 bg-bg-widget shadow-basic">
+            <div class="flex flex-row justify-between gap-4 p-6 bg-bg-widget shadow-basic">
                 <x-cta :href="route('tasks.index', ['slug' => currentTeam()->slug])" class="secondary" :title="__('pages/tasks/edit.cancel_title')">
                     {{ __('pages/tasks/edit.cancel_title') }}
                 </x-cta>
