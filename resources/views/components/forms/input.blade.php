@@ -47,7 +47,6 @@
                 value="{{ old($name) ?? $value }}"
 
                 {{ $attributes->merge(['class' => $inputClass]) }}
-                wire:model.live.debounce.300ms="{{$term}}"
             >
         </div>
     @else

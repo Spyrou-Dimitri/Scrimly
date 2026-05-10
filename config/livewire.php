@@ -20,6 +20,7 @@ return [
         resource_path('views/pages'),
         resource_path('views/tabs'),
         resource_path('views/livewire'),
+        resource_path('views/tasks-views'),
     ],
 
     /*
@@ -34,12 +35,14 @@ return [
     */
 
     'component_namespaces' => [
+        'components' => resource_path('views/components'),
         'layouts' => resource_path('views/layouts'),
         'pages' => resource_path('views/pages'),
         'modals' => resource_path('views/modals'),
         'widgets' => resource_path('views/widgets'),
         'tabs' => resource_path('views/tabs'),
         'livewire' => resource_path('views/livewire'),
+        'tasks-views' => resource_path('views/tasks-views'),
     ],
 
     /*
