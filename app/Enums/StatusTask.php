@@ -31,7 +31,7 @@ enum StatusTask: string
         return match ($this) {
             self::TODO => 'text-white text-sm font-bold bg-task-todo py-2 px-4',
             self::IN_PROGRESS => 'text-white text-sm font-bold bg-task-in-progress py-2 px-4',
-            self::DONE => 'text-white text-sm font-bold bg-task-done py-2 px-4',
+            self::DONE => 'text-[#046143] text-sm font-bold bg-task-done py-2 px-4',
         };
     }
 
@@ -52,6 +52,7 @@ enum StatusTask: string
             self::DONE => 'text-task-done',
         };
     }
+
     public function backgroundColor(): string
     {
         return match ($this) {

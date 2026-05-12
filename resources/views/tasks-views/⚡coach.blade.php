@@ -116,7 +116,7 @@ new class extends Component
                     <td class="p-6">{{ round($task->subtasks->sum('progression') / $task->subtasks->count()) }}%</td>
                     <td class="p-6">
                         <div class="flex items-center gap-4">
-                            <a href="#" title="{{ __('pages/tasks/index.coach_view_task_title') }}" class="hover:text-gold transition-all duration-150">
+                            <a href="{{ route('tasks.show', ['slug' => currentTeam()->slug, 'id' => $task->id]) }}" title="{{ __('pages/tasks/index.coach_view_task_title') }}" class="hover:text-gold transition-all duration-150">
                                 <flux:icon name="eye" class="w-5 h-5" />
                             </a>
                             <a href="{{ route('tasks.edit', ['slug' => currentTeam()->slug, 'id' => $task->id]) }}" title="{{ __('pages/tasks/index.coach_edit_task_title') }}" class="hover:text-gold transition-all duration-150">

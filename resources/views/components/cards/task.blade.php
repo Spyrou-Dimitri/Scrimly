@@ -8,6 +8,8 @@
         'class' => 'cursor-pointer relative bg-bg-widget p-6 shadow-basic border-l-2 '.$task->status->borderColor().' card-animated-border',
         'data-task-status' => $task->status->value,
     ]) }}>
+    <a href="{{ route('tasks.show', ['slug' => currentTeam()->slug, 'id' => $task->id]) }}" class="inset-0 absolute z-10">
+        </a>
     <span class="card-animated-border-right-edge" aria-hidden="true"></span>
     <div class="relative z-[1] flex flex-col gap-6">
         <h4 class="text-xl font-bold text-gold">{{ $task->title }}</h4>

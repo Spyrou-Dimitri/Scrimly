@@ -265,7 +265,7 @@ new #[Layout('layouts::team')] class extends Component
                     </fieldset>
 
                     {{-- Ressources et fichiers --}}
-                    <fieldset class="flex flex-col gap-6 bg-bg-widget p-6 shadow-basic">
+                    <fieldset class="flex flex-col gap-6 bg-bg-widget self-start p-6 shadow-basic">
                         <legend class="sr-only">
                             {{ __('pages/tasks/edit.resources_legend') }}
                         </legend>

@@ -217,6 +217,7 @@ new #[Layout('layouts::team')] class extends Component
                         <div x-show="addNewSubtasks" class="flex items-end justify-between gap-2">
                             <x-forms.input
                                 :required="false"
+                                @keydown.enter.prevent="$wire.addSubtask()"
                                 :type="'text'"
                                 wire:model="newSubTask"
                                 :label="__('pages/tasks/create.field_subtask_title')"
@@ -233,7 +234,7 @@ new #[Layout('layouts::team')] class extends Component
                     </fieldset>
 
                     {{-- Ressources et fichiers --}}
-                    <fieldset class="flex flex-col gap-6 bg-bg-widget p-6 shadow-basic">
+                    <fieldset class="flex flex-col gap-6 bg-bg-widget self-start p-6 shadow-basic">
                         <legend class="sr-only">
                             {{ __('pages/tasks/create.resources_legend') }}
                         </legend>
@@ -286,7 +287,7 @@ new #[Layout('layouts::team')] class extends Component
                     </fieldset>
 
                     {{-- Liens vidéo --}}
-                    <fieldset x-data="{ addNewLink: false }" class="flex flex-col gap-6 self-start bg-bg-widget p-6 shadow-basic">
+                    <fieldset x-data="{ addNewLink: false }" class="flex flex-col gap-6 self-start bg-bg-widget self-start p-6 shadow-basic">
                         <div class="flex gap-4 items-center justify-between border-b border-gold pb-4">
                             <legend class="sr-only">
                                 {{ __('pages/tasks/create.links_legend') }}
@@ -337,6 +338,7 @@ new #[Layout('layouts::team')] class extends Component
                             <x-forms.input
                                 :required="false"
                                 :type="'text'"
+                                @keydown.enter.prevent="$wire.addLink()"
                                 wire:model="newLinkTitle"
                                 :label="__('pages/tasks/create.field_link_title')"
                                 :name="'new_link_title'"
@@ -355,7 +357,7 @@ new #[Layout('layouts::team')] class extends Component
                     {{ __('pages/tasks/create.cancel_title') }}
                 </x-cta>
                 <x-forms.submit type="submit" variant="primary" :title="__('pages/tasks/create.create_title')" class="w-fit" data-test="create-team-button">
-                    {{ __('pages/team/create.create') }}
+                    {{ __('pages/tasks/create.create_title') }}
                 </x-forms.submit>
             </div>
 

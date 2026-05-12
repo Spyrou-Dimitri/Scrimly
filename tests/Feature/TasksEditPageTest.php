@@ -19,6 +19,13 @@ beforeEach(function (): void {
     App::setLocale('fr');
 });
 
+test('les routes nommées edition et affichage des devoirs ont des chemins distincts', function (): void {
+    expect(route('tasks.edit', ['slug' => 'equipe', 'id' => 7], absolute: false))
+        ->toBe('/equipe/tasks/7/edit')
+        ->and(route('tasks.show', ['slug' => 'equipe', 'id' => 7], absolute: false))
+        ->toBe('/equipe/tasks/7');
+});
+
 test('un joueur obtient 403 sur la page d\'édition d\'un devoir', function (): void {
     $creator = User::factory()->create();
     $slug = 'equipe-tasks-edit-player-'.Str::random(8);
