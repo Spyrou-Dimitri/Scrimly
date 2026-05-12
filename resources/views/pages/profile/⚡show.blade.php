@@ -94,14 +94,25 @@ new class extends Component
                     Avatar
                 </legend>
                 <div
-                    x-data="{ hovering: false, focused: false }"
+                    x-data="{ dragging: false, hovering: false, focused: false }"
+                    x-on:click="$refs.profileAvatarInput.click()"
+                    x-on:dragover.prevent="dragging = true"
+                    x-on:dragleave="dragging = false"
+                    x-on:drop.prevent="
+                        dragging = false;
+                        const files = $event.dataTransfer.files;
+                        if (files.length) {
+                            $refs.profileAvatarInput.files = files;
+                            $refs.profileAvatarInput.dispatchEvent(new Event('change', { bubbles: true }));
+                        }
+                    "
                     @mouseenter="hovering = true"
                     @mouseleave="hovering = false"
                     :class="{
-                    'border-gold': hovering || focused,
-                    'border-transparent': !hovering && !focused
+                        'border-gold': dragging || hovering || focused,
+                        'border-transparent': ! dragging && ! hovering && ! focused
                     }"
-                    class="relative min-h-full flex flex-col items-center justify-center 
+                    class="relative min-h-full flex cursor-pointer flex-col items-center justify-center
                     bg-input-bg border transition-colors duration-200">
                     <label for="logo" class="font-medium flex flex-col items-center justify-center gap-2 pointer-events-none">
                         @if($form->avatar)
@@ -120,13 +131,15 @@ new class extends Component
                     @enderror
 
                     <input
+                        x-ref="profileAvatarInput"
                         wire:model.live="form.avatar"
                         type="file"
                         name="logo"
                         id="logo"
+                        accept="image/*"
                         @focus="focused = true"
                         @blur="focused = false"
-                        class="absolute inset-0 opacity-0 cursor-pointer" />
+                        class="absolute inset-0 opacity-0 pointer-events-none" />
                 </div>
             </fieldset>
 

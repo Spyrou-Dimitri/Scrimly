@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,6 +15,7 @@
 
     @livewireStyles
 </head>
+
 <body class="bg-bg-main text-white font-spaceGrotesk h-screen overflow-hidden
              flex flex-col
              lg:grid lg:grid-cols-[auto_1fr] lg:grid-rows-[auto_1fr]">
@@ -29,12 +31,15 @@
         </div>
     </main>
 
+    
     @livewireScripts
 
-    <div id="toast-container" class="fixed bottom-4 right-4 z-50"></div>
-    <livewire:widgets::modal/>
-    <livewire:widgets::toast/>
 
-    
+    <div id="toast-container" class="fixed bottom-4 right-4 z-50"></div>
+    <livewire:widgets::modal />
+    <livewire:widgets::toast />
+
+
 </body>
+
 </html>

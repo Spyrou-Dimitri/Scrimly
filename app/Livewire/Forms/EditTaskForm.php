@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Forms;
 
-use App\Jobs\ProcessUploadTaskFile;
 use App\Models\Subtask;
 use App\Models\Task;
+use App\Models\TaskFile;
 use App\Models\TaskLink;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -98,7 +98,7 @@ class EditTaskForm extends Form
 
             $keptSubtaskIds = collect($this->subtasks)
                 ->pluck('id')
-                ->map(fn(mixed $id): int => (int) $id)
+                ->map(fn (mixed $id): int => (int) $id)
                 ->all();
 
             Subtask::query()
@@ -124,7 +124,7 @@ class EditTaskForm extends Form
                 }
             }
 
-            $keptLinkIds = collect($this->links)->pluck('id')->filter()->map(fn(mixed $id): int => (int) $id)->values()->all();
+            $keptLinkIds = collect($this->links)->pluck('id')->filter()->map(fn (mixed $id): int => (int) $id)->values()->all();
 
             TaskLink::query()
                 ->where('task_id', $this->task->id)
@@ -152,10 +152,10 @@ class EditTaskForm extends Form
 
         foreach ($this->files as $temporaryFile) {
             $extension = $temporaryFile->extension() ?: $temporaryFile->getClientOriginalExtension();
-            $newName = uniqid() . '.' . $extension;
+            $newName = uniqid().'.'.$extension;
 
             $fullPath = Storage::disk('public')->putFileAs(
-                config('taskFiles.original_path') . '/' . $this->task->id,
+                config('taskFiles.original_path').'/'.$this->task->id,
                 $temporaryFile,
                 $newName,
             );
@@ -164,13 +164,13 @@ class EditTaskForm extends Form
                 continue;
             }
 
-            ProcessUploadTaskFile::dispatchSync(
-                $fullPath,
-                $temporaryFile->getClientOriginalName(),
-                $temporaryFile->getSize(),
-                $this->task->id,
-                Auth::id(),
-            );
+            TaskFile::create([
+                'task_id' => $this->task->id,
+                'uploaded_by' => Auth::id(),
+                'file_name' => $temporaryFile->getClientOriginalName(),
+                'file_path' => $fullPath,
+                'file_size' => $temporaryFile->getSize(),
+            ]);
         }
 
         $this->files = [];

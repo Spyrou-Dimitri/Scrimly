@@ -1,9 +1,21 @@
+@props([
+    'label' => '',
+    'name' => '',
+    'placeholder' => '',
+    'rows' => 10,
+    'srOnlyLabel' => false,
+])
+
+@php
+    $labelClass = $srOnlyLabel ? 'sr-only' : 'block font-medium';
+@endphp
+
 <div class="flex flex-col gap-2 w-full">
-    <label class="block font-medium" for="{!! $name !!}">
+    <label class="{{ $labelClass }}" for="{!! $name !!}">
         {{ $label }}
     </label>
     <textarea
-        rows="10"
+        rows="{{ $rows }}"
         name="{!! $name !!}"
         id="{!! $name !!}"
         placeholder="{!! $placeholder !!}"

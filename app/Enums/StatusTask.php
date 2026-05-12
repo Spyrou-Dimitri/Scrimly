@@ -29,9 +29,9 @@ enum StatusTask: string
     public function macaron(): string
     {
         return match ($this) {
-            self::TODO => 'text-white text-sm font-bold bg-task-todo py-2 px-4',
-            self::IN_PROGRESS => 'text-white text-sm font-bold bg-task-in-progress py-2 px-4',
-            self::DONE => 'text-[#046143] text-sm font-bold bg-task-done py-2 px-4',
+            self::TODO => 'text-white font-bold bg-task-todo py-2 px-4',
+            self::IN_PROGRESS => 'text-white font-bold bg-task-in-progress py-2 px-4',
+            self::DONE => 'text-[#046143] font-bold bg-task-done py-2 px-4',
         };
     }
 

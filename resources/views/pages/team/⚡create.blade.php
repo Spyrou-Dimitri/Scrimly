@@ -114,14 +114,25 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
                     Logo
                 </legend>
                 <div
-                    x-data="{ hovering: false, focused: false }"
+                    x-data="{ dragging: false, hovering: false, focused: false }"
+                    x-on:click="$refs.teamLogoInput.click()"
+                    x-on:dragover.prevent="dragging = true"
+                    x-on:dragleave="dragging = false"
+                    x-on:drop.prevent="
+                        dragging = false;
+                        const files = $event.dataTransfer.files;
+                        if (files.length) {
+                            $refs.teamLogoInput.files = files;
+                            $refs.teamLogoInput.dispatchEvent(new Event('change', { bubbles: true }));
+                        }
+                    "
                     @mouseenter="hovering = true"
                     @mouseleave="hovering = false"
                     :class="{
-                    'border-gold': hovering || focused,
-                    'border-transparent': !hovering && !focused
+                        'border-gold': dragging || hovering || focused,
+                        'border-transparent': ! dragging && ! hovering && ! focused
                     }"
-                    class="relative min-h-full flex flex-col items-center justify-center 
+                    class="relative min-h-full flex cursor-pointer flex-col items-center justify-center
                     bg-input-bg border transition-colors duration-200">
                     <label for="logo" class="font-medium flex flex-col items-center justify-center gap-2 pointer-events-none">
                         @if($form->logo)
@@ -133,13 +144,15 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
                     </label>
 
                     <input
+                        x-ref="teamLogoInput"
                         wire:model.live="form.logo"
                         type="file"
                         name="logo"
                         id="logo"
+                        accept="image/*"
                         @focus="focused = true"
                         @blur="focused = false"
-                        class="absolute inset-0 opacity-0 cursor-pointer" />
+                        class="absolute inset-0 opacity-0 pointer-events-none" />
                 </div>
                 @error('form.logo')
                 <span class="font-spaceGrotesk text-input-error font-semibold">

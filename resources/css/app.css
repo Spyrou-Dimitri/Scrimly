@@ -313,4 +313,3 @@ select:focus[data-flux-control] {
     transform: scaleY(1);
     transition-delay: var(--roster-border-draw-duration);
 }
-

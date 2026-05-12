@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Forms;
 
-use App\Jobs\ProcessUploadTaskFile;
 use App\Models\Subtask;
 use App\Models\Task;
+use App\Models\TaskFile;
 use App\Models\TaskLink;
 use App\Models\TeamMember;
 use Illuminate\Support\Facades\Auth;
@@ -99,13 +99,13 @@ class CreateTaskForm extends Form
                 continue;
             }
 
-            ProcessUploadTaskFile::dispatchSync(
-                $fullPath,
-                $temporaryFile->getClientOriginalName(),
-                $temporaryFile->getSize(),
-                $task->id,
-                Auth::id(),
-            );
+            TaskFile::create([
+                'task_id' => $task->id,
+                'uploaded_by' => Auth::id(),
+                'file_name' => $temporaryFile->getClientOriginalName(),
+                'file_path' => $fullPath,
+                'file_size' => $temporaryFile->getSize(),
+            ]);
         }
 
         foreach ($this->links as $link) {

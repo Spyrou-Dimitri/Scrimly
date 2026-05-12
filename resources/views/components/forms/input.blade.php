@@ -8,18 +8,20 @@
     'required' => false,
     'multiple' => false,
     'term' => false,
+    'srOnlyLabel' => false,
 ])
 
 @php
     $baseInputClass = 'box-border min-h-11 bg-input-bg border-1 border-input-border py-2 text-base text-white leading-normal w-full outline-none focus:ring-2 focus:ring-gold transition-all duration-200';
     $paddingClass = $type === 'search' ? 'pl-10 pr-4' : 'px-4';
     $inputClass = $baseInputClass.' '.$paddingClass;
+    $labelClass = $srOnlyLabel ? 'sr-only' : 'block text-white font-medium';
 @endphp
 
 <div class="flex flex-col gap-2 w-full">
     <label
         for="{{ $name }}"
-        class="block text-white font-medium">
+        class="{{ $labelClass }}">
         {{ $label }}
         @if($required)
             <span class="text-gold">

@@ -112,7 +112,7 @@ new class extends Component
                         <p class="text-xs font-bold text-text-secondary">Echéance : @if($task->deadline) {{ $task->deadline->translatedFormat('d M Y') }} @else - @endif</p>
                     </td>
                     <td class="p-6">{{ $task->teamMember->user->username }}</td>
-                    <td class="p-6"> <span class="{{ $task->status->macaron() }}">{{ $task->status->label() }}</span></td>
+                    <td class="p-6"> <span class="{{ $task->status->macaron() }} text-sm">{{ $task->status->label() }}</span></td>
                     <td class="p-6">{{ round($task->subtasks->sum('progression') / $task->subtasks->count()) }}%</td>
                     <td class="p-6">
                         <div class="flex items-center gap-4">

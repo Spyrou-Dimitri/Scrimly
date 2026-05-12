@@ -265,22 +265,37 @@ new #[Layout('layouts::team')] class extends Component
                         <p class="text-red-500 font-bold text-sm">{{ $message }}</p>
                         @enderror
 
-                        <label for="task-files-input"
-                            class="relative flex flex-col focus-within:border-gold items-center justify-center gap-3 border border-input-border bg-input-bg px-4 py-8 text-center text-text-secondary cursor-pointer hover:border-gold transition-colors duration-150 focus-within:border-gold">
-                            <flux:icon name="arrow-up-tray" class="size-10 text-text-secondary" />
-                            <p class="text-sm md:text-base pointer-events-none">
-                                {{ __('pages/tasks/create.upload_drag') }}
-                                <span class="font-semibold text-gold">{{ __('pages/tasks/create.upload_browse') }}</span>
-                            </p>
-                            <input
-                                type="file"
-                                id="task-files-input"
-                                wire:model="newFiles"
-                                wire:key="task-files-input-{{ $fileInputResetKey }}"
-                                multiple
-                                accept=".pdf,image/jpeg,image/png,image/webp"
-                                class="absolute inset-0 opacity-0 cursor-pointer" />
-                        </label>
+                        <div
+                            class="border border-dashed transition-colors duration-150"
+                            :class="dragging ? 'border-gold bg-input-bg/80' : 'border-input-border bg-input-bg'"
+                            x-data="{ dragging: false }"
+                            x-on:click="$refs.taskCreateFilesInput.click()"
+                            x-on:dragover.prevent="dragging = true"
+                            x-on:dragleave="dragging = false"
+                            x-on:drop.prevent="
+                                dragging = false;
+                                $refs.taskCreateFilesInput.files = $event.dataTransfer.files;
+                                $refs.taskCreateFilesInput.dispatchEvent(new Event('change', { bubbles: true }));
+                            ">
+                            <label
+                                for="task-files-input"
+                                class="relative flex min-h-[8rem] flex-col items-center justify-center gap-3 px-4 py-8 text-center text-text-secondary cursor-pointer">
+                                <flux:icon name="arrow-up-tray" class="size-10 text-text-secondary" />
+                                <p class="text-sm md:text-base pointer-events-none">
+                                    {{ __('pages/tasks/create.upload_drag') }}
+                                    <span class="font-semibold text-gold">{{ __('pages/tasks/create.upload_browse') }}</span>
+                                </p>
+                                <input
+                                    x-ref="taskCreateFilesInput"
+                                    type="file"
+                                    id="task-files-input"
+                                    wire:model="newFiles"
+                                    wire:key="task-files-input-{{ $fileInputResetKey }}"
+                                    multiple
+                                    accept=".pdf,image/jpeg,image/png,image/webp"
+                                    class="absolute inset-0 opacity-0 pointer-events-none" />
+                            </label>
+                        </div>
                         <div wire:loading wire:target="newFiles" class="text-sm text-text-secondary">
                             {{ __('pages/tasks/create.upload_loading') }}
                         </div>
