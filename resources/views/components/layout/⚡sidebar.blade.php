@@ -136,11 +136,8 @@ new class extends Component
                 type="button"
                 title="{{ __('layouts/team.logout') }}"
                 wire:click="logout"
-                class="flex w-full items-center justify-center gap-2 px-4 py-3
-                       bg-red-900/40 hover:bg-red-900/60
-                       text-white border border-red-900/60
-                       transition-colors duration-150 cursor-pointer">
-                <flux:icon name="power" class="size-4" />
+                class="cta-danger cta-danger--outline">
+                <flux:icon name="power" class="size-4 shrink-0" />
                 <span class="font-medium">{{ __('layouts/team.logout') }}</span>
             </button>
         </div>

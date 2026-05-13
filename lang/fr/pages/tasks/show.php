@@ -36,9 +36,10 @@ return [
     'comment_send' => 'Envoyer',
     'comments_saved_toast' => 'Commentaire publié.',
 
-    'action_edit_task' => 'Modifier le devoir',
+    'action_edit_task' => 'Modifier',
     'back_to_list' => 'Retour à la liste',
 
     'action_complete_task' => 'Marquer comme terminé',
     'comment_saved_toast' => 'Commentaire publié.',
+    'action_delete_task' => 'Supprimer',
 ];

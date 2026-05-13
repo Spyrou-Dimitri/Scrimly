@@ -52,6 +52,15 @@ new #[Layout('layouts::team')] class extends Component
             'model_id' => $this->task->id,
         ]);
     }
+
+    public function openModalDeleteTask(): void
+    {
+        $this->dispatch('open_modal', [
+            'form' => 'modals::tasks.delete-task',
+            'model_id' => $this->task->id,
+        ]);
+    }
+
     #[Computed]
     public function isTaskCompleted(): bool
     {
@@ -139,7 +148,7 @@ new #[Layout('layouts::team')] class extends Component
 
     <section class="flex flex-col gap-8">
         <div class="flex flex-col gap-6 lg:items-start lg:justify-between w-full">
-            <div class="flex flex-wrap gap-3 w-full justify-between items-center">
+            <div class="flex w-full flex-wrap items-center justify-between gap-3">
                 <a
                     href="{{ route('tasks.index', ['slug' => currentTeam()->slug]) }}"
                     class="flex items-center gap-2 group transition-colors duration-150"
@@ -147,34 +156,35 @@ new #[Layout('layouts::team')] class extends Component
                     <flux:icon name="arrow-left" class="size-4 group-hover:text-gold transition-colors duration-150" />
                     <span class="group-hover:text-gold transition-colors duration-150">{{ __('pages/tasks/show.back_to_list') }}</span>
                 </a>
-                <div>
-                    
+                <div class="flex flex-wrap items-center gap-2">
+                    <x-cta
+                        :href="route('tasks.edit', ['slug' => currentTeam()->slug, 'id' => $this->task->id])"
+                        :class="'primary'"
+                        :title="__('pages/tasks/show.action_edit_task')">
+                        {{ __('pages/tasks/show.action_edit_task') }}
+                    </x-cta>
+                    <x-destructive :type="'button'" wire:click="openModalDeleteTask" :title="__('pages/tasks/show.action_delete_task')">
+                        <flux:icon name="trash" class="size-5 text-white" />
+                        {{ __('pages/tasks/show.action_delete_task') }}
+                    </x-destructive>
                 </div>
-                <x-cta
-                    :href="route('tasks.edit', ['slug' => currentTeam()->slug, 'id' => $this->task->id])"
-                    :class="'primary'"
-                    :title="__('pages/tasks/show.action_edit_task')">
-                    {{ __('pages/tasks/show.action_edit_task') }}
-                </x-cta>
             </div>
             <div class="flex flex-col gap-2 sm:flex-row sm:items-center w-full sm:justify-between">
-                <h2 class="text-[32px] font-bold text-white break-words">
-                    {{ $this->task->title }}
-                </h2>
-                <div class="flex gap-2 flex-wrap">
-                    @if ($this->isTaskCompleted && $this->task->status !== StatusTask::DONE)
-                    <button wire:click="openCompleteTaskModal" class="cta-secondary group flex flex-row items-center gap-2">
-                        <flux:icon name="check" class="size-6 text-gold group-hover:text-black transition-colors duration-150" />
-                        {{ __('pages/tasks/show.action_complete_task') }}
-                    </button>
-                    @endif
+                <div class="flex flex-row gap-4 flex-wrap">
+                    <h2 class="text-[32px] font-bold text-white break-words">
+                        {{ $this->task->title }}
+                    </h2>
                     <span class="flex items-center {{ $this->task->status->macaron() }} ">
                         {{ $this->task->status->label() }}
                     </span>
                 </div>
-
+                @if ($this->isTaskCompleted && $this->task->status !== StatusTask::DONE)
+                <button type="button" wire:click="openCompleteTaskModal" class="cta-secondary group inline-flex shrink-0 flex-row items-center gap-2">
+                    <flux:icon name="check" class="size-6 text-gold group-hover:text-black transition-colors duration-150" />
+                    {{ __('pages/tasks/show.action_complete_task') }}
+                </button>
+                @endif
             </div>
-
         </div>
 
 
