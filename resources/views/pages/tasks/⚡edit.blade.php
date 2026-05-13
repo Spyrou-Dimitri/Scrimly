@@ -59,8 +59,8 @@ new #[Layout('layouts::team')] class extends Component
 
     public function addSubtask(): void
     {
-        if ($this->newSubTask === '') {
-            session()->flash('error', __('pages/tasks/edit.error_empty_subtask'));
+        if (empty($this->newSubTask) || mb_strlen($this->newSubTask) < 3) {
+            session()->flash('errorNewSubtask', __('pages/tasks/edit.error_too_short_subtask'));
 
             return;
         }
@@ -114,7 +114,7 @@ new #[Layout('layouts::team')] class extends Component
         $url = trim($this->newLinkUrl);
 
         if ($url === '') {
-            session()->flash('link_error', __('pages/tasks/edit.error_empty_link'));
+            session()->flash('errorNewLink', __('pages/tasks/edit.error_empty_link'));
 
             return;
         }
@@ -246,21 +246,23 @@ new #[Layout('layouts::team')] class extends Component
                         @error('form.subtasks')
                         <p class="text-red-500 font-bold text-sm">{{ $message }}</p>
                         @enderror
-                        <div x-show="addNewSubtasks" class="flex items-end justify-between gap-2">
-                            <x-forms.input
-                                :required="false"
-                                :type="'text'"
-                                wire:model="newSubTask"
-                                :label="__('pages/tasks/edit.field_subtask_title')"
-                                :name="'new_subtask_title'"
-                                :placeholder="__('pages/tasks/edit.field_subtask_title_placeholder')">
-                                @if (session('error'))
-                                <p class="text-red-500 font-bold text-sm">{{ session('error') }}</p>
-                                @endif
-                            </x-forms.input>
-                            <button type="button" x-on:click="addNewSubtasks = false" wire:click="addSubtask" class="cta-primary shrink-0 cursor-pointer" type="button">
-                                {{ __('pages/tasks/edit.add_subtask') }}
-                            </button>
+                        <div x-show="addNewSubtasks" x-cloak class="flex flex-col gap-2">
+                            <div class="flex items-center gap-2">
+                                <x-forms.input
+                                    :required="false"
+                                    @keydown.enter.prevent="$wire.addSubtask()"
+                                    :type="'text'"
+                                    wire:model="newSubTask"
+                                    :label="__('pages/tasks/edit.field_subtask_title')"
+                                    :name="'new_subtask_title'"
+                                    :placeholder="__('pages/tasks/edit.field_subtask_title_placeholder')" />
+                                <button type="button" x-on:click="addNewSubtasks = false" wire:click="addSubtask" class="cta-primary self-end shrink-0 cursor-pointer" type="button">
+                                    {{ __('pages/tasks/edit.add_subtask') }}
+                                </button>
+                            </div>
+                            @if (session('errorNewSubtask'))
+                            <p class="text-red-500 font-bold text-sm">{{ session('errorNewSubtask') }}</p>
+                            @endif
                         </div>
                     </fieldset>
 
@@ -387,21 +389,21 @@ new #[Layout('layouts::team')] class extends Component
                         <p class="text-red-500 font-bold text-sm">{{ $message }}</p>
                         @enderror
 
-                        <div x-show="addNewLink" class="flex flex-col gap-3">
+                        <div x-show="addNewLink" x-cloak class="flex flex-col gap-3">
                             <x-forms.input
                                 :required="false"
                                 :type="'url'"
                                 wire:model="newLinkUrl"
                                 :label="__('pages/tasks/edit.field_link_url')"
                                 :name="'new_link_url'"
-                                :placeholder="__('pages/tasks/edit.field_link_url_placeholder')">
-                                @if (session('link_error'))
-                                <p class="text-red-500 font-bold text-sm">{{ session('link_error') }}</p>
-                                @endif
-                            </x-forms.input>
+                                :placeholder="__('pages/tasks/edit.field_link_url_placeholder')" />
+                            @if (session('errorNewLink'))
+                            <p class="text-red-500 font-bold text-sm">{{ session('errorNewLink') }}</p>
+                            @endif
                             <x-forms.input
                                 :required="false"
                                 :type="'text'"
+                                @keydown.enter.prevent="$wire.addLink()"
                                 wire:model="newLinkTitle"
                                 :label="__('pages/tasks/edit.field_link_title')"
                                 :name="'new_link_title'"

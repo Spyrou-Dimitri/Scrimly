@@ -21,7 +21,7 @@ beforeEach(function (): void {
 
 test('les routes nommées edition et affichage des devoirs ont des chemins distincts', function (): void {
     expect(route('tasks.edit', ['slug' => 'equipe', 'id' => 7], absolute: false))
-        ->toBe('/equipe/tasks/7/edit')
+        ->toBe('/equipe/tasks/edit/7')
         ->and(route('tasks.show', ['slug' => 'equipe', 'id' => 7], absolute: false))
         ->toBe('/equipe/tasks/7');
 });

@@ -30,6 +30,7 @@ return [
     'field_subtask_title_placeholder' => 'Analyse VOD',
     'error_empty_subtask' => 'Impossible d\'ajouter une sous-tâche vide',
     'error_empty_link' => 'Impossible d\'ajouter un lien vide',
+    'error_too_short_subtask' => 'Sous-tâche trop courte (minimum 3 caractères)',
     'cancel' => 'Annuler',
     'cancel_title' => 'Annuler',
     'create_title' => 'Créer le devoir',

@@ -56,7 +56,6 @@ new class extends Component
         $team = Team::select('slug')->findOrFail($teamId);
 
         $this->redirectRoute('roster.index', ['slug' => $team->slug]);
-            
     }
 };
 ?>
@@ -107,7 +106,7 @@ new class extends Component
                 x-transition
                 x-cloak
                 class="absolute top-full mt-3 left-12 flex flex-col gap-4 w-56 origin-top shadow-lg bg-bg-widget p-4 z-50">
-                <li class=""> 
+                <li class="">
                     <a href="{{ route('team.create') }}" title="{{ __('layouts/team.create_team_cta_title') }}" class="px-3 hover:text-gold transition ease-in-out duration-150 flex items-center gap-2 cursor-pointer">
                         <flux:icon.plus class="size-4" />
                         Créer une équipe
@@ -115,7 +114,7 @@ new class extends Component
                 </li>
                 @foreach ($userTeams as $userTeam)
                 <li class="">
-                    
+
                     <button wire:click="switchTeam({{ $userTeam->id }})" class="px-3 hover:text-gold transition ease-in-out duration-150 flex items-center gap-2 cursor-pointer">
                         @if ($userTeam->logo)
                         <img src="{{ Storage::disk('public')->url('images/logoTeam/variants/128x128/' . $userTeam->logo) }}"
