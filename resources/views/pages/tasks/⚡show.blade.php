@@ -41,7 +41,7 @@ new #[Layout('layouts::team')] class extends Component
             ->where('team_id', currentTeam()->id)
             ->firstOrFail();
 
-        
+
         $this->subtaskCompletion = $this->task->subtasks->pluck('is_completed', 'id')->toArray();
     }
 
@@ -72,10 +72,8 @@ new #[Layout('layouts::team')] class extends Component
             'type' => 'success',
             'message' => __('pages/tasks/show.subtasks_saved_toast'),
         ]);
-        if ($this->isTaskCompleted) {
+        if ($this->isTaskCompleted && $this->task->status !== StatusTask::DONE) {
             $this->openCompleteTaskModal();
-        } elseif ($this->task->status === StatusTask::DONE) {
-            $this->task->update(['status' => StatusTask::IN_PROGRESS]);
         }
     }
 
@@ -142,12 +140,16 @@ new #[Layout('layouts::team')] class extends Component
     <section class="flex flex-col gap-8">
         <div class="flex flex-col gap-6 lg:items-start lg:justify-between w-full">
             <div class="flex flex-wrap gap-3 w-full justify-between items-center">
-                <x-cta
-                    :href="route('tasks.index', ['slug' => currentTeam()->slug])"
-                    :class="'secondary'"
-                    :title="__('pages/tasks/show.back_to_list')">
-                    {{ __('pages/tasks/show.back_to_list') }}
-                </x-cta>
+                <a
+                    href="{{ route('tasks.index', ['slug' => currentTeam()->slug]) }}"
+                    class="flex items-center gap-2 group transition-colors duration-150"
+                    title="{{ __('pages/tasks/show.back_to_list') }}">
+                    <flux:icon name="arrow-left" class="size-4 group-hover:text-gold transition-colors duration-150" />
+                    <span class="group-hover:text-gold transition-colors duration-150">{{ __('pages/tasks/show.back_to_list') }}</span>
+                </a>
+                <div>
+                    
+                </div>
                 <x-cta
                     :href="route('tasks.edit', ['slug' => currentTeam()->slug, 'id' => $this->task->id])"
                     :class="'primary'"
@@ -409,7 +411,7 @@ new #[Layout('layouts::team')] class extends Component
                         </div>
                         <div
                             class="border border-dashed border-input-border transition-colors hover:border-gold bg-input-bg duration-150"
-                            :class="dragging ? 'border-gold'"
+                            :class="{ 'border-gold': dragging }"
                             x-data="{ dragging: false }"
                             x-on:click="$refs.taskShowFileInput.click()"
                             x-on:dragover.prevent="dragging = true"
