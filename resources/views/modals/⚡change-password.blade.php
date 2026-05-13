@@ -15,6 +15,11 @@ new class extends Component {
     {
         $this->form->updatePassword();
         $this->dispatch('close_modal');
+        $this->dispatch('toast', [
+            'title' => __('modals/change-password.success_title'),
+            'message' => __('modals/change-password.success_message'),
+            'type' => 'success',
+        ]);
     }
 }
 ?>

@@ -7,4 +7,6 @@ return [
     'new_password' => 'Nouveau mot de passe',
     'confirm_password' => 'Confirmer le nouveau mot de passe',
     'save' => 'Enregistrer',
+    'success_title' => 'Mot de passe changé',
+    'success_message' => 'Le mot de passe a été changé avec succès.',
 ];

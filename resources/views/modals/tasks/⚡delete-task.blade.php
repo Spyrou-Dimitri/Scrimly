@@ -28,13 +28,22 @@ new class extends Component
     public function deleteTask(): void
     {
         $this->task->delete();
-        $this->dispatch('close_modal');
-        $this->dispatch('refresh_tasks');
-        $this->dispatch('toast', [
-            'title' => __('modals/tasks/delete-task.success_title'),
-            'message' => __('modals/tasks/delete-task.success_message'),
-            'type' => 'trash',
-        ]);
+        if (request()->route()->named('tasks.index')) {
+            $this->dispatch('close_modal');
+            $this->dispatch('refresh_tasks');
+            $this->dispatch('toast', [
+                'title' => __('modals/tasks/delete-task.success_title'),
+                'message' => __('modals/tasks/delete-task.success_message'),
+                'type' => 'trash',
+            ]);
+        } else {
+            session()->flash('toast', [
+                'type' => 'success',
+                'message' => __('modals/tasks/delete-task.success_message'),
+            ]);
+            redirect()->route('tasks.index', ['slug' => currentTeam()->slug]);
+
+        }
     }
 };
 ?>

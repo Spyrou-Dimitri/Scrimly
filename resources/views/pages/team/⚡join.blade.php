@@ -22,7 +22,7 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
             'type' => 'success',
             'message' => __('toasts/toasts.team_applied'),
         ]);
-        $this->redirect(route('team.index'));
+        redirect(route('team.index'));
     }
     #[Computed]
     public function teamFinder(): Team|null

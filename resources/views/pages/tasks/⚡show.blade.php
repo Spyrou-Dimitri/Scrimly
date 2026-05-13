@@ -83,6 +83,8 @@ new #[Layout('layouts::team')] class extends Component
         ]);
         if ($this->isTaskCompleted && $this->task->status !== StatusTask::DONE) {
             $this->openCompleteTaskModal();
+        } else if(!$this->isTaskCompleted && $this->task->status === StatusTask::DONE){
+            $this->task->update(['status' => StatusTask::IN_PROGRESS]);
         }
     }
 
@@ -179,7 +181,7 @@ new #[Layout('layouts::team')] class extends Component
                     </span>
                 </div>
                 @if ($this->isTaskCompleted && $this->task->status !== StatusTask::DONE)
-                <button type="button" wire:click="openCompleteTaskModal" class="cta-secondary group inline-flex shrink-0 flex-row items-center gap-2">
+                <button type="button"  wire:click="openCompleteTaskModal" class="cta-secondary group inline-flex shrink-0 flex-row items-center gap-2">
                     <flux:icon name="check" class="size-6 text-gold group-hover:text-black transition-colors duration-150" />
                     {{ __('pages/tasks/show.action_complete_task') }}
                 </button>
