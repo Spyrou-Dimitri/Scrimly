@@ -15,7 +15,7 @@ new class extends Component
 
     public function completeTask(): void
     {
-        $this->task->update(['status' => StatusTask::DONE]);
+        $this->task->update(['status' => StatusTask::DONE, 'completed_at' => now()]);
         $this->dispatch('close_modal');
         $this->dispatch('refresh_tasks');
         $this->dispatch('toast', [

@@ -41,11 +41,7 @@ new #[Layout('layouts::team')] class extends Component
             ->where('team_id', currentTeam()->id)
             ->firstOrFail();
 
-        abort_unless(
-            currentTeam()->creator_id === Auth::id() || currentMember()->isCoachOrStaff(),
-            403,
-        );
-
+        
         $this->subtaskCompletion = $this->task->subtasks->pluck('is_completed', 'id')->toArray();
     }
 
@@ -370,7 +366,7 @@ new #[Layout('layouts::team')] class extends Component
                             @endforeach
                         </ul>
                         @else
-                        <p class="rounded-lg border border-dashed border-input-border bg-bg-card/40 px-4 py-6 text-sm text-text-secondary text-center">
+                        <p class="border border-dashed border-input-border bg-bg-card/40 px-4 py-6 text-sm text-text-secondary text-center">
                             {{ __('pages/tasks/show.upload_existing_empty') }}
                         </p>
                         @endif
