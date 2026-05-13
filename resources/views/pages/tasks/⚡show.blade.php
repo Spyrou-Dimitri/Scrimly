@@ -85,6 +85,8 @@ new #[Layout('layouts::team')] class extends Component
             $this->openCompleteTaskModal();
         } else if(!$this->isTaskCompleted && $this->task->status === StatusTask::DONE){
             $this->task->update(['status' => StatusTask::IN_PROGRESS]);
+        } else if($this->task->status === StatusTask::TODO && $this->task->subtasks->contains('is_completed', true)){
+            $this->task->update(['status' => StatusTask::IN_PROGRESS]);
         }
     }
 
