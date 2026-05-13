@@ -317,7 +317,7 @@ new #[Layout('layouts::team')] class extends Component
                         @enderror
 
                         <div
-                            class="border border-dashed transition-colors duration-150"
+                            class="border border-dashed transition-colors duration-150 hover:border-gold bg-input-bg/80"
                             :class="dragging ? 'border-gold bg-input-bg/80' : 'border-input-border bg-input-bg'"
                             x-data="{ dragging: false }"
                             x-on:click="$refs.taskEditFilesInput.click()"
