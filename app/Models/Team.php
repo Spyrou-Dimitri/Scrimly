@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class Team extends Model
 {
@@ -49,8 +50,8 @@ class Team extends Model
     protected function tag(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => strtoupper($value),
-            set: fn ($value) => strtoupper($value),
+            get: fn($value) => strtoupper($value),
+            set: fn($value) => strtoupper($value),
         );
     }
 
@@ -61,6 +62,20 @@ class Team extends Model
         });
     }
 
+    public function getLogoUrlAttribute(): string
+    {
+        if ($this->logo_type === 'upload' && $this->logo_value) {
+            return Storage::disk('public')->url('images/logoTeam/variants/480x480/' . $this->logo_value);
+        };
+
+        if ($this->logo_type === 'default' && $this->logo_value) {
+            return asset('img/IconsTeams/' . $this->logo_value . '.webp');
+        }
+
+        return asset('img/IconsTeams/Demacia/.webp');
+    }
+
+    
     private static function uniqueCodeGenerator(): string
     {
         $alphabet = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';

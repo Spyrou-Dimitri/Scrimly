@@ -37,43 +37,43 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-   
+
     public function getAvatarUrlAttribute(): string
-{
-    if ($this->avatar_type === 'upload' && $this->avatar_value) {
-        return Storage::disk('public')->url('images/avatar/variants/480x480/' . $this->avatar_value);
-    }
+    {
+        if ($this->avatar_type === 'upload' && $this->avatar_value) {
+            return Storage::disk('public')->url('images/avatar/variants/480x480/' . $this->avatar_value);
+        }
 
-    if ($this->avatar_type === 'default' && $this->avatar_value) {
-        return asset('img/IconsAvatars/' . $this->avatar_value . '.jpg');
-    }
+        if ($this->avatar_type === 'default' && $this->avatar_value) {
+            return asset('img/IconsAvatars/' . $this->avatar_value . '.jpg');
+        }
 
-    return asset('img/avatars/defaults/Camille.webp');
-}
+        return asset('img/avatars/defaults/Camille.webp');
+    }
 
     protected function riotTag(): Attribute
     {
-        return Attribute::get(fn (): ?string => $this->riotProfile?->riot_tag);
+        return Attribute::get(fn(): ?string => $this->riotProfile?->riot_tag);
     }
 
     protected function riotPuuid(): Attribute
     {
-        return Attribute::get(fn (): ?string => $this->riotProfile?->riot_puuid);
+        return Attribute::get(fn(): ?string => $this->riotProfile?->riot_puuid);
     }
 
     protected function tier(): Attribute
     {
-        return Attribute::get(fn (): ?LolTier => $this->riotProfile?->tier);
+        return Attribute::get(fn(): ?LolTier => $this->riotProfile?->tier);
     }
 
     protected function rank(): Attribute
     {
-        return Attribute::get(fn (): ?string => $this->riotProfile?->rank);
+        return Attribute::get(fn(): ?string => $this->riotProfile?->rank);
     }
 
     protected function lp(): Attribute
     {
-        return Attribute::get(fn (): ?int => $this->riotProfile?->lp);
+        return Attribute::get(fn(): ?int => $this->riotProfile?->lp);
     }
 
     /**
@@ -84,7 +84,7 @@ class User extends Authenticatable
         return Str::of($this->username)
             ->explode(' ')
             ->take(2)
-            ->map(fn ($word) => Str::substr($word, 0, 1))
+            ->map(fn($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
 

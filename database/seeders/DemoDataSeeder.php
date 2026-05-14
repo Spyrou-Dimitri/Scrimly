@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Enums\DefaultAvatar;
+use App\Enums\DefaultTeam;
 use App\Enums\Language;
 use App\Enums\LolGoal;
 use App\Enums\LolServeur;
@@ -132,7 +133,8 @@ class DemoDataSeeder extends Seeder
                 'name' => $blueprint['name'],
                 'slug' => $blueprint['slug'],
                 'tag' => $blueprint['tag'],
-                'logo' => null,
+                'logo_type' => 'default',
+                'logo_value' => fake()->randomElement(DefaultTeam::cases())->value,
                 'description' => 'Équipe de démonstration générée par le seeder.',
                 'language' => Language::FR,
                 'server' => LolServeur::EUW,

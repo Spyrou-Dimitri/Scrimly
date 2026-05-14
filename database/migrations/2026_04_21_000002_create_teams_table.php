@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('slug', 30)->unique();
             $table->string('code')->unique();
             $table->string('tag', 4)->unique();
-            $table->string('logo')->nullable();
+            $table->string('logo_type')->default('default');
+            $table->string('logo_value')->default('Demacia');
             $table->text('description', 1000)->nullable();
             $table->enum('language', Language::cases());
             $table->enum('server', LolServeur::cases());
