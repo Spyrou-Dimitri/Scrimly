@@ -21,7 +21,8 @@ class Team extends Model
         'slug',
         'tag',
         'code',
-        'logo',
+        'logo_type',
+        'logo_value',
         'description',
         'language',
         'server',
@@ -75,7 +76,7 @@ class Team extends Model
         return asset('img/IconsTeams/Demacia/.webp');
     }
 
-    
+
     private static function uniqueCodeGenerator(): string
     {
         $alphabet = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';

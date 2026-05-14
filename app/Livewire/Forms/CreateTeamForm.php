@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
-
+use App\Enums\DefaultTeam;
 class CreateTeamForm extends Form
 {
     #[Validate]
@@ -45,6 +45,11 @@ class CreateTeamForm extends Form
     #[Validate]
     public $logo = null;
 
+    #[Validate]
+    public string $default_logo = 'Demacia';
+
+    
+
     public function updatedRoleInTeam(): void
     {
         if ($this->roleInTeam !== RoleInTeam::PLAYER) {
@@ -64,6 +69,7 @@ class CreateTeamForm extends Form
             'roleInGame' => ['nullable', Rule::requiredIf($this->roleInTeam === RoleInTeam::PLAYER), Rule::enum(RoleInGame::class)],
             'description' => ['nullable', 'string', 'max:1000'],
             'logo' => ['nullable', 'image', 'max:2048'],
+            'default_logo' => ['required', Rule::enum(DefaultTeam::class)],
         ];
     }
 
@@ -78,10 +84,11 @@ class CreateTeamForm extends Form
             'roleInTeam' => 'pages/team/create.roleInTeam',
             'description' => 'pages/team/create.description',
             'logo' => 'pages/team/create.logo',
+            'default_logo' => 'pages/team/create.default_logo',
         ];
     }
 
-    public function store(): void
+    public function store(bool $applyPresetLogo): void
     {
         $validated = $this->validate();
 
@@ -101,11 +108,20 @@ class CreateTeamForm extends Form
             }
         }
 
+        if ($applyPresetLogo) {
+            $logoType = 'default';
+            $logoValue = DefaultTeam::from($validated['default_logo'])->value;
+        } else {
+            $logoType = 'upload';
+            $logoValue = $validated['logo'];
+        }
+
         $team = Team::create([
             'name' => $validated['team_name'],
             'slug' => Str::slug($validated['team_name']),
             'tag' => $validated['tag'],
-            'logo' => $validated['logo'],
+            'logo_type' => $logoType,
+            'logo_value' => $logoValue,
             'description' => $validated['description'],
             'language' => $validated['language'],
             'server' => $validated['server'],

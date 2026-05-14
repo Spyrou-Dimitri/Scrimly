@@ -100,7 +100,7 @@ class EditProfilForm extends Form
             $user->riotProfile()->updateOrCreate(
                 ['user_id' => $user->id],
                 ['riot_tag' => $validated['riot_tag']]
-                
+
             );
         }
     }

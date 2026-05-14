@@ -184,7 +184,11 @@ new class extends Component
                                 wire:click="choosePresetAvatar('{{ $avatar->value }}')"
                                 type="button"
                                 title="{{ $avatar->label() }}"
-                                class="@if ($form->default_avatar === $avatar->value) ring-2 ring-gold @else ring-2 ring-transparent @endif block w-full cursor-pointer overflow-hidden rounded-lg transition-all hover:ring-gold-light focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-light">
+                                @class([
+                                    'block w-full cursor-pointer overflow-hidden rounded-lg transition-all hover:ring-gold-light focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-light',
+                                    'ring-2 ring-gold' => $form->default_avatar === $avatar->value,
+                                    'ring-2 ring-transparent' => $form->default_avatar !== $avatar->value,
+                                ])>
                                 <img
                                     src="{{ $avatar->url() }}"
                                     alt="{{ $avatar->label() }}"

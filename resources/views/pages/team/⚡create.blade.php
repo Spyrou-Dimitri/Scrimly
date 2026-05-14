@@ -6,19 +6,46 @@ use App\Enums\LolServeur;
 use App\Enums\LolGoal;
 use App\Enums\Language;
 use App\Enums\RoleInTeam;
+use App\Enums\DefaultTeam;
 use App\Enums\RoleInGame;
 use App\Livewire\Forms\CreateTeamForm;
 use Livewire\WithFileUploads;
+use Livewire\Attributes\Computed;
 
 new #[Layout('layouts::choose_a_team')] class extends Component {
 
     public CreateTeamForm $form;
 
+    public bool $isChoosingPresetLogo = true;
+
     use WithFileUploads;
+
+    public function clearTemporaryTeamLogoUpload(): void
+    {
+        $this->form->logo = null;
+    }
+
+    public function choosePresetLogo(string $logo): void
+    {
+        $this->form->logo = null;
+        $this->form->default_logo = $logo;
+        $this->isChoosingPresetLogo = true;
+    }
+
+    #[Computed]
+    public function previewPresetLogo(): string
+    {
+        if ($this->form->logo) {
+            $this->isChoosingPresetLogo = false;
+            return $this->form->logo->temporaryUrl();
+        } else {
+            return DefaultTeam::from($this->form->default_logo)->url();
+        }
+    }
 
     public function createTeam(): void
     {
-        $this->form->store();
+        $this->form->store($this->isChoosingPresetLogo);
 
         session()->flash('toast', [
             'type' => 'success',
@@ -33,14 +60,104 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
 
 <div class="w-full max-w-[1600px] mx-auto">
     <section class="flex flex-col gap-8">
-        <h2 class="text-[32px] font-bold ">
-            {{ __('pages/team/create.title') }}
-        </h2>
-        <form wire:submit="createTeam" class="grid grid-cols-1 gap-6 lg:grid-cols-12">
-            <fieldset class="flex flex-col gap-4 bg-bg-widget p-6 shadow-basic lg:col-span-8">
+
+        <form wire:submit="createTeam" class="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start">
+            <fieldset class="avatar-fieldset m-0 flex min-w-0 flex-col gap-4 border-0 bg-bg-widget p-6 shadow-basic lg:col-span-4 lg:w-full">
+                <legend class="sr-only">
+                    {{ __('pages/team/create.logo_section_title') }}
+                </legend>
+                <div class="flex flex-col gap-2">
+                    <p class="w-full text-center text-xl font-bold text-gold lg:text-2xl">{{ __('pages/team/create.logo_section_title') }}</p>
+                    <p class="text-center text-text-secondary">{{ __('pages/team/create.logo_section_description') }}</p>
+                </div>
+                <div class="flex flex-col gap-4">
+                    <div class="relative mx-auto flex w-full max-w-44 flex-col gap-3">
+                        @if ($form->logo)
+                        <x-destructive
+                            wire:click="clearTemporaryTeamLogoUpload"
+                            type="button"
+                            class="absolute -top-2 -right-2 z-[2]"
+                            :only-icon="true">
+                            <flux:icon name="trash" class="size-5 shrink-0 opacity-70" />
+                        </x-destructive>
+                        @endif
+                        <div class="relative aspect-square w-full overflow-hidden rounded-lg bg-input-bg ring-2 ring-input-border">
+                            <div wire:loading wire:target="form.logo" class="pointer-events-none absolute inset-0 z-[1] flex flex-col items-center justify-center gap-2 bg-black/40 text-white">
+                                <svg class="size-10 animate-spin opacity-90" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <span class="sr-only">{{ __('pages/team/create.upload_logo') }}</span>
+                            </div>
+                            @if (!$form->logo && !$isChoosingPresetLogo)
+                            <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 px-4 text-center text-text-secondary">
+                                <flux:icon name="photo" class="size-12 shrink-0 opacity-70" />
+                                <p class="text-xs leading-snug font-medium">{{ __('pages/team/create.logo_preview_placeholder') }}</p>
+                            </div>
+                            @else
+                            <img
+                                src="{{ $this->previewPresetLogo }}"
+                                alt="{{ __('pages/team/create.logo_image_alt') }}"
+                                class="absolute inset-0 size-full object-cover"
+                                width="320"
+                                height="320"
+                                loading="lazy">
+                            @endif
+                        </div>
+                    </div>
+                    <div class="mx-auto w-fit">
+                        <label
+                            for="teamLogoUpload"
+                            class="cta-secondary relative focus-within:ring-2 focus-within:ring-gold-light flex cursor-pointer gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            {{ __('pages/team/create.upload_logo') }}
+                            <input wire:model="form.logo" type="file" accept="image/*" id="teamLogoUpload" name="logo" class="absolute inset-0 cursor-pointer opacity-0">
+                        </label>
+                        @error('form.logo')
+                        <span class="font-spaceGrotesk font-semibold text-input-error">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <p class="text-center text-sm font-medium text-white">{{ __('pages/team/create.choose_logo_preset') }}</p>
+                    <div class="grid grid-cols-3 gap-3 select-none" aria-hidden="true">
+                        @foreach (DefaultTeam::cases() as $logo)
+                        <div class="relative">
+                            <button
+                                wire:click="choosePresetLogo('{{ $logo->value }}')"
+                                type="button"
+                                title="{{ $logo->label() }}"
+                                @class([ 'block w-full cursor-pointer overflow-hidden rounded-lg transition-all hover:ring-gold-light focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-light' , 'ring-2 ring-gold'=> $form->default_logo === $logo->value,
+                                'ring-2 ring-transparent' => $form->default_logo !== $logo->value,
+                                ])>
+                                <img
+                                    src="{{ $logo->url() }}"
+                                    alt="{{ $logo->label() }}"
+                                    class="aspect-square w-full object-cover">
+                            </button>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="flex flex-col gap-6 border-0 bg-bg-widget p-6 shadow-basic lg:col-span-8 lg:pr-8">
                 <legend class="sr-only">
                     Informations de l'équipe
                 </legend>
+                <div class="flex flex-col gap-2">
+                    <h2 class="text-[32px] font-bold ">
+                        {!! __('pages/team/create.title') !!}
+                    </h2>
+                    <p class="text-text-secondary">
+                        {{ __('pages/team/create.slogan') }}
+                    </p>
+                </div>
                 <div class="flex flex-col gap-4">
                     <div class="flex flex gap-6">
                         <x-forms.input wire:model.live="form.team_name" :required="true" :placeholder="__('pages/team/create.team_name_placeholder')" :type="'text'" :name="'team_name'" class="w-full" :label="__('pages/team/create.team_name')">
@@ -100,74 +217,24 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
                         @endif
                     </div>
                     <div class="flex flex-col gap-2">
-                        <x-forms.textarea wire:model.live="form.description" :placeholder="__('pages/team/create.description_placeholder')" :name="'description'" :label="__('pages/team/create.description')" />
+                        <x-forms.textarea rows="8" wire:model.live="form.description" :placeholder="__('pages/team/create.description_placeholder')" :name="'description'" :label="__('pages/team/create.description')" />
                         @error('form.description')
                         <span class="font-spaceGrotesk text-input-error font-semibold">
                             {{ $message }}
                         </span>
                         @enderror
                     </div>
-                </div>
-            </fieldset>
-            <fieldset class="flex flex-col gap-4 bg-bg-widget p-6 shadow-basic lg:col-span-4 w-full">
-                <legend class="sr-only">
-                    Logo
-                </legend>
-                <div
-                    x-data="{ dragging: false, hovering: false, focused: false }"
-                    x-on:click="$refs.teamLogoInput.click()"
-                    x-on:dragover.prevent="dragging = true"
-                    x-on:dragleave="dragging = false"
-                    x-on:drop.prevent="
-                        dragging = false;
-                        const files = $event.dataTransfer.files;
-                        if (files.length) {
-                            $refs.teamLogoInput.files = files;
-                            $refs.teamLogoInput.dispatchEvent(new Event('change', { bubbles: true }));
-                        }
-                    "
-                    @mouseenter="hovering = true"
-                    @mouseleave="hovering = false"
-                    :class="{
-                        'border-gold': dragging || hovering || focused,
-                        'border-transparent': ! dragging && ! hovering && ! focused
-                    }"
-                    class="relative min-h-full flex cursor-pointer flex-col items-center justify-center
-                    bg-input-bg border transition-colors duration-200">
-                    <label for="logo" class="font-medium flex flex-col items-center justify-center gap-2 pointer-events-none">
-                        @if($form->logo)
-                        <img src="{{ $form->logo->temporaryUrl() }}" alt="Logo" class="w-full h-auto" />
-                        @else
-                        <img src="{{ asset('icons/file.svg') }}" alt="Logo" class="w-full h-auto" />
-                        @endif
-                        {{ __('pages/team/create.logo') }}
-                    </label>
 
-                    <input
-                        x-ref="teamLogoInput"
-                        wire:model.live="form.logo"
-                        type="file"
-                        name="logo"
-                        id="logo"
-                        accept="image/*"
-                        @focus="focused = true"
-                        @blur="focused = false"
-                        class="absolute inset-0 opacity-0 pointer-events-none" />
                 </div>
-                @error('form.logo')
-                <span class="font-spaceGrotesk text-input-error font-semibold">
-                    {{ $message }}
-                </span>
-                @enderror
+                <div class="flex  flex-row justify-between gap-4">
+                    <x-cta :href="route('team.index')" class="secondary" :title="__('pages/team/create.cancel')">
+                        {{ __('pages/team/create.cancel') }}
+                    </x-cta>
+                    <x-forms.submit type="submit" variant="primary" :title="__('pages/team/create.create')" class="w-fit" data-test="create-team-button">
+                        {{ __('pages/team/create.create') }}
+                    </x-forms.submit>
+                </div>
             </fieldset>
-            <div class="flex col-span-full flex-row justify-between gap-4 p-6 bg-bg-widget shadow-basic">
-                <x-cta :href="route('team.index')" class="secondary" :title="__('pages/team/create.cancel')">
-                    {{ __('pages/team/create.cancel') }}
-                </x-cta>
-                <x-forms.submit type="submit" variant="primary" :title="__('pages/team/create.create')" class="w-fit" data-test="create-team-button">
-                    {{ __('pages/team/create.create') }}
-                </x-forms.submit>
-            </div>
         </form>
     </section>
 
