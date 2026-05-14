@@ -61,8 +61,16 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
 <div class="w-full max-w-[1600px] mx-auto">
     <section class="flex flex-col gap-8">
 
-        <form wire:submit="createTeam" class="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start">
-            <fieldset class="avatar-fieldset m-0 flex min-w-0 flex-col gap-4 border-0 bg-bg-widget p-6 shadow-basic lg:col-span-4 lg:w-full">
+        <form wire:submit="createTeam" class="flex flex-col gap-6 lg:grid lg:grid-cols-12 lg:items-start">
+            <div class="flex flex-col gap-2 lg:hidden">
+                <h2 class="text-[32px] font-bold ">
+                    {!! __('pages/team/create.title') !!}
+                </h2>
+                <p class="text-text-secondary">
+                    {{ __('pages/team/create.slogan') }}
+                </p>
+            </div>
+            <fieldset class="avatar-fieldset m-0 flex min-w-0 flex-col gap-4 border-0 bg-bg-widget p-6 shadow-basic lg:col-span-4 lg:col-start-1 lg:row-start-1 lg:row-span-2 lg:w-full">
                 <legend class="sr-only">
                     {{ __('pages/team/create.logo_section_title') }}
                 </legend>
@@ -126,7 +134,7 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
                 </div>
                 <div class="flex flex-col gap-2">
                     <p class="text-center text-sm font-medium text-white">{{ __('pages/team/create.choose_logo_preset') }}</p>
-                    <div class="grid grid-cols-3 gap-3 select-none" aria-hidden="true">
+                    <div class="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-3 gap-3 select-none" aria-hidden="true">
                         @foreach (DefaultTeam::cases() as $logo)
                         <div class="relative">
                             <button
@@ -146,95 +154,97 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
                     </div>
                 </div>
             </fieldset>
-            <fieldset class="flex flex-col gap-6 border-0 bg-bg-widget p-6 shadow-basic lg:col-span-8 lg:pr-8">
-                <legend class="sr-only">
-                    Informations de l'équipe
-                </legend>
-                <div class="flex flex-col gap-2">
-                    <h2 class="text-[32px] font-bold ">
-                        {!! __('pages/team/create.title') !!}
-                    </h2>
-                    <p class="text-text-secondary">
-                        {{ __('pages/team/create.slogan') }}
-                    </p>
-                </div>
-                <div class="flex flex-col gap-4">
-                    <div class="flex flex gap-6">
-                        <x-forms.input wire:model.live="form.team_name" :required="true" :placeholder="__('pages/team/create.team_name_placeholder')" :type="'text'" :name="'team_name'" class="w-full" :label="__('pages/team/create.team_name')">
-                            @error('form.team_name')
-                            <span class="font-spaceGrotesk text-input-error font-semibold">
-                                {{ $message }}
-                            </span>
-                            @enderror
-                        </x-forms.input>
-                        <x-forms.input wire:model.live="form.tag" :required="true" :placeholder="__('pages/team/create.team_tag_placeholder')" :type="'text'" :name="'tag'" class="w-full" :label="__('pages/team/create.team_tag')">
-                            @error('form.tag')
-                            <span class="font-spaceGrotesk text-input-error font-semibold">
-                                {{ $message }}
-                            </span>
-                            @enderror
-                        </x-forms.input>
+            <div class="flex min-w-0 flex-col gap-6 border-0 bg-bg-widget p-6 shadow-basic lg:col-span-8 lg:col-start-5 lg:row-start-1 lg:row-span-2 lg:pr-8">
+                <fieldset class="m-0 flex flex-col gap-6 border-0 bg-transparent p-0 shadow-none">
+                    <legend class="sr-only">
+                        Informations de l'équipe
+                    </legend>
+                    <div class="hidden flex-col gap-2 lg:flex">
+                        <h2 class="text-[32px] font-bold ">
+                            {!! __('pages/team/create.title') !!}
+                        </h2>
+                        <p class="text-text-secondary">
+                            {{ __('pages/team/create.slogan') }}
+                        </p>
                     </div>
-                    <div class="flex flex-row gap-6">
-                        <x-forms.select wire:model.live="form.server" :required="true" :disabled="'-- Sélectionnez le serveur --'" :name="'server'" :label="__('pages/team/create.server')" :options="LolServeur::cases()">
-                            @error('form.server')
+                    <div class="flex flex-col gap-4">
+                        <div class="flex flex-col gap-4 sm:flex-row sm:gap-6">
+                            <x-forms.input wire:model.live="form.team_name" :required="true" :placeholder="__('pages/team/create.team_name_placeholder')" :type="'text'" :name="'team_name'" class="w-full" :label="__('pages/team/create.team_name')">
+                                @error('form.team_name')
+                                <span class="font-spaceGrotesk text-input-error font-semibold">
+                                    {{ $message }}
+                                </span>
+                                @enderror
+                            </x-forms.input>
+                            <x-forms.input wire:model.live="form.tag" :required="true" :placeholder="__('pages/team/create.team_tag_placeholder')" :type="'text'" :name="'tag'" class="w-full" :label="__('pages/team/create.team_tag')">
+                                @error('form.tag')
+                                <span class="font-spaceGrotesk text-input-error font-semibold">
+                                    {{ $message }}
+                                </span>
+                                @enderror
+                            </x-forms.input>
+                        </div>
+                        <div class="flex flex-col gap-4 sm:flex-row sm:gap-6">
+                            <x-forms.select wire:model.live="form.server" :required="true" :disabled="'-- Sélectionnez le serveur --'" :name="'server'" :label="__('pages/team/create.server')" :options="LolServeur::cases()">
+                                @error('form.server')
+                                <span class="font-spaceGrotesk text-input-error font-semibold">
+                                    {{ $message }}
+                                </span>
+                                @enderror
+                            </x-forms.select>
+                            <x-forms.select wire:model.live="form.goal" :required="true" :name="'goal'" :label="__('pages/team/create.goal')" :options="LolGoal::cases()" :disabled="'-- Quel est le but de votre équipe ? --'">
+                                @error('form.goal')
+                                <span class="font-spaceGrotesk text-input-error font-semibold">
+                                    {{ $message }}
+                                </span>
+                                @enderror
+                            </x-forms.select>
+                        </div>
+                        <div class="flex flex-col gap-4 sm:flex-row sm:gap-6">
+                            <x-forms.select wire:model.live="form.language" :required="true" :disabled="'-- Sélectionnez la langue --'" :name="'language'" :label="__('pages/team/create.language')" :options="Language::cases()">
+                                @error('form.language')
+                                <span class="font-spaceGrotesk text-input-error font-semibold">
+                                    {{ $message }}
+                                </span>
+                                @enderror
+                            </x-forms.select>
+                            <x-forms.select wire:model.live="form.roleInTeam" :required="true" :disabled="'-- Sélectionnez le rôle --'" :name="'roleInTeam'" :label="__('pages/team/create.roleInTeam')" :options="RoleInTeam::cases()">
+                                @error('form.roleInTeam')
+                                <span class="font-spaceGrotesk text-input-error font-semibold">
+                                    {{ $message }}
+                                </span>
+                                @enderror
+                            </x-forms.select>
+                            @if($form->roleInTeam === RoleInTeam::PLAYER)
+                            <x-forms.select wire:model.live="form.roleInGame" :required="true" :disabled="'-- Sélectionnez le rôle --'" :name="'roleInGame'" :label="__('pages/team/create.roleInGame')" :options="RoleInGame::cases()">
+                                @error('form.roleInGame')
+                                <span class="font-spaceGrotesk text-input-error font-semibold">
+                                    {{ $message }}
+                                </span>
+                                @enderror
+                            </x-forms.select>
+                            @endif
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <x-forms.textarea rows="8" wire:model.live="form.description" :placeholder="__('pages/team/create.description_placeholder')" :name="'description'" :label="__('pages/team/create.description')" />
+                            @error('form.description')
                             <span class="font-spaceGrotesk text-input-error font-semibold">
                                 {{ $message }}
                             </span>
                             @enderror
-                        </x-forms.select>
-                        <x-forms.select wire:model.live="form.goal" :required="true" :name="'goal'" :label="__('pages/team/create.goal')" :options="LolGoal::cases()" :disabled="'-- Quel est le but de votre équipe ? --'">
-                            @error('form.goal')
-                            <span class="font-spaceGrotesk text-input-error font-semibold">
-                                {{ $message }}
-                            </span>
-                            @enderror
-                        </x-forms.select>
-                    </div>
-                    <div class="flex flex-row gap-6">
-                        <x-forms.select wire:model.live="form.language" :required="true" :disabled="'-- Sélectionnez la langue --'" :name="'language'" :label="__('pages/team/create.language')" :options="Language::cases()">
-                            @error('form.language')
-                            <span class="font-spaceGrotesk text-input-error font-semibold">
-                                {{ $message }}
-                            </span>
-                            @enderror
-                        </x-forms.select>
-                        <x-forms.select wire:model.live="form.roleInTeam" :required="true" :disabled="'-- Sélectionnez le rôle --'" :name="'roleInTeam'" :label="__('pages/team/create.roleInTeam')" :options="RoleInTeam::cases()">
-                            @error('form.roleInTeam')
-                            <span class="font-spaceGrotesk text-input-error font-semibold">
-                                {{ $message }}
-                            </span>
-                            @enderror
-                        </x-forms.select>
-                        @if($form->roleInTeam === RoleInTeam::PLAYER)
-                        <x-forms.select wire:model.live="form.roleInGame" :required="true" :disabled="'-- Sélectionnez le rôle --'" :name="'roleInGame'" :label="__('pages/team/create.roleInGame')" :options="RoleInGame::cases()">
-                            @error('form.roleInGame')
-                            <span class="font-spaceGrotesk text-input-error font-semibold">
-                                {{ $message }}
-                            </span>
-                            @enderror
-                        </x-forms.select>
-                        @endif
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <x-forms.textarea rows="8" wire:model.live="form.description" :placeholder="__('pages/team/create.description_placeholder')" :name="'description'" :label="__('pages/team/create.description')" />
-                        @error('form.description')
-                        <span class="font-spaceGrotesk text-input-error font-semibold">
-                            {{ $message }}
-                        </span>
-                        @enderror
-                    </div>
+                        </div>
 
-                </div>
-                <div class="flex  flex-row justify-between gap-4">
-                    <x-cta :href="route('team.index')" class="secondary" :title="__('pages/team/create.cancel')">
-                        {{ __('pages/team/create.cancel') }}
-                    </x-cta>
-                    <x-forms.submit type="submit" variant="primary" :title="__('pages/team/create.create')" class="w-fit" data-test="create-team-button">
-                        {{ __('pages/team/create.create') }}
-                    </x-forms.submit>
-                </div>
-            </fieldset>
+                    </div>
+                    <div class="flex flex-row justify-between gap-4">
+                        <x-cta :href="route('team.index')" class="secondary" :title="__('pages/team/create.cancel')">
+                            {{ __('pages/team/create.cancel') }}
+                        </x-cta>
+                        <x-forms.submit type="submit" variant="primary" :title="__('pages/team/create.create')" class="w-fit" data-test="create-team-button">
+                            {{ __('pages/team/create.create') }}
+                        </x-forms.submit>
+                    </div>
+                </fieldset>
+            </div>
         </form>
     </section>
 
