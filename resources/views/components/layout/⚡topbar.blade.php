@@ -162,16 +162,10 @@ new class extends Component
                 title="{{ __('layouts/team.edit_profile_cta_title') }}"
                 class="flex items-center gap-2 lg:gap-3 group">
 
-                @if ($this->currentUser->avatar)
-                <img src="{{ Storage::disk('public')->url('images/avatar/variants/128x128/' . $this->currentUser->avatar) }}"
+                <img src="{{ $this->currentUser->avatar_url }}"
                     alt="{{ $this->currentUser->username }}"
                     class="size-9 rounded-full object-cover flex-shrink-0">
-                @else
-                <div class="size-9 rounded-full bg-bg-card flex items-center justify-center 
-                    text-gold font-bold text-sm flex-shrink-0">
-                    {{ $this->currentUser->initials() }}
-                </div>
-                @endif
+                
 
                 <span class="hidden sm:inline-block relative text-white font-medium max-w-[160px]
                  before:content-[''] before:absolute before:bottom-0 before:left-0 

@@ -84,17 +84,10 @@ new #[Layout('layouts::team')] class extends Component
 <div class="flex w-full flex-col gap-8">
     <div class="grid w-full grid-cols-1 gap-4 lg:grid-cols-12 lg:gap-6">
         <div class="mx-auto w-full max-w-[280px] lg:col-span-3 lg:mx-0 lg:max-w-none">
-            @if ($user->avatar)
             <img
-                src="{{ Storage::disk('public')->url('images/avatar/variants/480x480/'.$user->avatar) }}"
+                src="{{ $user->avatar_url }}"
                 alt="Photo de profil de {{ $user->username }}"
                 class="aspect-square w-full object-cover">
-            @else
-            <img
-                src="{{ asset('/img/basicIcon.webp') }}"
-                alt="Photo de profil de {{ $user->username }}"
-                class="aspect-square w-full object-cover">
-            @endif
         </div>
         <div class="flex w-full flex-col items-center gap-4 md:gap-6 text-center lg:col-span-9 lg:col-start-4 lg:items-stretch lg:justify-center lg:text-left">
             <div class="flex min-w-0 flex-col items-center lg:items-start">

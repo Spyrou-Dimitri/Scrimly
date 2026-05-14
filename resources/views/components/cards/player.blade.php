@@ -22,17 +22,11 @@ $tierLine .= ' • '.$memberUser->rank;
     <span class="card-animated-border-right-edge" aria-hidden="true"></span>
     <div class="relative">
         <div class="relative overflow-hidden">
-            @if ($memberUser->avatar)
             <img
-                src="{{ Storage::disk('public')->url('images/avatar/variants/480x480/' . $memberUser->avatar) }}"
+                src="{{ $memberUser->avatar_url }}"
                 alt="Photo de profil de {{ $memberUser->username }}"
                 class="aspect-square w-full object-cover">
-            @else
-            <img
-                src="{{ asset('/img/basicIcon.webp') }}"
-                alt="Photo de profil de {{ $memberUser->username }}"
-                class="aspect-square w-full object-cover">
-            @endif
+            
         </div>
         <div class="absolute right-2 top-2 z-10 flex items-center gap-2" @click.stop>
             <span class="inline-flex flex-1 items-center gap-1.5 bg-bg-widget px-3 py-2 text-xs font-medium text-white">

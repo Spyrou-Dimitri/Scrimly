@@ -114,44 +114,8 @@ new class extends Component
         <h2 class="text-[32px] font-bold ">
             {{ __('profil/profil.title') }}
         </h2>
-        <form wire:submit="updateProfil" class="grid grid-cols-1 gap-6 lg:grid-cols-12">
-            <fieldset class="m-0 flex flex-col self-start gap-4 border-0 bg-bg-widget p-6 shadow-basic lg:col-span-8 justify-between">
-                <legend class="sr-only">
-                    {{ __('profil/profil.information_account') }}
-                </legend>
-                <div class="bg-bg-widget flex flex-col gap-4">
-                    <x-forms.input wire:model.live="form.username" :label="__('profil/profil.username')" :type="'text'" :name="'username'" :id="'username'" :placeholder="__('profil/profil.username')">
-                        @error('form.username')
-                        <span class="font-spaceGrotesk text-input-error font-semibold">
-                            {{ $message }}
-                        </span>
-                        @enderror
-                    </x-forms.input>
-                    <x-forms.input wire:model.live="form.email" :label="__('profil/profil.email')" :type="'email'" :name="'email'" :id="'email'" :placeholder="'john.doe@example.com'">
-                        @error('form.email')
-                        <span class="font-spaceGrotesk text-input-error font-semibold">
-                            {{ $message }}
-                        </span>
-                        @enderror
-                    </x-forms.input>
-                    <x-forms.input wire:model.live="form.riot_tag" :label="__('profil/profil.riot_tag')" :type="'text'" :name="'riot_tag'" :id="'riot_tag'" :placeholder="'HideOnBush#KR'">
-                        @error('form.riot_tag')
-                        <span class="font-spaceGrotesk text-input-error font-semibold">
-                            {{ $message }}
-                        </span>
-                        @enderror
-                    </x-forms.input>
-                </div>
-                <div class="flex col-span-full flex-row justify-between gap-4">
-                    <button class="cta-secondary" title="{{ __('profil/profil.change_password_title') }}" type="button" wire:click="openChangePasswordModal">
-                        {{ __('profil/profil.change_password') }}
-                    </button>
-                    <x-forms.submit type="submit" variant="primary" :title="__('profil/profil.save')" class="w-fit" data-test="create-team-button">
-                        {{ __('profil/profil.save') }}
-                    </x-forms.submit>
-                </div>
-            </fieldset>
-            <fieldset class="avatar-fieldset m-0 flex min-w-0 flex-col gap-4 border-0 bg-bg-widget p-6 shadow-basic lg:col-span-4 lg:pl-8">
+        <form wire:submit="updateProfil" class="grid grid-cols-1 gap-6 md:grid-cols-12">
+            <fieldset class="avatar-fieldset m-0 flex min-w-0 flex-col gap-4 border-0 bg-bg-widget p-6 shadow-basic md:col-span-4 md:pl-8">
                 <legend class="sr-only">
                     {{ __('register/register.avatar_section_title') }}
                 </legend>
@@ -231,6 +195,43 @@ new class extends Component
                     </div>
                 </div>
             </fieldset>
+            <fieldset class="m-0 flex flex-col self-start gap-4 border-0 bg-bg-widget p-6 shadow-basic md:col-span-8 justify-between">
+                <legend class="sr-only">
+                    {{ __('profil/profil.information_account') }}
+                </legend>
+                <div class="bg-bg-widget flex flex-col gap-4">
+                    <x-forms.input wire:model.live="form.username" :label="__('profil/profil.username')" :type="'text'" :name="'username'" :id="'username'" :placeholder="__('profil/profil.username')">
+                        @error('form.username')
+                        <span class="font-spaceGrotesk text-input-error font-semibold">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </x-forms.input>
+                    <x-forms.input wire:model.live="form.email" :label="__('profil/profil.email')" :type="'email'" :name="'email'" :id="'email'" :placeholder="'john.doe@example.com'">
+                        @error('form.email')
+                        <span class="font-spaceGrotesk text-input-error font-semibold">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </x-forms.input>
+                    <x-forms.input wire:model.live="form.riot_tag" :label="__('profil/profil.riot_tag')" :type="'text'" :name="'riot_tag'" :id="'riot_tag'" :placeholder="'HideOnBush#KR'">
+                        @error('form.riot_tag')
+                        <span class="font-spaceGrotesk text-input-error font-semibold">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </x-forms.input>
+                </div>
+                <div class="flex col-span-full flex-row justify-between gap-4">
+                    <button class="cta-secondary" title="{{ __('profil/profil.change_password_title') }}" type="button" wire:click="openChangePasswordModal">
+                        {{ __('profil/profil.change_password') }}
+                    </button>
+                    <x-forms.submit type="submit" variant="primary" :title="__('profil/profil.save')" class="w-fit" data-test="create-team-button">
+                        {{ __('profil/profil.save') }}
+                    </x-forms.submit>
+                </div>
+            </fieldset>
+
 
         </form>
     </section>

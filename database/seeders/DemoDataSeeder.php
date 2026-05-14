@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\DefaultAvatar;
 use App\Enums\Language;
 use App\Enums\LolGoal;
 use App\Enums\LolServeur;
@@ -25,11 +26,9 @@ use Illuminate\Support\Str;
 
 class DemoDataSeeder extends Seeder
 {
-    /**
-     * Utilisateurs de démo avec identifiants Riot (une seule entrée Elise ; doublon retiré du brief).
-     *
-     * @var list<array{username: string, riot_tag: string}>
-     */
+    
+
+
     private const RIOT_USERS = [
         ['username' => 'Tokha', 'riot_tag' => 'AmbesseTonFroc#PILOT'],
         ['username' => 'Elise', 'riot_tag' => 'EliseFromWebDev#Web'],
@@ -44,9 +43,7 @@ class DemoDataSeeder extends Seeder
         ['username' => 'Lawin', 'riot_tag' => 'Lawin#2000'],
     ];
 
-    /**
-     * @var list<string>
-     */
+    
     private const CHAMPION_NAMES = [
         'Ahri', 'Yasuo', 'LeeSin', 'Jinx', 'Thresh', 'Ornn', 'Kaisa', 'Graves',
         'Lulu', 'Syndra', 'Vi', 'Maokai', 'Aphelios', 'Renata', 'JarvanIV',
@@ -95,11 +92,7 @@ class DemoDataSeeder extends Seeder
         ],
     ];
 
-    /**
-     * Rôles en jeu assignés aux trois starters (une fois par équipe).
-     *
-     * @var list<RoleInGame>
-     */
+   
     private const STARTER_ROLES = [RoleInGame::TOP, RoleInGame::JUNGLE, RoleInGame::MID];
 
     public function run(): void
@@ -123,6 +116,8 @@ class DemoDataSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'email_verified_at' => now(),
                 'current_team_id' => null,
+                'avatar_type' => 'default',
+                'avatar_value' => fake()->randomElement(DefaultAvatar::cases())->value,
             ]);
 
             $this->seedRiotDataForUser($user, $row['riot_tag']);
