@@ -2,7 +2,7 @@
 
 return [
     'title' => 'Inscription',
-    'welcome' => 'Bienvenue sur <span class="text-gold">Scrimly</span>',
+    'welcome' => '<span class="text-gold">Créer</span> votre compte',
     'welcome_description' => 'Créez votre compte pour commencer à utiliser Scrimly',
     'form_title' => 'Espace d\'inscription',
     'username' => 'Nom d\'utilisateur',
@@ -10,10 +10,17 @@ return [
     'email' => 'Email',
     'password' => 'Mot de passe',
     'password_placeholder' => '**************',
+    'toggle_password' => 'Afficher ou masquer le mot de passe',
+    'avatar_section_title' => 'Photo de profil',
+    'avatar_section_description' => 'Personnalisez votre compte avec un avatar parmi les visuels proposés.',
+    'choose_avatar' => 'Ou choisissez un avatar',
     'show_password' => 'Afficher le mot de passe',
     'hide_password' => 'Masquer le mot de passe',
     'register' => 'Créer mon compte',
     'already_registered' => 'Vous avez déjà un compte ?',
     'title_cta' => 'Accéder à l\'espace de connexion',
     'login' => 'Connectez-vous !',
+    'avatar_section_image' => 'Image de profil',
+    'upload_photo' => 'Importer une photo',
+    'preview_placeholder' => 'Votre photo apparaîtra ici après import.',
 ];

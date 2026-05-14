@@ -7,8 +7,9 @@
 </head>
 
 @php
-    $currentUser = auth()->user();
+$currentUser = auth()->user();
 @endphp
+
 <body
     class="min-h-screen flex flex-col bg-bg-main text-text-primary font-sans">
     <header class="flex items-center shadow-basic justify-between bg-bg-widget px-8 py-6">
@@ -30,16 +31,12 @@
                     title="{{ __('layouts/team.edit_profile_cta_title') }}"
                     class="flex items-center g ap-2 lg:gap-3 group">
 
-                    @if ($currentUser->avatar)
-                    <img src="{{ Storage::disk('public')->url('images/avatar/variants/128x128/' . $currentUser->avatar) }}"
+                    <img src="{!! $currentUser->avatar_url !!}"
                         alt="{{ $currentUser->username }}"
                         class="size-9 rounded-full object-cover flex-shrink-0">
-                    @else
-                    <div class="size-9 rounded-full bg-bg-card flex items-center justify-center 
-                    text-gold font-bold text-sm flex-shrink-0">
-                        {{ $currentUser->initials() }}
-                    </div>
-                    @endif
+
+
+
 
                     <span class="hidden sm:inline-block relative text-white font-medium max-w-[160px]
                  before:content-[''] before:absolute before:bottom-0 before:left-0 

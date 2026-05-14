@@ -4,7 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\LolTier;
-use App\Enums\RoleInTeam;
+use App\Enums\DefaultAvatar;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,6 +16,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Illuminate\Support\Facades\Storage;
 
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable
@@ -26,7 +27,8 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
-        'avatar',
+        'avatar_type',
+        'avatar_value',
         'current_team_id',
     ];
 
@@ -34,6 +36,20 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+   
+    public function getAvatarUrlAttribute(): string
+{
+    if ($this->avatar_type === 'upload' && $this->avatar_value) {
+        return Storage::disk('public')->url('images/avatar/variants/480x480/' . $this->avatar_value);
+    }
+
+    if ($this->avatar_type === 'default' && $this->avatar_value) {
+        return asset('img/IconsAvatars/' . $this->avatar_value . '.jpg');
+    }
+
+    return asset('img/avatars/defaults/Camille.webp');
+}
 
     protected function riotTag(): Attribute
     {
@@ -93,6 +109,4 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Team::class, 'current_team_id');
     }
-
-    
 }

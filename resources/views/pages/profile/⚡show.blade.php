@@ -117,12 +117,9 @@ new class extends Component
                     <label for="logo" class="font-medium flex flex-col items-center justify-center gap-2 pointer-events-none">
                         @if($form->avatar)
                         <img src="{{ $form->avatar->temporaryUrl() }}" alt="Avatar preview" class="w-full aspect-square object-cover h-auto" />
-                        @elseif($currentUser->avatar)
-                        <img src="{{ Storage::disk('public')->url('images/avatar/variants/480x480/' . $currentUser->avatar) }}" alt="Avatar" class="w-full aspect-square object-cover h-auto" />
-                        @else
-                        <flux:icon.user class="w-10 h-10" />
+                        @else 
+                        <img src="{{$currentUser->avatar_url}}" alt="Avatar" class="w-full aspect-square object-cover h-auto" />
                         @endif
-                        {{ __('profil/profil.avatar') }}
                     </label>
                     @error('form.avatar')
                     <span class="font-spaceGrotesk text-input-error font-semibold">

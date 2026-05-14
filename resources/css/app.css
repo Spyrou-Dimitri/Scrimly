@@ -126,6 +126,7 @@ select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
 
+@layer components {
 .cta-primary {
     position: relative;
     text-align: center;
@@ -239,6 +240,15 @@ select:focus[data-flux-control] {
 .cta-danger.cta-danger--outline:focus-visible {
     outline: none;
     box-shadow: 0 0 0 2px rgb(127 29 29 / 0.45);
+}
+
+.cta-danger.cta-danger--only-icon {
+    padding: 0.5em;
+    background-color: rgb(127 29 29);
+}
+.cta-danger.cta-danger--only-icon:hover {
+    background-color: rgb(127 29 29 / 0.6);
+}
 }
 
 .nav-link {

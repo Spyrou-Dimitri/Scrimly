@@ -4,12 +4,17 @@ namespace App\Actions\Fortify;
 
 use App\Concerns\PasswordValidationRules;
 use App\Concerns\ProfileValidationRules;
+use App\Enums\DefaultAvatar;
+use App\Jobs\ProcessUploadImageAvatar;
 use App\Models\User;
 use App\Rules\ValidRiotId;
-use Illuminate\Support\Facades\Validator;
-use Laravel\Fortify\Contracts\CreatesNewUsers;
 use App\Services\Riot\RiotApiClient;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -18,7 +23,7 @@ class CreateNewUser implements CreatesNewUsers
     /**
      * Validate and create a newly registered user.
      *
-     * @param  array<string, string>  $input
+     * @param  array<string, mixed>  $input
      */
     public function create(array $input): User
     {
@@ -27,17 +32,21 @@ class CreateNewUser implements CreatesNewUsers
             'username' => $this->usernameRules(),
             'riot_tag' => $this->riotTagRules(),
             'password' => $this->passwordRules(),
-
+            'avatar' => $this->avatarRules(),
+            'default_avatar' => ['nullable', Rule::enum(DefaultAvatar::class)],
         ])->validate();
 
         $riotAccount = ValidRiotId::$validatedAccount;
 
-
         return DB::transaction(function () use ($input, $riotAccount) {
+            [$avatarType, $avatarValue] = $this->resolveAvatar($input);
+
             $user = User::create([
                 'username' => $input['username'],
                 'email' => $input['email'],
                 'password' => $input['password'],
+                'avatar_type' => $avatarType,
+                'avatar_value' => $avatarValue,
             ]);
 
             if (! empty($input['riot_tag'])) {
@@ -52,7 +61,7 @@ class CreateNewUser implements CreatesNewUsers
                     'synced_at' => now(),
                 ]);
 
-                $riotClient = new RiotApiClient();
+                $riotClient = new RiotApiClient;
                 $recentMatches = $riotClient->getRecentMatches($riotAccount['puuid']);
 
                 if ($recentMatches) {
@@ -61,10 +70,44 @@ class CreateNewUser implements CreatesNewUsers
                     }
                 }
             }
-            
 
             return $user;
         });
+    }
 
+    protected function resolveAvatar(array $input): array
+    {
+        $fallbackDefault = $this->defaultAvatarFromInput($input);
+
+        $upload = $input['avatar'] ?? null;
+        if (! $upload instanceof UploadedFile || ! $upload->isValid()) {
+            return ['default', $fallbackDefault->value];
+        }
+
+        $extension = $upload->extension() ?: $upload->getClientOriginalExtension();
+        $filename = uniqid('', true).'.'.$extension;
+        $storedPath = Storage::disk('public')->putFileAs(
+            config('avatar.original_path'),
+            $upload,
+            $filename
+        );
+
+        if (! $storedPath) {
+            return ['default', $fallbackDefault->value];
+        }
+
+        ProcessUploadImageAvatar::dispatchSync($storedPath, $filename);
+
+        return ['upload', $filename];
+    }
+
+    protected function defaultAvatarFromInput(array $input): DefaultAvatar
+    {
+        $raw = $input['default_avatar'] ?? null;
+        if ($raw === null || $raw === '') {
+            return DefaultAvatar::cases()[0];
+        }
+
+        return DefaultAvatar::from($raw);
     }
 }

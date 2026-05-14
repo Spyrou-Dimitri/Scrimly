@@ -30,7 +30,7 @@ class EditProfilForm extends Form
             'username' => ['required', 'string', 'min:3', 'max:30', Rule::unique(User::class)->ignore(Auth::id())],
             'email' => ['required', 'email:rfc', 'regex:/^[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}$/', Rule::unique(User::class)->ignore(Auth::id())],
             'riot_tag' => ['nullable', 'string', 'min:3', 'max:30'],
-            'avatar' => ['nullable', 'image', 'max:2048'],
+            'avatar_type' => ['nullable', 'string', 'in:upload,default'],
         ];
     }
 

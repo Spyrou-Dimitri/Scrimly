@@ -389,7 +389,7 @@ new #[Layout('layouts::team')] class extends Component
                     </div>
 
 
-                    {{-- Fichiers locaux en attente d’upload --}}
+                    {{-- Fichiers submissions --}}
                     <form wire:submit.prevent="uploadSubmissions" class="flex flex-col gap-4">
                         <div class="flex flex-col gap-3">
                             <h4 class="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-semibold uppercase tracking-wide text-gold">

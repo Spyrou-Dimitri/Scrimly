@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('username', 100)->unique();
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('avatar')->nullable();
+            $table->string('avatar_type')->default('default');
+            $table->string('avatar_value')->default('Camille');
             $table->unsignedBigInteger('current_team_id')->nullable()->index();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

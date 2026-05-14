@@ -50,6 +50,11 @@ trait ProfileValidationRules
         ];
     }
 
+    public function avatarRules(): array
+    {
+        return ['nullable', 'image', 'max:2048'];
+    }
+
     protected function usernameRules(): array
     {
         return ['required', 'string', 'max:20', 'min:3', 'unique:users'];

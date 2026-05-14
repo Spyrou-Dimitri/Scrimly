@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Http;
 use Laravel\Fortify\Features;
 
 beforeEach(function () {
@@ -11,6 +13,7 @@ test('registration screen can be rendered', function () {
     $response = $this->get(route('register'));
 
     $response->assertOk();
+    $response->assertSee(__('register/register.preview_placeholder'));
 });
 
 test('new users can register without a riot tag', function () {
@@ -38,6 +41,35 @@ test('new users can register without a riot tag', function () {
 });
 
 test('new users can register with a valid riot tag', function () {
+    Http::fake(function (Request $request) {
+        $url = $request->url();
+
+        if (str_contains($url, 'accounts/by-riot-id')) {
+            return Http::response([
+                'puuid' => 'b8834037-9959-4886-b704-6ee4e27d0c2e',
+                'gameName' => 'HideOnBush',
+                'tagLine' => 'KR1',
+            ], 200);
+        }
+
+        if (str_contains($url, 'entries/by-puuid')) {
+            return Http::response([[
+                'queueType' => 'RANKED_SOLO_5x5',
+                'tier' => 'CHALLENGER',
+                'rank' => 'I',
+                'leaguePoints' => 42,
+                'wins' => 100,
+                'losses' => 50,
+            ]], 200);
+        }
+
+        if (str_contains($url, 'matches/by-puuid')) {
+            return Http::response([], 200);
+        }
+
+        return Http::response(['error' => 'unmocked'], 404);
+    });
+
     $response = $this->post(route('register.store'), [
         'username' => 'HideOnBush',
         'riot_tag' => 'HideOnBush#KR1',
