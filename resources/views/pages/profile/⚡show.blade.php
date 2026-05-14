@@ -151,7 +151,7 @@ new class extends Component
                     </x-forms.submit>
                 </div>
             </fieldset>
-            <fieldset class="avatar-fieldset m-0 flex min-w-0 flex-col gap-4 border-0 bg-bg-widget p-6 shadow-basic lg:col-span-4 lg:border-l lg:border-gold lg:pl-8">
+            <fieldset class="avatar-fieldset m-0 flex min-w-0 flex-col gap-4 border-0 bg-bg-widget p-6 shadow-basic lg:col-span-4 lg:pl-8">
                 <legend class="sr-only">
                     {{ __('register/register.avatar_section_title') }}
                 </legend>
