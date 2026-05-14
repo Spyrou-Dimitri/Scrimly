@@ -12,7 +12,7 @@ return [
     'password_placeholder' => '**************',
     'toggle_password' => 'Afficher ou masquer le mot de passe',
     'avatar_section_title' => 'Photo de profil',
-    'avatar_section_description' => 'Personnalisez votre compte avec un avatar parmi les visuels proposés.',
+    'avatar_section_description' => 'Personnalisez votre compte en important une photo.',
     'choose_avatar' => 'Ou choisissez un avatar',
     'show_password' => 'Afficher le mot de passe',
     'hide_password' => 'Masquer le mot de passe',
