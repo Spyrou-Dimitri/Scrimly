@@ -26,9 +26,7 @@ class RiotProfile extends Model
         'synced_at',
     ];
 
-    /**
-     * @return array<string, string>
-     */
+   
     protected function casts(): array
     {
         return [
@@ -67,5 +65,22 @@ class RiotProfile extends Model
             return 0;
         }
         return round($totalKda / $numberOfDeaths, 2);
+    }
+    public function eloScore(): int
+    {
+        if (!$this->tier) {
+            return 0;
+        }
+        $divisionValue = match ($this->rank) {
+            'IV' => 0,
+            'III' => 1,
+            'II' => 2,
+            'I' => 3,
+            default => 3,
+        };
+
+        $tierValue = $this->tier->numericValue();
+
+        return ($tierValue * 400) + ($divisionValue * 100) + ($this->lp ?? 0);
     }
 }

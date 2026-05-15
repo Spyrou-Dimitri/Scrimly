@@ -71,4 +71,73 @@ enum LolTier: string
             self::CHALLENGER => 'img/LolTier/Challenger.png',
         };
     }
+    public function numericValue(): int
+    {
+        return match ($this) {
+            self::IRON => 0,
+            self::BRONZE => 1,
+            self::SILVER => 2,
+            self::GOLD => 3,
+            self::PLATINUM => 4,
+            self::EMERALD => 5,
+            self::DIAMOND => 6,
+            self::MASTER => 7,
+            self::GRANDMASTER => 8,
+            self::CHALLENGER => 9,
+        };
+    }
+    public static function fromNumericValue(int $value): array
+    {
+        return match (true) {
+            $value >= 0 && $value < 400 => [
+                'icon' => self::IRON->icon(),
+                'tier' => self::IRON->label(),
+            ],
+
+            $value >= 400 && $value < 800 => [
+                'icon' => self::BRONZE->icon(),
+                'tier' => self::BRONZE->label(),
+            ],
+
+            $value >= 800 && $value < 1200 => [
+                'icon' => self::SILVER->icon(),
+                'tier' => self::SILVER->label(),
+            ],
+
+            $value >= 1200 && $value < 1600 => [
+                'icon' => self::GOLD->icon(),
+                'tier' => self::GOLD->label(),
+            ],
+
+            $value >= 1600 && $value < 2000 => [
+                'icon' => self::PLATINUM->icon(),
+                'tier' => self::PLATINUM->label(),
+            ],
+
+            $value >= 2000 && $value < 2400 => [
+                'icon' => self::EMERALD->icon(),
+                'tier' => self::EMERALD->label(),
+            ],
+
+            $value >= 2400 && $value < 2800 => [
+                'icon' => self::DIAMOND->icon(),
+                'tier' => self::DIAMOND->label(),
+            ],
+
+            $value >= 2800 && $value < 3200 => [
+                'icon' => self::MASTER->icon(),
+                'tier' => self::MASTER->label(),
+            ],
+
+            $value >= 3200 && $value < 3600 => [
+                'icon' => self::GRANDMASTER->icon(),
+                'tier' => self::GRANDMASTER->label(),
+            ],
+
+            default => [
+                'icon' => self::CHALLENGER->icon(),
+                'tier' => self::CHALLENGER->label(),
+            ],
+        };
+    }
 }

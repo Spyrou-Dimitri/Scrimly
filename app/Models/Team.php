@@ -91,4 +91,20 @@ class Team extends Model
 
         return $code;
     }
+
+    public function averageEloScore(): ?int
+    {
+        $startersPlayer = $this->members()->with('user.riotProfile')->where('is_starter', true)->get();
+
+        $scores = $startersPlayer
+            ->map(fn($member) => $member->user->riotProfile?->eloScore())
+            ->filter()
+            ->values();
+
+        if ($scores->isEmpty()) {
+            return null;
+        }
+
+        return round($scores->average());
+    }
 }
