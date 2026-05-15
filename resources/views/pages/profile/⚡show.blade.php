@@ -226,11 +226,11 @@ new class extends Component
                         @enderror
                     </x-forms.input>
                 </div>
-                <div class="flex col-span-full flex-row justify-between gap-4">
+                <div class="flex col-span-full flex-col sm:flex-row justify-between gap-4">
                     <button class="cta-secondary" title="{{ __('profil/profil.change_password_title') }}" type="button" wire:click="openChangePasswordModal">
                         {{ __('profil/profil.change_password') }}
                     </button>
-                    <x-forms.submit type="submit" variant="primary" :title="__('profil/profil.save')" class="w-fit" data-test="create-team-button">
+                    <x-forms.submit type="submit" variant="primary" :title="__('profil/profil.save')" class="w-full sm:w-fit" data-test="create-team-button">
                         {{ __('profil/profil.save') }}
                     </x-forms.submit>
                 </div>

@@ -29,7 +29,7 @@ new class extends Component
     {
         $this->userTeams = $this->currentUser
             ->teams()
-            ->select('teams.id', 'teams.name', 'teams.slug', 'teams.logo')
+            ->select('teams.id', 'teams.name', 'teams.slug', 'teams.logo_type', 'teams.logo_value')
             ->where('teams.id', '!=', $this->currentUser->current_team_id)
             ->get();
     }
@@ -81,17 +81,11 @@ new class extends Component
                 <button type="button"
                     @click="openTeams = !openTeams; if (openTeams) $wire.loadTeams(); if (!openTeams) $wire.unloadTeams()"
                     type="button" class="flex items-center text-white gap-3 min-w-0 hover:text-gold transition-colors cursor-pointer">
-                    @if ($team->logo)
                     <img
-                        src="{{ Storage::disk('public')->url('images/logoTeam/variants/128x128/' . $team->logo) }}"
+                        src="{{ $team->logo_url }}"
                         alt="{{ $team->name }}"
                         class="w-9 h-9 object-contain">
-                    @else
-                    <img
-                        src="{{ asset('/img/basicIcon.webp') }}"
-                        alt="{{ $team->name }}"
-                        class="w-9 h-9 object-contain flex-shrink-0">
-                    @endif
+                    
                     <div class="flex items-center relative gap-2 transition ease-in-out duration-150 hover:text-gold">
                         <span class="text-inherit font-semibold text-base lg:text-lg truncate">
                             {{ $team->name }}

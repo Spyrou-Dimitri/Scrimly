@@ -25,6 +25,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::livewire('/{slug}/tasks/edit/{id}', 'pages::tasks.edit')->name('tasks.edit');
         Route::livewire('/{slug}/tasks/{id}', 'pages::tasks.show')->name('tasks.show');
 
+        // Scrims
+        Route::livewire('/{slug}/scrims', 'pages::scrims.index')->name('scrims.index');
+
     });
 });
 

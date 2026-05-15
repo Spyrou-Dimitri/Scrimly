@@ -32,8 +32,8 @@ new class extends Component
             [
                 'label' => __('layouts/team.nav.scrims'),
                 'icon' => 'trophy',
-                'route' => null,
-                'href' => '#',
+                'route' => 'scrims.index',
+                'href' => route('scrims.index', ['slug' => currentTeam()->slug]),
             ],
             [
                 'label' => __('layouts/team.nav.roster'),
