@@ -5,6 +5,7 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Enums\StatusInTeam;
 
 new #[Layout('layouts::team')] class extends Component
 {
@@ -16,8 +17,9 @@ new #[Layout('layouts::team')] class extends Component
     public function teams()
     {
         $query = Team::query()
-            
-            ->withCount('members')
+            ->withCount(['members' => function ($query) {
+                $query->where('status', StatusInTeam::ACCEPTED);
+            }])
             ->where('id', '!=', currentTeam()->id);
 
         if ($this->term !== '') {

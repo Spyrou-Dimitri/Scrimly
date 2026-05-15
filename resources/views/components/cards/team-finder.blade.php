@@ -5,8 +5,7 @@
 @php
     use App\Enums\LolTier;
 
-    $averageElo = $team->averageEloScore();
-    $tierPresentation = LolTier::fromNumericValue($averageElo);
+    $tierPresentation = LolTier::fromNumericValue($team->starter_average_elo);
 
     $tagStyle = static function (string $cssVar): string {
         return sprintf(
