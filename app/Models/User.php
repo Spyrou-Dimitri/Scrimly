@@ -4,7 +4,6 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\LolTier;
-use App\Enums\DefaultAvatar;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,9 +13,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
-use Illuminate\Support\Facades\Storage;
 
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable
@@ -37,15 +36,14 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-
     public function getAvatarUrlAttribute(): string
     {
         if ($this->avatar_type === 'upload' && $this->avatar_value) {
-            return Storage::disk('public')->url('images/avatar/variants/480x480/' . $this->avatar_value);
+            return Storage::disk('public')->url('images/avatar/variants/480x480/'.$this->avatar_value);
         }
 
         if ($this->avatar_type === 'default' && $this->avatar_value) {
-            return asset('img/IconsAvatars/' . $this->avatar_value . '.jpg');
+            return asset('img/IconsAvatars/'.$this->avatar_value.'.jpg');
         }
 
         return asset('img/avatars/defaults/Camille.webp');
@@ -53,38 +51,35 @@ class User extends Authenticatable
 
     protected function riotTag(): Attribute
     {
-        return Attribute::get(fn(): ?string => $this->riotProfile?->riot_tag);
+        return Attribute::get(fn (): ?string => $this->riotProfile?->riot_tag);
     }
 
     protected function riotPuuid(): Attribute
     {
-        return Attribute::get(fn(): ?string => $this->riotProfile?->riot_puuid);
+        return Attribute::get(fn (): ?string => $this->riotProfile?->riot_puuid);
     }
 
     protected function tier(): Attribute
     {
-        return Attribute::get(fn(): ?LolTier => $this->riotProfile?->tier);
+        return Attribute::get(fn (): ?LolTier => $this->riotProfile?->tier);
     }
 
     protected function rank(): Attribute
     {
-        return Attribute::get(fn(): ?string => $this->riotProfile?->rank);
+        return Attribute::get(fn (): ?string => $this->riotProfile?->rank);
     }
 
     protected function lp(): Attribute
     {
-        return Attribute::get(fn(): ?int => $this->riotProfile?->lp);
+        return Attribute::get(fn (): ?int => $this->riotProfile?->lp);
     }
 
-    /**
-     * Get the user's initials
-     */
     public function initials(): string
     {
         return Str::of($this->username)
             ->explode(' ')
             ->take(2)
-            ->map(fn($word) => Str::substr($word, 0, 1))
+            ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
 

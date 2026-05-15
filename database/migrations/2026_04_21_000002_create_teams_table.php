@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('logo_type')->default('default');
             $table->string('logo_value')->default('Demacia');
             $table->text('description', 1000)->nullable();
+            $table->integer('starter_average_elo')->nullable();
             $table->enum('language', Language::cases());
             $table->enum('server', LolServeur::cases());
             $table->enum('goal', LolGoal::cases());

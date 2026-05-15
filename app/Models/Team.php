@@ -24,6 +24,7 @@ class Team extends Model
         'logo_type',
         'logo_value',
         'description',
+        'starter_average_elo',
         'language',
         'server',
         'goal',
@@ -39,7 +40,7 @@ class Team extends Model
     public function members(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'team_members')
-            ->withPivot('roleInTeam', 'roleInGame', 'joined_at')
+            ->withPivot('roleInTeam', 'roleInGame', 'joined_at', 'is_starter', 'status')
             ->withTimestamps();
     }
 
@@ -51,8 +52,8 @@ class Team extends Model
     protected function tag(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => strtoupper($value),
-            set: fn($value) => strtoupper($value),
+            get: fn ($value) => strtoupper($value),
+            set: fn ($value) => strtoupper($value),
         );
     }
 
@@ -66,16 +67,15 @@ class Team extends Model
     public function getLogoUrlAttribute(): string
     {
         if ($this->logo_type === 'upload' && $this->logo_value) {
-            return Storage::disk('public')->url('images/logoTeam/variants/480x480/' . $this->logo_value);
-        };
+            return Storage::disk('public')->url('images/logoTeam/variants/480x480/'.$this->logo_value);
+        }
 
         if ($this->logo_type === 'default' && $this->logo_value) {
-            return asset('img/IconsTeams/' . $this->logo_value . '.webp');
+            return asset('img/IconsTeams/'.$this->logo_value.'.webp');
         }
 
         return asset('img/IconsTeams/Demacia/.webp');
     }
-
 
     private static function uniqueCodeGenerator(): string
     {
@@ -94,17 +94,19 @@ class Team extends Model
 
     public function averageEloScore(): ?int
     {
-        $startersPlayer = $this->members()->with('user.riotProfile')->where('is_starter', true)->get();
-
-        $scores = $startersPlayer
-            ->map(fn($member) => $member->user->riotProfile?->eloScore())
-            ->filter()
-            ->values();
-
-        if ($scores->isEmpty()) {
-            return null;
+        $scores = [];
+        $startersPlayer = $this->members()->with('riotProfile')->where('is_starter', true)->get();
+        foreach ($startersPlayer as $player) {
+            $scores[] = $player->riotProfile?->eloScore();
         }
 
-        return round($scores->average());
+        if ($scores === []) {
+            return null;
+        }
+        $averageWithoutNull = array_filter($scores);
+
+        $averageEloOfTeam = array_sum($averageWithoutNull) / count($averageWithoutNull);
+
+        return round($averageEloOfTeam);
     }
 }

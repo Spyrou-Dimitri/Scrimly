@@ -16,4 +16,12 @@ enum LolGoal: string
             self::PROFESSIONAL => 'Professional',
         };
     }
+    public function tagColorVariable(): string
+    {
+        return match ($this) {
+            self::FUN => '--color-objective-fun',
+            self::TRY_HARD => '--color-objective-semi-competitive',
+            self::PROFESSIONAL => '--color-objective-competitive',
+        };
+    }
 }
