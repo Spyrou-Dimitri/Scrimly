@@ -2,6 +2,7 @@
 
 use Livewire\Component;
 use App\Models\TeamMember;
+use Illuminate\Support\Facades\DB;
 
 new class extends Component
 {
@@ -21,9 +22,12 @@ new class extends Component
 
     public function sendToBench(): void
     {
-        $this->member->update([
-            'is_starter' => false,
-        ]);
+        DB::transaction(function () {
+            $this->member->update([
+                'is_starter' => false,
+            ]);
+            $this->member->team->averageEloScore();
+        });
 
         $this->dispatch('close_modal');
         $this->dispatch('refresh_roster');

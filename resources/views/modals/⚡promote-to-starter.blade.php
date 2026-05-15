@@ -4,6 +4,7 @@ use Livewire\Attributes\Computed;
 use Livewire\Component;
 use App\Enums\RoleInTeam;
 use App\Models\TeamMember;
+use Illuminate\Support\Facades\DB;
 
 new class extends Component
 {
@@ -23,9 +24,12 @@ new class extends Component
 
     public function promoteToStarter(): void
     {
-        $this->member->update([
-            'is_starter' => true,
-        ]);
+        DB::transaction(function () {   
+            $this->member->update([
+                'is_starter' => true,
+            ]);
+            $this->member->team->averageEloScore();
+        });
 
         $this->dispatch('close_modal');
         $this->dispatch('refresh_roster');

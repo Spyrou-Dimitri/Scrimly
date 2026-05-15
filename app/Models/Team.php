@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\Language;
 use App\Enums\LolGoal;
 use App\Enums\LolServeur;
+use App\Enums\StatusInTeam;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -92,10 +93,10 @@ class Team extends Model
         return $code;
     }
 
-    public function averageEloScore(): ?int
+    public function averageEloScore()
     {
         $scores = [];
-        $startersPlayer = $this->members()->with('riotProfile')->where('is_starter', true)->get();
+        $startersPlayer = $this->members()->with('riotProfile')->wherePivot('is_starter', true)->wherePivot('status', StatusInTeam::ACCEPTED)->get();
         foreach ($startersPlayer as $player) {
             $scores[] = $player->riotProfile?->eloScore();
         }
@@ -107,6 +108,7 @@ class Team extends Model
 
         $averageEloOfTeam = array_sum($averageWithoutNull) / count($averageWithoutNull);
 
-        return round($averageEloOfTeam);
+        $this->starter_average_elo = round($averageEloOfTeam);
+        $this->save();
     }
 }

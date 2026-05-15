@@ -92,6 +92,7 @@ class CreateTeamForm extends Form
     {
         $validated = $this->validate();
 
+
         if ($validated['logo']) {
             $extension = $validated['logo']->extension() ?: $validated['logo']->getClientOriginalExtension();
             $new_original_file_name = uniqid().'.'.$extension;
@@ -116,6 +117,12 @@ class CreateTeamForm extends Form
             $logoValue = $validated['logo'];
         }
 
+        if ($validated['roleInTeam'] === RoleInTeam::PLAYER) {
+            $starterAverageElo = Auth::user()->riotProfile?->eloScore();
+        } else {
+            $starterAverageElo = null;
+        }
+
         $team = Team::create([
             'name' => $validated['team_name'],
             'slug' => Str::slug($validated['team_name']),
@@ -123,6 +130,7 @@ class CreateTeamForm extends Form
             'logo_type' => $logoType,
             'logo_value' => $logoValue,
             'description' => $validated['description'],
+            'starter_average_elo' => $starterAverageElo,
             'language' => $validated['language'],
             'server' => $validated['server'],
             'goal' => $validated['goal'],

@@ -19,10 +19,14 @@ new class extends Component
     }
     public function kickTeamMember()
     {
-        $this->member->update([
-            'status' => StatusInTeam::REJECTED,
-        ]);
-        
+        DB::transaction(function () {
+            $this->member->update([
+                'status' => StatusInTeam::REJECTED,
+                'is_starter' => false,
+            ]);
+            $this->member->team->averageEloScore();
+        });
+
         $this->dispatch('close_modal');
         $this->dispatch('refresh_roster');
         $this->dispatch('toast', [

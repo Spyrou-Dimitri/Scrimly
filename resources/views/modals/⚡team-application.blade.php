@@ -68,6 +68,7 @@ new class extends Component
                     'joined_at' => now(),
                 ]
             );
+            $this->candidate->team->averageEloScore();
         });
         $this->dispatch('refresh_candidates');
         $this->dispatch('close_modal');
