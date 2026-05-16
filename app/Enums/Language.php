@@ -379,8 +379,13 @@ enum Language: string
 
         };
     }
+
     public function tagColorVariable(): string
     {
         return '--color-tag-language';
+    }
+    public function color(): string
+    {
+        return 'text-tag-language';
     }
 }

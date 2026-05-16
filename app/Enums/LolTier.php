@@ -31,20 +31,40 @@ enum LolTier: string
         };
     }
 
+    /**
+     * Classes utilitaires Tailwind (couleur du texte pour le rang affiché).
+     */
     public function color(): string
     {
         return match ($this) {
-            self::IRON => '#848484',
-            self::BRONZE => '#CD7F32',
-            self::SILVER => '#C0C0C0',
-            self::GOLD => '#FFD700',
-            self::PLATINUM => '#0ACDBE',
-            self::EMERALD => '#50C878',
-            self::DIAMOND => '#576BCE',
-            self::MASTER => '#9D48E0',
-            self::GRANDMASTER => '#EF3F3F',
-            self::CHALLENGER => '#F4C874',
+            self::IRON => 'text-[#848484]',
+            self::BRONZE => 'text-[#CD7F32]',
+            self::SILVER => 'text-[#C0C0C0]',
+            self::GOLD => 'text-[#FFD700]',
+            self::PLATINUM => 'text-[#0ACDBE]',
+            self::EMERALD => 'text-[#50C878]',
+            self::DIAMOND => 'text-[#576BCE]',
+            self::MASTER => 'text-[#9D48E0]',
+            self::GRANDMASTER => 'text-[#EF3F3F]',
+            self::CHALLENGER => 'text-[#F4C874]',
         };
+    }
+
+    public static function fromStarterAverageElo(?int $averageEloScore): ?self
+    {
+        if ($averageEloScore === null) {
+            return null;
+        }
+
+        foreach (self::cases() as $tier) {
+            ['minInclusive' => $minInclusive, 'maxExclusive' => $maxExclusive] = $tier->starterAverageEloInterval();
+
+            if ($averageEloScore >= $minInclusive && ($maxExclusive === null || $averageEloScore < $maxExclusive)) {
+                return $tier;
+            }
+        }
+
+        return self::CHALLENGER;
     }
 
     public function isApex(): bool
@@ -87,6 +107,7 @@ enum LolTier: string
             self::CHALLENGER => 9,
         };
     }
+
     public function starterAverageEloInterval(): array
     {
         return match ($this) {
@@ -103,23 +124,13 @@ enum LolTier: string
         };
     }
 
-
     public static function getIconAndLabelForAverageEloScoreForTeam(int $value): array
     {
-        foreach (self::cases() as $tier) {
-            ['minInclusive' => $minInclusive, 'maxExclusive' => $maxExclusive] = $tier->starterAverageEloInterval();
-
-            if ($value >= $minInclusive && ($maxExclusive === null || $value < $maxExclusive)) {
-                return [
-                    'icon' => $tier->icon(),
-                    'label' => $tier->label(),
-                ];
-            }
-        }
+        $tier = self::fromStarterAverageElo($value) ?? self::CHALLENGER;
 
         return [
-            'icon' => self::CHALLENGER->icon(),
-            'label' => self::CHALLENGER->label(),
+            'icon' => $tier->icon(),
+            'label' => $tier->label(),
         ];
     }
 

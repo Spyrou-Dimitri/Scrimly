@@ -17,12 +17,21 @@ enum LolGoal: string
         };
     }
 
+    public function color(): string
+    {
+        return match ($this) {
+            self::FUN => 'text-objective-fun',
+            self::TRY_HARD => 'text-objective-semi-competitive',
+            self::PROFESSIONAL => 'text-objective-competitive',
+        };
+    }
+
     public function macaron(): string
     {
         return match ($this) {
-            self::FUN => 'bg-objective-fun/20 text-objective-fun',
-            self::TRY_HARD => 'bg-objective-semi-competitive/20 text-objective-semi-competitive',
-            self::PROFESSIONAL => 'bg-objective-competitive/20 text-objective-competitive',
+            self::FUN => 'bg-objective-fun/20 '.$this->color(),
+            self::TRY_HARD => 'bg-objective-semi-competitive/20 '.$this->color(),
+            self::PROFESSIONAL => 'bg-objective-competitive/20 '.$this->color(),
         };
     }
 }

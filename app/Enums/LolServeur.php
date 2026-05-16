@@ -42,8 +42,13 @@ enum LolServeur: string
             self::CN => 'Chine',
         };
     }
+
     public function tagColorVariable(): string
     {
         return '--color-tag-server';
+    }
+    public function color(): string
+    {
+        return 'text-tag-server';
     }
 }

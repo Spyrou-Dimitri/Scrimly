@@ -15,6 +15,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::middleware('ensure.user.has.active.team')->group(function () {
 
+        // Team
+        Route::livewire('/{slug}/team/show/{id}', 'pages::team.show')->name('team.show');
+
         // Roster
         Route::livewire('/{slug}/roster', 'pages::roster.index')->name('roster.index');
         Route::livewire('/{slug}/roster/{id}', 'pages::roster.show')->name('roster.show');

@@ -31,4 +31,5 @@ enum RoleInGame: string
             self::SUPPORT => 'img/Role/support.png',
         };
     }
+    
 }

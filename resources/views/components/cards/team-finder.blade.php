@@ -18,7 +18,9 @@
 <article {{ $attributes->merge(['class' => 'relative flex min-h-full flex-col border-l-2 border-gold bg-bg-widget p-4 basic-shadow md:p-5 card-animated-border']) }}>
     <span class="card-animated-border-right-edge" aria-hidden="true"></span>
     <a
-        href="#"
+        href="{{ route('team.show', ['slug' => currentTeam()->slug, 'id' => $team->id]) }}"
+        wire:navigate
+        title="{{ __('pages/scrims/find.view_team_card') }} {{ $team->name }}"
         class="absolute inset-0 z-10 rounded-[inherit] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
         aria-label="{{ __('pages/scrims/find.view_team_card', ['name' => $team->name]) }}"
     ></a>
