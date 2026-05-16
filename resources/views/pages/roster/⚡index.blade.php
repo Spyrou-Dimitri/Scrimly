@@ -161,7 +161,6 @@ new #[Layout('layouts::team')] class extends Component {
         </li>
         @endforeach
     </x-accordion>
-
     {{-- Remplacants--}}
     <x-accordion :title="__('pages/team/index.bench_title')" :open="false" :count="$this->isStarter->where('is_starter', false)->where('roleInTeam', RoleInTeam::PLAYER)->count()">
         @foreach ($this->isStarter->where('is_starter', false)->where('roleInTeam', RoleInTeam::PLAYER) as $teamMember)
