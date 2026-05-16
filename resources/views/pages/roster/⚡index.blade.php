@@ -154,89 +154,29 @@ new #[Layout('layouts::team')] class extends Component {
         @endif
     </section>
     {{-- Roster Principal --}}
-    <section x-data="{ openIsStarter: true }" class="p-6 bg-bg-widget basic-shadow flex flex-col">
-        <div class="flex items-center gap-4 justify-between">
-            <h2 class="text-[32px] font-bold">
-                {{ __('pages/roster/index.is_starter_title') }} <span class="text-gold font-bold">({{ $this->isStarter->where('is_starter', true)->where('roleInTeam', RoleInTeam::PLAYER)->count() }})</span>
-            </h2>
-            <button class="group cursor-pointer" x-on:click.prevent="openIsStarter = !openIsStarter">
-                <flux:icon.chevron-down
-                    class="size-8 transition-all duration-150 ease-in-out text-text-gray group-hover:text-gold"
-                    ::class="openIsStarter ? 'rotate-0 text-gold' : '-rotate-90 text-text-gray'" />
-            </button>
-        </div>
-        <ul class="mt-6 grid grid-cols-12 gap-4 md:gap-6"
-            x-show="openIsStarter"
-            x-transition:enter="transition ease-out duration-150"
-            x-transition:enter-start="opacity-0 -translate-y-2"
-            x-transition:enter-end="opacity-100 translate-y-0"
-            x-transition:leave="transition ease-in duration-150"
-            x-transition:leave-start="opacity-100 translate-y-0"
-            x-transition:leave-end="opacity-0 -translate-y-2">
-            @foreach ($this->isStarter->where('is_starter', true)->where('roleInTeam', RoleInTeam::PLAYER) as $teamMember)
-            <li class="col-span-12 md:col-span-4">
-                <x-cards.player :team-member="$teamMember" />
-            </li>
-            @endforeach
-        </ul>
-    </section>
+    <x-accordion :title="__('pages/roster/index.is_starter_title')" :open="true" :count="$this->isStarter->where('is_starter', true)->where('roleInTeam', RoleInTeam::PLAYER)->count()">
+        @foreach ($this->isStarter->where('is_starter', true)->where('roleInTeam', RoleInTeam::PLAYER) as $teamMember)
+        <li class="col-span-12 md:col-span-4">
+            <x-cards.player :team-member="$teamMember" />
+        </li>
+        @endforeach
+    </x-accordion>
 
     {{-- Remplacants--}}
-    <section x-data="{ openBench: false }" class="p-6 bg-bg-widget basic-shadow flex flex-col">
-        <div class="flex items-center gap-4 justify-between">
-            <h2 class="text-[32px] font-bold">
-                {{ __('pages/team/index.bench_title') }} <span class="text-gold font-bold">({{ $this->isStarter->where('is_starter', false)->where('roleInTeam', RoleInTeam::PLAYER)->count() }})</span>
-            </h2>
-            <button class="group cursor-pointer" x-on:click.prevent="openBench = !openBench">
-                <flux:icon.chevron-down
-                    class="size-8 transition-all duration-150 ease-in-out text-text-gray group-hover:text-gold"
-                    ::class="openBench ? 'rotate-0 text-gold' : '-rotate-90 text-text-gray'" />
-            </button>
-        </div>
-        <ul class="mt-6 grid grid-cols-12 gap-4 md:gap-6"
-            x-show="openBench"
-            x-transition:enter="transition ease-out duration-150"
-            x-transition:enter-start="opacity-0 -translate-y-2"
-            x-transition:enter-end="opacity-100 translate-y-0"
-            x-transition:leave="transition ease-in duration-150"
-            x-transition:leave-start="opacity-100 translate-y-0"
-            x-transition:leave-end="opacity-0 -translate-y-2">
-            @foreach ($this->isStarter->where('is_starter', false)->where('roleInTeam', RoleInTeam::PLAYER) as $teamMember)
-            <li class="col-span-12 md:col-span-4">
-                <x-cards.player :team-member="$teamMember" />
-            </li>
-            @endforeach
-        </ul>
-    </section>
+    <x-accordion :title="__('pages/team/index.bench_title')" :open="false" :count="$this->isStarter->where('is_starter', false)->where('roleInTeam', RoleInTeam::PLAYER)->count()">
+        @foreach ($this->isStarter->where('is_starter', false)->where('roleInTeam', RoleInTeam::PLAYER) as $teamMember)
+        <li class="col-span-12 md:col-span-4">
+            <x-cards.player :team-member="$teamMember" />
+        </li>
+        @endforeach
+    </x-accordion>
     {{-- Staff --}}
-    <section x-data="{ openStaff: false }" class="p-6 bg-bg-widget basic-shadow flex flex-col">
-        <div class="flex items-center gap-4 justify-between">
-            <h2 class="text-[32px] font-bold">
-                {{ __('pages/team/index.staff_title') }} <span class="text-gold font-bold">({{ $this->isStarter->whereIn('roleInTeam', [RoleInTeam::STAFF, RoleInTeam::COACH])->count() }})</span>
-            </h2>
-            <button class="group cursor-pointer" x-on:click.prevent="openStaff = !openStaff">
-                <flux:icon.chevron-down
-                    class="size-8 transition-all duration-150 ease-in-out text-text-gray group-hover:text-gold"
-                    ::class="openStaff ? 'rotate-0 text-gold' : '-rotate-90 text-text-gray'" />
-            </button>
-        </div>
-        <ul class="mt-6 grid grid-cols-12 gap-4 md:gap-6"
-            x-show="openStaff"
-            x-transition:enter="transition ease-out duration-150"
-            x-transition:enter-start="opacity-0 -translate-y-2"
-            x-transition:enter-end="opacity-100 translate-y-0"
-            x-transition:leave="transition ease-in duration-150"
-            x-transition:leave-start="opacity-100 translate-y-0"
-            x-transition:leave-end="opacity-0 -translate-y-2">
-            @foreach ($this->isStarter->whereIn('roleInTeam', [RoleInTeam::STAFF, RoleInTeam::COACH]) as $teamMember)
-            <li class="col-span-12 md:col-span-4">
-                <x-cards.player :team-member="$teamMember" />
-            </li>
-            @endforeach
-        </ul>
-    </section>
-    
-    
+    <x-accordion :title="__('pages/team/index.staff_title')" :open="false" :count="$this->isStarter->whereIn('roleInTeam', [RoleInTeam::STAFF, RoleInTeam::COACH])->count()">
+        @foreach ($this->isStarter->whereIn('roleInTeam', [RoleInTeam::STAFF, RoleInTeam::COACH]) as $teamMember)
+        <li class="col-span-12 md:col-span-4">
+            <x-cards.player :team-member="$teamMember" />
+        </li>
+        @endforeach
+    </x-accordion>
 
-    
 </div>
