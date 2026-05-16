@@ -136,9 +136,10 @@ class DemoDataSeeder extends Seeder
                 'logo_type' => 'default',
                 'logo_value' => fake()->randomElement(DefaultTeam::cases())->value,
                 'description' => 'Équipe de démonstration générée par le seeder.',
-                'language' => Language::FR,
-                'server' => LolServeur::EUW,
-                'goal' => LolGoal::FUN,
+                'language' => fake()->randomElement(Language::cases())->value,
+                'server' => fake()->randomElement(LolServeur::cases())->value,
+                'goal' => fake()->randomElement(LolGoal::cases())->value,
+                'starter_average_elo' => null,
                 'creator_id' => $testUser->id,
             ]);
             $teams[] = $team;
@@ -170,6 +171,8 @@ class DemoDataSeeder extends Seeder
                 );
             }
 
+            $team->averageEloScore();
+
             $this->seedTasksForTeam($team, $coachMember);
         }
 
@@ -190,7 +193,6 @@ class DemoDataSeeder extends Seeder
 
     private function delayBetweenUsers(): void
     {
-        /** Délai demandé entre chaque création d’utilisateur ; désactivé sous Pest pour garder la suite rapide. */
         if (! app()->runningUnitTests()) {
             sleep(3);
         }

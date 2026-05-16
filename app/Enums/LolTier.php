@@ -63,7 +63,7 @@ enum LolTier: string
             self::BRONZE => 'img/LolTier/Bronze.png',
             self::SILVER => 'img/LolTier/Silver.png',
             self::GOLD => 'img/LolTier/Gold.png',
-            self::PLATINUM => 'img/LolTier/Platinum.png',
+            self::PLATINUM => 'img/LolTier/Platinium.png',
             self::EMERALD => 'img/LolTier/Emerald.png',
             self::DIAMOND => 'img/LolTier/Diamond.png',
             self::MASTER => 'img/LolTier/Master.png',
