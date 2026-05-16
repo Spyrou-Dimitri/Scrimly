@@ -87,61 +87,42 @@ enum LolTier: string
             self::CHALLENGER => 9,
         };
     }
+    public function starterAverageEloInterval(): array
+    {
+        return match ($this) {
+            self::IRON => ['minInclusive' => 0, 'maxExclusive' => 400],
+            self::BRONZE => ['minInclusive' => 400, 'maxExclusive' => 800],
+            self::SILVER => ['minInclusive' => 800, 'maxExclusive' => 1200],
+            self::GOLD => ['minInclusive' => 1200, 'maxExclusive' => 1600],
+            self::PLATINUM => ['minInclusive' => 1600, 'maxExclusive' => 2000],
+            self::EMERALD => ['minInclusive' => 2000, 'maxExclusive' => 2400],
+            self::DIAMOND => ['minInclusive' => 2400, 'maxExclusive' => 2800],
+            self::MASTER => ['minInclusive' => 2800, 'maxExclusive' => 3200],
+            self::GRANDMASTER => ['minInclusive' => 3200, 'maxExclusive' => 3600],
+            self::CHALLENGER => ['minInclusive' => 3600, 'maxExclusive' => null],
+        };
+    }
+
 
     public static function getIconAndLabelForAverageEloScoreForTeam(int $value): array
     {
-        return match (true) {
-            $value >= 0 && $value < 400 => [
-                'icon' => self::IRON->icon(),
-                'label' => self::IRON->label(),
-            ],
+        foreach (self::cases() as $tier) {
+            ['minInclusive' => $minInclusive, 'maxExclusive' => $maxExclusive] = $tier->starterAverageEloInterval();
 
-            $value >= 400 && $value < 800 => [
-                'icon' => self::BRONZE->icon(),
-                'label' => self::BRONZE->label(),
-            ],
+            if ($value >= $minInclusive && ($maxExclusive === null || $value < $maxExclusive)) {
+                return [
+                    'icon' => $tier->icon(),
+                    'label' => $tier->label(),
+                ];
+            }
+        }
 
-            $value >= 800 && $value < 1200 => [
-                'icon' => self::SILVER->icon(),
-                'label' => self::SILVER->label(),
-            ],
-
-            $value >= 1200 && $value < 1600 => [
-                'icon' => self::GOLD->icon(),
-                'label' => self::GOLD->label(),
-            ],
-
-            $value >= 1600 && $value < 2000 => [
-                'icon' => self::PLATINUM->icon(),
-                'label' => self::PLATINUM->label(),
-            ],
-
-            $value >= 2000 && $value < 2400 => [
-                'icon' => self::EMERALD->icon(),
-                'label' => self::EMERALD->label(),
-            ],
-
-            $value >= 2400 && $value < 2800 => [
-                'icon' => self::DIAMOND->icon(),
-                'label' => self::DIAMOND->label(),
-            ],
-
-            $value >= 2800 && $value < 3200 => [
-                'icon' => self::MASTER->icon(),
-                'label' => self::MASTER->label(),
-            ],
-
-            $value >= 3200 && $value < 3600 => [
-                'icon' => self::GRANDMASTER->icon(),
-                'label' => self::GRANDMASTER->label(),
-            ],
-
-            default => [
-                'icon' => self::CHALLENGER->icon(),
-                'label' => self::CHALLENGER->label(),
-            ],
-        };
+        return [
+            'icon' => self::CHALLENGER->icon(),
+            'label' => self::CHALLENGER->label(),
+        ];
     }
+
     public static function fromNumericValue(?int $averageEloScore): ?array
     {
         if ($averageEloScore === null) {
