@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\StatusScrim;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -10,16 +12,15 @@ return new class extends Migration
     {
         Schema::create('scrims', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('team1_id')->constrained('teams')->cascadeOnDelete();
-            $table->foreignId('team2_id')->constrained('teams')->cascadeOnDelete();
-            $table->date('date');
-            $table->time('time');
-            $table->enum('format', ['BO1', 'BO3', 'BO5']);
-            $table->enum('status', ['scheduled', 'completed', 'cancelled'])->default('scheduled');
+            $table->date('scheduled_date')->default(CarbonImmutable::now()->toDateString());
+            $table->time('scheduled_time')->default(CarbonImmutable::now()->toTimeString());
+            $table->tinyInteger('number_of_games')->default(1);
+            $table->enum('status', StatusScrim::cases());
             $table->text('notes')->nullable();
             $table->text('advantages')->nullable();
             $table->text('disadvantages')->nullable();
-            $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('scrim_request_id')->constrained('scrim_requests')->cascadeOnDelete();
+            $table->foreignId('opponent_team_id')->nullable()->constrained('teams')->nullOnDelete();
             $table->timestamps();
         });
     }

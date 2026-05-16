@@ -1,21 +1,18 @@
 <?php
 
-use App\Enums\LolGoal;
 use App\Enums\LolTier;
 use App\Enums\RoleInGame;
 use App\Enums\RoleInTeam;
 use App\Enums\StatusInTeam;
 use App\Models\Team;
-use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
-use Illuminate\Support\Collection;
 use Livewire\Component;
 
 new #[Layout('layouts::team')] class extends Component
 {
     public Team $team;
-    public Collection $starterMembers;
 
     public function mount(string $slug, int|string $id): void
     {
@@ -25,29 +22,31 @@ new #[Layout('layouts::team')] class extends Component
             abort(404);
         }
 
-        $this->team = Team::query()
-            ->with([
-                'members' => function ($query) {
-                    $query
-                        ->wherePivot('is_starter', true)
-                        ->wherePivot('status', StatusInTeam::ACCEPTED);
-                },
-            ])
-            ->findOrFail($id);
-        $this->starterMembers = $this->team->members;
+        $this->team = Team::query()->findOrFail($id);
+    }
 
-        
+    #[Computed]
+    public function starterMembers(): Collection
+    {
+        return $this->team
+            ->members()
+            ->wherePivot('is_starter', true)
+            ->wherePivot('status', StatusInTeam::ACCEPTED)
+            ->get();
+    }
+
+    public function openModalProposeScrim(int $teamId): void
+    {
+        $this->dispatch('open_modal', [
+            'form' => 'scrims.propose-scrim',
+            'model_id' => $teamId,
+        ]);
     }
 };
 ?>
 
 @php
     $tier = LolTier::fromStarterAverageElo($team->starter_average_elo);
-    $goalLabel = match ($team->goal) {
-        LolGoal::FUN => __('pages/team/show.goal_fun'),
-        LolGoal::TRY_HARD => __('pages/team/show.goal_try_hard'),
-        LolGoal::PROFESSIONAL => __('pages/team/show.goal_professional'),
-    };
     $memberSince = $team->created_at->isoFormat('D MMMM YYYY');
 @endphp
 
@@ -70,14 +69,13 @@ new #[Layout('layouts::team')] class extends Component
                     <h2 class="text-[32px] font-bold text-gold">
                         {{ $team->name }}
                     </h2>
-                    <x-cta
-                        wire:navigate
-                        :href="route('scrims.find', ['slug' => currentTeam()->slug])"
-                        :title="__('pages/team/show.propose_scrim')"
-                        class="primary"
+                    <button
+                        wire:click="openModalProposeScrim({{ $team->id }})"
+                        class="cta-primary"
+                        title="{{ __('pages/team/show.propose_scrim') }}"
                     >
                         {{ __('pages/team/show.propose_scrim') }}
-                    </x-cta>
+                    </button>
                 </div>
 
                 @if (filled($team->description))
@@ -89,7 +87,7 @@ new #[Layout('layouts::team')] class extends Component
                             x-bind:class="expanded ? '' : 'line-clamp-4'"
                         >{{ $team->description }}</p>
                         <button
-                            x-show="! clamped"
+                            x-show="clamped"
                             type="button"
                             class="mt-2 cursor-pointer text-sm font-medium text-gold hover:text-gold-light"
                             x-on:click="expanded = ! expanded"
@@ -136,7 +134,7 @@ new #[Layout('layouts::team')] class extends Component
                 <div class="col-span-12 bg-bg-widget p-4 basic-shadow sm:col-span-6 lg:col-span-3">
                     <p class="text-sm text-text-secondary">{{ __('pages/team/show.widget_goal') }}</p>
                     <p class="mt-2 text-base font-semibold">
-                        <span class="{{ $team->goal->color() }}">{{ $goalLabel }}</span>
+                        <span class="{{ $team->goal->color() }}">{{ $team->goal->label() }}</span>
                     </p>
                 </div>
 
@@ -160,16 +158,6 @@ new #[Layout('layouts::team')] class extends Component
         @else
             <div class="grid grid-cols-12 gap-4 sm:gap-6">
                 @foreach ($this->starterMembers as $member)
-                    @php
-                        $pivot = $member->pivot;
-                        $roleTeam = $pivot->roleInTeam instanceof RoleInTeam
-                            ? $pivot->roleInTeam
-                            : RoleInTeam::from((string) $pivot->roleInTeam);
-                        $rawGame = $pivot->roleInGame;
-                        $roleGame = $rawGame instanceof RoleInGame
-                            ? $rawGame
-                            : (filled($rawGame) ? RoleInGame::tryFrom((string) $rawGame) : null);
-                    @endphp
                     <div class="col-span-12 flex gap-3 bg-bg-widget p-4 basic-shadow md:col-span-6 lg:col-span-4">
                         <img
                             src="{{ $member->avatar_url }}"
@@ -181,17 +169,15 @@ new #[Layout('layouts::team')] class extends Component
                         <div class="min-w-0 flex-1">
                             <p class="truncate font-bold text-white">{{ $member->username }}</p>
                             <div class="mt-1 flex min-w-0 items-center gap-1.5 text-sm text-text-secondary">
-                                @if ($roleGame)
+                                @if ($member->pivot->roleInGame)
                                     <img
-                                        src="{{ asset($roleGame->icon()) }}"
+                                        src="{{ asset(RoleInGame::from($member->pivot->roleInGame)->icon()) }}"
                                         alt=""
-                                        class="size-4 shrink-0 object-contain"
-                                        width="16"
-                                        height="16"
+                                        class="size-6 shrink-0 object-contain"
                                     >
-                                    <span class="truncate">{{ $roleGame->label() }}</span>
+                                    <span class="truncate">{{ RoleInGame::from($member->pivot->roleInGame)->label() }}</span>
                                 @else
-                                    <span class="truncate">{{ $roleTeam->label() }}</span>
+                                    <span class="truncate">{{ RoleInTeam::from($member->pivot->roleInTeam)->label() }}</span>
                                 @endif
                             </div>
                         </div>

@@ -38,7 +38,7 @@
                 <h3 class="truncate text-2xl font-bold text-white">{{ $team->name }}</h3>
                 <div class="mt-2 flex flex-wrap gap-2">
                     <span class="inline-flex items-center text-tag-server bg-tag-server/20 rounded-full px-3 py-2 text-xs font-medium">
-                        {{ $team->server->value }}
+                        {{ $team->server->label() }}
                     </span>
                     <span
                         class="inline-flex items-center text-tag-language bg-tag-language/20 rounded-full px-3 py-2 text-xs font-medium">

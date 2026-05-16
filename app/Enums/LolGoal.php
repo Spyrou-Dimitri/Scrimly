@@ -11,9 +11,9 @@ enum LolGoal: string
     public function label(): string
     {
         return match ($this) {
-            self::FUN => 'Fun',
-            self::TRY_HARD => 'Try Hard',
-            self::PROFESSIONAL => 'Professional',
+            self::FUN => __('enums/lol-goal.fun'),
+            self::TRY_HARD => __('enums/lol-goal.try_hard'),
+            self::PROFESSIONAL => __('enums/lol-goal.professional'),
         };
     }
 
