@@ -11,9 +11,13 @@ use App\Enums\LolTier;
 use App\Enums\RoleInGame;
 use App\Enums\RoleInTeam;
 use App\Enums\StatusInTeam;
+use App\Enums\StatusScrim;
+use App\Enums\StatusScrimRequest;
 use App\Enums\StatusTask;
 use App\Models\RiotMatch;
 use App\Models\RiotProfile;
+use App\Models\Scrim;
+use App\Models\ScrimRequest;
 use App\Models\Subtask;
 use App\Models\Task;
 use App\Models\Team;
@@ -21,15 +25,13 @@ use App\Models\TeamMember;
 use App\Models\User;
 use App\Services\Riot\RiotApiClient;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class DemoDataSeeder extends Seeder
 {
-    
-
-
     private const RIOT_USERS = [
         ['username' => 'Tokha', 'riot_tag' => 'AmbesseTonFroc#PILOT'],
         ['username' => 'Elise', 'riot_tag' => 'EliseFromWebDev#Web'],
@@ -44,7 +46,6 @@ class DemoDataSeeder extends Seeder
         ['username' => 'Lawin', 'riot_tag' => 'Lawin#2000'],
     ];
 
-    
     private const CHAMPION_NAMES = [
         'Ahri', 'Yasuo', 'LeeSin', 'Jinx', 'Thresh', 'Ornn', 'Kaisa', 'Graves',
         'Lulu', 'Syndra', 'Vi', 'Maokai', 'Aphelios', 'Renata', 'JarvanIV',
@@ -93,7 +94,6 @@ class DemoDataSeeder extends Seeder
         ],
     ];
 
-   
     private const STARTER_ROLES = [RoleInGame::TOP, RoleInGame::JUNGLE, RoleInGame::MID];
 
     public function run(): void
@@ -176,6 +176,8 @@ class DemoDataSeeder extends Seeder
             $this->seedTasksForTeam($team, $coachMember);
         }
 
+        $this->seedScrimsAndScrimRequests($teams);
+
         if (isset($teams[0])) {
             $testUser->update(['current_team_id' => $teams[0]->id]);
         }
@@ -189,6 +191,96 @@ class DemoDataSeeder extends Seeder
                 $user->update(['current_team_id' => $firstMembership->team_id]);
             }
         }
+    }
+
+    /**
+     * Génère un graphe régulier de demandes en attente (3 entrantes / 3 sortantes par équipe)
+     * et un cycle de demandes acceptées avec scrims « upcoming », tant qu’il y a au moins 4 équipes.
+     *
+     * @param  list<Team>  $teams
+     */
+    private function seedScrimsAndScrimRequests(array $teams): void
+    {
+        $n = count($teams);
+        if ($n < 4) {
+            return;
+        }
+
+        for ($i = 0; $i < $n; $i++) {
+            for ($k = 1; $k <= 3; $k++) {
+                $slot = $this->randomFutureScrimSlot();
+                ScrimRequest::create([
+                    'status' => StatusScrimRequest::PENDING,
+                    'scheduled_date' => $slot['scheduled_date'],
+                    'scheduled_time' => $slot['scheduled_time'],
+                    'number_of_games' => $slot['number_of_games'],
+                    'message' => fake()->optional(0.5)->sentence(),
+                    'responded_at' => null,
+                    'requester_team_id' => $teams[($i + $k) % $n]->id,
+                    'receiver_team_id' => $teams[$i]->id,
+                ]);
+            }
+        }
+
+        for ($i = 0; $i < $n; $i++) {
+            $slot = $this->randomFutureScrimSlot();
+            $request = ScrimRequest::create([
+                'status' => StatusScrimRequest::ACCEPTED,
+                'scheduled_date' => $slot['scheduled_date'],
+                'scheduled_time' => $slot['scheduled_time'],
+                'number_of_games' => $slot['number_of_games'],
+                'message' => null,
+                'responded_at' => now(),
+                'requester_team_id' => $teams[$i]->id,
+                'receiver_team_id' => $teams[($i + 1) % $n]->id,
+            ]);
+            $this->createAcceptedScrimPair($request);
+        }
+    }
+
+    /**
+     * Reproduit la création des scrims après acceptation (modale show-scrim-request).
+     */
+    private function createAcceptedScrimPair(ScrimRequest $request): void
+    {
+        Scrim::create([
+            'scheduled_date' => $request->scheduled_date,
+            'scheduled_time' => $request->scheduled_time,
+            'number_of_games' => $request->number_of_games,
+            'status' => StatusScrim::SCHEDULED,
+            'notes' => null,
+            'advantages' => null,
+            'disadvantages' => null,
+            'scrim_request_id' => $request->id,
+            'opponent_team_id' => $request->requester_team_id,
+            'team_id' => $request->receiver_team_id,
+        ]);
+        Scrim::create([
+            'scheduled_date' => $request->scheduled_date,
+            'scheduled_time' => $request->scheduled_time,
+            'number_of_games' => $request->number_of_games,
+            'status' => StatusScrim::SCHEDULED,
+            'notes' => null,
+            'advantages' => null,
+            'disadvantages' => null,
+            'scrim_request_id' => $request->id,
+            'opponent_team_id' => $request->receiver_team_id,
+            'team_id' => $request->requester_team_id,
+        ]);
+    }
+
+    /**
+     * @return array{scheduled_date: Carbon, scheduled_time: string, number_of_games: int}
+     */
+    private function randomFutureScrimSlot(): array
+    {
+        $date = now()->addDays(fake()->numberBetween(2, 60))->startOfDay();
+
+        return [
+            'scheduled_date' => $date,
+            'scheduled_time' => sprintf('%02d:%02d:00', fake()->numberBetween(18, 22), fake()->randomElement([0, 15, 30, 45])),
+            'number_of_games' => fake()->numberBetween(2, 5),
+        ];
     }
 
     private function delayBetweenUsers(): void
