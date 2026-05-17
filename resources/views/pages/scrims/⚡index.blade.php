@@ -35,6 +35,14 @@ new #[Layout('layouts::team')] class extends Component
             ->get();
     }
 
+    public function deleteScrimRequest(int $scrimRequestId)
+    {
+        $this->dispatch('open_modal', [
+            'form' => 'scrims.delete-scrim-request',
+            'model_id' => $scrimRequestId,
+        ]);
+    }
+
 };
 ?>
 
@@ -145,7 +153,7 @@ new #[Layout('layouts::team')] class extends Component
                                     </div>
                                 </div>
                                 <div class="shrink-0 sm:self-center">
-                                    <x-destructive type="button" class="cta-danger block w-full whitespace-nowrap px-4 py-2 text-center text-sm sm:w-auto">
+                                    <x-destructive wire:click="deleteScrimRequest({{ $request->id }})" type="button" class="cta-danger block w-full whitespace-nowrap px-4 py-2 text-center text-sm sm:w-auto">
                                         {{ __('pages/scrims/index.cancel_request') }}
                                     </x-destructive>
                                 </div>

@@ -10,10 +10,7 @@
 @endphp
 
 <section x-data="{ open: @js($open) }" {{ $attributes->merge(['class' => 'p-6 bg-bg-widget basic-shadow flex flex-col']) }}>
-    <div @class([
-        'flex items-center gap-4 justify-between',
-        'border-b border-gold-border pb-4' => $isHeadingH3,
-    ])>
+    <div class="flex items-center gap-4 justify-between">
         @if ($isHeadingH3)
             <h3 class="text-[24px] font-bold text-gold">
                 {{ $title }}
