@@ -97,7 +97,7 @@ new #[Layout('layouts::team')] class extends Component
                     @foreach ($this->scrims as $scrim)
                     @php
                     $opponent = $scrim->opponentTeam;
-                    $scheduledAt = \Carbon\Carbon::parse($scrim->scheduled_date->format('Y-m-d').' '.$scrim->scheduled_time);
+                    $scheduledAt = $scrim->scheduled_time;
                     @endphp
                     <li class="col-span-12">
                         <article x-on:click="$el.querySelector('[data-scrim-link]')?.click()" class="relative cursor-pointer flex flex-col border-l-2 border-gold bg-bg-card p-4 basic-shadow md:p-5 card-animated-border">
@@ -122,11 +122,9 @@ new #[Layout('layouts::team')] class extends Component
                                         </div>
                                     </div>
                                 </div>
-                                <div class="shrink-0 sm:self-center">
-                                    <button data-scrim-link wire:click.stop="showScrim({{ $scrim->id }})" type="button" class="cta-primary block w-full whitespace-nowrap px-4 py-2 text-center text-sm sm:w-auto">
-                                        {{ __('pages/scrims/index.show_scrim') }}
-                                    </button>
-                                </div>
+                                <x-cta wire:navigate data-scrim-link :href="route('scrims.show', ['slug' => currentTeam()->slug, 'id' => $scrim->id])" :class="'primary'" :title="__('pages/scrims/index.show_scrim_title')">
+                                    {{ __('pages/scrims/index.show_scrim') }}
+                                </x-cta>
                             </div>
                         </article>
                     </li>

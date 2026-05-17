@@ -16,7 +16,7 @@ return new class extends Migration
             $table->time('scheduled_time')->default(CarbonImmutable::now()->toTimeString());
             $table->tinyInteger('number_of_games')->default(1);
             $table->enum('status', StatusScrim::cases());
-            $table->text('notes')->nullable();
+            $table->text('summary')->nullable();
             $table->text('advantages')->nullable();
             $table->text('disadvantages')->nullable();
             $table->foreignId('scrim_request_id')->constrained('scrim_requests')->cascadeOnDelete();

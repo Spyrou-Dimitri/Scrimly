@@ -12,6 +12,7 @@ return [
     'schedule_today' => 'Aujourd\'hui :time',
     'schedule_date' => ':date - :time',
     'show_scrim' => 'Voir le scrim',
+    'show_scrim_title' => 'Accéder à la page du scrim',
     'upcoming_format_time' => ':games games - :time',
     'upcoming_opponent_unknown' => 'Adversaire inconnu',
 ];

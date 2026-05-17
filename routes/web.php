@@ -31,6 +31,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Scrims
         Route::livewire('/{slug}/scrims', 'pages::scrims.index')->name('scrims.index');
         Route::livewire('/{slug}/scrims/find', 'pages::scrims.find')->name('scrims.find');
+        Route::livewire('/{slug}/scrims/{id}', 'pages::scrims.show')->name('scrims.show');
 
     });
 });
