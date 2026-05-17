@@ -5,6 +5,9 @@ use App\Models\ScrimRequest;
 use Carbon\Carbon;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use App\Models\Scrim;
+use App\Enums\StatusScrim;
+use Illuminate\Support\Facades\DB;
 
 new class extends Component
 {
@@ -26,19 +29,55 @@ new class extends Component
         );
     }
 
-    public function closeModal(): void
-    {
-        $this->dispatch('close_modal');
-    }
-
     public function acceptScrimRequest(): void
     {
-        //
+        
+        DB::transaction(function () {
+
+            $this->scrimRequest->update([
+                'status' => StatusScrimRequest::ACCEPTED,
+            ]);
+            
+            $scrimForReceiverTeam = Scrim::create([
+                'scrim_request_id' => $this->scrimRequest->id,
+                'opponent_team_id' => $this->scrimRequest->requester_team_id,
+                'scheduled_date' => $this->scrimRequest->scheduled_date,
+                'scheduled_time' => $this->scrimRequest->scheduled_time,
+                'number_of_games' => $this->scrimRequest->number_of_games,
+                'status' => StatusScrim::SCHEDULED,
+            ]);
+            $scrimForRequesterTeam = Scrim::create([
+                'scrim_request_id' => $this->scrimRequest->id,
+                'opponent_team_id' => $this->scrimRequest->receiver_team_id,
+                'scheduled_date' => $this->scrimRequest->scheduled_date,
+                'scheduled_time' => $this->scrimRequest->scheduled_time,
+                'number_of_games' => $this->scrimRequest->number_of_games,
+                'status' => StatusScrim::SCHEDULED,
+            ]);
+        });
+        $this->dispatch('close_modal');
+        $this->dispatch('refresh_scrims');
+        $this->dispatch('toast', [
+            'title' => __('modals/scrims/show-scrim-request.success_title'),
+            'message' => __('modals/scrims/show-scrim-request.success_message'),
+            'type' => 'success',
+        ]);
     }
 
     public function refuseScrimRequest(): void
     {
-        //
+        DB::transaction(function () {
+            $this->scrimRequest->update([
+                'status' => StatusScrimRequest::REJECTED,
+            ]);
+        });
+        $this->dispatch('close_modal');
+        $this->dispatch('refresh_scrims');
+        $this->dispatch('toast', [
+            'title' => __('modals/scrims/show-scrim-request.refuse_title'),
+            'message' => __('modals/scrims/show-scrim-request.refuse_message'),
+            'type' => 'trash',
+        ]);
     }
 
     #[Computed]
@@ -108,7 +147,7 @@ $requesterTeam = $this->scrimRequest->requesterTeam;
                     </p>
                 </div>
 
-                {{-- Statut --}}    
+                {{-- Statut --}}
                 <div
                     class="flex flex-col gap-3 bg-bg-widget p-4 shadow-basic">
                     <div class="flex items-center gap-2 text-xs font-semibold text-gold">
