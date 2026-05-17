@@ -1,17 +1,35 @@
 @props([
     'title',
     'open' => false,
-    'count'])
+    'count' => null,
+    'headingLevel' => 'h2',
+])
 
-<section x-data="{ open: @js($open) }" class="p-6 bg-bg-widget basic-shadow flex flex-col">
-    <div class="flex items-center gap-4 justify-between">
-        <h2 class="text-[32px] font-bold">
-            {{ $title }} 
-            @if ($count)
-                <span class="text-gold font-bold">({{ $count }})</span>
-            @endif
-        </h2>
-        <button class="group cursor-pointer" x-on:click.prevent="open = !open">
+@php
+    $isHeadingH3 = $headingLevel === 'h3';
+@endphp
+
+<section x-data="{ open: @js($open) }" {{ $attributes->merge(['class' => 'p-6 bg-bg-widget basic-shadow flex flex-col']) }}>
+    <div @class([
+        'flex items-center gap-4 justify-between',
+        'border-b border-gold-border pb-4' => $isHeadingH3,
+    ])>
+        @if ($isHeadingH3)
+            <h3 class="text-[24px] font-bold text-gold">
+                {{ $title }}
+                @if ($count)
+                    <span class="font-bold">({{ $count }})</span>
+                @endif
+            </h3>
+        @else
+            <h2 class="text-[32px] font-bold">
+                {{ $title }}
+                @if ($count)
+                    <span class="text-gold font-bold">({{ $count }})</span>
+                @endif
+            </h2>
+        @endif
+        <button type="button" class="group cursor-pointer" x-on:click.prevent="open = !open">
             <flux:icon.chevron-down
                 class="size-8 transition-all duration-150 ease-in-out text-text-gray group-hover:text-gold"
                 ::class="open ? 'rotate-0 text-gold' : '-rotate-90 text-text-gray'" />
@@ -27,6 +45,6 @@
         x-transition:leave-start="opacity-100 translate-y-0"
         x-transition:leave-end="opacity-0 -translate-y-2">
 
-        {{$slot}}
+        {{ $slot }}
     </ul>
 </section>
