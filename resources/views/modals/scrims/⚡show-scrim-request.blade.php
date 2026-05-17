@@ -39,20 +39,22 @@ new class extends Component
             ]);
             
             $scrimForReceiverTeam = Scrim::create([
+                'scheduled_date' => $this->scrimRequest->scheduled_date,
+                'scheduled_time' => $this->scrimRequest->scheduled_time,
+                'number_of_games' => $this->scrimRequest->number_of_games,
+                'status' => StatusScrim::SCHEDULED,
                 'scrim_request_id' => $this->scrimRequest->id,
                 'opponent_team_id' => $this->scrimRequest->requester_team_id,
-                'scheduled_date' => $this->scrimRequest->scheduled_date,
-                'scheduled_time' => $this->scrimRequest->scheduled_time,
-                'number_of_games' => $this->scrimRequest->number_of_games,
-                'status' => StatusScrim::SCHEDULED,
+                'team_id' => currentTeam()?->id,
             ]);
             $scrimForRequesterTeam = Scrim::create([
-                'scrim_request_id' => $this->scrimRequest->id,
-                'opponent_team_id' => $this->scrimRequest->receiver_team_id,
                 'scheduled_date' => $this->scrimRequest->scheduled_date,
                 'scheduled_time' => $this->scrimRequest->scheduled_time,
                 'number_of_games' => $this->scrimRequest->number_of_games,
                 'status' => StatusScrim::SCHEDULED,
+                'scrim_request_id' => $this->scrimRequest->id,
+                'opponent_team_id' => currentTeam()?->id,
+                'team_id' => $this->scrimRequest->requester_team_id,
             ]);
         });
         $this->dispatch('close_modal');

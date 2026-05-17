@@ -18,6 +18,7 @@ class Scrim extends Model
         'disadvantages',
         'scrim_request_id',
         'opponent_team_id',
+        'team_id',
     ];
     protected $casts = [
         'scheduled_date' => 'date',
@@ -28,5 +29,12 @@ class Scrim extends Model
     {
         return $this->belongsTo(ScrimRequest::class);
     }
-    
+    public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class, 'team_id');
+    }
+    public function opponentTeam(): BelongsTo
+    {
+        return $this->belongsTo(Team::class, 'opponent_team_id');
+    }
 }

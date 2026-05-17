@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('disadvantages')->nullable();
             $table->foreignId('scrim_request_id')->constrained('scrim_requests')->cascadeOnDelete();
             $table->foreignId('opponent_team_id')->nullable()->constrained('teams')->nullOnDelete();
+            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
             $table->timestamps();
         });
     }

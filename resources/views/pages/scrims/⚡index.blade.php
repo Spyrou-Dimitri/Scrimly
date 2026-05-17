@@ -6,6 +6,8 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Illuminate\Database\Eloquent\Collection;
+use App\Models\Scrim;
 
 new #[Layout('layouts::team')] class extends Component
 {
@@ -35,6 +37,16 @@ new #[Layout('layouts::team')] class extends Component
             ->get();
     }
 
+    #[Computed]
+    public function scrims(): Collection
+    {
+        return Scrim::query()
+            ->with(['opponentTeam', 'team'])
+            ->where('team_id', currentTeam()->id)
+            ->orderBy('scheduled_date', 'desc')
+            ->get();
+    }
+
     public function deleteScrimRequest(int $scrimRequestId)
     {
         $this->dispatch('open_modal', [
@@ -54,6 +66,7 @@ new #[Layout('layouts::team')] class extends Component
 ?>
 
 <div class="flex flex-col gap-8">
+    @dump($this->scrims)
     <section>
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <h2 class="text-2xl font-bold">
@@ -67,12 +80,13 @@ new #[Layout('layouts::team')] class extends Component
 
     <div class="grid grid-cols-12 gap-6 lg:gap-8">
         <div class="col-span-12 lg:col-span-6">
+            {{-- Scrims à venir --}}
             <x-accordion
                 :title="__('pages/scrims/index.upcoming_title')"
                 :open="true"
                 heading-level="h3"
             >
-                {{-- Données à venir --}}
+                
             </x-accordion>
         </div>
 
