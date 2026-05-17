@@ -249,6 +249,76 @@ select:focus[data-flux-control] {
 .cta-danger.cta-danger--only-icon:hover {
     background-color: rgb(127 29 29 / 0.6);
 }
+
+.cta-success {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    background-color: rgb(22 101 52 / 0.45);
+    border: 1px solid rgb(22 101 52 / 0.65);
+    transition:
+        background-color 150ms ease-in-out,
+        border-color 150ms ease-in-out,
+        color 150ms ease-in-out;
+
+    &:hover {
+        background-color: rgb(22 101 52 / 0.65);
+    }
+
+    &:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 2px rgb(34 197 94 / 0.35);
+    }
+}
+
+.cta-success--cta {
+    display: inline-flex;
+    width: fit-content;
+    max-width: 100%;
+    padding: 0.5em 1em;
+}
+
+.cta-success--cta.w-full {
+    width: 100%;
+}
+
+.cta-success.cta-success--outline {
+    font-weight: 700;
+    padding: 0.5em 1em;
+    color: white;
+    background-color: rgb(22 101 52 / 0.72);
+    border: 1px solid rgb(21 128 61 / 0.88);
+    transition:
+        color 0.15s ease-in-out,
+        background-color 0.15s ease-in-out,
+        border-color 0.15s ease-in-out;
+}
+
+.cta-success.cta-success--outline:hover {
+    color: white;
+    background-color: transparent;
+    border-color: rgb(34 197 94 / 0.65);
+}
+
+.cta-success.cta-success--outline:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgb(34 197 94 / 0.35);
+}
+
+.cta-success.cta-success--only-icon {
+    padding: 0.5em;
+    background-color: rgb(22 101 52);
+}
+
+.cta-success.cta-success--only-icon:hover {
+    background-color: rgb(22 101 52 / 0.75);
+}
 }
 
 .nav-link {

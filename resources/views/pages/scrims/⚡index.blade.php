@@ -43,6 +43,13 @@ new #[Layout('layouts::team')] class extends Component
         ]);
     }
 
+    public function showScrimRequest(int $scrimRequestId)
+    {
+        $this->dispatch('open_modal', [
+            'form' => 'scrims.show-scrim-request',
+            'model_id' => $scrimRequestId,
+        ]);
+    }
 };
 ?>
 
@@ -83,7 +90,7 @@ new #[Layout('layouts::team')] class extends Component
                         $scheduledAt = \Carbon\Carbon::parse($request->scheduled_date->format('Y-m-d').' '.$request->scheduled_time);
                     @endphp
                     <li class="col-span-12">
-                        <article class="relative cursor-pointer flex flex-col border-l-2 border-gold bg-bg-card p-4 basic-shadow md:p-5 card-animated-border">
+                        <article x-on:click="$el.querySelector('[data-scrim-request-link]')?.click()" class="relative cursor-pointer flex flex-col border-l-2 border-gold bg-bg-card p-4 basic-shadow md:p-5 card-animated-border">
                             <span class="card-animated-border-right-edge" aria-hidden="true"></span>
                             <div class="relative z-[1] flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                                 <div class="flex min-w-0 flex-1 items-center gap-3 md:gap-4">
@@ -107,7 +114,7 @@ new #[Layout('layouts::team')] class extends Component
                                     </div>
                                 </div>
                                 <div class="shrink-0 sm:self-center">
-                                    <button type="button" class="cta-primary block w-full whitespace-nowrap px-4 py-2 text-center text-sm sm:w-auto">
+                                    <button data-scrim-request-link wire:click="showScrimRequest({{ $request->id }})" type="button" class="cta-primary block w-full whitespace-nowrap px-4 py-2 text-center text-sm sm:w-auto">
                                         {{ __('pages/scrims/index.show_request') }}
                                     </button>
                                 </div>
