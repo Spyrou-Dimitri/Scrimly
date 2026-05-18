@@ -13,6 +13,8 @@ new #[Layout('layouts::team')] class extends Component
 
     public Collection $teamMembersStarters;
 
+    public Collection $opponentTeamMembersStarters;
+
     public CreateScrimGame $form;
 
 
@@ -33,6 +35,17 @@ new #[Layout('layouts::team')] class extends Component
             ->orderBy('roleInGame')
             ->with('user')
             ->get();
+
+
+
+        foreach ($this->teamMembersStarters as $member) {
+            $this->form->players[$member->id] = [
+                'champion' => null,
+                'kills' => 0,
+                'deaths' => 0,
+                'assists' => 0,
+            ];
+        }
     }
 
     public function createGame(): void
@@ -42,8 +55,8 @@ new #[Layout('layouts::team')] class extends Component
             'type' => 'success',
             'message' => __('toasts/toasts.game_created'),
         ]);
-        $this->redirect(route('scrims.show', $this->scrim->id));
-    }   
+        $this->redirect(route('scrims.show', ['id' => $this->scrim->id, 'slug' =>currentTeam()->slug]));
+    }
 };
 ?>
 
@@ -53,7 +66,7 @@ $this->scrim->team->name.
 ' vs '.
 ($this->scrim->opponentTeam?->name ?? __('pages/scrims/show.opponent_unknown'));
 
-$champions = collect(getChampionsList())->sortBy('name')->values()->all();
+$champions = collect(getChampionsList())->sortBy('name')->pluck('name');
 
 $draftRows = [
 ['key' => 'top', 'role' => __('pages/scrims/games/create.role_top')],
@@ -105,7 +118,7 @@ $draftRows = [
                         :name="'game-name'"
                         :type="'text'">
                         @error('form.title')
-                            <p class="text-red-500">{{ $message }}</p>
+                        <p class="text-red-500">{{ $message }}</p>
                         @enderror
                     </x-forms.input>
                 </div>
@@ -129,7 +142,7 @@ $draftRows = [
                                 :name="'game-duration-minutes'"
                                 :type="'number'">
                                 @error('form.duration_minutes')
-                                    <p class="text-red-500">{{ $message }}</p>
+                                <p class="text-red-500">{{ $message }}</p>
                                 @enderror
                             </x-forms.input>
                             <span class="text-text-secondary">{{ __('pages/scrims/games/create.minutes_suffix') }}</span>
@@ -147,7 +160,7 @@ $draftRows = [
                                 :name="'game-duration-seconds'"
                                 :type="'number'">
                                 @error('form.duration_seconds')
-                                    <p class="text-red-500">{{ $message }}</p>
+                                <p class="text-red-500">{{ $message }}</p>
                                 @enderror
                             </x-forms.input>
                             <span class="text-text-secondary">{{ __('pages/scrims/games/create.seconds_suffix') }}</span>
@@ -195,7 +208,6 @@ $draftRows = [
                 <div class="flex flex-col gap-4">
                     @foreach ($this->teamMembersStarters as $teamMember)
                     <article class="flex flex-col gap-4 bg-bg-card p-4 shadow-basic">
-
                         <div class="flex flex-wrap items-center gap-2">
                             <div class="flex items-center gap-2">
                                 <img src="{{ $teamMember->user->avatar_url }}" alt="{{ $teamMember->user->username }}" class="w-10 h-10">
@@ -203,17 +215,19 @@ $draftRows = [
                                     {{ $teamMember->user->username }} - {{ $teamMember->roleInGame->label() }}
                                 </h4>
                             </div>
-
                         </div>
-
                         <x-forms.select
+                            wire:model.live="form.players.{{ $teamMember->id }}.champion"
                             :hasLabel="true"
-                            :required="false"
+                            :required="true"
                             :name="$teamMember->user->username.'_champion_id'"
                             :label="__('pages/scrims/games/create.champion_label')"
                             :disabled="__('pages/scrims/games/create.champion_select_placeholder')"
-                            :options="$champions" />
-
+                            :options="$champions">
+                                @error("form.players.{{ $teamMember->id }}.champion")
+                                <p class="text-red-500">{{ $message }}</p>
+                                @enderror
+                            </x-forms.select>
                         <div class="flex flex-col gap-2">
                             <span class="block font-medium text-white">
                                 {{ __('pages/scrims/games/create.score_label') }}
@@ -221,6 +235,7 @@ $draftRows = [
                             <div class="flex items-center justify-center gap-2 sm:justify-start">
                                 <div class="flex-1">
                                     <x-forms.input
+                                        wire:model.live="form.players.{{ $teamMember->id }}.kills"
                                         :srOnlyLabel="true"
                                         :required="false"
                                         min="0"
@@ -228,11 +243,16 @@ $draftRows = [
                                         :label="__('pages/scrims/games/create.kda_kill_placeholder')"
                                         :name="$teamMember->user->username.'_kills'"
                                         :type="'number'"
-                                        :placeholder="__('pages/scrims/games/create.kda_kill_placeholder')" />
+                                        :placeholder="__('pages/scrims/games/create.kda_kill_placeholder')">
+                                        @error("form.players.{{ $teamMember->id }}.kills")
+                                        <p class="text-red-500">{{ $message }}</p>
+                                        @enderror
+                                    </x-forms.input>
                                 </div>
                                 <span class="text-text-secondary" aria-hidden="true">/</span>
                                 <div class="flex-1">
                                     <x-forms.input
+                                        wire:model.live="form.players.{{ $teamMember->id }}.deaths"
                                         :srOnlyLabel="true"
                                         :required="false"
                                         min="0"
@@ -240,19 +260,28 @@ $draftRows = [
                                         :label="__('pages/scrims/games/create.kda_death_placeholder')"
                                         :name="$teamMember->user->username.'_deaths'"
                                         :type="'number'"
-                                        :placeholder="__('pages/scrims/games/create.kda_death_placeholder')" />
+                                        :placeholder="__('pages/scrims/games/create.kda_death_placeholder')">
+                                        @error("form.players.{{ $teamMember->id }}.deaths")
+                                        <p class="text-red-500">{{ $message }}</p>
+                                        @enderror
+                                    </x-forms.input>
                                 </div>
                                 <span class="text-text-secondary" aria-hidden="true">/</span>
                                 <div class="flex-1">
                                     <x-forms.input
                                         :srOnlyLabel="true"
+                                        wire:model.live="form.players.{{ $teamMember->id }}.assists"
                                         :required="false"
                                         min="0"
                                         class="text-center px-2"
                                         :label="__('pages/scrims/games/create.kda_assist_placeholder')"
                                         :name="$teamMember->user->username.'_assists'"
                                         :type="'number'"
-                                        :placeholder="__('pages/scrims/games/create.kda_assist_placeholder')" />
+                                        :placeholder="__('pages/scrims/games/create.kda_assist_placeholder')">
+                                        @error("form.players.{{ $teamMember->id }}.assists")
+                                        <p class="text-red-500">{{ $message }}</p>
+                                        @enderror
+                                    </x-forms.input>
                                 </div>
                             </div>
                         </div>

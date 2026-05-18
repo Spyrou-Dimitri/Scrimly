@@ -17,7 +17,6 @@ return new class extends Migration
             $table->text('notes')->nullable();
             $table->foreignId('scrim_id')->constrained('scrims')->cascadeOnDelete();
             $table->timestamps();
-            $table->unique(['scrim_id']);
         });
     }
 
