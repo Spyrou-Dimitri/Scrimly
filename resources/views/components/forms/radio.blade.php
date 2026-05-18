@@ -42,9 +42,9 @@
                 }
 
                 $checkedStateClasses = match ($variant) {
-                    'outcome' => match ((string) $optionValue) {
-                        'win' => 'peer-checked:bg-victory peer-checked:text-black peer-focus-visible:ring-2 peer-focus-visible:ring-victory',
-                        'loss' => 'peer-checked:bg-defeat peer-checked:text-black peer-focus-visible:ring-2 peer-focus-visible:ring-defeat',
+                    'outcome' => match ($optionValue) {
+                        '1' => 'peer-checked:bg-victory peer-checked:text-black peer-focus-visible:ring-2 peer-focus-visible:ring-victory',
+                        '0' => 'peer-checked:bg-defeat peer-checked:text-black peer-focus-visible:ring-2 peer-focus-visible:ring-defeat',
                         default => 'peer-checked:bg-gold peer-checked:text-black peer-focus-visible:ring-1 peer-focus-visible:ring-gold-light',
                     },
                     default => 'peer-checked:bg-gold peer-checked:text-black peer-focus-visible:ring-1 peer-focus-visible:ring-gold-light',
@@ -65,7 +65,7 @@
                 >
                 <div @class([
                     'flex items-center justify-center px-4 py-2 leading-tight text-center font-medium',
-                    'bg-bg-card text-white border border-transparent transition-all duration-200',
+                    'bg-bg-card text-white border border-transparent transition-all duration-150',
                     'hover:opacity-80',
                     $checkedStateClasses,
                 ])>

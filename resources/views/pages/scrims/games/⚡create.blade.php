@@ -5,22 +5,16 @@ use Livewire\Attributes\Layout;
 use Livewire\Component;
 use App\Models\TeamMember;
 use Illuminate\Support\Collection;
+use App\Livewire\Forms\CreateScrimGame;
 
 new #[Layout('layouts::team')] class extends Component
 {
     public Scrim $scrim;
 
-    public string $gameName = 'Game 1';
-
-    public string $durationMinutes = '20';
-
-    public string $durationSeconds = '53';
-
-    public ?string $outcome = null;
-
-    public string $side_of_your_team = 'blue_side';
-
     public Collection $teamMembersStarters;
+
+    public CreateScrimGame $form;
+
 
     public function mount(int $id): void
     {
@@ -40,6 +34,16 @@ new #[Layout('layouts::team')] class extends Component
             ->with('user')
             ->get();
     }
+
+    public function createGame(): void
+    {
+        $this->form->store($this->scrim->id);
+        session()->flash('toast', [
+            'type' => 'success',
+            'message' => __('toasts/toasts.game_created'),
+        ]);
+        $this->redirect(route('scrims.show', $this->scrim->id));
+    }   
 };
 ?>
 
@@ -74,7 +78,7 @@ $draftRows = [
             {{ __('pages/scrims/games/create.create_button') }}
         </button>
     </div>
-    <form action="" class="grid grid-cols-12 gap-6">
+    <form wire:submit="createGame" class="grid grid-cols-12 gap-6">
         <fieldset class="min-w-0 flex flex-col gap-6 border-0 bg-bg-widget p-6 shadow-basic col-span-full">
             <legend class="sr-only">
                 {{ __('pages/scrims/games/create.main_fieldset_legend') }}
@@ -92,13 +96,18 @@ $draftRows = [
                         {{ __('pages/scrims/games/create.name_label') }}
                     </span>
                     <x-forms.input
+                        wire:model.live="form.title"
                         :srOnlyLabel="true"
-                        wire:model.live="gameName"
                         :required="true"
                         class="w-full"
+                        :placeholder="__('pages/scrims/games/create.name_placeholder')"
                         :label="__('pages/scrims/games/create.name_label')"
                         :name="'game-name'"
-                        :type="'text'" />
+                        :type="'text'">
+                        @error('form.title')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </x-forms.input>
                 </div>
 
                 {{-- Duration --}}
@@ -109,28 +118,38 @@ $draftRows = [
                     <div class="flex items-center gap-4">
                         <div class="flex flex-1 items-center gap-2">
                             <x-forms.input
+                                wire:model.live="form.duration_minutes"
                                 :srOnlyLabel="true"
-                                wire:model.live="durationMinutes"
                                 :required="false"
                                 min="0"
                                 max="120"
+                                :placeholder="'16'"
                                 class="w-full"
                                 :label="__('pages/scrims/games/create.duration_minutes_aria')"
                                 :name="'game-duration-minutes'"
-                                :type="'number'" />
+                                :type="'number'">
+                                @error('form.duration_minutes')
+                                    <p class="text-red-500">{{ $message }}</p>
+                                @enderror
+                            </x-forms.input>
                             <span class="text-text-secondary">{{ __('pages/scrims/games/create.minutes_suffix') }}</span>
                         </div>
                         <div class="flex flex-1 items-center gap-2">
                             <x-forms.input
                                 :srOnlyLabel="true"
-                                wire:model.live="durationSeconds"
+                                wire:model.live="form.duration_seconds"
                                 :required="false"
                                 min="0"
                                 max="59"
+                                :placeholder="'47'"
                                 class="w-full"
                                 :label="__('pages/scrims/games/create.duration_seconds_aria')"
                                 :name="'game-duration-seconds'"
-                                :type="'number'" />
+                                :type="'number'">
+                                @error('form.duration_seconds')
+                                    <p class="text-red-500">{{ $message }}</p>
+                                @enderror
+                            </x-forms.input>
                             <span class="text-text-secondary">{{ __('pages/scrims/games/create.seconds_suffix') }}</span>
                         </div>
                     </div>
@@ -139,6 +158,7 @@ $draftRows = [
                 {{-- Result --}}
                 <div class="flex flex-col gap-3">
                     <x-forms.radio
+                        wire:model.live="form.is_victory"
                         variant="outcome"
                         name="game_outcome"
                         :columns="2"
@@ -146,18 +166,20 @@ $draftRows = [
                         :label="__('pages/scrims/games/create.result_label')"
                         :options="[
                             [
-                                'value' => 'win',
+                                'value' => '1',
                                 'label' => __('pages/scrims/games/create.result_win'),
                             ],
                             [
-                                'value' => 'loss',
+                                'value' => '0',
                                 'label' => __('pages/scrims/games/create.result_loss'),
                             ],
                         ]"
-                        grid-gap-class="gap-3 sm:gap-4"
-                        wire:model.live="outcome" />
+                        grid-gap-class="gap-3 sm:gap-4" />
                 </div>
             </div>
+            <x-forms.submit>
+                caca
+            </x-forms.submit>
         </fieldset>
 
         <div class="col-span-full grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-10">

@@ -10,19 +10,16 @@ class ScrimGame extends Model
 {
     protected $fillable = [
         'scrim_id',
-        'game_number',
-        'side_of_your_team',
-        'winner_team_id',
-        'duration_minutes',
-        'screenshot',
+        'title',
+        'is_victory',
+        'duration',
         'notes',
     ];
 
     protected function casts(): array
     {
         return [
-            'game_number' => 'integer',
-            'duration_minutes' => 'integer',
+            'duration' => 'integer',
         ];
     }
 

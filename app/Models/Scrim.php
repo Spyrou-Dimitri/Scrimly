@@ -46,6 +46,6 @@ class Scrim extends Model
 
     public function scrimGames(): HasMany
     {
-        return $this->hasMany(ScrimGame::class)->orderBy('game_number');
+        return $this->hasMany(ScrimGame::class)->orderBy('id');
     }
 }
