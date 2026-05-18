@@ -12,9 +12,9 @@ return new class extends Migration
             $table->id();
             $table->string('title')->nullable();
             $table->boolean('is_victory')->nullable();
-            $table->foreignId('winner_team_id')->nullable()->constrained('teams')->nullOnDelete();
             $table->integer('duration')->nullable();
             $table->text('notes')->nullable();
+            $table->longText('opponent_team_members_starters')->nullable();
             $table->foreignId('scrim_id')->constrained('scrims')->cascadeOnDelete();
             $table->timestamps();
         });

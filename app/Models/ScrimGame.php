@@ -12,6 +12,7 @@ class ScrimGame extends Model
         'scrim_id',
         'title',
         'is_victory',
+        'opponent_team_members_starters',
         'duration',
         'notes',
     ];
@@ -20,6 +21,7 @@ class ScrimGame extends Model
     {
         return [
             'duration' => 'integer',
+            'opponent_team_members_starters' => 'array',
         ];
     }
 

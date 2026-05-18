@@ -46,6 +46,15 @@ new #[Layout('layouts::team')] class extends Component
                 'assists' => 0,
             ];
         }
+
+        foreach (['top', 'jungle', 'mid', 'bot', 'support'] as $role) {
+            $this->form->opponentTeamMembersStarters[$role] = [
+                'champion' => null,
+                'kills' => 0,
+                'deaths' => 0,
+                'assists' => 0,
+            ];
+        }
     }
 
     public function createGame(): void
@@ -67,14 +76,6 @@ $this->scrim->team->name.
 ($this->scrim->opponentTeam?->name ?? __('pages/scrims/show.opponent_unknown'));
 
 $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
-
-$draftRows = [
-['key' => 'top', 'role' => __('pages/scrims/games/create.role_top')],
-['key' => 'jungle', 'role' => __('pages/scrims/games/create.role_jungle')],
-['key' => 'mid', 'role' => __('pages/scrims/games/create.role_mid')],
-['key' => 'bot', 'role' => __('pages/scrims/games/create.role_bot')],
-['key' => 'support', 'role' => __('pages/scrims/games/create.role_support')],
-];
 @endphp
 
 <section class="flex flex-col gap-8">
@@ -301,22 +302,23 @@ $draftRows = [
                 </h3>
 
                 <div class="flex flex-col gap-4">
-                    @foreach ($draftRows as $row)
+                    @foreach ($this->form->opponentTeamMembersStarters as $role => $player)
                     <article class="flex flex-col gap-4 bg-bg-card p-4 shadow-basic">
                         <div class="flex flex-wrap items-center gap-2">
                             <div class="flex items-center gap-2">
                                 <h4 class="text-xl font-semibold text-gold">
                                     {{ __('pages/scrims/games/create.opponent_lineup_name') }}
                                     -
-                                    {{ $row['role'] }}
+                                    {{ __('pages/scrims/games/create.role_'.$role) }}
                                 </h4>
                             </div>
                         </div>
 
                         <x-forms.select
+                            wire:model.live="form.opponentTeamMembersStarters.{{ $role }}.champion"
                             :hasLabel="true"
                             :required="false"
-                            :name="'draft_away_'.$row['key'].'_champion_id'"
+                            :name="'opponent_team_members_starters_'.$role.'_champion'"
                             :label="__('pages/scrims/games/create.champion_label')"
                             :disabled="__('pages/scrims/games/create.champion_select_placeholder')"
                             :options="$champions" />
@@ -328,36 +330,39 @@ $draftRows = [
                             <div class="flex items-center justify-center gap-2 sm:justify-start">
                                 <div class="flex-1">
                                     <x-forms.input
+                                        wire:model.live="form.opponentTeamMembersStarters.{{ $role }}.kills"
                                         :srOnlyLabel="true"
                                         :required="false"
                                         min="0"
                                         class="text-center px-2"
                                         :label="__('pages/scrims/games/create.kda_kill_placeholder')"
-                                        :name="'draft_away_'.$row['key'].'_kills'"
+                                        :name="'opponent_team_members_starters_'.$role.'_kills'"
                                         :type="'number'"
                                         :placeholder="__('pages/scrims/games/create.kda_kill_placeholder')" />
                                 </div>
                                 <span class="text-text-secondary" aria-hidden="true">/</span>
                                 <div class="flex-1">
                                     <x-forms.input
+                                        wire:model.live="form.opponentTeamMembersStarters.{{ $role }}.deaths"
                                         :srOnlyLabel="true"
                                         :required="false"
                                         min="0"
                                         class="text-center px-2"
                                         :label="__('pages/scrims/games/create.kda_death_placeholder')"
-                                        :name="'draft_away_'.$row['key'].'_deaths'"
+                                        :name="'opponent_team_members_starters_'.$role.'_deaths'"
                                         :type="'number'"
                                         :placeholder="__('pages/scrims/games/create.kda_death_placeholder')" />
                                 </div>
                                 <span class="text-text-secondary" aria-hidden="true">/</span>
                                 <div class="flex-1">
                                     <x-forms.input
+                                        wire:model.live="form.opponentTeamMembersStarters.{{ $role }}.assists"
                                         :srOnlyLabel="true"
                                         :required="false"
                                         min="0"
                                         class="text-center px-2"
                                         :label="__('pages/scrims/games/create.kda_assist_placeholder')"
-                                        :name="'draft_away_'.$row['key'].'_assists'"
+                                        :name="'opponent_team_members_starters_'.$role.'_assists'"
                                         :type="'number'"
                                         :placeholder="__('pages/scrims/games/create.kda_assist_placeholder')" />
                                 </div>

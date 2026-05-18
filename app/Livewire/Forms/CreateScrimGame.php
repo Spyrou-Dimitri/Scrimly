@@ -25,6 +25,9 @@ class CreateScrimGame extends Form
     #[Validate]
     public array $players = [];
 
+    #[Validate]
+    public array $opponentTeamMembersStarters = [];
+
     public function rules(): array
     {
         return [
@@ -37,18 +40,34 @@ class CreateScrimGame extends Form
             'players.*.kills' => ['nullable', 'integer', 'min:0'],
             'players.*.deaths' => ['nullable', 'integer', 'min:0'],
             'players.*.assists' => ['nullable', 'integer', 'min:0'],
+            'opponentTeamMembersStarters' => ['required', 'array', 'min:5', 'max:5'],
+            'opponentTeamMembersStarters.*.champion' => ['required', 'string', Rule::in(collect(getChampionsList())->pluck('name'))],
+            'opponentTeamMembersStarters.*.kills' => ['nullable', 'integer', 'min:0'],
+            'opponentTeamMembersStarters.*.deaths' => ['nullable', 'integer', 'min:0'],
+            'opponentTeamMembersStarters.*.assists' => ['nullable', 'integer', 'min:0'],
+
         ];
     }
 
     public function store(int $scrimId): void
     {
         $validated = $this->validate();
-        DB::transaction(function () use ($validated, $scrimId) {
+
+        $opponentStarters = [
+            'top' => $validated['opponentTeamMembersStarters']['top'],
+            'jungle' => $validated['opponentTeamMembersStarters']['jungle'],
+            'mid' => $validated['opponentTeamMembersStarters']['mid'],
+            'bot' => $validated['opponentTeamMembersStarters']['bot'],
+            'support' => $validated['opponentTeamMembersStarters']['support'],
+        ];
+
+        DB::transaction(function () use ($validated, $scrimId, $opponentStarters) {
             $scrimGame = ScrimGame::create([
                 'title' => $validated['title'],
                 'duration' => $validated['duration_minutes'] * 60 + $validated['duration_seconds'],
                 'is_victory' => $validated['is_victory'],
                 'scrim_id' => $scrimId,
+                'opponent_team_members_starters' => $opponentStarters,
             ]);
             foreach ($validated['players'] as $teamMemberId => $player) {
                 $scrimGame->scrimGamePlayers()->create([
