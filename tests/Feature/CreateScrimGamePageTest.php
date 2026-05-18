@@ -84,5 +84,8 @@ test('la page de création de game répond avec succès et affiche le formulaire
         ->assertSee(__('pages/scrims/games/create.main_fieldset_legend'), escape: false)
         ->assertSee(__('pages/scrims/games/create.scrim_label', ['teams' => 'Équipe Alpha vs Équipe Beta']), escape: false)
         ->assertSee(__('pages/scrims/games/create.result_win'), escape: false)
-        ->assertSee(__('pages/scrims/games/create.result_loss'), escape: false);
+        ->assertSee(__('pages/scrims/games/create.result_loss'), escape: false)
+        ->assertSee(__('pages/scrims/games/create.champion_label'))
+        ->assertSee(__('pages/scrims/games/create.score_draft_legend'))
+        ->assertSee(__('pages/scrims/games/create.opponent_lineup_name'), escape: false);
 });
