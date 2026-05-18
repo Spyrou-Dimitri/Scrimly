@@ -10,12 +10,13 @@ return new class extends Migration
     {
         Schema::create('scrim_games', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('scrim_id')->constrained('scrims')->cascadeOnDelete();
+            $table->string('title')->nullable();
             $table->unsignedTinyInteger('game_number');
             $table->foreignId('winner_team_id')->nullable()->constrained('teams')->nullOnDelete();
             $table->integer('duration_minutes')->nullable();
             $table->string('screenshot')->nullable();
             $table->text('notes')->nullable();
+            $table->foreignId('scrim_id')->constrained('scrims')->cascadeOnDelete();
             $table->timestamps();
 
             $table->unique(['scrim_id', 'game_number']);

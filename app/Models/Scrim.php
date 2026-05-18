@@ -24,7 +24,7 @@ class Scrim extends Model
 
     protected $casts = [
         'scheduled_date' => 'date',
-        'scheduled_time' => 'datetime',
+        'scheduled_time' => 'time',
         'number_of_games' => 'integer',
         'status' => StatusScrim::class,
     ];

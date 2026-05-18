@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ScrimGame extends Model
 {
     protected $fillable = [
         'scrim_id',
         'game_number',
+        'side_of_your_team',
         'winner_team_id',
         'duration_minutes',
         'screenshot',
@@ -24,15 +26,13 @@ class ScrimGame extends Model
         ];
     }
 
-  
     public function scrim(): BelongsTo
     {
         return $this->belongsTo(Scrim::class);
     }
 
-  
-    public function winnerTeam(): BelongsTo
+    public function scrimGamePlayers(): HasMany
     {
-        return $this->belongsTo(Team::class, 'winner_team_id');
+        return $this->hasMany(ScrimGamePlayer::class);
     }
 }

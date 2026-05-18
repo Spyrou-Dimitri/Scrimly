@@ -11,4 +11,8 @@ return [
     'widget_summary' => 'Résumé du scrim',
     'summary_empty' => 'Pas encore de résumé. Vous pourrez définir un résumé lorsque le scrim sera terminé.',
     'opponent_unknown' => 'À déterminer',
+    'create_game' => 'Ajouter une game',
+    'create_game_title' => 'Accéder à la page de création de game',
+    'games_title' => 'Games',
+    'games_empty' => 'Pas encore de games créé dans ce scrim.',
 ];

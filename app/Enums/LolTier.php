@@ -87,7 +87,7 @@ enum LolTier: string
             self::EMERALD => 'img/LolTier/Emerald.png',
             self::DIAMOND => 'img/LolTier/Diamond.png',
             self::MASTER => 'img/LolTier/Master.png',
-            self::GRANDMASTER => 'img/LolTier/Grandmaster.png',
+            self::GRANDMASTER => 'img/LolTier/Gm.png',
             self::CHALLENGER => 'img/LolTier/Challenger.png',
         };
     }

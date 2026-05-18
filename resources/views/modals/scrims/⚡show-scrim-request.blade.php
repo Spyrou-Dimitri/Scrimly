@@ -47,6 +47,7 @@ new class extends Component
                 'opponent_team_id' => $this->scrimRequest->requester_team_id,
                 'team_id' => currentTeam()?->id,
             ]);
+            
             $scrimForRequesterTeam = Scrim::create([
                 'scheduled_date' => $this->scrimRequest->scheduled_date,
                 'scheduled_time' => $this->scrimRequest->scheduled_time,

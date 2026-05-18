@@ -32,6 +32,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::livewire('/{slug}/scrims', 'pages::scrims.index')->name('scrims.index');
         Route::livewire('/{slug}/scrims/find', 'pages::scrims.find')->name('scrims.find');
         Route::livewire('/{slug}/scrims/{id}', 'pages::scrims.show')->name('scrims.show');
+        Route::livewire('/{slug}/scrims/{id}/games/create', 'pages::scrims.games.create')->name('scrims.games.create');
 
     });
 });

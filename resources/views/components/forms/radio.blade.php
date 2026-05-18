@@ -5,6 +5,8 @@
     'hasLabel' => true,
     'required' => false,
     'columns' => 4,
+    'variant' => 'default',
+    'gridGapClass' => 'gap-6',
 ])
 
 <div class="flex flex-col gap-2 w-full">
@@ -17,7 +19,10 @@
         </p>
     @endif
 
-    <div class="grid gap-6" style="grid-template-columns: repeat({{ $columns }}, minmax(0, 1fr))">
+    <div
+        class="grid {{ $gridGapClass }}"
+        style="grid-template-columns: repeat({{ $columns }}, minmax(0, 1fr))"
+    >
         @foreach($options as $option)
             @php
                 if (is_object($option)) {
@@ -35,6 +40,15 @@
                     $optionValue = $option;
                     $optionLabel = $option;
                 }
+
+                $checkedStateClasses = match ($variant) {
+                    'outcome' => match ((string) $optionValue) {
+                        'win' => 'peer-checked:bg-victory peer-checked:text-black peer-focus-visible:ring-2 peer-focus-visible:ring-victory',
+                        'loss' => 'peer-checked:bg-defeat peer-checked:text-black peer-focus-visible:ring-2 peer-focus-visible:ring-defeat',
+                        default => 'peer-checked:bg-gold peer-checked:text-black peer-focus-visible:ring-1 peer-focus-visible:ring-gold-light',
+                    },
+                    default => 'peer-checked:bg-gold peer-checked:text-black peer-focus-visible:ring-1 peer-focus-visible:ring-gold-light',
+                };
             @endphp
 
             <label
@@ -49,17 +63,12 @@
                     {{ $attributes->whereStartsWith('wire:model') }}
                     @if($required) required @endif
                 >
-                <div class="
-                    flex items-center justify-center
-                    px-4 py-2 leading-tight
-                    text-center font-medium
-                    bg-bg-card text-white
-                    border border-transparent
-                    transition-all duration-200
-                    peer-checked:bg-gold peer-checked:text-black
-                    peer-focus-visible:ring-1 peer-focus-visible:ring-gold-light
-                    hover:opacity-80
-                ">
+                <div @class([
+                    'flex items-center justify-center px-4 py-2 leading-tight text-center font-medium',
+                    'bg-bg-card text-white border border-transparent transition-all duration-200',
+                    'hover:opacity-80',
+                    $checkedStateClasses,
+                ])>
                     {{ $optionLabel }}
                 </div>
             </label>

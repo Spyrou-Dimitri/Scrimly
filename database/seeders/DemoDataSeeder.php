@@ -46,13 +46,31 @@ class DemoDataSeeder extends Seeder
         ['username' => 'Lawin', 'riot_tag' => 'Lawin#2000'],
     ];
 
+    /**
+     * Riot IDs des joueurs supplémentaires (référence newplayer.md) : pseudo = partie avant '#'.
+     *
+     * @var list<string>
+     */
+    private const RIOT_TAGS_NEWPLAYER_DEMO = [
+        'Yone#boo',
+        'Ryssa#EUW',
+        'Tony#ZED',
+        'Capy#BGCE',
+        'Liwa#1805',
+        'Bebelin#EUW',
+        'BKS#KDR',
+        'Caliste#Franc',
+        'Percy Magic#1234',
+        'Lurox#Lurox',
+    ];
+
     private const CHAMPION_NAMES = [
         'Ahri', 'Yasuo', 'LeeSin', 'Jinx', 'Thresh', 'Ornn', 'Kaisa', 'Graves',
         'Lulu', 'Syndra', 'Vi', 'Maokai', 'Aphelios', 'Renata', 'JarvanIV',
     ];
 
     /**
-     * Composition des 5 équipes : trois pseudos joueurs + un pseudo staff (le coach est toujours l’utilisateur test).
+     * Composition des 5 équipes : cinq titulaires (TOP→Support) + un pseudo staff (le coach est toujours l’utilisateur test).
      *
      * @var list<array{name: string, slug: string, tag: string, players: list<string>, staff: string}>
      */
@@ -61,40 +79,46 @@ class DemoDataSeeder extends Seeder
             'name' => 'Phoenix Elite',
             'slug' => 'phoenix-elite',
             'tag' => 'PHNX',
-            'players' => ['Elise', 'Mizuty', 'Alucard'],
+            'players' => ['Elise', 'Mizuty', 'Alucard', 'Yone', 'Ryssa'],
             'staff' => 'Tokha',
         ],
         [
             'name' => 'Dragon Lane FR',
             'slug' => 'dragon-lane-fr',
             'tag' => 'DRGN',
-            'players' => ['Nekkore', 'eNami', 'mamou'],
+            'players' => ['Tony', 'Nekkore', 'eNami', 'mamou', 'Capy'],
             'staff' => 'Pollo',
         ],
         [
             'name' => 'Lynx Scrims',
             'slug' => 'lynx-scrims',
             'tag' => 'LNX',
-            'players' => ['sorrow', 'Lawin', 'Mizuty'],
+            'players' => ['Liwa', 'sorrow', 'Mizuty', 'Lawin', 'Bebelin'],
             'staff' => 'Drogas',
         ],
         [
             'name' => 'Raven Draft',
             'slug' => 'raven-draft',
             'tag' => 'RVN',
-            'players' => ['Tokha', 'Elise', 'eNami'],
+            'players' => ['BKS', 'Tokha', 'Elise', 'eNami', 'Caliste'],
             'staff' => 'Nekkore',
         ],
         [
             'name' => 'Wolf Pack EUW',
             'slug' => 'wolf-pack-euw',
             'tag' => 'WLF',
-            'players' => ['Alucard', 'Pollo', 'Lawin'],
+            'players' => ['Alucard', 'Pollo', 'Lawin', 'Percy Magic', 'Lurox'],
             'staff' => 'mamou',
         ],
     ];
 
-    private const STARTER_ROLES = [RoleInGame::TOP, RoleInGame::JUNGLE, RoleInGame::MID];
+    private const STARTER_ROLES = [
+        RoleInGame::TOP,
+        RoleInGame::JUNGLE,
+        RoleInGame::MID,
+        RoleInGame::ADC,
+        RoleInGame::SUPPORT,
+    ];
 
     public function run(): void
     {
@@ -123,6 +147,24 @@ class DemoDataSeeder extends Seeder
 
             $this->seedRiotDataForUser($user, $row['riot_tag']);
             $usersByUsername[$row['username']] = $user;
+
+            $this->delayBetweenUsers();
+        }
+
+        foreach (self::RIOT_TAGS_NEWPLAYER_DEMO as $riotTag) {
+            $gameName = $this->riotGameNameFromTag($riotTag);
+            $user = User::create([
+                'username' => $gameName,
+                'email' => $this->emailLocalPartFromGameName($gameName).'@example.com',
+                'password' => Hash::make('password'),
+                'email_verified_at' => now(),
+                'current_team_id' => null,
+                'avatar_type' => 'default',
+                'avatar_value' => fake()->randomElement(DefaultAvatar::cases())->value,
+            ]);
+
+            $this->seedRiotDataForUser($user, $riotTag);
+            $usersByUsername[$gameName] = $user;
 
             $this->delayBetweenUsers();
         }
@@ -288,6 +330,16 @@ class DemoDataSeeder extends Seeder
         if (! app()->runningUnitTests()) {
             sleep(3);
         }
+    }
+
+    private function riotGameNameFromTag(string $riotTag): string
+    {
+        return trim(Str::before($riotTag, '#'));
+    }
+
+    private function emailLocalPartFromGameName(string $gameName): string
+    {
+        return Str::lower(str_replace(' ', '', trim($gameName)));
     }
 
     private function seedRiotDataForUser(User $user, string $riotTag): void

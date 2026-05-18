@@ -23,9 +23,9 @@ new #[Layout('layouts::team')] class extends Component {
 
 ?>
 
-<div>
+<div class="flex flex-col gap-10">
     <section class="flex flex-col gap-8">
-        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div class="flex flex-row flex-wrap items-center justify-between gap-4">
             <h2 class="text-2xl font-bold">
                 <span class="text-text-primary">{{ __('pages/scrims/show.title_prefix') }}</span>
                 <span class="text-gold">{{ $this->scrim->opponentTeam?->name ?? __('pages/scrims/show.opponent_unknown') }}</span>
@@ -97,6 +97,16 @@ new #[Layout('layouts::team')] class extends Component {
                     <span class="text-defeat">0</span>
                 </p>
             </div>
+        </div>
+    </section>
+    <section class="flex flex-col gap-8">
+        <div class="flex flex-row flex-wrap items-center justify-between gap-4">
+            <h2 class="text-2xl font-bold">
+                {{ __('pages/scrims/show.games_title') }}
+            </h2>
+            <x-cta wire:navigate :href="route('scrims.games.create', ['slug' => $this->scrim->team->slug, 'id' => $this->scrim->id])" :title="__('pages/scrims/show.create_game_title')" :class="'cta-primary'">
+                {{ __('pages/scrims/show.create_game') }}
+            </x-cta>
         </div>
     </section>
 </div>
