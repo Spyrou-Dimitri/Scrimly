@@ -34,4 +34,9 @@ class ScrimGame extends Model
     {
         return $this->hasMany(ScrimGamePlayer::class);
     }
+
+    public function scrimGameNotes(): HasMany
+    {
+        return $this->hasMany(ScrimGameNote::class);
+    }
 }

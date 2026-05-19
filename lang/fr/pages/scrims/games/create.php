@@ -37,4 +37,14 @@ return [
     'role_mid' => 'Mid',
     'role_bot' => 'Bot',
     'role_support' => 'Support',
+
+    'notes_fieldset_legend' => 'Notes de la game',
+    'positive_notes_title' => 'Points positifs',
+    'negative_notes_title' => 'Points négatifs',
+    'add_note' => 'Ajouter',
+    'no_positive_notes' => 'Aucun point positif',
+    'no_negative_notes' => 'Aucun point négatif',
+    'field_note_content' => 'Note',
+    'field_note_placeholder' => 'Excellente gestion de la vision autour du Baron à 20 min',
+    'error_too_short_note' => 'Note trop courte (minimum 3 caractères)',
 ];

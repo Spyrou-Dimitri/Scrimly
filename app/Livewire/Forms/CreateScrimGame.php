@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use App\Enums\TypeScrimGameNote;
 use App\Models\ScrimGame;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -28,6 +29,9 @@ class CreateScrimGame extends Form
     #[Validate]
     public array $opponentTeamMembersStarters = [];
 
+    #[Validate]
+    public array $scrimGameNotes = [];
+
     public function rules(): array
     {
         return [
@@ -44,8 +48,10 @@ class CreateScrimGame extends Form
             'opponentTeamMembersStarters.*.champion' => ['required', 'string', Rule::in(collect(getChampionsList())->pluck('name'))],
             'opponentTeamMembersStarters.*.kills' => ['nullable', 'integer', 'min:0'],
             'opponentTeamMembersStarters.*.deaths' => ['nullable', 'integer', 'min:0'],
-            'opponentTeamMembersStarters.*.assists' => ['nullable', 'integer', 'min:0'],
-
+                        'opponentTeamMembersStarters.*.assists' => ['nullable', 'integer', 'min:0'],
+            'scrimGameNotes' => ['array'],
+            'scrimGameNotes.*.type' => ['required', Rule::enum(TypeScrimGameNote::class)],
+            'scrimGameNotes.*.note' => ['required', 'string', 'min:3', 'max:500'],
         ];
     }
 
@@ -76,6 +82,13 @@ class CreateScrimGame extends Form
                     'kills' => $player['kills'],
                     'deaths' => $player['deaths'],
                     'assists' => $player['assists'],
+                ]);
+            }
+
+            foreach ($validated['scrimGameNotes'] as $note) {
+                $scrimGame->scrimGameNotes()->create([
+                    'type' => $note['type'],
+                    'note' => $note['note'],
                 ]);
             }
         });
