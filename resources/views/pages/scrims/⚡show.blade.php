@@ -4,6 +4,7 @@ use App\Enums\TypeScrimGameNote;
 use App\Models\Scrim;
 use App\Models\Team;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 new #[Layout('layouts::team')] class extends Component
@@ -26,6 +27,26 @@ new #[Layout('layouts::team')] class extends Component
             ->firstOrFail();
 
         $this->opponentTeam = Team::find($this->scrim->opponent_team_id);
+    }
+
+    public function openDeleteGameModal(int $gameId): void
+    {
+        $this->dispatch('open_modal', [
+            'form' => 'modals::scrims.games.delete-game',
+            'model_id' => $gameId,
+        ]);
+    }
+
+    #[On('refresh_scrim')]
+    public function refreshScrim(): void
+    {
+        $this->scrim->refresh();
+        $this->scrim->load([
+            'opponentTeam',
+            'team',
+            'scrimGames.scrimGamePlayers.teamMember.user',
+            'scrimGames.scrimGameNotes',
+        ]);
     }
 };
 
@@ -160,6 +181,8 @@ new #[Layout('layouts::team')] class extends Component
                         </button>
                         <button
                             type="button"
+                            wire:click="openDeleteGameModal({{ $game->id }})"
+                            title="{{ __('pages/scrims/show.delete_game') }}"
                             class="group cursor-pointer flex size-8 items-center justify-center border border-transparent bg-bg-card text-text-primary transition-all duration-150 ease-in-out hover:border-red-700/90">
                             <flux:icon name="trash" class="size-5 transition-all duration-150 ease-in-out group-hover:text-red-700/90" />
                         </button>
