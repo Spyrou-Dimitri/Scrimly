@@ -18,6 +18,7 @@ return [
     'side_red_side' => 'Rouge',
     'create_button' => 'Créer la game',
     'update_button' => 'Enregistrer les modifications',
+    'cancel_button' => 'Annuler',
     'name_placeholder' => 'Game 1',
 
     'score_draft_legend' => 'Score & draft',

@@ -130,7 +130,7 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
         </button>
     </div>
     <form wire:submit="createGame" class="grid grid-cols-12 gap-6">
-        <fieldset class="min-w-0 flex flex-col gap-6 border-0 bg-bg-widget p-6 shadow-basic col-span-full">
+        <fieldset class="flex flex-col gap-6 border-0 bg-bg-widget p-6 shadow-basic col-span-full">
             <legend class="sr-only">
                 {{ __('pages/scrims/games/create.main_fieldset_legend') }}
             </legend>
@@ -233,7 +233,7 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
             </x-forms.submit>
         </fieldset>
         <div class="col-span-full grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-10">
-            <fieldset class="min-w-0 flex flex-col gap-6 border-0 bg-bg-widget p-6 shadow-basic">
+            <fieldset class="flex flex-col gap-6 border-0 bg-bg-widget p-6 shadow-basic">
                 <legend class="sr-only">
                     {{ __('pages/scrims/games/create.draft_home_fieldset_legend') }}
                 </legend>
@@ -328,7 +328,7 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
             </fieldset>
 
             {{-- Line-up adversaire --}}
-            <fieldset class="min-w-0 flex flex-col gap-6 border-0 bg-bg-widget p-6 shadow-basic">
+            <fieldset class="flex flex-col gap-6 border-0 bg-bg-widget p-6 shadow-basic">
                 <legend class="sr-only">
                     {{ __('pages/scrims/games/create.draft_away_fieldset_legend') }}
                 </legend>
@@ -411,7 +411,7 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
         </div>
 
         {{-- Notes de la game --}}
-        <fieldset class="col-span-full min-w-0 flex flex-col gap-6 border-0 bg-bg-widget p-6 shadow-basic">
+        <fieldset class="col-span-full flex flex-col gap-6 border-0 bg-bg-widget p-6 shadow-basic">
             <legend class="sr-only">
                 {{ __('pages/scrims/games/create.notes_fieldset_legend') }}
             </legend>
@@ -573,6 +573,14 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                 </div>
             </div>
         </fieldset>
+        <div class="flex bg-bg-widget p-6 shadow-basic flex-row flex-wrap items-center justify-between gap-4 col-span-full">
+            <x-cta wire:navigate :href="route('scrims.show', ['id' => $this->scrim->id, 'slug' => currentTeam()->slug])" :title="__('pages/scrims/games/create.cancel_button')" :class="'secondary'">
+                {{ __('pages/scrims/games/create.cancel_button') }}
+            </x-cta>
+            <x-forms.submit>
+                {{ __('pages/scrims/games/create.create_button') }}
+            </x-cta>
+        </div>
     </form>
 
 </section>

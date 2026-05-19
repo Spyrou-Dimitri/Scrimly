@@ -145,7 +145,7 @@ $requesterTeam = $this->scrimRequest->requesterTeam;
                     <p class="text-xl font-bold text-text-primary">
                         {{ __('modals/scrims/show-scrim-request.format_games_line', ['count' => $this->scrimRequest->number_of_games]) }}
                     </p>
-                    <p class="text-xs font-semibold uppercase tracking-wide text-text-secondary">
+                    <p class="text-xs font-semibold text-text-secondary">
                         {{ __('modals/scrims/show-scrim-request.format_series_subtitle', ['count' => $this->scrimRequest->number_of_games]) }}
                     </p>
                 </div>
@@ -167,7 +167,7 @@ $requesterTeam = $this->scrimRequest->requesterTeam;
 
             {{-- Message pleine largeur --}}
             <div class="flex flex-col gap-3 bg-bg-widget p-5 shadow-basic">
-                <div class="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-gold">
+                <div class="flex items-center gap-2 text-[11px] font-semibold text-gold">
                     <flux:icon name="chat-bubble-left-ellipsis" class="size-4 shrink-0 text-gold" />
                     {{ __('modals/scrims/show-scrim-request.message_coach_label') }}
                 </div>
@@ -187,7 +187,7 @@ $requesterTeam = $this->scrimRequest->requesterTeam;
                         wire:click="refuseScrimRequest"
                         type="button"
                         wire:loading.attr="disabled"
-                        class="cta-danger w-full whitespace-nowrap px-5 py-2.5 text-center text-xs font-bold uppercase tracking-wide sm:w-auto sm:min-w-[8.5rem]"
+                        class="cta-danger w-full whitespace-nowrap px-5 py-2.5 text-center text-xs font-bold sm:w-auto sm:min-w-[8.5rem]"
                         :title="__('modals/scrims/show-scrim-request.refuse')">
                         {{ __('modals/scrims/show-scrim-request.refuse') }}
                     </x-destructive>
@@ -198,7 +198,7 @@ $requesterTeam = $this->scrimRequest->requesterTeam;
                         wire:click="acceptScrimRequest"
                         type="button"
                         wire:loading.attr="disabled"
-                        class="cta-success w-full whitespace-nowrap px-5 py-2.5 text-center text-xs font-bold uppercase tracking-wide sm:w-auto sm:min-w-[8.5rem]"
+                        class="cta-success w-full whitespace-nowrap px-5 py-2.5 text-center text-xs font-bold sm:w-auto sm:min-w-[8.5rem]"
                         :title="__('modals/scrims/show-scrim-request.accept')">
                         {{ __('modals/scrims/show-scrim-request.accept') }}
                     </x-accept>

@@ -141,6 +141,7 @@ new #[Layout('layouts::team')] class extends Component
                 {{ __('pages/scrims/show.create_game') }}
             </x-cta>
         </div>
+        @if ($this->scrim->scrimGames->isNotEmpty())
         <div class="flex flex-col gap-4">
             @foreach ($this->scrim->scrimGames as $game)
             <x-accordion
@@ -348,5 +349,10 @@ new #[Layout('layouts::team')] class extends Component
             </x-accordion>
             @endforeach
         </div>
+        @else
+        <div class="flex flex-col gap-4">
+            <p class="text-text-secondary">{{ __('pages/scrims/show.no_games') }}</p>
+        </div>
+        @endif
     </section>
 </div>
