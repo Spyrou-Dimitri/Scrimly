@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Forms;
+namespace App\Livewire\Forms\Scrim;
 
 use App\Enums\TypeScrimGameNote;
 use App\Models\ScrimGame;
@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
-class CreateScrimGame extends Form
+class CreateScrimGameForm extends Form
 {
     #[Validate]
     public string $title = '';
@@ -48,7 +48,7 @@ class CreateScrimGame extends Form
             'opponentTeamMembersStarters.*.champion' => ['required', 'string', Rule::in(collect(getChampionsList())->pluck('name'))],
             'opponentTeamMembersStarters.*.kills' => ['nullable', 'integer', 'min:0'],
             'opponentTeamMembersStarters.*.deaths' => ['nullable', 'integer', 'min:0'],
-                        'opponentTeamMembersStarters.*.assists' => ['nullable', 'integer', 'min:0'],
+            'opponentTeamMembersStarters.*.assists' => ['nullable', 'integer', 'min:0'],
             'scrimGameNotes' => ['array'],
             'scrimGameNotes.*.type' => ['required', Rule::enum(TypeScrimGameNote::class)],
             'scrimGameNotes.*.note' => ['required', 'string', 'min:3', 'max:500'],

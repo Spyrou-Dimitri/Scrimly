@@ -1,66 +1,58 @@
 <?php
 
+use App\Models\ScrimGame;
 use App\Models\Scrim;
-use Livewire\Attributes\Layout;
 use Livewire\Component;
-use App\Models\TeamMember;
 use Illuminate\Support\Collection;
-use App\Livewire\Forms\Scrim\CreateScrimGameForm;
+use App\Livewire\Forms\Scrim\EditScrimGameForm;
 use App\Enums\TypeScrimGameNote;
+use App\Models\ScrimGamePlayer;
+use Livewire\Attributes\Layout;
 
 new #[Layout('layouts::team')] class extends Component
 {
     public Scrim $scrim;
-
-    public Collection $teamMembersStarters;
-
-    public Collection $opponentTeamMembersStarters;
-
-    public CreateScrimGameForm $form;
+    public ScrimGame $game;
+    public Collection $memberOfScrimsGame;
+    public EditScrimGameForm $form;
 
     public string $newPositiveNote = '';
-
     public string $newNegativeNote = '';
 
-    public function mount(int $id): void
+    public function mount(int $id, int $gameId): void
     {
-        $this->scrim = Scrim::query()
-            ->whereKey($id)
-            ->where('team_id', currentTeam()->id)
-            ->with([
-                'opponentTeam',
-                'team',
-            ])
-            ->firstOrFail();
+        $this->scrim = Scrim::findOrFail($id);
+        $this->game = ScrimGame::query()
+            ->with('scrimGameNotes')
+            ->findOrFail($gameId);
 
-        $this->teamMembersStarters = TeamMember::query()
-            ->where('team_id', currentTeam()->id)
-            ->where('is_starter', true)
-            ->orderBy('roleInGame')
-            ->with('user')
+        $this->memberOfScrimsGame = ScrimGamePlayer::query()
+            ->where('scrim_game_id', $this->game->id)
+            ->with(['teamMember.user'])
             ->get();
 
-
-
-        foreach ($this->teamMembersStarters as $member) {
-            $this->form->players[$member->id] = [
-                'champion' => null,
-                'kills' => 0,
-                'deaths' => 0,
-                'assists' => 0,
+        $this->form->title = $this->game->title;
+        $this->form->duration_minutes = $this->game->duration / 60;
+        $this->form->duration_seconds = $this->game->duration % 60;
+        $this->form->is_victory = $this->game->is_victory;
+        foreach ($this->memberOfScrimsGame as $member) {
+            $this->form->players[$member->team_member_id] = [
+                'champion' => $member->champion,
+                'kills' => $member->kills,
+                'deaths' => $member->deaths,
+                'assists' => $member->assists,
             ];
         }
-
-        foreach (['top', 'jungle', 'mid', 'bot', 'support'] as $role) {
-            $this->form->opponentTeamMembersStarters[$role] = [
-                'champion' => null,
-                'kills' => 0,
-                'deaths' => 0,
-                'assists' => 0,
+        foreach ($this->game->scrimGameNotes as $note) {
+            $this->form->scrimGameNotes[] = [
+                'type' => $note->type->value,
+                'note' => $note->note,
             ];
         }
+        $this->form->opponentTeamMembersStarters = $this->game->opponent_team_members_starters;
+
+
     }
-
     public function addNote(string $type): void
     {
         if ($type === TypeScrimGameNote::POSITIVE->value) {
@@ -87,19 +79,17 @@ new #[Layout('layouts::team')] class extends Component
 
         $this->{$property} = '';
     }
-
     public function removeNote(int $index): void
     {
         unset($this->form->scrimGameNotes[$index]);
         $this->form->scrimGameNotes = array_values($this->form->scrimGameNotes);
     }
-
-    public function createGame(): void
+    public function updateGame(int $gameId): void
     {
-        $this->form->store($this->scrim->id);
+        $this->form->update($gameId);
         session()->flash('toast', [
             'type' => 'success',
-            'message' => __('toasts/toasts.game_created'),
+            'message' => __('toasts/toasts.game_updated'),
         ]);
         $this->redirect(route('scrims.show', ['id' => $this->scrim->id, 'slug' =>currentTeam()->slug]));
     }
@@ -118,18 +108,18 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
 <section class="flex flex-col gap-8">
     <div class="flex flex-row flex-wrap items-center justify-between gap-4">
         <div class="flex flex-col gap-2">
-            <h2 class="text-[32px] font-bold text-text-primary">
+            <h2 class="text-[32px] fnt-bold text-text-primary">
                 {{ __('pages/scrims/games/create.page_title') }}
             </h2>
             <p class="text-base text-text-secondary">
                 {{ __('pages/scrims/games/create.scrim_label', ['teams' => $teamsSummary]) }}
             </p>
         </div>
-        <button type="button" class="cta-primary shrink-0" title="{{ __('pages/scrims/games/create.create_button') }}">
-            {{ __('pages/scrims/games/create.create_button') }}
+        <button type="button" class="cta-primary shrink-0" title="{{ __('pages/scrims/games/create.update_button') }}">
+            {{ __('pages/scrims/games/create.update_button') }}
         </button>
     </div>
-    <form wire:submit="createGame" class="grid grid-cols-12 gap-6">
+    <form wire:submit="updateGame({{ $game->id }})" class="grid grid-cols-12 gap-6">
         <fieldset class="min-w-0 flex flex-col gap-6 border-0 bg-bg-widget p-6 shadow-basic col-span-full">
             <legend class="sr-only">
                 {{ __('pages/scrims/games/create.main_fieldset_legend') }}
@@ -229,7 +219,7 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                 </div>
             </div>
             <x-forms.submit class="w-full">
-                HAHHA
+                {{ __('pages/scrims/games/create.update_button') }}
             </x-forms.submit>
         </fieldset>
         <div class="col-span-full grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-10">
@@ -243,28 +233,28 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                 </h3>
 
                 <div class="flex flex-col gap-4">
-                    @foreach ($this->teamMembersStarters as $teamMember)
+                    @foreach ($this->memberOfScrimsGame as $member)
                     <article class="flex flex-col gap-4 bg-bg-card p-4 shadow-basic">
                         <div class="flex flex-wrap items-center gap-2">
                             <div class="flex items-center gap-2">
-                                <img src="{{ $teamMember->user->avatar_url }}" alt="{{ $teamMember->user->username }}" class="w-10 h-10">
+                                <img src="{{ $member->teamMember->user->avatar_url }}" alt="{{ $member->teamMember->user->username }}" class="w-10 h-10">
                                 <h4 class="text-xl font-semibold text-gold">
-                                    {{ $teamMember->user->username }} - {{ $teamMember->roleInGame->label() }}
+                                    {{ $member->teamMember->user->username }} - {{ $member->teamMember->roleInGame->label() }}
                                 </h4>
                             </div>
                         </div>
                         <x-forms.select
-                            wire:model.live="form.players.{{ $teamMember->id }}.champion"
+                            wire:model.live="form.players.{{ $member->teamMember->id }}.champion"
                             :hasLabel="true"
                             :required="true"
-                            :name="$teamMember->user->username.'_champion_id'"
+                            :name="$member->teamMember->user->username.'_champion_id'"
                             :label="__('pages/scrims/games/create.champion_label')"
                             :disabled="__('pages/scrims/games/create.champion_select_placeholder')"
                             :options="$champions">
-                                @error("form.players.{{ $teamMember->id }}.champion")
-                                <p class="text-red-500">{{ $message }}</p>
-                                @enderror
-                            </x-forms.select>
+                            @error("form.players.{{ $member->teamMember->id }}.champion")
+                            <p class="text-red-500">{{ $message }}</p>
+                            @enderror
+                        </x-forms.select>
                         <div class="flex flex-col gap-2">
                             <span class="block font-medium text-white">
                                 {{ __('pages/scrims/games/create.score_label') }}
@@ -272,16 +262,16 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                             <div class="flex items-center justify-center gap-2 sm:justify-start">
                                 <div class="flex-1">
                                     <x-forms.input
-                                        wire:model.live="form.players.{{ $teamMember->id }}.kills"
+                                        wire:model.live="form.players.{{ $member->teamMember->id }}.kills"
                                         :srOnlyLabel="true"
                                         :required="false"
                                         min="0"
                                         class="text-center px-2"
                                         :label="__('pages/scrims/games/create.kda_kill_placeholder')"
-                                        :name="$teamMember->user->username.'_kills'"
+                                        :name="$member->teamMember->user->username.'_kills'"
                                         :type="'number'"
                                         :placeholder="__('pages/scrims/games/create.kda_kill_placeholder')">
-                                        @error("form.players.{{ $teamMember->id }}.kills")
+                                        @error("form.players.{{ $member->teamMember->id }}.kills")
                                         <p class="text-red-500">{{ $message }}</p>
                                         @enderror
                                     </x-forms.input>
@@ -289,16 +279,16 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                                 <span class="text-text-secondary" aria-hidden="true">/</span>
                                 <div class="flex-1">
                                     <x-forms.input
-                                        wire:model.live="form.players.{{ $teamMember->id }}.deaths"
+                                        wire:model.live="form.players.{{ $member->teamMember->id }}.deaths"
                                         :srOnlyLabel="true"
                                         :required="false"
                                         min="0"
                                         class="text-center px-2"
                                         :label="__('pages/scrims/games/create.kda_death_placeholder')"
-                                        :name="$teamMember->user->username.'_deaths'"
+                                        :name="$member->teamMember->user->username.'_deaths'"
                                         :type="'number'"
                                         :placeholder="__('pages/scrims/games/create.kda_death_placeholder')">
-                                        @error("form.players.{{ $teamMember->id }}.deaths")
+                                        @error("form.players.{{ $member->teamMember->id }}.deaths")
                                         <p class="text-red-500">{{ $message }}</p>
                                         @enderror
                                     </x-forms.input>
@@ -307,15 +297,15 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                                 <div class="flex-1">
                                     <x-forms.input
                                         :srOnlyLabel="true"
-                                        wire:model.live="form.players.{{ $teamMember->id }}.assists"
+                                        wire:model.live="form.players.{{ $member->teamMember->id }}.assists"
                                         :required="false"
                                         min="0"
                                         class="text-center px-2"
                                         :label="__('pages/scrims/games/create.kda_assist_placeholder')"
-                                        :name="$teamMember->user->username.'_assists'"
+                                        :name="$member->teamMember->user->username.'_assists'"
                                         :type="'number'"
                                         :placeholder="__('pages/scrims/games/create.kda_assist_placeholder')">
-                                        @error("form.players.{{ $teamMember->id }}.assists")
+                                        @error("form.players.{{ $member->teamMember->id }}.assists")
                                         <p class="text-red-500">{{ $message }}</p>
                                         @enderror
                                     </x-forms.input>
@@ -357,7 +347,11 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                             :name="'opponent_team_members_starters_'.$role.'_champion'"
                             :label="__('pages/scrims/games/create.champion_label')"
                             :disabled="__('pages/scrims/games/create.champion_select_placeholder')"
-                            :options="$champions" />
+                            :options="$champions">
+                            @error("form.opponentTeamMembersStarters.{$role}.champion")
+                            <p class="text-red-500">{{ $message }}</p>
+                            @enderror
+                        </x-forms.select>
 
                         <div class="flex flex-col gap-2">
                             <span class="block font-medium text-white">
@@ -419,6 +413,10 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                 {{ __('pages/scrims/games/create.notes_fieldset_legend') }}
             </h3>
 
+            @error('form.scrimGameNotes.*.note')
+            <p class="text-red-500 font-bold text-sm">{{ $message }}</p>
+            @enderror
+
             <div class="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-10">
                 {{-- Points positifs --}}
                 <div x-data="{ addNewPositiveNote: false }" class="flex flex-col gap-4">
@@ -441,35 +439,31 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                     </div>
 
                     @php
-                        $positiveNotes = collect($this->form->scrimGameNotes)
-                            ->filter(fn (array $note): bool => $note['type'] === TypeScrimGameNote::POSITIVE->value);
+                    $positiveNotes = collect($this->form->scrimGameNotes)
+                    ->filter(fn (array $note): bool => $note['type'] === TypeScrimGameNote::POSITIVE->value);
                     @endphp
 
                     @if ($positiveNotes->isNotEmpty())
-                        <ul class="flex flex-col gap-2" role="list">
-                            @foreach ($this->form->scrimGameNotes as $index => $note)
-                                @if ($note['type'] === TypeScrimGameNote::POSITIVE->value)
-                                    <li wire:key="scrim-game-note-positive-{{ $index }}" class="flex items-center justify-between gap-3 bg-bg-card p-4">
-                                        <span class="text-white">{{ $note['note'] }}</span>
-                                        <button
-                                            type="button"
-                                            wire:click="removeNote({{ $index }})"
-                                            class="cursor-pointer text-text-secondary transition-all duration-150 hover:text-red-500">
-                                            <flux:icon name="x-mark" class="size-5" />
-                                        </button>
-                                    </li>
-                                @endif
-                            @endforeach
-                        </ul>
+                    <ul class="flex flex-col gap-2" role="list">
+                        @foreach ($this->form->scrimGameNotes as $index => $note)
+                        @if ($note['type'] === TypeScrimGameNote::POSITIVE->value)
+                        <li wire:key="scrim-game-note-positive-{{ $index }}" class="flex items-center justify-between gap-3 bg-bg-card p-4">
+                            <span class="text-white">{{ $note['note'] }}</span>
+                            <button
+                                type="button"
+                                wire:click="removeNote({{ $index }})"
+                                class="cursor-pointer text-text-secondary transition-all duration-150 hover:text-red-500">
+                                <flux:icon name="x-mark" class="size-5" />
+                            </button>
+                        </li>
+                        @endif
+                        @endforeach
+                    </ul>
                     @else
-                        <p class="text-text-secondary">
-                            {{ __('pages/scrims/games/create.no_positive_notes') }}
-                        </p>
+                    <p class="text-text-secondary">
+                        {{ __('pages/scrims/games/create.no_positive_notes') }}
+                    </p>
                     @endif
-
-                    @error('form.scrimGameNotes.*.note')
-                        <p class="text-red-500 font-bold text-sm">{{ $message }}</p>
-                    @enderror
 
                     <div x-show="addNewPositiveNote" x-cloak class="flex flex-col gap-2">
                         <div class="flex items-end gap-2">
@@ -491,7 +485,7 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                             </button>
                         </div>
                         @if (session('errorNewPositiveNote'))
-                            <p class="text-red-500 font-bold text-sm">{{ session('errorNewPositiveNote') }}</p>
+                        <p class="text-red-500 font-bold text-sm">{{ session('errorNewPositiveNote') }}</p>
                         @endif
                     </div>
                 </div>
@@ -517,35 +511,31 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                     </div>
 
                     @php
-                        $negativeNotes = collect($this->form->scrimGameNotes)
-                            ->filter(fn (array $note): bool => $note['type'] === TypeScrimGameNote::NEGATIVE->value);
+                    $negativeNotes = collect($this->form->scrimGameNotes)
+                    ->filter(fn (array $note): bool => $note['type'] === TypeScrimGameNote::NEGATIVE->value);
                     @endphp
 
                     @if ($negativeNotes->isNotEmpty())
-                        <ul class="flex flex-col gap-2" role="list">
-                            @foreach ($this->form->scrimGameNotes as $index => $note)
-                                @if ($note['type'] === TypeScrimGameNote::NEGATIVE->value)
-                                    <li wire:key="scrim-game-note-negative-{{ $index }}" class="flex items-center justify-between gap-3 bg-bg-card p-4">
-                                        <span class="text-white">{{ $note['note'] }}</span>
-                                        <button
-                                            type="button"
-                                            wire:click="removeNote({{ $index }})"
-                                            class="cursor-pointer text-text-secondary transition-all duration-150 hover:text-red-500">
-                                            <flux:icon name="x-mark" class="size-5" />
-                                        </button>
-                                    </li>
-                                @endif
-                            @endforeach
-                        </ul>
+                    <ul class="flex flex-col gap-2" role="list">
+                        @foreach ($this->form->scrimGameNotes as $index => $note)
+                        @if ($note['type'] === TypeScrimGameNote::NEGATIVE->value)
+                        <li wire:key="scrim-game-note-negative-{{ $index }}" class="flex items-center justify-between gap-3 bg-bg-card p-4">
+                            <span class="text-white">{{ $note['note'] }}</span>
+                            <button
+                                type="button"
+                                wire:click="removeNote({{ $index }})"
+                                class="cursor-pointer text-text-secondary transition-all duration-150 hover:text-red-500">
+                                <flux:icon name="x-mark" class="size-5" />
+                            </button>
+                        </li>
+                        @endif
+                        @endforeach
+                    </ul>
                     @else
-                        <p class="text-text-secondary">
-                            {{ __('pages/scrims/games/create.no_negative_notes') }}
-                        </p>
+                    <p class="text-text-secondary">
+                        {{ __('pages/scrims/games/create.no_negative_notes') }}
+                    </p>
                     @endif
-
-                    @error('form.scrimGameNotes.*.note')
-                        <p class="text-red-500 font-bold text-sm">{{ $message }}</p>
-                    @enderror
 
                     <div x-show="addNewNegativeNote" x-cloak class="flex flex-col gap-2">
                         <div class="flex items-end gap-2">
@@ -567,7 +557,7 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                             </button>
                         </div>
                         @if (session('errorNewNegativeNote'))
-                            <p class="text-red-500 font-bold text-sm">{{ session('errorNewNegativeNote') }}</p>
+                        <p class="text-red-500 font-bold text-sm">{{ session('errorNewNegativeNote') }}</p>
                         @endif
                     </div>
                 </div>

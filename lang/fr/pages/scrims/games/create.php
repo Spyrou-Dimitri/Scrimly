@@ -17,6 +17,7 @@ return [
     'side_blue_side' => 'Bleu',
     'side_red_side' => 'Rouge',
     'create_button' => 'Créer la game',
+    'update_button' => 'Enregistrer les modifications',
     'name_placeholder' => 'Game 1',
 
     'score_draft_legend' => 'Score & draft',

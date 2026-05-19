@@ -23,6 +23,7 @@ return [
     'duration_header_label' => 'Durée',
     'face_to_face' => 'Face-à-Face',
     'edit_game' => 'Modifier la game',
+    'edit_game_title' => 'Accéder à la page de modification de game',
     'delete_game' => 'Supprimer la game',
     'score_section_title' => 'Score global',
     'game_draft_title' => 'Draft & Score',

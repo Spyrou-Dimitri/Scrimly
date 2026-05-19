@@ -174,11 +174,12 @@ new #[Layout('layouts::team')] class extends Component
                 </x-slot:header>
                 <x-slot:actions>
                     <div class="flex flex-row items-center gap-4 pr-4 border-r border-white/10">
-                        <button
-                            type="button"
+                        <a
+                            title="{{ __('pages/scrims/show.edit_game_title') }}"
+                            href="{{ route('scrims.games.edit', ['slug' => $this->scrim->team->slug, 'id' => $this->scrim->id, 'gameId' => $game->id]) }}"
                             class="group cursor-pointer flex size-8 items-center justify-center border border-transparent bg-bg-card text-text-primary transition-all duration-150 ease-in-out hover:border-gold">
                             <flux:icon name="pencil" class="size-5 transition-all duration-150 ease-in-out group-hover:text-gold" />
-                        </button>
+                        </a>
                         <button
                             type="button"
                             wire:click="openDeleteGameModal({{ $game->id }})"
