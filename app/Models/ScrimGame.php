@@ -54,4 +54,15 @@ class ScrimGame extends Model
 
         return round(($kills + $assists) / $deaths, 2);
     }
+
+    public function homeTeamTotalKills(): int
+    {
+        return (int) $this->scrimGamePlayers->sum('kills');
+    }
+
+    public function opponentTeamTotalKills(): int
+    {
+        return (int) collect($this->opponent_team_members_starters ?? [])
+            ->sum(fn (array $player): int => (int) ($player['kills'] ?? 0));
+    }
 }
