@@ -26,4 +26,15 @@ class ScrimGamePlayer extends Model
     {
         return $this->belongsTo(TeamMember::class);
     }
+
+    public function getGeneralKdaAttribute(): float
+    {
+        $totalKda = $this->kills + $this->assists;
+        $totalDeaths = $this->deaths;
+        if ($totalDeaths === 0) {
+            return 0;
+        }
+
+        return round($totalKda / $totalDeaths, 2);
+    }
 }

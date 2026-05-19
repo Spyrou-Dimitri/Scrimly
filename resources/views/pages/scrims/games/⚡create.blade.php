@@ -424,11 +424,11 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                 <div x-data="{ addNewPositiveNote: false }" class="flex flex-col gap-4">
                     <div class="flex flex-wrap items-center justify-between gap-4">
                         <div class="flex items-center gap-3">
-                            <flux:icon name="plus-circle" class="size-6 shrink-0 text-green-500" />
+                            <flux:icon name="plus-circle" variant="solid" class="size-6 shrink-0 text-green-500" />
                             <h4 class="text-xl font-semibold text-white">
                                 {{ __('pages/scrims/games/create.positive_notes_title') }}
                             </h4>
-                            <span class="inline-flex min-w-6 items-center justify-center rounded bg-bg-card px-2 py-0.5 text-sm font-semibold text-green-500">
+                            <span class="inline-flex min-w-8 items-center justify-center  bg-bg-card px-2 py-0.5 font-semibold text-green-500">
                                 {{ collect($this->form->scrimGameNotes)->where('type', TypeScrimGameNote::POSITIVE->value)->count() }}
                             </span>
                         </div>
@@ -500,11 +500,11 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                 <div x-data="{ addNewNegativeNote: false }" class="flex flex-col gap-4">
                     <div class="flex flex-wrap items-center justify-between gap-4">
                         <div class="flex items-center gap-3">
-                            <flux:icon name="minus-circle" class="size-6 shrink-0 text-red-500" />
+                            <flux:icon name="minus-circle" variant="solid" class="size-6 shrink-0 text-red-500" />
                             <h4 class="text-xl font-semibold text-white">
                                 {{ __('pages/scrims/games/create.negative_notes_title') }}
                             </h4>
-                            <span class="inline-flex min-w-6 items-center justify-center rounded bg-bg-card px-2 py-0.5 text-sm font-semibold text-red-500">
+                            <span class="inline-flex min-w-8 items-center justify-center  bg-bg-card px-2 py-0.5 font-semibold text-red-500">
                                 {{ collect($this->form->scrimGameNotes)->where('type', TypeScrimGameNote::NEGATIVE->value)->count() }}
                             </span>
                         </div>

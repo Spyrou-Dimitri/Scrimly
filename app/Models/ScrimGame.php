@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\CarbonInterval;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -38,5 +39,19 @@ class ScrimGame extends Model
     public function scrimGameNotes(): HasMany
     {
         return $this->hasMany(ScrimGameNote::class);
+    }
+
+    public function getFormattedDurationAttribute(): string
+    {
+        return CarbonInterval::seconds($this->duration)->cascade()->format('%I:%S');
+    }
+
+    public function calculateKda(int $kills, int $deaths, int $assists): float
+    {
+        if ($deaths === 0) {
+            return 0;
+        }
+
+        return round(($kills + $assists) / $deaths, 2);
     }
 }

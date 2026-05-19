@@ -15,4 +15,8 @@ return [
     'create_game_title' => 'Accéder à la page de création de game',
     'games_title' => 'Games',
     'games_empty' => 'Pas encore de games créé dans ce scrim.',
+    'victory' => 'Victoire',
+    'defeat' => 'Défaite',
+    'duration_label' => 'Durée de la game',
+    'game_draft_title' => 'Draft & Score',
 ];

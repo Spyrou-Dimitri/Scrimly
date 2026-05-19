@@ -1,11 +1,15 @@
 <?php
 
+use App\Models\Scrim;
+use App\Models\Team;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
-use App\Models\Scrim;
 
-new #[Layout('layouts::team')] class extends Component {
+new #[Layout('layouts::team')] class extends Component
+{
     public Scrim $scrim;
+
+    public Team $opponentTeam;
 
     public function mount(int $id): void
     {
@@ -14,9 +18,12 @@ new #[Layout('layouts::team')] class extends Component {
             ->where('team_id', currentTeam()->id)
             ->with([
                 'opponentTeam',
-                'scrimGames',
+                'team',
+                'scrimGames.scrimGamePlayers.teamMember.user',
             ])
             ->firstOrFail();
+
+        $this->opponentTeam = Team::find($this->scrim->opponent_team_id);
     }
 };
 
@@ -24,9 +31,12 @@ new #[Layout('layouts::team')] class extends Component {
 ?>
 
 <div class="flex flex-col gap-10">
+    @php
+    $ddragonVersion = config('riot.ddragon_version');
+    @endphp
     <section class="flex flex-col gap-8">
         <div class="flex flex-row flex-wrap items-center justify-between gap-4">
-            <h2 class="text-2xl font-bold">
+            <h2 class="text-[32px] font-bold">
                 <span class="text-text-primary">{{ __('pages/scrims/show.title_prefix') }}</span>
                 <span class="text-gold">{{ $this->scrim->opponentTeam?->name ?? __('pages/scrims/show.opponent_unknown') }}</span>
             </h2>
@@ -101,12 +111,114 @@ new #[Layout('layouts::team')] class extends Component {
     </section>
     <section class="flex flex-col gap-8">
         <div class="flex flex-row flex-wrap items-center justify-between gap-4">
-            <h2 class="text-2xl font-bold">
+            <h2 class="text-[32px] font-bold">
                 {{ __('pages/scrims/show.games_title') }}
             </h2>
             <x-cta wire:navigate :href="route('scrims.games.create', ['slug' => $this->scrim->team->slug, 'id' => $this->scrim->id])" :title="__('pages/scrims/show.create_game_title')" :class="'cta-primary'">
                 {{ __('pages/scrims/show.create_game') }}
             </x-cta>
+        </div>
+        <div class="flex flex-col gap-4">
+            @foreach ($this->scrim->scrimGames as $game)
+            <article class="flex bg-bg-widget flex-col gap-4 p-6">
+                <div class="flex flex-row items-center justify-between gap-4">
+                    <div class=" flex flex-row items-center gap-10">
+                        <h3 class="text-2xl text-gold font-bold"> {{ $game->title}}</h3>
+                        @if ($game->is_victory)
+                        <p class="text-2xl text-victory">
+                            {{ __('pages/scrims/show.victory') }}
+                        </p>
+                        @else
+                        <p class="text-2xl text-defeat font-bold">
+                            {{ __('pages/scrims/show.defeat') }}
+                        </p>
+                        @endif
+                        <p class="text-base text-text-secondary">
+                            {{ $game->formatted_duration }} {{ __('pages/scrims/show.duration_label') }}
+                        </p>
+                    </div>
+                    <flux:icon name="chevron-right" class="size-6 shrink-0 text-text-secondary" />
+                </div>
+                <div class="flex flex-col gap-4">
+                    <div class="flex flex-row items-center justify-between gap-2 pb-6 border-b border-gold">
+                        <h4 class="text-xl font-bold">{{ __('pages/scrims/show.game_draft_title') }}</h4>
+                        <button type="button" class="cta-primary">
+                            {{ __('pages/scrims/show.edit_game') }}
+                        </button>   
+                    </div>
+                    <div class="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-10">
+                        <div class="flex flex-col gap-5">
+                            <h5 class="text-lg font-bold">
+                                {{ $this->scrim->team->name }}
+                            </h5>
+                            <ul class="flex flex-col gap-4">
+                                @foreach ($game->scrimGamePlayers as $player)
+                                <li class="flex flex-row flex-wrap items-center justify-between gap-4 bg-bg-card p-6 shadow-basic">
+                                    <div class="flex flex-row items-center gap-3">
+                                        <img src="https://ddragon.leagueoflegends.com/cdn/{{ $ddragonVersion }}/img/champion/{{ $player->champion }}.png" alt="{{ $player->champion }}" class="size-15">
+                                        <div class="flex flex-col gap-3">
+                                            <h6 class="text-lg font-bold leading-none">
+                                                {{ $player->teamMember->user->username }}
+                                            </h6>
+                                            <p @class(['text-sm font-bold', 'text-victory'=> $game->is_victory, 'text-defeat' => !$game->is_victory])>
+                                                {{ $player->champion }} • {{ $player->teamMember->roleInGame->label() }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col gap-3 text-right">
+                                        <p class="font-bold leading-none">
+                                            {{ $player->kills }} / {{ $player->deaths }} / {{ $player->assists }}
+                                        </p>
+                                        <p @class(['text-sm font-bold', 'text-victory'=> $game->is_victory, 'text-defeat' => !$game->is_victory])>
+                                            K/D/A : {{ $player->general_kda }}
+                                        </p>
+                                    </div>
+
+                                </li>
+                                @endforeach
+
+                            </ul>
+                        </div>
+
+                        <div class="flex flex-col gap-5">
+                            <h5 class="text-lg font-bold">
+                                {{ $this->opponentTeam->name }}
+                            </h5>
+                            <ul class="flex flex-col gap-4">
+                                @foreach (['top', 'jungle', 'mid', 'bot', 'support'] as $role)
+                                @php
+                                $opponentPlayer = $game->opponent_team_members_starters[$role] ?? null;
+                                @endphp
+                                @if ($opponentPlayer)
+                                <li class="flex flex-row flex-wrap items-center justify-between gap-4 bg-bg-card p-6 shadow-basic">
+                                    <div class="flex flex-row items-center gap-3">
+                                        <img src="https://ddragon.leagueoflegends.com/cdn/{{ $ddragonVersion }}/img/champion/{{ $opponentPlayer['champion'] }}.png" alt="{{ $opponentPlayer['champion'] }}" class="size-15">
+                                        <div class="flex flex-col gap-3">
+                                            <h6 class="text-lg font-bold leading-none">
+                                                {{ __('pages/scrims/games/create.role_'.$role) }}
+                                            </h6>
+                                            <p @class(['text-sm font-bold', 'text-victory' => ! $game->is_victory, 'text-defeat' => $game->is_victory])>
+                                                {{ $opponentPlayer['champion'] }} • {{ __('pages/scrims/games/create.role_'.$role) }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col gap-3 text-right">
+                                        <p class="font-bold leading-none">
+                                            {{ $opponentPlayer['kills'] }} / {{ $opponentPlayer['deaths'] }} / {{ $opponentPlayer['assists'] }}
+                                        </p>
+                                        <p @class(['text-sm font-bold', 'text-victory' => ! $game->is_victory, 'text-defeat' => $game->is_victory])>
+                                            K/D/A : {{ $game->calculateKda($opponentPlayer['kills'], $opponentPlayer['deaths'], $opponentPlayer['assists']) }}
+                                        </p>
+                                    </div>
+                                </li>
+                                @endif
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            @endforeach
         </div>
     </section>
 </div>
