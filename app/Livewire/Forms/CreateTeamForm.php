@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Forms;
 
+use App\Enums\DefaultTeam;
 use App\Enums\Language;
 use App\Enums\LolGoal;
 use App\Enums\LolServeur;
 use App\Enums\RoleInGame;
 use App\Enums\RoleInTeam;
+use App\Enums\StatusInTeam;
 use App\Jobs\ProcessUploadImageLogoTeam;
 use App\Models\Team;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +17,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
-use App\Enums\DefaultTeam;
+
 class CreateTeamForm extends Form
 {
     #[Validate]
@@ -47,8 +49,6 @@ class CreateTeamForm extends Form
 
     #[Validate]
     public string $default_logo = 'Demacia';
-
-    
 
     public function updatedRoleInTeam(): void
     {
@@ -91,7 +91,6 @@ class CreateTeamForm extends Form
     public function store(bool $applyPresetLogo): void
     {
         $validated = $this->validate();
-
 
         if ($validated['logo']) {
             $extension = $validated['logo']->extension() ?: $validated['logo']->getClientOriginalExtension();
@@ -141,6 +140,7 @@ class CreateTeamForm extends Form
             'roleInTeam' => $validated['roleInTeam'],
             'roleInGame' => $validated['roleInGame'] ?? null,
             'joined_at' => now(),
+            'status' => StatusInTeam::ACCEPTED,
         ]);
     }
 }
