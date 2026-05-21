@@ -95,7 +95,7 @@ new #[Layout('layouts::team')] class extends Component
     $activeScrimWins = $activeScrim->scrimGames->where('is_victory', true)->count();
     $activeScrimLosses = $activeScrim->scrimGames->where('is_victory', false)->count();
     @endphp
-    <section class="relative flex flex-col gap-8 bg-bg-widget p-6 shadow-basic md:p-8">
+    <section wire:poll.10s class="relative flex flex-col gap-8 bg-bg-widget p-6 shadow-basic md:p-8">
         <div class="absolute right-6 top-6 inline-flex rounded-full items-center gap-2 bg-bg-card px-3 py-1.5">
             <span class="size-2 shrink-0 rounded-full bg-green-500" aria-hidden="true"></span>
             <span class="text-sm font-semibold text-text-primary">{{ __('pages/scrims/index.in_progress_badge') }}</span>

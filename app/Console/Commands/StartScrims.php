@@ -14,10 +14,18 @@ class StartScrims extends Command
 {
     public function handle()
     {
-        Scrim::query()
+        $scrims = Scrim::query()
             ->where('status', StatusScrim::SCHEDULED)
             ->whereRaw('TIMESTAMP(scheduled_date, scheduled_time) <= ?', [now()])
-            ->update(['status' => StatusScrim::IN_PROGRESS->value]);
-        $this->info('Scrims en cours : '.Scrim::where('status', StatusScrim::IN_PROGRESS->value)->count());
+            ->orderBy('scheduled_date')
+            ->orderBy('scheduled_time')
+            ->orderBy('id')
+            ->get();
+
+        foreach ($scrims as $scrim) {
+            $scrim->update(['status' => StatusScrim::IN_PROGRESS]);
+        }
+
+        $this->info('Scrims en cours : '.Scrim::where('status', StatusScrim::IN_PROGRESS)->count());
     }
 }

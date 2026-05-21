@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use App\Enums\StatusScrim;
+use App\Observers\ScrimObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+#[ObservedBy(ScrimObserver::class)]
 class Scrim extends Model
 {
     protected $fillable = [
