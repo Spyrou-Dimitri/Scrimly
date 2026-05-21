@@ -6,9 +6,13 @@ use App\Models\Team;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\Attributes\Computed;
+use Livewire\WithPagination;
 
 new #[Layout('layouts::team')] class extends Component
 {
+    use WithPagination;
+
     public Scrim $scrim;
 
     public Team $opponentTeam;
@@ -21,12 +25,20 @@ new #[Layout('layouts::team')] class extends Component
             ->with([
                 'opponentTeam',
                 'team',
-                'scrimGames.scrimGamePlayers.teamMember.user',
-                'scrimGames.scrimGameNotes',
             ])
             ->firstOrFail();
 
-        $this->opponentTeam = Team::find($this->scrim->opponent_team_id);
+    }
+    #[Computed]
+    public function scrimGames()
+    {
+        return $this->scrim->scrimGames()
+        ->with([
+            'scrimGamePlayers.teamMember.user',
+            'scrimGameNotes',
+        ])
+        ->orderBy('created_at', 'desc')
+        ->paginate(5);
     }
 
     public function openDeleteGameModal(int $gameId): void
@@ -125,9 +137,9 @@ new #[Layout('layouts::team')] class extends Component
                     {{ __('pages/scrims/show.widget_results') }}
                 </p>
                 <p class="mt-1 text-xl font-bold tabular-nums">
-                    <span class="text-victory">0</span>
+                    <span class="text-victory">{{ $this->scrimGames->where('is_victory', true)->count() }}</span>
                     <span class="text-text-secondary"> - </span>
-                    <span class="text-defeat">0</span>
+                    <span class="text-defeat">{{ $this->scrimGames->where('is_victory', false)->count() }}</span>
                 </p>
             </div>
         </div>
@@ -135,7 +147,7 @@ new #[Layout('layouts::team')] class extends Component
     <section class="flex flex-col gap-8">
         <div class="flex flex-row flex-wrap items-center justify-between gap-4">
             <h2 class="text-[32px] font-bold">
-                {{ __('pages/scrims/show.games_title') }}
+                {{ __('pages/scrims/show.games_title') }} <span class="text-gold font-bold">({{ $this->scrimGames->count() }})</span>
             </h2>
             <x-cta wire:navigate :href="route('scrims.games.create', ['slug' => $this->scrim->team->slug, 'id' => $this->scrim->id])" :title="__('pages/scrims/show.create_game_title')" :class="'cta-primary'">
                 {{ __('pages/scrims/show.create_game') }}
@@ -143,10 +155,10 @@ new #[Layout('layouts::team')] class extends Component
         </div>
         @if ($this->scrim->scrimGames->isNotEmpty())
         <div class="flex flex-col gap-4">
-            @foreach ($this->scrim->scrimGames as $game)
+            @foreach ($this->scrimGames as $game)
             <x-accordion
                 wire:key="scrim-game-{{ $game->id }}"
-                :open="$loop->first"
+                :open="false"
                 panel-tag="div"
                 panel-class="mt-6 flex flex-col gap-8">
                 <x-slot:header>
@@ -217,9 +229,9 @@ new #[Layout('layouts::team')] class extends Component
                         </div>
                         <div class="flex flex-row justify-end items-center gap-4">
                             <p class="text-center text-2xl font-bold text-text-primary lg:text-right">
-                                {{ $this->opponentTeam->name }}
+                                {{ $this->scrim->opponentTeam?->name }}
                             </p>
-                            <img src="{{ $this->opponentTeam->logo_url }}" alt="{{ $this->opponentTeam->name }}" class="size-15">
+                            <img src="{{ $this->scrim->opponentTeam?->logo_url }}" alt="{{ $this->scrim->opponentTeam?->name }}" class="size-15">
 
                         </div>
                     </div>
@@ -348,6 +360,7 @@ new #[Layout('layouts::team')] class extends Component
                 </section>
             </x-accordion>
             @endforeach
+            {{ $this->scrimGames->links() }}
         </div>
         @else
         <div class="flex flex-col gap-4">

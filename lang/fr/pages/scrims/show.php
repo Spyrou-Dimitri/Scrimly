@@ -6,7 +6,7 @@ return [
     'mark_as_completed' => 'Marquer comme terminé',
     'widget_time' => 'Heures prévues',
     'widget_date' => 'Date prévue',
-    'widget_game_count' => 'Nbr games',
+    'widget_game_count' => 'Nbr de games jouées',
     'widget_results' => 'Résultats',
     'widget_summary' => 'Résumé du scrim',
     'summary_empty' => 'Pas encore de résumé. Vous pourrez définir un résumé lorsque le scrim sera terminé.',
