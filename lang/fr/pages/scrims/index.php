@@ -2,6 +2,9 @@
 
 return [
     'title' => 'Gestion des scrims',
+    'in_progress_badge' => 'Scrim en cours',
+    'finish_scrim' => 'Terminer le scrim',
+    'finish_scrim_title' => 'Terminer le scrim en cours',
     'create_scrim' => 'Trouver un adversaire',
     'upcoming_title' => 'Scrims à venir',
     'received_title' => 'Invitations',

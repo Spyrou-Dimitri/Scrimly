@@ -15,7 +15,7 @@ new #[Layout('layouts::team')] class extends Component
     #[On('refresh_scrims')]
     public function refreshScrimRequests(): void
     {
-        unset($this->receivedScrimRequests, $this->sentScrimRequests, $this->scrims);
+        unset($this->receivedScrimRequests, $this->sentScrimRequests, $this->scrims, $this->scrimInProgress);
     }
 
     #[Computed]
@@ -50,6 +50,18 @@ new #[Layout('layouts::team')] class extends Component
             ->get();
     }
 
+    #[Computed]
+    public function scrimInProgress(): ?Scrim
+    {
+        return Scrim::query()
+            ->with(['opponentTeam', 'team', 'scrimGames'])
+            ->where('team_id', currentTeam()->id)
+            ->where('status', StatusScrim::IN_PROGRESS)
+            ->orderByDesc('scheduled_date')
+            ->orderByDesc('scheduled_time')
+            ->first();
+    }
+
     public function deleteScrimRequest(int $scrimRequestId)
     {
         $this->dispatch('open_modal', [
@@ -77,6 +89,69 @@ new #[Layout('layouts::team')] class extends Component
 ?>
 
 <div class="flex flex-col gap-8">
+    @if ($this->scrimInProgress)
+    @php
+    $activeScrim = $this->scrimInProgress;
+    $activeScrimWins = $activeScrim->scrimGames->where('is_victory', true)->count();
+    $activeScrimLosses = $activeScrim->scrimGames->where('is_victory', false)->count();
+    @endphp
+    <section class="relative flex flex-col gap-8 bg-bg-widget p-6 shadow-basic md:p-8">
+        <div class="absolute right-6 top-6 inline-flex rounded-full items-center gap-2 bg-bg-card px-3 py-1.5">
+            <span class="size-2 shrink-0 rounded-full bg-green-500" aria-hidden="true"></span>
+            <span class="text-sm font-semibold text-text-primary">{{ __('pages/scrims/index.in_progress_badge') }}</span>
+        </div>
+
+        <div class="grid grid-cols-1 items-center gap-8 pt-8 lg:grid-cols-3 lg:pt-0">
+            <div class="flex flex-col items-center gap-4">
+                <img
+                    src="{{ $activeScrim->team->logo_url }}"
+                    alt="{{ $activeScrim->team->name }}"
+                    class="size-20 object-cover md:size-24" />
+                <p class="text-center text-xl font-bold text-text-primary md:text-2xl">
+                    {{ $activeScrim->team->name }}
+                </p>
+            </div>
+
+            <div class="flex flex-col items-center gap-2">
+                <p class="text-5xl font-bold tabular-nums text-text-primary md:text-6xl">
+                    <span class="text-victory">{{ $activeScrimWins }}</span>
+                    <span class="text-text-secondary"> - </span>
+                    <span class="text-defeat">{{ $activeScrimLosses }}</span>
+                </p>
+                <p class="text-sm bg-bg-card px-3 py-1 rounded-full  font-semibold text-text-secondary">
+                    BO{{ $activeScrim->number_of_games }}
+                </p>
+            </div>
+
+            <div class="flex flex-col items-center gap-4">
+                <img
+                    src="{{ $activeScrim->opponentTeam?->logo_url }}"
+                    alt="{{ $activeScrim->opponentTeam?->name ?? __('pages/scrims/index.upcoming_opponent_unknown') }}"
+                    class="size-20 object-cover md:size-24" />
+                <p class="text-center text-xl font-bold text-text-primary md:text-2xl">
+                    {{ $activeScrim->opponentTeam?->name ?? __('pages/scrims/index.upcoming_opponent_unknown') }}
+                </p>
+            </div>
+        </div>
+
+        <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <x-cta
+                wire:navigate
+                :href="route('scrims.show', ['slug' => currentTeam()->slug, 'id' => $activeScrim->id])"
+                :title="__('pages/scrims/index.show_scrim_title')"
+                :class="'primary'">
+                {{ __('pages/scrims/index.show_scrim') }}
+            </x-cta>
+            <x-cta
+                :href="'#'"
+                :title="__('pages/scrims/index.finish_scrim_title')"
+                :class="'secondary'">
+                {{ __('pages/scrims/index.finish_scrim') }}
+            </x-cta>
+        </div>
+    </section>
+    @endif
+
     <section class="flex flex-col gap-8">
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <h2 class="text-2xl font-bold">

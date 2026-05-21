@@ -27,18 +27,17 @@ new #[Layout('layouts::team')] class extends Component
                 'team',
             ])
             ->firstOrFail();
-
     }
     #[Computed]
     public function scrimGames()
     {
         return $this->scrim->scrimGames()
-        ->with([
-            'scrimGamePlayers.teamMember.user',
-            'scrimGameNotes',
-        ])
-        ->orderBy('created_at', 'desc')
-        ->paginate(5);
+            ->with([
+                'scrimGamePlayers.teamMember.user',
+                'scrimGameNotes',
+            ])
+            ->orderBy('created_at', 'desc')
+            ->paginate(5);
     }
 
     public function openDeleteGameModal(int $gameId): void
