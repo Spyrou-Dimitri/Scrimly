@@ -4,6 +4,7 @@ return [
     'title' => 'Scrim vs :name',
     'title_prefix' => 'Scrim vs ',
     'mark_as_completed' => 'Marquer comme terminé',
+    'start_scrim' => 'Démarrer le scrim',
     'widget_time' => 'Heures prévues',
     'widget_date' => 'Date prévue',
     'widget_game_count' => 'Nbr de games jouées',

@@ -8,6 +8,7 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\Attributes\Computed;
 use Livewire\WithPagination;
+use App\Enums\StatusScrim;
 
 new #[Layout('layouts::team')] class extends Component
 {
@@ -40,11 +41,39 @@ new #[Layout('layouts::team')] class extends Component
             ->paginate(5);
     }
 
+    public function handleCreateGame(): void
+    {
+        if ($this->scrimGames->count() >= $this->scrim->number_of_games) {
+            $this->dispatch('open_modal', [
+                'form' => 'modals::scrims.handle-create-game',
+                'model_id' => $this->scrim->id,
+            ]);
+        } else {
+            redirect()->route('scrims.games.create', ['slug' => $this->scrim->team->slug, 'id' => $this->scrim->id]);
+        }
+
+    }
+
+    public function openModalCompleteScrim(): void
+    {
+        $this->dispatch('open_modal', [
+            'form' => 'modals::scrims.finish-scrim',
+            'model_id' => $this->scrim->id,
+        ]);
+    }
+
     public function openDeleteGameModal(int $gameId): void
     {
         $this->dispatch('open_modal', [
             'form' => 'modals::scrims.games.delete-game',
             'model_id' => $gameId,
+        ]);
+    }
+    public function openModalStartScrim(): void
+    {
+        $this->dispatch('open_modal', [
+            'form' => 'modals::scrims.start-scrim',
+            'model_id' => $this->scrim->id,
         ]);
     }
 
@@ -74,9 +103,15 @@ new #[Layout('layouts::team')] class extends Component
                 <span class="text-text-primary">{{ __('pages/scrims/show.title_prefix') }}</span>
                 <span class="text-gold">{{ $this->scrim->opponentTeam?->name ?? __('pages/scrims/show.opponent_unknown') }}</span>
             </h2>
-            <x-cta :href="'#'" :title="__('pages/scrims/index.create_scrim')" :class="'cta-primary'">
-                {{ __('pages/scrims/show.mark_as_completed') }}
-            </x-cta>
+            @if ($this->scrim->status === StatusScrim::IN_PROGRESS)
+                <button wire:click="openModalCompleteScrim()" title="{{ __('pages/scrims/show.mark_as_completed') }}" class="cta-primary">
+                    {{ __('pages/scrims/show.mark_as_completed') }}
+                </button>
+            @else
+                <button wire:click="openModalStartScrim()" title="{{ __('pages/scrims/show.start_scrim') }}" class="cta-primary">
+                    {{ __('pages/scrims/show.start_scrim') }}
+                </button>
+            @endif
         </div>
 
         @php
@@ -148,9 +183,9 @@ new #[Layout('layouts::team')] class extends Component
             <h2 class="text-[32px] font-bold">
                 {{ __('pages/scrims/show.games_title') }} <span class="text-gold font-bold">({{ $this->scrimGames->count() }})</span>
             </h2>
-            <x-cta wire:navigate :href="route('scrims.games.create', ['slug' => $this->scrim->team->slug, 'id' => $this->scrim->id])" :title="__('pages/scrims/show.create_game_title')" :class="'cta-primary'">
+            <button wire:click="handleCreateGame()" title="{{ __('pages/scrims/show.create_game_title') }}" class="cta-primary">
                 {{ __('pages/scrims/show.create_game') }}
-            </x-cta>
+            </button>
         </div>
         @if ($this->scrim->scrimGames->isNotEmpty())
         <div class="flex flex-col gap-4">
