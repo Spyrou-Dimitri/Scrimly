@@ -9,10 +9,15 @@ use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use App\Models\ScrimRequest;
+use App\Enums\StatusScrimRequest;
+use Illuminate\Support\Facades\Gate;
 
 new #[Layout('layouts::team')] class extends Component
 {
     public Team $team;
+    public ?ScrimRequest $alreadySendScrimRequest = null;
+    public ?ScrimRequest $alreadyReceiveScrimRequest = null;
 
     public function mount(string $slug, int|string $id): void
     {
@@ -23,6 +28,8 @@ new #[Layout('layouts::team')] class extends Component
         }
 
         $this->team = Team::query()->findOrFail($id);
+        $this->alreadySendScrimRequest = ScrimRequest::query()->where('receiver_team_id', $this->team->id)->where('requester_team_id', currentTeam()->id)->where('status', StatusScrimRequest::PENDING)->first();
+        $this->alreadyReceiveScrimRequest = ScrimRequest::query()->where('requester_team_id', $this->team->id)->where('receiver_team_id', currentTeam()->id)->where('status', StatusScrimRequest::PENDING)->first();
     }
 
     #[Computed]
@@ -37,17 +44,34 @@ new #[Layout('layouts::team')] class extends Component
 
     public function openModalProposeScrim(int $teamId): void
     {
+        if (Gate::denies('create', [ScrimRequest::class, $this->team])) {
+            $this->dispatch('toast', [
+                'title' => __('pages/team/show.already_send_scrim_request'),
+                'message' => __('pages/team/show.already_send_scrim_request_message'),
+                'type' => 'error',
+            ]);
+
+            return;
+        }
+
         $this->dispatch('open_modal', [
             'form' => 'scrims.propose-scrim',
             'model_id' => $teamId,
+        ]);
+    }
+    public function openModalShowScrimRequest(int $scrimRequestId): void
+    {
+        $this->dispatch('open_modal', [
+            'form' => 'scrims.show-scrim-request',
+            'model_id' => $scrimRequestId,
         ]);
     }
 };
 ?>
 
 @php
-    $tier = LolTier::fromStarterAverageElo($team->starter_average_elo);
-    $memberSince = $team->created_at->isoFormat('D MMMM YYYY');
+$tier = LolTier::fromStarterAverageElo($team->starter_average_elo);
+$memberSince = $team->created_at->isoFormat('D MMMM YYYY');
 @endphp
 
 <div class="flex flex-col gap-12 lg:gap-16">
@@ -59,49 +83,69 @@ new #[Layout('layouts::team')] class extends Component
                         src="{{ $team->logo_url }}"
                         alt="{{ $team->name }}"
                         class="size-full object-cover"
-                        loading="lazy"
-                        >
+                        loading="lazy">
                 </div>
             </div>
 
             <div class="col-span-12 flex flex-col gap-4 lg:col-span-9">
-                <div class="flex items-start justify-between gap-4 flex-row  flex-wrap items-start">
+                <div class="flex  justify-between gap-4 flex-row  flex-wrap items-center">
                     <h2 class="text-[32px] font-bold text-gold">
                         {{ $team->name }}
                     </h2>
+                    @if ($this->alreadySendScrimRequest)
+                    <div class="flex items-center gap-2 bg-red-900/60 p-2 text-left text-white">
+                        <flux:icon name="exclamation-triangle" variant="outline" class="size-12 shrink-0" />
+                        <p class="text-sm sm:text-base">
+                            {{ __('pages/team/show.already_send_scrim_request') }}
+                        </p>
+                    </div>
+                    @endif
+                    @if ($this->alreadyReceiveScrimRequest)
+                    <div class="flex items-center gap-2 bg-red-900/60 p-2 text-left text-white">
+                        <flux:icon name="exclamation-triangle" variant="outline" class="size-12 shrink-0" />
+                        <p class="text-sm sm:text-base">
+                            {{ __('pages/team/show.already_receive_scrim_request') }}
+                            <button
+                                type="button"
+                                wire:click="openModalShowScrimRequest({{ $alreadyReceiveScrimRequest->id }})"
+                                class="cursor-pointer text-gold hover:underline">
+                                {{ __('pages/team/show.already_send_scrim_request_view') }}
+                            </button>
+                        </p>
+                    </div>
+                    @endif
+                    @can('create', [ScrimRequest::class, $team])
                     <button
                         wire:click="openModalProposeScrim({{ $team->id }})"
                         class="cta-primary"
-                        title="{{ __('pages/team/show.propose_scrim') }}"
-                    >
+                        title="{{ __('pages/team/show.propose_scrim') }}">
                         {{ __('pages/team/show.propose_scrim') }}
                     </button>
+                    @endcan
                 </div>
 
                 @if (filled($team->description))
-                    <div x-data="{ expanded: false, clamped: false }" 
+                <div x-data="{ expanded: false, clamped: false }"
                     x-init="nextTick() = $refs.description.scrollHeight > $refs.description.clientHeight"
                     class="max-w-3xl">
-                        <p
-                            x-ref="description"
-                            x-bind:class="expanded ? '' : 'line-clamp-4'"
-                        >{{ $team->description }}</p>
-                        <button
-                            x-show="clamped"
-                            type="button"
-                            class="mt-2 cursor-pointer text-sm font-medium text-gold hover:text-gold-light"
-                            x-on:click="expanded = ! expanded"
-                        >
-                            <span x-show="! expanded">{{ __('pages/team/show.see_more') }}</span>
-                            <span x-show="expanded" x-cloak>{{ __('pages/team/show.see_less') }}</span>
-                        </button>
-                    </div>
+                    <p
+                        x-ref="description"
+                        x-bind:class="expanded ? '' : 'line-clamp-4'">{{ $team->description }}</p>
+                    <button
+                        x-show="clamped"
+                        type="button"
+                        class="mt-2 cursor-pointer text-sm font-medium text-gold hover:text-gold-light"
+                        x-on:click="expanded = ! expanded">
+                        <span x-show="! expanded">{{ __('pages/team/show.see_more') }}</span>
+                        <span x-show="expanded" x-cloak>{{ __('pages/team/show.see_less') }}</span>
+                    </button>
+                </div>
                 @endif
 
                 @if ($memberSince)
-                    <p class="text-sm text-text-secondary">
-                        {{ __('pages/team/show.member_since', ['date' => $memberSince]) }}
-                    </p>
+                <p class="text-sm text-text-secondary">
+                    {{ __('pages/team/show.member_since', ['date' => $memberSince]) }}
+                </p>
                 @endif
             </div>
 
@@ -109,18 +153,17 @@ new #[Layout('layouts::team')] class extends Component
                 <div class="col-span-12 bg-bg-widget p-4 basic-shadow sm:col-span-6 lg:col-span-3">
                     <p class="text-sm text-text-secondary">{{ __('pages/team/show.widget_average_elo') }}</p>
                     @if ($tier)
-                        <div class="mt-2 flex items-center gap-2">
-                            <img
-                                src="{{ asset($tier->icon()) }}"
-                                alt=""
-                                class="size-8 shrink-0 object-contain"
-                                width="32"
-                                height="32"
-                            >
-                            <span @class(['text-base font-semibold', $tier->color()])>{{ $tier->label() }}</span>
-                        </div>
+                    <div class="mt-2 flex items-center gap-2">
+                        <img
+                            src="{{ asset($tier->icon()) }}"
+                            alt=""
+                            class="size-8 shrink-0 object-contain"
+                            width="32"
+                            height="32">
+                        <span @class(['text-base font-semibold', $tier->color()])>{{ $tier->label() }}</span>
+                    </div>
                     @else
-                        <p class="mt-2 text-base font-medium text-text-secondary">{{ __('pages/team/show.unranked') }}</p>
+                    <p class="mt-2 text-base font-medium text-text-secondary">{{ __('pages/team/show.unranked') }}</p>
                     @endif
                 </div>
 
@@ -154,36 +197,34 @@ new #[Layout('layouts::team')] class extends Component
         </h2>
 
         @if ($this->starterMembers->isEmpty())
-            <p class="text-text-secondary">{{ __('pages/team/show.roster_empty') }}</p>
+        <p class="text-text-secondary">{{ __('pages/team/show.roster_empty') }}</p>
         @else
-            <div class="grid grid-cols-12 gap-4 sm:gap-6">
-                @foreach ($this->starterMembers as $member)
-                    <div class="col-span-12 flex gap-3 bg-bg-widget p-4 basic-shadow md:col-span-6 lg:col-span-4">
+        <div class="grid grid-cols-12 gap-4 sm:gap-6">
+            @foreach ($this->starterMembers as $member)
+            <div class="col-span-12 flex gap-3 bg-bg-widget p-4 basic-shadow md:col-span-6 lg:col-span-4">
+                <img
+                    src="{{ $member->avatar_url }}"
+                    alt=""
+                    class="size-[60px] shrink-0 object-cover"
+                    width="60"
+                    height="60">
+                <div class="min-w-0 flex-1">
+                    <p class="truncate font-bold text-white">{{ $member->username }}</p>
+                    <div class="mt-1 flex min-w-0 items-center gap-1.5 text-sm text-text-secondary">
+                        @if ($member->pivot->roleInGame)
                         <img
-                            src="{{ $member->avatar_url }}"
+                            src="{{ asset(RoleInGame::from($member->pivot->roleInGame)->icon()) }}"
                             alt=""
-                            class="size-[60px] shrink-0 object-cover"
-                            width="60"
-                            height="60"
-                        >
-                        <div class="min-w-0 flex-1">
-                            <p class="truncate font-bold text-white">{{ $member->username }}</p>
-                            <div class="mt-1 flex min-w-0 items-center gap-1.5 text-sm text-text-secondary">
-                                @if ($member->pivot->roleInGame)
-                                    <img
-                                        src="{{ asset(RoleInGame::from($member->pivot->roleInGame)->icon()) }}"
-                                        alt=""
-                                        class="size-6 shrink-0 object-contain"
-                                    >
-                                    <span class="truncate">{{ RoleInGame::from($member->pivot->roleInGame)->label() }}</span>
-                                @else
-                                    <span class="truncate">{{ RoleInTeam::from($member->pivot->roleInTeam)->label() }}</span>
-                                @endif
-                            </div>
-                        </div>
+                            class="size-6 shrink-0 object-contain">
+                        <span class="truncate">{{ RoleInGame::from($member->pivot->roleInGame)->label() }}</span>
+                        @else
+                        <span class="truncate">{{ RoleInTeam::from($member->pivot->roleInTeam)->label() }}</span>
+                        @endif
                     </div>
-                @endforeach
+                </div>
             </div>
+            @endforeach
+        </div>
         @endif
     </section>
 </div>

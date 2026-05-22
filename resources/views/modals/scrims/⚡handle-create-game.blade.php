@@ -7,11 +7,8 @@ use Livewire\Component;
 new class extends Component
 {
     public Scrim $scrim;
-
     public int $gamesPlayed = 0;
-
     public int $gamesPlanned = 0;
-
     public function mount(int $model_id): void
     {
         $this->scrim = Scrim::query()

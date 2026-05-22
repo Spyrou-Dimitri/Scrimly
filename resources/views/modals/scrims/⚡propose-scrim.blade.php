@@ -1,17 +1,22 @@
 <?php
 
+use App\Models\ScrimRequest;
 use App\Models\Team;
 use Livewire\Component;
 use App\Livewire\Forms\CreateScrimRequestForm;
+use Illuminate\Support\Facades\Gate;
 
 new class extends Component
 {
     public Team $team;
 
     public CreateScrimRequestForm $form;
+
     public function mount(int $model_id): void
     {
         $this->team = Team::query()->findOrFail($model_id);
+
+        abort_unless(Gate::allows('create', [ScrimRequest::class, $this->team]), 403);
     }
 
     public function closeModal(): void
@@ -19,8 +24,12 @@ new class extends Component
         $this->dispatch('close_modal');
     }
 
-    public function proposeScrim(): void {
-        $this->form->store($this->team->id);
+    public function proposeScrim(): void
+    {
+        if (! $this->form->store($this->team->id)) {
+            return;
+        }
+
         $this->dispatch('close_modal');
         $this->dispatch('refresh_scrims');
         $this->dispatch('toast', [
@@ -100,10 +109,13 @@ new class extends Component
                 :label="__('modals/scrims/propose-scrim.message')"
                 :placeholder="__('modals/scrims/propose-scrim.message_placeholder')"
                 :rows="5">
-                    @error('message')
+                    @error('form.message')
                         <p class="text-red-500">{{ $message }}</p>
                     @enderror
                 </x-forms.textarea>
+                @error('form.error')
+                    <p class="text-red-500">{{ $message }}</p>
+                @enderror
             <div class="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-between sm:pt-4">
                 <button
                     type="button"

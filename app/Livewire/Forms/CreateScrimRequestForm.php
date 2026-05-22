@@ -2,10 +2,12 @@
 
 namespace App\Livewire\Forms;
 
+use App\Enums\StatusScrimRequest;
+use App\Models\ScrimRequest;
+use App\Models\Team;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
-use App\Models\ScrimRequest;
-use App\Enums\StatusScrimRequest;
 
 class CreateScrimRequestForm extends Form
 {
@@ -30,9 +32,18 @@ class CreateScrimRequestForm extends Form
             'message' => ['nullable', 'string', 'min:3', 'max:1000'],
         ];
     }
-    public function store(int $teamId):void
+
+    public function store(int $teamId): bool
     {
         $validated = $this->validate();
+
+        $receiverTeam = Team::query()->findOrFail($teamId);
+
+        if (Gate::denies('create', [ScrimRequest::class, $receiverTeam])) {
+            $this->addError('error', __('modals/scrims/propose-scrim.duplicate_pending'));
+
+            return false;
+        }
 
         ScrimRequest::create([
             'requester_team_id' => currentTeam()->id,
@@ -43,5 +54,7 @@ class CreateScrimRequestForm extends Form
             'number_of_games' => $validated['gameCount'],
             'message' => $validated['message'],
         ]);
+
+        return true;
     }
 }

@@ -8,6 +8,8 @@ use Livewire\Component;
 use App\Models\Scrim;
 use App\Enums\StatusScrim;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
+
 
 new class extends Component
 {
@@ -31,13 +33,23 @@ new class extends Component
 
     public function acceptScrimRequest(): void
     {
-        
+        if (Gate::denies('create', Scrim::class)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/scrim.error_title'),
+                'message' => __('policies/scrim.error_message'),
+                'type' => 'error',
+            ]);
+            $this->dispatch('close_modal');
+            return;
+        }
+
         DB::transaction(function () {
+
 
             $this->scrimRequest->update([
                 'status' => StatusScrimRequest::ACCEPTED,
             ]);
-            
+
             $scrimForReceiverTeam = Scrim::create([
                 'scheduled_date' => $this->scrimRequest->scheduled_date,
                 'scheduled_time' => $this->scrimRequest->scheduled_time,
@@ -47,7 +59,7 @@ new class extends Component
                 'opponent_team_id' => $this->scrimRequest->requester_team_id,
                 'team_id' => currentTeam()?->id,
             ]);
-            
+
             $scrimForRequesterTeam = Scrim::create([
                 'scheduled_date' => $this->scrimRequest->scheduled_date,
                 'scheduled_time' => $this->scrimRequest->scheduled_time,
@@ -69,6 +81,15 @@ new class extends Component
 
     public function refuseScrimRequest(): void
     {
+        if (Gate::denies('create', Scrim::class)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/scrim.error_title'),
+                'message' => __('policies/scrim.error_message'),
+                'type' => 'error',
+            ]);
+            $this->dispatch('close_modal');
+            return;
+        }
         DB::transaction(function () {
             $this->scrimRequest->update([
                 'status' => StatusScrimRequest::REJECTED,

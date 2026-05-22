@@ -66,6 +66,6 @@ class TeamMember extends Model
 
     public function isCoachOrStaff(): bool
     {
-        return $this->roleInTeam === RoleInTeam::COACH || $this->roleInTeam === RoleInTeam::STAFF;
+        return $this->roleInTeam === RoleInTeam::COACH || $this->roleInTeam === RoleInTeam::STAFF || $this->team->creator_id === $this->user_id;
     }
 }

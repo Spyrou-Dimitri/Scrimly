@@ -12,4 +12,5 @@ return [
     'message_placeholder' => 'Nous souhaiterions vous proposer un scrim...',
     'success' => 'Demande de scrim proposée avec succès',
     'success_message' => 'La demande de scrim a été proposée avec succès',
+    'duplicate_pending' => 'Une demande de scrim est déjà en attente entre ces deux équipes.',
 ];

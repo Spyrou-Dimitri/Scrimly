@@ -20,4 +20,8 @@ return [
     'goal_fun' => 'Fun',
     'goal_try_hard' => 'Try hard',
     'goal_professional' => 'Compétitif',
+    'already_send_scrim_request' => 'Vous avez déjà une demande de scrim en attente.',
+    'already_send_scrim_request_message' => 'Vous avez déjà une demande de scrim en attente. Vous ne pouvez pas en faire une autre.',
+    'already_send_scrim_request_view' => 'Voir la demande',
+    'already_receive_scrim_request' => 'Cette équipe vous a déjà fait une demande un scrim',
 ];

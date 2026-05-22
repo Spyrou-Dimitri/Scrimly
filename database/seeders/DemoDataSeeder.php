@@ -236,8 +236,8 @@ class DemoDataSeeder extends Seeder
     }
 
     /**
-     * Génère un graphe régulier de demandes en attente (3 entrantes / 3 sortantes par équipe)
-     * et un cycle de demandes acceptées avec scrims « upcoming », tant qu’il y a au moins 4 équipes.
+     * Génère par équipe : 2 scrims planifiés, 1 demande en attente reçue et 1 envoyée,
+     * sans paire bidirectionnelle entre deux équipes, tant qu’il y a au moins 4 équipes.
      *
      * @param  list<Team>  $teams
      */
@@ -248,20 +248,20 @@ class DemoDataSeeder extends Seeder
             return;
         }
 
-        for ($i = 0; $i < $n; $i++) {
-            for ($k = 1; $k <= 3; $k++) {
-                $slot = $this->randomFutureScrimSlot();
-                ScrimRequest::create([
-                    'status' => StatusScrimRequest::PENDING,
-                    'scheduled_date' => $slot['scheduled_date'],
-                    'scheduled_time' => $slot['scheduled_time'],
-                    'number_of_games' => $slot['number_of_games'],
-                    'message' => fake()->optional(0.5)->sentence(),
-                    'responded_at' => null,
-                    'requester_team_id' => $teams[($i + $k) % $n]->id,
-                    'receiver_team_id' => $teams[$i]->id,
-                ]);
-            }
+        $pendingPerTeam = 1;
+
+        foreach ($this->buildPendingScrimRequestIndexPairs($n, $pendingPerTeam) as [$requesterIndex, $receiverIndex]) {
+            $slot = $this->randomFutureScrimSlot();
+            ScrimRequest::create([
+                'status' => StatusScrimRequest::PENDING,
+                'scheduled_date' => $slot['scheduled_date'],
+                'scheduled_time' => $slot['scheduled_time'],
+                'number_of_games' => $slot['number_of_games'],
+                'message' => fake()->optional(0.5)->sentence(),
+                'responded_at' => null,
+                'requester_team_id' => $teams[$requesterIndex]->id,
+                'receiver_team_id' => $teams[$receiverIndex]->id,
+            ]);
         }
 
         for ($i = 0; $i < $n; $i++) {
@@ -278,6 +278,103 @@ class DemoDataSeeder extends Seeder
             ]);
             $this->createAcceptedScrimPair($request);
         }
+    }
+
+    /**
+     * Construit des paires (index demandeur, index destinataire) pour les demandes en attente.
+     * Aucune paire d’équipes ne possède une demande dans les deux sens.
+     *
+     * @return list<array{0: int, 1: int}>
+     */
+    private function buildPendingScrimRequestIndexPairs(int $teamCount, int $pendingPerTeam): array
+    {
+        /** @var array<string, true> $directedPairs */
+        $directedPairs = [];
+
+        for ($i = 0; $i < $teamCount; $i++) {
+            $directedPairs["{$i}:".(($i + 1) % $teamCount)] = true;
+        }
+
+        $outDegree = array_fill(0, $teamCount, 0);
+        $inDegree = array_fill(0, $teamCount, 0);
+
+        /** @var list<array{0: int, 1: int}> $pairs */
+        $pairs = [];
+
+        if ($teamCount % 2 === 1) {
+            for ($requesterIndex = 0; $requesterIndex < $teamCount; $requesterIndex++) {
+                $receiverIndex = ($requesterIndex + 2) % $teamCount;
+                $this->tryAddPendingScrimRequestPair(
+                    $requesterIndex,
+                    $receiverIndex,
+                    $directedPairs,
+                    $outDegree,
+                    $inDegree,
+                    $pairs,
+                    $pendingPerTeam,
+                    allowDuplicateForward: false,
+                );
+            }
+        }
+
+        for ($requesterIndex = 0; $requesterIndex < $teamCount; $requesterIndex++) {
+            while ($outDegree[$requesterIndex] < $pendingPerTeam) {
+                $receiverIndex = ($requesterIndex + 1) % $teamCount;
+                $this->tryAddPendingScrimRequestPair(
+                    $requesterIndex,
+                    $receiverIndex,
+                    $directedPairs,
+                    $outDegree,
+                    $inDegree,
+                    $pairs,
+                    $pendingPerTeam,
+                    allowDuplicateForward: true,
+                );
+            }
+        }
+
+        return $pairs;
+    }
+
+    /**
+     * @param  array<string, true>  $directedPairs
+     * @param  list<int>  $outDegree
+     * @param  list<int>  $inDegree
+     * @param  list<array{0: int, 1: int}>  $pairs
+     */
+    private function tryAddPendingScrimRequestPair(
+        int $requesterIndex,
+        int $receiverIndex,
+        array &$directedPairs,
+        array &$outDegree,
+        array &$inDegree,
+        array &$pairs,
+        int $pendingPerTeam,
+        bool $allowDuplicateForward,
+    ): void {
+        if ($outDegree[$requesterIndex] >= $pendingPerTeam) {
+            return;
+        }
+
+        if ($inDegree[$receiverIndex] >= $pendingPerTeam) {
+            return;
+        }
+
+        $forwardKey = "{$requesterIndex}:{$receiverIndex}";
+        $reverseKey = "{$receiverIndex}:{$requesterIndex}";
+
+        if (isset($directedPairs[$reverseKey])) {
+            return;
+        }
+
+        if (! $allowDuplicateForward && isset($directedPairs[$forwardKey])) {
+            return;
+        }
+
+        $directedPairs[$forwardKey] = true;
+        $pairs[] = [$requesterIndex, $receiverIndex];
+        $outDegree[$requesterIndex]++;
+        $inDegree[$receiverIndex]++;
     }
 
     /**

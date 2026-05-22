@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\Enums\StatusScrimRequest;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ScrimRequest extends Model
 {
@@ -35,6 +35,7 @@ class ScrimRequest extends Model
     {
         return $this->belongsTo(Team::class, 'receiver_team_id');
     }
+
     public function scrims(): HasMany
     {
         return $this->hasMany(Scrim::class);
