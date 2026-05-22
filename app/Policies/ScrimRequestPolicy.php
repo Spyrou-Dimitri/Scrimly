@@ -41,6 +41,18 @@ class ScrimRequestPolicy
         return true;
     }
 
+    public function delete(User $user)
+    {
+        if (!$user->current_team_id) {
+            return false;
+        }
+        $teamMember = TeamMember::query()->where('team_id', $user->current_team_id)->where('user_id', $user->id)->first();
+        if ($teamMember === null || !$teamMember->isCoachOrStaff()) {
+            return false;
+        }
+        return true;
+    }
+
     private function hasPendingSend(int $requesterTeamId, int $receiverTeamId): bool
     {
         return ScrimRequest::query()

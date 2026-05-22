@@ -9,7 +9,7 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 use Illuminate\Database\Eloquent\Collection;
 use App\Models\Scrim;
-
+use Illuminate\Support\Facades\Gate;
 new #[Layout('layouts::team')] class extends Component
 {
     #[On('refresh_scrims')]
@@ -64,6 +64,14 @@ new #[Layout('layouts::team')] class extends Component
 
     public function deleteScrimRequest(int $scrimRequestId)
     {
+        if (Gate::denies('delete', ScrimRequest::class)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/scrim_request.error_title'),
+                'message' => __('policies/scrim_request.error_message'),
+                'type' => 'error',
+            ]);
+            return;
+        }
         $this->dispatch('open_modal', [
             'form' => 'scrims.delete-scrim-request',
             'model_id' => $scrimRequestId,
@@ -287,11 +295,13 @@ new #[Layout('layouts::team')] class extends Component
                                         </p>
                                     </div>
                                 </div>
+                                @can('delete', ScrimRequest::class)
                                 <div class="shrink-0 sm:self-center">
                                     <x-destructive wire:click="deleteScrimRequest({{ $request->id }})" type="button" class="cta-danger block w-full whitespace-nowrap px-4 py-2 text-center text-sm sm:w-auto">
                                         {{ __('pages/scrims/index.cancel_request') }}
                                     </x-destructive>
                                 </div>
+                                @endcan
                             </div>
                         </article>
                     </li>

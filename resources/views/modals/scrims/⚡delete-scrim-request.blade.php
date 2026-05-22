@@ -3,6 +3,7 @@
 use App\Models\ScrimRequest;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Illuminate\Support\Facades\Gate;
 
 new class extends Component
 {
@@ -39,6 +40,15 @@ new class extends Component
                 ),
             403,
         );
+        if (Gate::denies('delete', ScrimRequest::class)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/scrim_request.error_title'),
+                'message' => __('policies/scrim_request.error_message'),
+                'type' => 'error',
+            ]);
+            $this->dispatch('close_modal');
+            return;
+        }
 
         $this->scrimRequest->delete();
 
