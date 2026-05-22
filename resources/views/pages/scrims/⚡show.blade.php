@@ -9,6 +9,7 @@ use Livewire\Component;
 use Livewire\Attributes\Computed;
 use Livewire\WithPagination;
 use App\Enums\StatusScrim;
+use Illuminate\Support\Facades\Gate;
 
 new #[Layout('layouts::team')] class extends Component
 {
@@ -71,6 +72,14 @@ new #[Layout('layouts::team')] class extends Component
     }
     public function openModalStartScrim(): void
     {
+        if (Gate::denies('edit', Scrim::class)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/scrim.error_title'),
+                'message' => __('policies/scrim.error_start_scrim'),
+                'type' => 'error',
+            ]);
+            return;
+        }
         $this->dispatch('open_modal', [
             'form' => 'modals::scrims.start-scrim',
             'model_id' => $this->scrim->id,
@@ -108,9 +117,11 @@ new #[Layout('layouts::team')] class extends Component
                     {{ __('pages/scrims/show.mark_as_completed') }}
                 </button>
             @else
+                @can('edit', Scrim::class)
                 <button wire:click="openModalStartScrim()" title="{{ __('pages/scrims/show.start_scrim') }}" class="cta-primary">
-                    {{ __('pages/scrims/show.start_scrim') }}
-                </button>
+                        {{ __('pages/scrims/show.start_scrim') }}
+                    </button>
+                @endcan
             @endif
         </div>
 

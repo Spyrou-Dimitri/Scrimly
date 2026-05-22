@@ -3,7 +3,7 @@
 use App\Enums\StatusScrim;
 use App\Models\Scrim;
 use Livewire\Component;
-
+use Illuminate\Support\Facades\Gate;
 new class extends Component
 {
     public Scrim $scrim;
@@ -36,6 +36,15 @@ new class extends Component
             $this->scrim->status === StatusScrim::SCHEDULED,
             403,
         );
+        if (Gate::denies('edit', Scrim::class)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/scrim.error_title'),
+                'message' => __('policies/scrim.error_start_scrim'),
+                'type' => 'error',
+            ]);
+            $this->dispatch('close_modal');
+            return;
+        }
 
         $this->scrim->update(['status' => StatusScrim::IN_PROGRESS]);
 

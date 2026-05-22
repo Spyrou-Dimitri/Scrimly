@@ -22,4 +22,15 @@ class ScrimPolicy
         }
         return true;
     }
+    public function edit(User $user): bool
+    {
+        if (!$user->current_team_id) {
+            return false;
+        }
+        $teamMember = TeamMember::query()->where('team_id', $user->current_team_id)->where('user_id', $user->id)->first();
+        if ($teamMember === null || !$teamMember->isCoachOrStaff()) {
+            return false;
+        }
+        return true;
+    }
 }
