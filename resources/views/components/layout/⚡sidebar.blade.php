@@ -26,8 +26,8 @@ new class extends Component
             [
                 'label' => __('layouts/team.nav.calendar'),
                 'icon' => 'calendar-days',
-                'route' => null,
-                'href' => '#',
+                'route' => 'calendar.index',
+                'href' => route('calendar.index', ['slug' => currentTeam()->slug]),
             ],
             [
                 'label' => __('layouts/team.nav.scrims'),
