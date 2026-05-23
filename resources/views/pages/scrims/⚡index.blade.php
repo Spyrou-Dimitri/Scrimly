@@ -1,21 +1,94 @@
 <?php
 
+use App\Enums\ScrimOutcome;
 use App\Enums\StatusScrim;
 use App\Enums\StatusScrimRequest;
 use App\Models\ScrimRequest;
+use App\Models\User;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use App\Models\Scrim;
 use Illuminate\Support\Facades\Gate;
+use Livewire\WithPagination;
+
 new #[Layout('layouts::team')] class extends Component
 {
+    use WithPagination;
+
+    public string $term = '';
+
+    public string $selected_status = '';
+
+    public string $selected_result = '';
+
     #[On('refresh_scrims')]
     public function refreshScrimRequests(): void
     {
-        unset($this->receivedScrimRequests, $this->sentScrimRequests, $this->scrims, $this->scrimInProgress);
+        unset($this->receivedScrimRequests, $this->sentScrimRequests, $this->scrims, $this->scrimInProgress, $this->scrimHistory);
+    }
+
+    public function updated(string $property): void
+    {
+        if (in_array($property, ['term', 'selected_status', 'selected_result'], true)) {
+            $this->resetPage();
+        }
+    }
+
+    private function scrimHistoryQuery(): Builder
+    {
+        $query = Scrim::query()
+            ->where('team_id', currentTeam()->id)
+            ->whereIn('status', StatusScrim::historyCases())
+            ->with(['opponentTeam'])
+            ->withCount([
+                'scrimGames as wins_count' => fn ($q) => $q->where('is_victory', true),
+                'scrimGames as losses_count' => fn ($q) => $q->where('is_victory', false),
+                'scrimGames as games_count',
+            ]);
+
+        if ($this->term !== '') {
+            $query->whereHas('opponentTeam', fn ($q) => $q->where('name', 'like', '%'.$this->term.'%'));
+        }
+
+        if ($this->selected_status !== '') {
+            $query->where('status', $this->selected_status);
+        }
+
+        if ($this->selected_result !== '') {
+            $outcome = ScrimOutcome::tryFrom($this->selected_result);
+
+            if ($outcome === ScrimOutcome::Victory) {
+                $query->whereRaw(
+                    '(select count(*) from scrim_games where scrim_games.scrim_id = scrims.id and is_victory = 1)
+                    > (select count(*) from scrim_games where scrim_games.scrim_id = scrims.id and is_victory = 0)'
+                );
+            } elseif ($outcome === ScrimOutcome::Defeat) {
+                $query->whereRaw(
+                    '(select count(*) from scrim_games where scrim_games.scrim_id = scrims.id and is_victory = 1)
+                    < (select count(*) from scrim_games where scrim_games.scrim_id = scrims.id and is_victory = 0)'
+                );
+            } elseif ($outcome === ScrimOutcome::Draw) {
+                $query->whereRaw(
+                    '(select count(*) from scrim_games where scrim_games.scrim_id = scrims.id and is_victory = 1)
+                    = (select count(*) from scrim_games where scrim_games.scrim_id = scrims.id and is_victory = 0)
+                    and (select count(*) from scrim_games where scrim_games.scrim_id = scrims.id) > 0'
+                );
+            }
+        }
+
+        return $query
+            ->orderByDesc('scheduled_date')
+            ->orderByDesc('scheduled_time');
+    }
+
+    #[Computed]
+    public function scrimHistory()
+    {
+        return $this->scrimHistoryQuery()->paginate(8);
     }
 
     #[Computed]
@@ -98,6 +171,24 @@ new #[Layout('layouts::team')] class extends Component
     {
         $this->dispatch('open_modal', [
             'form' => 'scrims.finish-scrim',
+            'model_id' => $scrimId,
+        ]);
+    }
+
+    public function openModalDeleteScrim(int $scrimId): void
+    {
+        if (Gate::denies('manageTeam', User::class)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/scrim.error_title'),
+                'message' => __('policies/scrim.error_delete_scrim'),
+                'type' => 'error',
+            ]);
+
+            return;
+        }
+
+        $this->dispatch('open_modal', [
+            'form' => 'modals::scrims.delete-scrim',
             'model_id' => $scrimId,
         ]);
     }
@@ -317,6 +408,115 @@ new #[Layout('layouts::team')] class extends Component
                 </x-accordion>
             </div>
         </div>
+    </section>
+
+    <section class="flex flex-col gap-6">
+        <h2 class="text-2xl font-bold">
+            {{ __('pages/scrims/index.history_title') }}
+        </h2>
+        <div class="flex flex-col gap-4 md:flex-row md:items-end p-6 bg-bg-widget shadow-basic">
+            <x-forms.input
+                :type="'search'"
+                wire:model.live.debounce.150ms="term"
+                :name="'history_search'"
+                :label="__('pages/scrims/index.history_search_label')"
+                :placeholder="__('pages/scrims/index.history_search_placeholder')"
+            />
+            <x-forms.select
+                wire:model.live.debounce.150ms="selected_status"
+                :name="'selected_status'"
+                :label="__('pages/scrims/index.history_status_label')"
+                :options="StatusScrim::historyCases()"
+                :disabled="__('pages/scrims/index.history_status_placeholder')"
+            />
+            <x-forms.select
+                wire:model.live.debounce.150ms="selected_result"
+                :name="'selected_result'"
+                :label="__('pages/scrims/index.history_result_label')"
+                :options="ScrimOutcome::cases()"
+                :disabled="__('pages/scrims/index.history_result_placeholder')"
+            />
+        </div>
+        <table class="w-full shadow-basic">
+            <thead class="bg-[#0D0E12]">
+                <tr>
+                    <th class="text-left p-6">{{ __('pages/scrims/index.history_column_opponent') }}</th>
+                    <th class="text-left p-6">{{ __('pages/scrims/index.history_column_status') }}</th>
+                    <th class="text-left p-6">{{ __('pages/scrims/index.history_column_result') }}</th>
+                    <th class="text-left p-6">{{ __('pages/scrims/index.history_column_score') }}</th>
+                    <th class="text-left p-6">{{ __('pages/scrims/index.history_column_games') }}</th>
+                    <th class="text-left p-6">{{ __('pages/scrims/index.history_column_actions') }}</th>
+                </tr>
+            </thead>
+            <tbody class="bg-bg-widget">
+                @foreach ($this->scrimHistory as $scrim)
+                @php
+                $outcome = ScrimOutcome::fromCounts($scrim->wins_count, $scrim->losses_count);
+                @endphp
+                <tr wire:key="scrim-history-{{ $scrim->id }}">
+                    <td class="p-6">
+                        <p class="block truncate font-bold text-gold">
+                            {{ $scrim->opponentTeam?->name ?? __('pages/scrims/index.upcoming_opponent_unknown') }}
+                        </p>
+                        <p class="text-xs font-bold text-text-secondary">
+                            {{ $scrim->scheduled_date->translatedFormat('d M Y') }} - {{ $scrim->scheduled_time->format('H:i') }}
+                        </p>
+                    </td>
+                    <td class="p-6">
+                        <span class="{{ $scrim->status->macaron() }} text-sm">{{ $scrim->status->label() }}</span>
+                    </td>
+                    <td class="p-6">
+                        @if ($outcome)
+                        <span class="{{ $outcome->macaron() }}">{{ $outcome->label() }}</span>
+                        @else
+                        <span class="text-text-secondary">-</span>
+                        @endif
+                    </td>
+                    <td class="p-6">
+                        @if ($scrim->games_count > 0)
+                        <span class="font-bold tabular-nums">
+                            <span class="text-victory">{{ $scrim->wins_count }}</span>
+                            <span class="text-text-secondary"> - </span>
+                            <span class="text-defeat">{{ $scrim->losses_count }}</span>
+                        </span>
+                        @else
+                        <span class="text-text-secondary">-</span>
+                        @endif
+                    </td>
+                    <td class="p-6 tabular-nums">
+                        {{ $scrim->games_count }}/{{ $scrim->number_of_games }}
+                    </td>
+                    <td class="p-6">
+                        <div class="flex items-center gap-4">
+                            <a
+                                wire:navigate
+                                href="{{ route('scrims.show', ['slug' => currentTeam()->slug, 'id' => $scrim->id]) }}"
+                                title="{{ __('pages/scrims/index.history_view_title') }}"
+                                class="hover:text-gold transition-all duration-150">
+                                <flux:icon name="eye" class="w-5 h-5" />
+                            </a>
+                            @can('manageTeam', User::class)
+                            <a
+                                wire:navigate
+                                href="{{ route('scrims.show', ['slug' => currentTeam()->slug, 'id' => $scrim->id]) }}"
+                                title="{{ __('pages/scrims/index.history_edit_title') }}"
+                                class="hover:text-gold transition-all duration-150">
+                                <flux:icon name="pencil" class="w-5 h-5" />
+                            </a>
+                            <button
+                                wire:click="openModalDeleteScrim({{ $scrim->id }})"
+                                title="{{ __('pages/scrims/index.history_delete_title') }}"
+                                class="hover:text-red-700/90 transition-all duration-150 cursor-pointer">
+                                <flux:icon name="trash" class="w-5 h-5" />
+                            </button>
+                            @endcan
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        {{ $this->scrimHistory->links() }}
     </section>
 
 

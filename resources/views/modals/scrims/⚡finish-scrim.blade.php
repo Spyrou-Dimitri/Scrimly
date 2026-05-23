@@ -48,8 +48,6 @@ new class extends Component
         }
 
         $this->scrim->update(['status' => StatusScrim::COMPLETED]);
-
-        
         $this->dispatch('close_modal');
         $this->dispatch('refresh_scrim');
         $this->dispatch('refresh_scrims');

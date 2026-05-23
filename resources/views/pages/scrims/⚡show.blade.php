@@ -135,7 +135,7 @@ new #[Layout('layouts::team')] class extends Component
                     {{ __('pages/scrims/show.mark_as_completed') }}
                 </button>
                 @endcan
-            @else
+            @elseif ($this->scrim->status !== StatusScrim::COMPLETED)
                 @can('manageTeam', User::class)
                 <button wire:click="openModalStartScrim()" title="{{ __('pages/scrims/show.start_scrim') }}" class="cta-primary">
                         {{ __('pages/scrims/show.start_scrim') }}
