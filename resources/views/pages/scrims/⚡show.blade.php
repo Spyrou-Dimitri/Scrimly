@@ -57,6 +57,14 @@ new #[Layout('layouts::team')] class extends Component
 
     public function openModalCompleteScrim(): void
     {
+        if (Gate::denies('edit', Scrim::class)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/scrim.error_title'),
+                'message' => __('policies/scrim.error_finish_scrim'),
+                'type' => 'error',
+            ]);
+            return;
+        }
         $this->dispatch('open_modal', [
             'form' => 'modals::scrims.finish-scrim',
             'model_id' => $this->scrim->id,
@@ -113,9 +121,11 @@ new #[Layout('layouts::team')] class extends Component
                 <span class="text-gold">{{ $this->scrim->opponentTeam?->name ?? __('pages/scrims/show.opponent_unknown') }}</span>
             </h2>
             @if ($this->scrim->status === StatusScrim::IN_PROGRESS)
+                @can('edit', Scrim::class)
                 <button wire:click="openModalCompleteScrim()" title="{{ __('pages/scrims/show.mark_as_completed') }}" class="cta-primary">
                     {{ __('pages/scrims/show.mark_as_completed') }}
                 </button>
+                @endcan
             @else
                 @can('edit', Scrim::class)
                 <button wire:click="openModalStartScrim()" title="{{ __('pages/scrims/show.start_scrim') }}" class="cta-primary">
