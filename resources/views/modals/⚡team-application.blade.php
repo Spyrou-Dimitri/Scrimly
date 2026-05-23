@@ -10,6 +10,8 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use App\Enums\StatusInTeam;
+use Illuminate\Support\Facades\Gate;
+use App\Models\User;
 
 new class extends Component
 {
@@ -18,16 +20,31 @@ new class extends Component
     public ?RoleInGame $roleInGame = null;
     public ?string $is_starter = null;
 
-    public function mount($model_id)
+    public function mount($model_id): void
     {
         $this->candidate = TeamApplication::query()
             ->with(['user.riotProfile'])
+            ->where('team_id', currentTeam()->id)
             ->findOrFail($model_id);
+
+        abort_unless(Gate::allows('view', $this->candidate), 403);
+
         $this->roleInTeam = $this->candidate->roleInTeam;
         $this->roleInGame = $this->candidate->roleInGame;
     }
-    public function refuse()
+
+    public function refuse(): void
     {
+        if (Gate::denies('manageTeam', User::class)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/roster.error_title'),
+                'message' => __('policies/roster.error_manage_application'),
+                'type' => 'error',
+            ]);
+
+            return;
+        }
+
         $this->candidate->update([
             'status' => StatusApplication::REJECTED,
         ]);
@@ -38,8 +55,19 @@ new class extends Component
             'message' => 'Candidature refusée',
         ]);
     }
-    public function accept()
+
+    public function accept(): void
     {
+        if (Gate::denies('manageTeam', User::class)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/roster.error_title'),
+                'message' => __('policies/roster.error_manage_application'),
+                'type' => 'error',
+            ]);
+
+            return;
+        }
+
         $this->validate([
             'is_starter' => [
                 Rule::requiredIf(fn() => $this->roleInTeam === RoleInTeam::PLAYER),
@@ -155,6 +183,7 @@ new class extends Component
             <p class="text-white">{{ $this->candidate->motivation }}</p>
         </div>
         @if ($this->candidate->roleInTeam === RoleInTeam::PLAYER)
+        @can('manageTeam', User::class)
         <div class="border-t-2 border-gray-500 pt-6">
             <fieldset>
                 <legend class="mb-6 text-gold font-bold text-xl lg:text-2xl">
@@ -195,7 +224,9 @@ new class extends Component
                 </div>
             </fieldset>
         </div>
-        @else
+        @endcan
+        @elseif ($this->candidate->roleInTeam !== RoleInTeam::PLAYER)
+        @can('manageTeam', User::class)
         <div class="flex justify-between gap-2">
             <button wire:click="refuse" class="cta-secondary">
                 Refuser
@@ -204,6 +235,7 @@ new class extends Component
                 Accepter
             </button>
         </div>
+        @endcan
         @endif
 </div>
 </x-layout.head-modal>

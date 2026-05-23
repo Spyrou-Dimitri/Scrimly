@@ -3,22 +3,32 @@
 use Livewire\Component;
 use App\Models\TeamMember;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
+use App\Models\User;
 use App\Enums\StatusInTeam;
 
 new class extends Component
 {
     public TeamMember $member;
 
-    public function mount($model_id)
+    public function mount($model_id): void
     {
-        $this->member = TeamMember::findOrFail($model_id);
+        abort_unless(Gate::allows('manageTeam', User::class), 403);
+
+        $this->member = TeamMember::query()
+            ->where('team_id', currentTeam()->id)
+            ->findOrFail($model_id);
     }
     public function closeModal()
     {
         $this->dispatch('close_modal');
     }
-    public function kickTeamMember()
+    public function kickTeamMember(): void
     {
+        if (Gate::denies('manageTeam', User::class)) {
+            return;
+        }
+
         DB::transaction(function () {
             $this->member->update([
                 'status' => StatusInTeam::REJECTED,

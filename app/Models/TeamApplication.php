@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\RoleInGame;
 use App\Enums\RoleInTeam;
+use App\Enums\StatusApplication;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -21,7 +22,7 @@ class TeamApplication extends Model
     protected $casts = [
         'roleInTeam' => RoleInTeam::class,
         'roleInGame' => RoleInGame::class,
-
+        'status' => StatusApplication::class,
     ];
 
     public function team(): BelongsTo

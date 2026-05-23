@@ -9,7 +9,9 @@ use App\Enums\RoleInTeam;
 use App\Enums\StatusApplication;
 use Illuminate\Database\Eloquent\Collection;
 use App\Models\TeamMember;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use App\Enums\StatusInTeam;
 
 new #[Layout('layouts::team')] class extends Component {
@@ -45,8 +47,22 @@ new #[Layout('layouts::team')] class extends Component {
         unset($this->isStarter);
     }
 
-    public function openTeamApplicationModal($candidateId): void
+    public function openTeamApplicationModal(int $candidateId): void
     {
+        $candidate = TeamApplication::query()
+            ->where('team_id', currentTeam()->id)
+            ->findOrFail($candidateId);
+
+        if (Gate::denies('view', $candidate)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/roster.error_title'),
+                'message' => __('policies/roster.error_view_application'),
+                'type' => 'error',
+            ]);
+
+            return;
+        }
+
         $this->dispatch('open_modal', [
             'form' => 'team-application',
             'model_id' => $candidateId,
@@ -55,6 +71,16 @@ new #[Layout('layouts::team')] class extends Component {
 
     public function openModalPromoteToStarter(int $teamMemberId): void
     {
+        if (Gate::denies('manageTeam', User::class)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/roster.error_title'),
+                'message' => __('policies/roster.error_manage_roster'),
+                'type' => 'error',
+            ]);
+
+            return;
+        }
+
         $this->dispatch('open_modal', [
             'form' => 'promote-to-starter',
             'model_id' => $teamMemberId,
@@ -62,6 +88,16 @@ new #[Layout('layouts::team')] class extends Component {
     }
     public function openModalSendToBench(int $teamMemberId): void
     {
+        if (Gate::denies('manageTeam', User::class)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/roster.error_title'),
+                'message' => __('policies/roster.error_manage_roster'),
+                'type' => 'error',
+            ]);
+
+            return;
+        }
+
         $this->dispatch('open_modal', [
             'form' => 'send-to-bench',
             'model_id' => $teamMemberId,
@@ -70,6 +106,16 @@ new #[Layout('layouts::team')] class extends Component {
 
     public function openModalKickTeamMember(int $teamMemberId): void
     {
+        if (Gate::denies('manageTeam', User::class)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/roster.error_title'),
+                'message' => __('policies/roster.error_manage_roster'),
+                'type' => 'error',
+            ]);
+
+            return;
+        }
+
         $this->dispatch('open_modal', [
             'form' => 'kick-team-member',
             'model_id' => $teamMemberId,

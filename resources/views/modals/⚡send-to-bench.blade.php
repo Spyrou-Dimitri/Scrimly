@@ -3,6 +3,8 @@
 use Livewire\Component;
 use App\Models\TeamMember;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
+use App\Models\User;
 
 new class extends Component
 {
@@ -10,7 +12,10 @@ new class extends Component
 
     public function mount($model_id): void
     {
+        abort_unless(Gate::allows('manageTeam', User::class), 403);
+
         $this->member = TeamMember::query()
+            ->where('team_id', currentTeam()->id)
             ->with(['user.riotProfile'])
             ->findOrFail($model_id);
     }
@@ -22,6 +27,10 @@ new class extends Component
 
     public function sendToBench(): void
     {
+        if (Gate::denies('manageTeam', User::class)) {
+            return;
+        }
+
         DB::transaction(function () {
             $this->member->update([
                 'is_starter' => false,
