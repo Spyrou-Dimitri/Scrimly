@@ -6,25 +6,16 @@ use App\Enums\StatusScrimRequest;
 use App\Models\ScrimRequest;
 use App\Models\Team;
 use App\Models\User;
-use App\Models\TeamMember;
 
 class ScrimRequestPolicy
 {
     public function create(User $user, Team $receiverTeam): bool
     {
+        if (! $user->canManageCurrentTeam()) {
+            return false;
+        }
+
         $requesterTeamId = $user->current_team_id;
-
-        if ($requesterTeamId === null) {
-            return false;
-        }
-        if (!$user->current_team_id) {
-            return false;
-        }
-        $teamMember = TeamMember::query()->where('team_id', $requesterTeamId)->where('user_id', $user->id)->first();
-
-        if ($teamMember === null || !$teamMember->isCoachOrStaff()) {
-            return false;
-        }
 
         if ($requesterTeamId === null || $requesterTeamId === $receiverTeam->id) {
             return false;
@@ -41,16 +32,9 @@ class ScrimRequestPolicy
         return true;
     }
 
-    public function delete(User $user)
+    public function delete(User $user): bool
     {
-        if (!$user->current_team_id) {
-            return false;
-        }
-        $teamMember = TeamMember::query()->where('team_id', $user->current_team_id)->where('user_id', $user->id)->first();
-        if ($teamMember === null || !$teamMember->isCoachOrStaff()) {
-            return false;
-        }
-        return true;
+        return $user->canManageCurrentTeam();
     }
 
     private function hasPendingSend(int $requesterTeamId, int $receiverTeamId): bool

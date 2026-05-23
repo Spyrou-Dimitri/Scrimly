@@ -5,9 +5,11 @@ namespace App\Livewire\Forms\Scrim;
 use App\Enums\TypeScrimGameNote;
 use App\Models\ScrimGame;
 use App\Models\ScrimGamePlayer;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Form;
 
 class EditScrimGameForm extends Form
@@ -56,9 +58,13 @@ class EditScrimGameForm extends Form
         ];
     }
 
-    public function update(int $scrimGameId): void
+    public function update(int $scrimGameId): bool
     {
         $validated = $this->validate();
+        if (Gate::denies('manageTeam', User::class)) {
+            return false;
+        }
+
 
         DB::transaction(function () use ($scrimGameId, $validated) {
             $scrimGame = ScrimGame::findOrFail($scrimGameId);
@@ -90,5 +96,7 @@ class EditScrimGameForm extends Form
                 ]);
             }
         });
+
+        return true;
     }
 }

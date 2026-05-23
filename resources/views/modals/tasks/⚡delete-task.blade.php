@@ -1,7 +1,8 @@
 <?php
 
 use App\Models\Task;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
 new class extends Component
@@ -13,7 +14,7 @@ new class extends Component
         $task = Task::findOrFail($model_id);
         abort_unless(
             $task->team_id === currentTeam()->id
-                && (currentTeam()->creator_id === Auth::id() || currentMember()->isCoachOrStaff()),
+                && Gate::allows('manageTeam', User::class),
             403,
         );
 

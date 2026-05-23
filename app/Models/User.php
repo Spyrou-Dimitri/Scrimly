@@ -104,4 +104,18 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Team::class, 'current_team_id');
     }
+
+    public function canManageCurrentTeam(): bool
+    {
+        if ($this->current_team_id === null) {
+            return false;
+        }
+
+        $teamMember = TeamMember::query()
+            ->where('user_id', $this->id)
+            ->where('team_id', $this->current_team_id)
+            ->first();
+
+        return $teamMember?->isCoachOrStaff() ?? false;
+    }
 }

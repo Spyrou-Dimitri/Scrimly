@@ -3,7 +3,8 @@
 use App\Livewire\Forms\EditTaskForm;
 use App\Models\Task;
 use App\Models\TaskFile;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -36,10 +37,7 @@ new #[Layout('layouts::team')] class extends Component
             ->where('team_id', currentTeam()->id)
             ->firstOrFail();
 
-        abort_unless(
-            currentTeam()->creator_id === Auth::id() || currentMember()->isCoachOrStaff(),
-            403,
-        );
+        abort_unless(Gate::allows('manageTeam', User::class), 403);
 
         $this->form->setTask($this->task);
     }

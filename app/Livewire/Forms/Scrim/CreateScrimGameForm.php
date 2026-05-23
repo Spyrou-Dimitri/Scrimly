@@ -4,7 +4,9 @@ namespace App\Livewire\Forms\Scrim;
 
 use App\Enums\TypeScrimGameNote;
 use App\Models\ScrimGame;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
@@ -55,10 +57,13 @@ class CreateScrimGameForm extends Form
         ];
     }
 
-    public function store(int $scrimId): void
+    public function store(int $scrimId): bool
     {
         $validated = $this->validate();
 
+        if (Gate::denies('manageTeam', User::class)) {
+            return false;
+        }
         $opponentStarters = [
             'top' => $validated['opponentTeamMembersStarters']['top'],
             'jungle' => $validated['opponentTeamMembersStarters']['jungle'],
@@ -92,5 +97,7 @@ class CreateScrimGameForm extends Form
                 ]);
             }
         });
+
+        return true;
     }
 }

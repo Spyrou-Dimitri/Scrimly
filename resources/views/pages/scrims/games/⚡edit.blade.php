@@ -86,7 +86,14 @@ new #[Layout('layouts::team')] class extends Component
     }
     public function updateGame(int $gameId): void
     {
-        $this->form->update($gameId);
+        if (! $this->form->update($gameId)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/scrim.error_title'),
+                'message' => __('policies/scrim.error_update_game'),
+                'type' => 'error',
+            ]);
+            return;
+        }
         session()->flash('toast', [
             'type' => 'success',
             'message' => __('toasts/toasts.game_updated'),
@@ -115,7 +122,7 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                 {{ __('pages/scrims/games/create.scrim_label', ['teams' => $teamsSummary]) }}
             </p>
         </div>
-        <button type="button" class="cta-primary shrink-0" title="{{ __('pages/scrims/games/create.update_button') }}">
+        <button wire:click="updateGame({{ $game->id }})" type="button" class="cta-primary shrink-0" title="{{ __('pages/scrims/games/create.update_button') }}">
             {{ __('pages/scrims/games/create.update_button') }}
         </button>
     </div>
@@ -218,9 +225,6 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                         grid-gap-class="gap-3 sm:gap-4" />
                 </div>
             </div>
-            <x-forms.submit class="w-full">
-                {{ __('pages/scrims/games/create.update_button') }}
-            </x-forms.submit>
         </fieldset>
         <div class="col-span-full grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-10">
             <fieldset class="min-w-0 flex flex-col gap-6 border-0 bg-bg-widget p-6 shadow-basic">

@@ -2,6 +2,7 @@
 
 use App\Enums\StatusScrim;
 use App\Models\Scrim;
+use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Facades\Gate;
 new class extends Component
@@ -36,7 +37,7 @@ new class extends Component
             $this->scrim->status === StatusScrim::SCHEDULED,
             403,
         );
-        if (Gate::denies('edit', Scrim::class)) {
+        if (Gate::denies('manageTeam', User::class)) {
             $this->dispatch('toast', [
                 'title' => __('policies/scrim.error_title'),
                 'message' => __('policies/scrim.error_start_scrim'),

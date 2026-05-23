@@ -5,6 +5,7 @@ use App\Models\Scrim;
 use App\Models\Team;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
+use App\Models\User;
 use Livewire\Component;
 use Livewire\Attributes\Computed;
 use Livewire\WithPagination;
@@ -57,7 +58,7 @@ new #[Layout('layouts::team')] class extends Component
 
     public function openModalCompleteScrim(): void
     {
-        if (Gate::denies('edit', Scrim::class)) {
+        if (Gate::denies('manageTeam', User::class)) {
             $this->dispatch('toast', [
                 'title' => __('policies/scrim.error_title'),
                 'message' => __('policies/scrim.error_finish_scrim'),
@@ -73,6 +74,14 @@ new #[Layout('layouts::team')] class extends Component
 
     public function openDeleteGameModal(int $gameId): void
     {
+        if (Gate::denies('manageTeam', User::class)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/scrim.error_title'),
+                'message' => __('policies/scrim.error_delete_game'),
+                'type' => 'error',
+            ]);
+            return;
+        }
         $this->dispatch('open_modal', [
             'form' => 'modals::scrims.games.delete-game',
             'model_id' => $gameId,
@@ -80,7 +89,7 @@ new #[Layout('layouts::team')] class extends Component
     }
     public function openModalStartScrim(): void
     {
-        if (Gate::denies('edit', Scrim::class)) {
+        if (Gate::denies('manageTeam', User::class)) {
             $this->dispatch('toast', [
                 'title' => __('policies/scrim.error_title'),
                 'message' => __('policies/scrim.error_start_scrim'),
@@ -121,13 +130,13 @@ new #[Layout('layouts::team')] class extends Component
                 <span class="text-gold">{{ $this->scrim->opponentTeam?->name ?? __('pages/scrims/show.opponent_unknown') }}</span>
             </h2>
             @if ($this->scrim->status === StatusScrim::IN_PROGRESS)
-                @can('edit', Scrim::class)
+                @can('manageTeam', User::class)
                 <button wire:click="openModalCompleteScrim()" title="{{ __('pages/scrims/show.mark_as_completed') }}" class="cta-primary">
                     {{ __('pages/scrims/show.mark_as_completed') }}
                 </button>
                 @endcan
             @else
-                @can('edit', Scrim::class)
+                @can('manageTeam', User::class)
                 <button wire:click="openModalStartScrim()" title="{{ __('pages/scrims/show.start_scrim') }}" class="cta-primary">
                         {{ __('pages/scrims/show.start_scrim') }}
                     </button>
@@ -204,9 +213,11 @@ new #[Layout('layouts::team')] class extends Component
             <h2 class="text-[32px] font-bold">
                 {{ __('pages/scrims/show.games_title') }} <span class="text-gold font-bold">({{ $this->scrimGames->count() }})</span>
             </h2>
+            @can('manageTeam', User::class)
             <button wire:click="handleCreateGame()" title="{{ __('pages/scrims/show.create_game_title') }}" class="cta-primary">
                 {{ __('pages/scrims/show.create_game') }}
             </button>
+            @endcan
         </div>
         @if ($this->scrim->scrimGames->isNotEmpty())
         <div class="flex flex-col gap-4">
@@ -240,6 +251,8 @@ new #[Layout('layouts::team')] class extends Component
                         </div>
                     </div>
                 </x-slot:header>
+
+                @can('manageTeam', User::class)
                 <x-slot:actions>
                     <div class="flex flex-row items-center gap-4 pr-4 border-r border-white/10">
                         <a
@@ -256,9 +269,8 @@ new #[Layout('layouts::team')] class extends Component
                             <flux:icon name="trash" class="size-5 transition-all duration-150 ease-in-out group-hover:text-red-700/90" />
                         </button>
                     </div>
-
                 </x-slot:actions>
-
+                @endcan
                 <section class="flex flex-col gap-4 border-t border-gold pt-6">
                     <h4 class="sr-only">{{ __('pages/scrims/show.score_section_title') }}</h4>
                     <div class="grid grid-cols-1 items-center gap-4 lg:grid-cols-3">

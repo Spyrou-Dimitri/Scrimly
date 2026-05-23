@@ -96,12 +96,21 @@ new #[Layout('layouts::team')] class extends Component
 
     public function createGame(): void
     {
-        $this->form->store($this->scrim->id);
+        if (! $this->form->store($this->scrim->id)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/scrim.error_title'),
+                'message' => __('policies/scrim.error_create_game'),
+                'type' => 'error',
+            ]);
+
+            return;
+        }
+
         session()->flash('toast', [
             'type' => 'success',
             'message' => __('toasts/toasts.game_created'),
         ]);
-        $this->redirect(route('scrims.show', ['id' => $this->scrim->id, 'slug' =>currentTeam()->slug]));
+        $this->redirect(route('scrims.show', ['id' => $this->scrim->id, 'slug' => currentTeam()->slug]));
     }
 };
 ?>
@@ -125,7 +134,7 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                 {{ __('pages/scrims/games/create.scrim_label', ['teams' => $teamsSummary]) }}
             </p>
         </div>
-        <button type="button" class="cta-primary shrink-0" title="{{ __('pages/scrims/games/create.create_button') }}">
+        <button wire:click="createGame" type="button" class="cta-primary shrink-0" title="{{ __('pages/scrims/games/create.create_button') }}">
             {{ __('pages/scrims/games/create.create_button') }}
         </button>
     </div>
@@ -228,9 +237,6 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                         grid-gap-class="gap-3 sm:gap-4" />
                 </div>
             </div>
-            <x-forms.submit class="w-full">
-                HAHHA
-            </x-forms.submit>
         </fieldset>
         <div class="col-span-full grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-10">
             <fieldset class="flex flex-col gap-6 border-0 bg-bg-widget p-6 shadow-basic">

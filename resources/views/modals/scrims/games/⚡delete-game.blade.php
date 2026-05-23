@@ -2,6 +2,8 @@
 
 use App\Models\ScrimGame;
 use Livewire\Component;
+use Illuminate\Support\Facades\Gate;
+use App\Models\User;
 
 new class extends Component
 {
@@ -30,6 +32,14 @@ new class extends Component
             $this->scrimGame->scrim->team_id === currentTeam()->id,
             403,
         );
+        if (Gate::denies('manageTeam', User::class)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/scrim.error_title'),
+                'message' => __('policies/scrim.error_delete_game'),
+                'type' => 'error',
+            ]);
+            return;
+        }
 
         $this->scrimGame->delete();
 

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use App\Models\Scrim;
+use App\Models\User;
 use App\Enums\StatusScrim;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -33,7 +34,7 @@ new class extends Component
 
     public function acceptScrimRequest(): void
     {
-        if (Gate::denies('create', Scrim::class)) {
+        if (Gate::denies('manageTeam', User::class)) {
             $this->dispatch('toast', [
                 'title' => __('policies/scrim.error_title'),
                 'message' => __('policies/scrim.error_message'),
@@ -81,7 +82,7 @@ new class extends Component
 
     public function refuseScrimRequest(): void
     {
-        if (Gate::denies('create', Scrim::class)) {
+        if (Gate::denies('manageTeam', User::class)) {
             $this->dispatch('toast', [
                 'title' => __('policies/scrim.error_title'),
                 'message' => __('policies/scrim.error_message'),
