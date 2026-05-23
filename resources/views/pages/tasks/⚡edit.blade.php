@@ -93,6 +93,16 @@ new #[Layout('layouts::team')] class extends Component
 
     public function removeExistingFile(int $taskFileId): void
     {
+        if (Gate::denies('manageTeam', User::class)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/task.error_title'),
+                'message' => __('policies/task.error_update_task'),
+                'type' => 'error',
+            ]);
+
+            return;
+        }
+
         $file = TaskFile::query()
             ->where('task_id', $this->task->id)
             ->whereKey($taskFileId)
@@ -133,7 +143,16 @@ new #[Layout('layouts::team')] class extends Component
 
     public function update(): void
     {
-        $this->form->update();
+        if (! $this->form->update()) {
+            $this->dispatch('toast', [
+                'title' => __('policies/task.error_title'),
+                'message' => __('policies/task.error_update_task'),
+                'type' => 'error',
+            ]);
+
+            return;
+        }
+
         session()->flash('toast', [
             'type' => 'success',
             'message' => __('toasts/toasts.task_updated'),

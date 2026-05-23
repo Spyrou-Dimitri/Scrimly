@@ -6,8 +6,10 @@ use App\Models\Subtask;
 use App\Models\Task;
 use App\Models\TaskFile;
 use App\Models\TaskLink;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
@@ -85,8 +87,12 @@ class EditTaskForm extends Form
         ];
     }
 
-    public function update(): void
+    public function update(): bool
     {
+        if (Gate::denies('manageTeam', User::class)) {
+            return false;
+        }
+
         $this->validate();
 
         DB::transaction(function (): void {
@@ -174,5 +180,7 @@ class EditTaskForm extends Form
         }
 
         $this->files = [];
+
+        return true;
     }
 }

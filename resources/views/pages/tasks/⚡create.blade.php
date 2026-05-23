@@ -3,6 +3,8 @@
 use App\Enums\RoleInTeam;
 use App\Enums\StatusInTeam;
 use App\Models\TeamMember;
+use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use App\Livewire\Forms\CreateTaskForm;
@@ -19,6 +21,11 @@ new #[Layout('layouts::team')] class extends Component
     public string $newLinkTitle = '';
     public array $newFiles = [];
     public int $fileInputResetKey = 0;
+
+    public function mount(): void
+    {
+        abort_unless(Gate::allows('manageTeam', User::class), 403);
+    }
 
     #[Computed]
     public function assignablePlayers(): array
@@ -103,7 +110,14 @@ new #[Layout('layouts::team')] class extends Component
 
     public function store(): void
     {
-        $this->form->store();
+        if (! $this->form->store()) {
+            $this->dispatch('toast', [
+                'title' => __('policies/task.error_title'),
+                'message' => __('policies/task.error_create_task'),
+                'type' => 'error',
+            ]);
+            return;
+        }
         session()->flash('toast', [
             'type' => 'success',
             'message' => __('toasts/toasts.task_created'),

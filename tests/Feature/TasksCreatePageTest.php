@@ -23,7 +23,7 @@ beforeEach(function (): void {
     App::setLocale('fr');
 });
 
-test('la page création de devoir affiche les blocs du formulaire et les joueurs PLAYERS acceptés', function (): void {
+test('un joueur obtient 403 sur la page de création d\'un devoir', function (): void {
     $creator = User::factory()->create();
     $slug = 'equipe-tasks-create-'.Str::random(8);
     $team = Team::create([
@@ -68,18 +68,11 @@ test('la page création de devoir affiche les blocs du formulaire et les joueurs
 
     $url = route('tasks.create', ['slug' => $team->slug]);
 
-    $response = $this->actingAs($player)->get($url);
+    $this->actingAs($player)->get($url)->assertForbidden();
 
-    $response->assertSuccessful()
-        ->assertSeeText(__('pages/tasks/create.main_legend'))
-        ->assertSeeText(__('pages/tasks/create.subtasks_legend'))
-        ->assertSeeText(__('pages/tasks/create.resources_legend'))
-        ->assertSeeText(__('pages/tasks/create.links_legend'))
-        ->assertSeeText(__('pages/tasks/create.field_player'))
-        ->assertSeeText(__('pages/tasks/create.field_due_date'))
-        ->assertSee('type="date"', escape: false)
-        ->assertSeeText('joueur_fixture_tasks_create')
-        ->assertDontSeeText('coach_fixture_tasks_create');
+    Livewire::actingAs($player)
+        ->test('pages::tasks.create')
+        ->assertForbidden();
 });
 
 test('soumission du formulaire de création enregistre la tâche et les sous-tâches dans task_subtasks', function (): void {

@@ -28,6 +28,12 @@ new class extends Component
 
     public function deleteTask(): void
     {
+        abort_unless(
+            $this->task->team_id === currentTeam()->id
+                && Gate::allows('manageTeam', User::class),
+            403,
+        );
+
         $this->task->delete();
         if (request()->route()->named('tasks.index')) {
             $this->dispatch('close_modal');

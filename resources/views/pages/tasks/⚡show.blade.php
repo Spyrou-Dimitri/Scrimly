@@ -3,7 +3,9 @@
 use App\Models\Subtask;
 use App\Models\Task;
 use App\Models\TaskComment;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -55,6 +57,16 @@ new #[Layout('layouts::team')] class extends Component
 
     public function openModalDeleteTask(): void
     {
+        if (Gate::denies('manageTeam', User::class)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/task.error_title'),
+                'message' => __('policies/task.error_delete_task'),
+                'type' => 'error',
+            ]);
+
+            return;
+        }
+
         $this->dispatch('open_modal', [
             'form' => 'modals::tasks.delete-task',
             'model_id' => $this->task->id,
@@ -160,6 +172,7 @@ new #[Layout('layouts::team')] class extends Component
                     <flux:icon name="arrow-left" class="size-4 group-hover:text-gold transition-colors duration-150" />
                     <span class="group-hover:text-gold transition-colors duration-150">{{ __('pages/tasks/show.back_to_list') }}</span>
                 </a>
+                @can('manageTeam', User::class)
                 <div class="flex flex-wrap items-center gap-2">
                     <x-cta
                         :href="route('tasks.edit', ['slug' => currentTeam()->slug, 'id' => $this->task->id])"
@@ -172,6 +185,7 @@ new #[Layout('layouts::team')] class extends Component
                         {{ __('pages/tasks/show.action_delete_task') }}
                     </x-destructive>
                 </div>
+                @endcan
             </div>
             <div class="flex flex-col gap-2 sm:flex-row sm:items-center w-full sm:justify-between">
                 <div class="flex flex-row gap-4 flex-wrap">

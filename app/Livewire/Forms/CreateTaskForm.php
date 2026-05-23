@@ -7,7 +7,9 @@ use App\Models\Task;
 use App\Models\TaskFile;
 use App\Models\TaskLink;
 use App\Models\TeamMember;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
@@ -53,8 +55,12 @@ class CreateTaskForm extends Form
         ];
     }
 
-    public function store(): void
+    public function store(): bool
     {
+        if (Gate::denies('manageTeam', User::class)) {
+            return false;
+        }
+
         $this->validate();
 
         $team = currentTeam();
@@ -117,5 +123,7 @@ class CreateTaskForm extends Form
         }
 
         $this->files = [];
+
+        return true;
     }
 }

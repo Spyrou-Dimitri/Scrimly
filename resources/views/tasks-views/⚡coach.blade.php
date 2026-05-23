@@ -1,8 +1,10 @@
 <?php
 
-use Livewire\Component;
-use Livewire\Attributes\Computed;
 use App\Models\Task;
+use App\Models\User;
+use Illuminate\Support\Facades\Gate;
+use Livewire\Attributes\Computed;
+use Livewire\Component;
 use App\Enums\StatusTask;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
@@ -69,6 +71,16 @@ new class extends Component
 
     public function openModalDeleteTask(int $taskId): void
     {
+        if (Gate::denies('manageTeam', User::class)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/task.error_title'),
+                'message' => __('policies/task.error_delete_task'),
+                'type' => 'error',
+            ]);
+
+            return;
+        }
+
         $this->dispatch('open_modal', [
             'form' => 'modals::tasks.delete-task',
             'model_id' => $taskId,
@@ -83,9 +95,11 @@ new class extends Component
             <h2 class="text-2xl font-bold">
                 {{ __('pages/tasks/index.coach_title') }}
             </h2>
+            @can('manageTeam', User::class)
             <x-cta :href="route('tasks.create', ['slug' => currentTeam()->slug])" :title="__('pages/tasks/index.coach_create_task_title')" :class="'cta-primary'">
                 {{ __('pages/tasks/index.coach_create_task_button') }}
             </x-cta>
+            @endcan
         </div>
         <div class="flex flex-col gap-4 md:flex-row md:items-end p-6 bg-bg-widget shadow-basic">
             <x-forms.input :type="'search'" wire:model.live.debounce.150ms="term" placeholder="Rechercher un devoir" :name="'searchbar'" :label="__('pages/tasks/index.coach_search_task_placeholder')" />
