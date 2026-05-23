@@ -8,4 +8,5 @@ return [
     'confirm' => 'Marquer comme terminé',
     'success_title' => 'Scrim terminé',
     'success_message' => 'Le scrim a été marqué comme terminé.',
+    'body_legend_aborted' => 'Le scrim sera marqué comme stoppé car le nombre de games enregistrées est inférieur au nombre de games planifiées.',
 ];

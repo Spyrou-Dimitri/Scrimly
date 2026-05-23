@@ -15,7 +15,7 @@ enum StatusScrim: string
         return match ($this) {
             self::SCHEDULED => 'Planifié',
             self::IN_PROGRESS => 'En cours',
-            self::ABORTED => 'Annulé',
+            self::ABORTED => 'Stoppé',
             self::COMPLETED => 'Terminé',
             self::CANCELLED => 'Annulé',
         };

@@ -5,6 +5,7 @@ use App\Models\Scrim;
 use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Facades\Gate;
+use Livewire\Attributes\Computed;
 new class extends Component
 {
     public Scrim $scrim;
@@ -47,7 +48,12 @@ new class extends Component
             return;
         }
 
-        $this->scrim->update(['status' => StatusScrim::COMPLETED]);
+        if (!$this->isAbortedScrim) {
+        $this->scrim->update(['status' => StatusScrim::COMPLETED]); 
+        } else {
+            $this->scrim->update(['status' => StatusScrim::ABORTED]);
+        }
+
         $this->dispatch('close_modal');
         $this->dispatch('refresh_scrim');
         $this->dispatch('refresh_scrims');
@@ -57,6 +63,12 @@ new class extends Component
             'type' => 'check',
         ]);
     }
+    #[Computed]
+    public function isAbortedScrim(): bool
+    {
+        return $this->scrim->scrimGames->count() < $this->scrim->number_of_games;
+    }
+
 };
 ?>
 
@@ -65,6 +77,7 @@ new class extends Component
         :width="'2xl'"
         :title="__('modals/scrims/finish-scrim.title') . ' • ' . ($this->scrim->opponentTeam?->name ?? __('pages/scrims/show.opponent_unknown'))"
     >
+
         <form wire:submit.prevent="finishScrim" class="flex w-full flex-col gap-6 pt-2">
             <div class="flex w-full flex-col gap-3">
                 <div
@@ -80,6 +93,14 @@ new class extends Component
                     {{ __('modals/scrims/finish-scrim.body_legend') }}
                 </p>
             </div>
+            @if ($this->isAbortedScrim)
+            <div class="flex w-full items-center gap-2 bg-red-900/60 p-2 text-left text-white">
+                <flux:icon name="exclamation-triangle" variant="outline" class="size-12 shrink-0" />
+                <p class="text-sm sm:text-base">
+                    {{ __('modals/scrims/finish-scrim.body_legend_aborted') }}
+                </p>
+            </div>
+            @endif
 
             <div class="flex w-full flex-wrap justify-center gap-3 sm:justify-between">
                 <button
