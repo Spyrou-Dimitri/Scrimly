@@ -3,6 +3,7 @@
 use Livewire\Component;
 use App\Models\Task;
 use App\Enums\StatusTask;
+use Illuminate\Support\Facades\Gate;
 
 new class extends Component
 {
@@ -10,11 +11,20 @@ new class extends Component
 
     public function mount(int $model_id): void
     {
-        $this->task = Task::findOrFail($model_id);
+        $task = Task::query()
+            ->whereKey($model_id)
+            ->where('team_id', currentTeam()->id)
+            ->firstOrFail();
+
+        abort_unless(Gate::allows('manageOnlyOurTasks', $task), 403);
+
+        $this->task = $task;
     }
 
     public function completeTask(): void
     {
+        abort_unless(Gate::allows('manageOnlyOurTasks', $this->task), 403);
+
         $this->task->update(['status' => StatusTask::DONE, 'completed_at' => now()]);
         $this->dispatch('close_modal');
         $this->dispatch('refresh_tasks');

@@ -36,6 +36,7 @@ new #[Layout('layouts::team')] class extends Component
                 'subtasks',
                 'links',
                 'files',
+                'submissions',
                 'teamMember.user',
                 'createdBy.user',
             ])
@@ -47,8 +48,33 @@ new #[Layout('layouts::team')] class extends Component
         $this->subtaskCompletion = $this->task->subtasks->pluck('is_completed', 'id')->toArray();
     }
 
+    #[Computed]
+    public function canManageTask(): bool
+    {
+        return Gate::allows('manageOnlyOurTasks', $this->task);
+    }
+
+    private function denyIfCannotManageTask(): bool
+    {
+        if (Gate::denies('manageOnlyOurTasks', $this->task)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/task.error_title'),
+                'message' => __('policies/task.error_interact_task'),
+                'type' => 'error',
+            ]);
+
+            return true;
+        }
+
+        return false;
+    }
+
     public function openCompleteTaskModal(): void
     {
+        if ($this->denyIfCannotManageTask()) {
+            return;
+        }
+
         $this->dispatch('open_modal', [
             'form' => 'modals::tasks.complete-task',
             'model_id' => $this->task->id,
@@ -81,6 +107,10 @@ new #[Layout('layouts::team')] class extends Component
 
     public function saveSubtasks(): void
     {
+        if ($this->denyIfCannotManageTask()) {
+            return;
+        }
+
         foreach ($this->subtaskCompletion as $subtaskId => $completed) {
             Subtask::query()
                 ->where('task_id', $this->task->id)
@@ -115,11 +145,19 @@ new #[Layout('layouts::team')] class extends Component
 
     public function removeFile(int $index): void
     {
+        if ($this->denyIfCannotManageTask()) {
+            return;
+        }
+
         unset($this->submissions[$index]);
     }
 
     public function uploadSubmissions(): void
     {
+        if ($this->denyIfCannotManageTask()) {
+            return;
+        }
+
         foreach ($this->submissions as $submission) {
             TaskSubmission::create([
                 'file_name' => $submission->getClientOriginalName(),
@@ -133,6 +171,10 @@ new #[Layout('layouts::team')] class extends Component
 
     public function submitComment(): void
     {
+        if ($this->denyIfCannotManageTask()) {
+            return;
+        }
+
         $this->validate([
             'newCommentContent' => ['required', 'string', 'max:2000'],
         ]);
@@ -196,7 +238,7 @@ new #[Layout('layouts::team')] class extends Component
                         {{ $this->task->status->label() }}
                     </span>
                 </div>
-                @if ($this->isTaskCompleted && $this->task->status !== StatusTask::DONE)
+                @if ($this->canManageTask && $this->isTaskCompleted && $this->task->status !== StatusTask::DONE)
                 <button type="button"  wire:click="openCompleteTaskModal" class="cta-secondary group inline-flex shrink-0 flex-row items-center gap-2">
                     <flux:icon name="check" class="size-6 text-gold group-hover:text-black transition-colors duration-150" />
                     {{ __('pages/tasks/show.action_complete_task') }}
@@ -345,6 +387,7 @@ new #[Layout('layouts::team')] class extends Component
                     <ul class="flex flex-col gap-3" role="list">
                         @foreach ($this->task->subtasks as $subtask)
                         <li class="flex items-center gap-3 bg-bg-card px-4 py-3">
+                            @if ($this->canManageTask)
                             <input
                                 type="checkbox"
                                 wire:model="subtaskCompletion.{{ $subtask->id }}"
@@ -353,14 +396,24 @@ new #[Layout('layouts::team')] class extends Component
                             <label for="subtask-{{ $subtask->id }}" class="cursor-pointer flex-1">
                                 {{ $subtask->title }}
                             </label>
+                            @else
+                            <span
+                                class="flex size-4 shrink-0 items-center justify-center border border-input-border text-xs {{ $subtask->is_completed ? 'bg-gold text-black' : 'text-transparent' }}"
+                                aria-hidden="true">&#10003;</span>
+                            <span class="flex-1 {{ $subtask->is_completed ? 'line-through text-text-secondary' : '' }}">
+                                {{ $subtask->title }}
+                            </span>
+                            @endif
                         </li>
                         @endforeach
                     </ul>
+                    @if ($this->canManageTask)
                     <div class="flex justify-center">
                         <button type="button" wire:click="saveSubtasks" class="cta-primary w-full cursor-pointer">
                             {{ __('pages/tasks/show.save_subtasks') }}
                         </button>
                     </div>
+                    @endif
                     @else
                     <p class="text-text-secondary">
                         {{ __('pages/tasks/show.subtasks_empty') }}
@@ -404,6 +457,7 @@ new #[Layout('layouts::team')] class extends Component
 
 
                     {{-- Fichiers submissions --}}
+                    @if ($this->canManageTask)
                     <form wire:submit.prevent="uploadSubmissions" class="flex flex-col gap-4">
                         <div class="flex flex-col gap-3">
                             <h4 class="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-semibold uppercase tracking-wide text-gold">
@@ -478,6 +532,7 @@ new #[Layout('layouts::team')] class extends Component
                     @error('submissions.*')
                     <p class="text-red-500 font-bold text-sm">{{ $message }}</p>
                     @enderror
+                    @endif
                 </article>
             </div>
         </div>
@@ -519,6 +574,7 @@ new #[Layout('layouts::team')] class extends Component
         {{ $this->taskComments->links() }}
         @endif
 
+        @if ($this->canManageTask)
         <form wire:submit.prevent="submitComment" class="flex flex-col bg-bg-widget p-6 shadow-basic sm:flex-row sm:items-stretch gap-3 sm:gap-4">
             <div class="flex flex-1 min-w-0">
                 <x-forms.input
@@ -537,5 +593,6 @@ new #[Layout('layouts::team')] class extends Component
                 {{ __('pages/tasks/show.comment_send') }}
             </x-forms.submit>
         </form>
+        @endif
     </section>
 </div>

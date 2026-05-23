@@ -133,12 +133,14 @@ new class extends Component
                             <a href="{{ route('tasks.show', ['slug' => currentTeam()->slug, 'id' => $task->id]) }}" title="{{ __('pages/tasks/index.coach_view_task_title') }}" class="hover:text-gold transition-all duration-150">
                                 <flux:icon name="eye" class="w-5 h-5" />
                             </a>
+                            @can('manageTeam', User::class)
                             <a href="{{ route('tasks.edit', ['slug' => currentTeam()->slug, 'id' => $task->id]) }}" title="{{ __('pages/tasks/index.coach_edit_task_title') }}" class="hover:text-gold transition-all duration-150">
                                 <flux:icon name="pencil" class="w-5 h-5" />
                             </a>
                             <button wire:click="openModalDeleteTask({{ $task->id }})" title="{{ __('pages/tasks/index.coach_delete_task_title') }}" class="hover:text-red-700/90 transition-all duration-150 cursor-pointer">
                                 <flux:icon name="trash" class="w-5 h-5" />
                             </button>
+                            @endcan
                         </div>
 
                     </td>
