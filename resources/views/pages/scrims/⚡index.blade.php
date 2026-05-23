@@ -261,7 +261,7 @@ new #[Layout('layouts::team')] class extends Component
 
     <section class="flex flex-col gap-8">
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <h2 class="text-2xl font-bold">
+            <h2 class="text-[32px] font-bold">
                 {{ __('pages/scrims/index.title') }}
             </h2>
             <x-cta :href="route('scrims.find', ['slug' => currentTeam()->slug])" :title="__('pages/scrims/index.create_scrim')" :class="'cta-primary'">
@@ -411,7 +411,7 @@ new #[Layout('layouts::team')] class extends Component
     </section>
 
     <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold">
+        <h2 class="text-[32px] font-bold">
             {{ __('pages/scrims/index.history_title') }}
         </h2>
         <div class="flex flex-col gap-4 md:flex-row md:items-end p-6 bg-bg-widget shadow-basic">
