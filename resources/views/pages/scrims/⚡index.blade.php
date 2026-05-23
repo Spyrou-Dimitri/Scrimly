@@ -93,6 +93,14 @@ new #[Layout('layouts::team')] class extends Component
             'model_id' => $scrimId,
         ]);
     }
+
+    public function finishScrim(int $scrimId): void
+    {
+        $this->dispatch('open_modal', [
+            'form' => 'scrims.finish-scrim',
+            'model_id' => $scrimId,
+        ]);
+    }
 };
 ?>
 
@@ -150,12 +158,12 @@ new #[Layout('layouts::team')] class extends Component
                 :class="'primary'">
                 {{ __('pages/scrims/index.show_scrim') }}
             </x-cta>
-            <x-cta
-                :href="'#'"
-                :title="__('pages/scrims/index.finish_scrim_title')"
-                :class="'secondary'">
+            <button
+                wire:click="finishScrim({{ $activeScrim->id }})"
+                title="__('pages/scrims/index.finish_scrim_title')"
+                class="cta-secondary">
                 {{ __('pages/scrims/index.finish_scrim') }}
-            </x-cta>
+            </button>
         </div>
     </section>
     @endif

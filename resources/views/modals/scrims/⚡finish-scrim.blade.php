@@ -52,6 +52,7 @@ new class extends Component
         
         $this->dispatch('close_modal');
         $this->dispatch('refresh_scrim');
+        $this->dispatch('refresh_scrims');
         $this->dispatch('toast', [
             'title' => __('modals/scrims/finish-scrim.success_title'),
             'message' => __('modals/scrims/finish-scrim.success_message'),
