@@ -1,0 +1,45 @@
+
+#calendar {
+    .fc-daygrid-day:not(.fc-day-other) {
+        @apply bg-bg-widget hover:bg-gold cursor-pointer transition-colors duration-150;
+    }
+    .fc-daygrid-day.fc-day-other {
+        @apply bg-transparent hover:bg-transparent cursor-default;
+    }
+    .fc-header-toolbar {
+        @apply bg-bg-widget p-6 shadow-basic;
+    }
+    .fc-toolbar-title {
+        @apply text-2xl font-bold text-gold;
+    }
+    .fc-col-header-cell {
+        @apply font-bold bg-[#0D0E12] text-base text-gold py-2;
+    }
+
+    .fc-button-group {
+        @apply inline-flex overflow-hidden shadow-basic ring-1 ring-input-border divide-x divide-input-border bg-bg-card;
+    }
+
+    .fc-button-group .fc-button-primary {
+        @apply rounded-none border-0 shadow-basic ring-0;
+    }
+
+    .fc-button-primary {
+        @apply inline-flex cursor-pointer items-center justify-center px-2.5 py-2 text-sm font-medium transition-colors duration-150;
+        @apply bg-bg-card text-text-primary border border-input-border shadow-basic ring-1 ring-input-border;
+        @apply focus:z-10 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-bg-main;
+
+        &:hover:not(:disabled):not(.fc-button-disabled) {
+            @apply bg-bg-widget border-gold text-gold;
+        }
+
+        &:disabled,
+        &.fc-button-disabled {
+            @apply pointer-events-none bg-bg-card text-text-secondary/45 border-input-border opacity-100;
+        }
+
+        &.fc-button-active:not(:disabled):not(.fc-button-disabled) {
+            @apply bg-gold font-semibold text-gold-contrast border-gold;
+        }
+    }
+}
