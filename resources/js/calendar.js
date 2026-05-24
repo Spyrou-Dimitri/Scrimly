@@ -2,6 +2,7 @@ import { Calendar as FullCalendar } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import listPlugin from '@fullcalendar/list';
 
 let calendarInstance = null;
 
@@ -17,10 +18,53 @@ export const Calendar = {
 
         calendarInstance = new FullCalendar(calendarEl, {
             locale: 'fr',
-            plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-            initialView: 'dayGridMonth',
+            plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin],
+            initialView: this.getInitialView(),
+            slotMinTime: '08:00:00',
+            slotMaxTime: '23:00:00',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek'
+              },
+              events: [
+                {
+                    title: 'Scrim vs G2',
+                    start: '2026-05-24T19:00:00',
+                },
+                {
+                    title: 'Tournois vs G2',
+                    start: '2026-05-25T19:00:00',
+                }
+
+            ],
+
+        });
+        
+        calendarInstance.render();
+
+        window.addEventListener('resize', () => {
+            let newView = '';
+
+            if (window.innerWidth >= 1024) {
+                newView = 'dayGridMonth';
+            } else if (window.innerWidth >= 768) {
+                newView = 'timeGridWeek';
+            } else {
+                newView = 'listWeek';
+            }
+                calendarInstance.changeView(newView);
         });
 
-        calendarInstance.render();
     },
+    getInitialView() {
+        
+        if (window.innerWidth >= 1024) {
+            return 'dayGridMonth';
+        } else if (window.innerWidth >= 768) {
+            return 'timeGridWeek';
+        } else {
+            return 'listWeek';
+        }
+    }
 };

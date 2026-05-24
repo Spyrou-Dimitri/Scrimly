@@ -1,5 +1,6 @@
 
 #calendar {
+    --fc-border-color: rgba(255, 255, 255, 0.1);
     .fc-daygrid-day:not(.fc-day-other) {
         @apply bg-bg-widget hover:bg-gold cursor-pointer transition-colors duration-150;
     }
@@ -42,4 +43,11 @@
             @apply bg-gold font-semibold text-gold-contrast border-gold;
         }
     }
+
+
+    /* List view */
+    .fc-list-day-cushion {
+        @apply bg-bg-widget text-gold;
+    }
+    
 }
