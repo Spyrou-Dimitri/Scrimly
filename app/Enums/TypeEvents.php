@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Enums;
 
@@ -16,6 +16,16 @@ enum TypeEvents: string
             self::TOURNAMENT => 'Tournoi',
             self::BREAK => 'Pause',
             self::OTHER => 'Autre',
+        };
+    }
+
+    public function color(): string
+    {
+        return match ($this) {
+            self::MEETING => '#6366F1',
+            self::TOURNAMENT => '#F97316',
+            self::BREAK => '#10B981',
+            self::OTHER => '#378ADD',
         };
     }
 }

@@ -146,7 +146,9 @@ new class extends Component
                 @else
                 @foreach ($allEventsThisDay as $event)
                 <li class="col-span-12" wire:key="calendar-event-{{ $event->id }}">
-                    <article class="relative flex flex-col bg-bg-card p-4 basic-shadow md:p-5">
+                    <article
+                        class="relative flex flex-col border-l-2 bg-bg-card p-4 basic-shadow md:p-5"
+                        style="border-left-color: {{ $event->type->color() }}">
                         <div class="relative z-[1] flex flex-col gap-2">
                             <h4 class="text-xl font-bold text-white">
                                 {{ $event->title }}
