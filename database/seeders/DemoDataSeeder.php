@@ -14,9 +14,13 @@ use App\Enums\StatusInTeam;
 use App\Enums\StatusScrim;
 use App\Enums\StatusScrimRequest;
 use App\Enums\StatusTask;
+use App\Enums\TypeScrimGameNote;
 use App\Models\RiotMatch;
 use App\Models\RiotProfile;
 use App\Models\Scrim;
+use App\Models\ScrimGame;
+use App\Models\ScrimGameNote;
+use App\Models\ScrimGamePlayer;
 use App\Models\ScrimRequest;
 use App\Models\Subtask;
 use App\Models\Task;
@@ -24,6 +28,8 @@ use App\Models\Team;
 use App\Models\TeamMember;
 use App\Models\User;
 use App\Services\Riot\RiotApiClient;
+use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -64,10 +70,9 @@ class DemoDataSeeder extends Seeder
         'Lurox#Lurox',
     ];
 
-    private const CHAMPION_NAMES = [
-        'Ahri', 'Yasuo', 'LeeSin', 'Jinx', 'Thresh', 'Ornn', 'Kaisa', 'Graves',
-        'Lulu', 'Syndra', 'Vi', 'Maokai', 'Aphelios', 'Renata', 'JarvanIV',
-    ];
+    private const OPPONENT_STARTER_ROLES = ['top', 'jungle', 'mid', 'bot', 'support'];
+
+    private const TARGET_SCRIM_RECORDS = 100;
 
     /**
      * Composition des 5 équipes : cinq titulaires (TOP→Support) + un pseudo staff (le coach est toujours l’utilisateur test).
@@ -236,22 +241,48 @@ class DemoDataSeeder extends Seeder
     }
 
     /**
-     * Génère par équipe : 2 scrims planifiés, 1 demande en attente reçue et 1 envoyée,
-     * sans paire bidirectionnelle entre deux équipes, tant qu’il y a au moins 4 équipes.
+     * Génère ~100 scrims (une seule par équipe et par jour) et quelques demandes en attente.
      *
      * @param  list<Team>  $teams
      */
     private function seedScrimsAndScrimRequests(array $teams): void
     {
         $n = count($teams);
+        if ($n < 2) {
+            return;
+        }
+
+        /** @var array<int, array<string, true>> $busyDatesByTeamId */
+        $busyDatesByTeamId = [];
+
+        $this->seedBulkScrimPairs($teams, $busyDatesByTeamId);
+
         if ($n < 4) {
             return;
         }
 
-        $pendingPerTeam = 1;
+        $pendingPerTeam = 2;
 
         foreach ($this->buildPendingScrimRequestIndexPairs($n, $pendingPerTeam) as [$requesterIndex, $receiverIndex]) {
-            $slot = $this->randomFutureScrimSlot();
+            $slot = $this->allocateScrimSlot(
+                $teams[$requesterIndex]->id,
+                $teams[$receiverIndex]->id,
+                now()->addDays(2)->startOfDay(),
+                now()->addDays(60)->endOfDay(),
+                $busyDatesByTeamId,
+            );
+
+            if ($slot === null) {
+                continue;
+            }
+
+            $this->reserveTeamsOnDate(
+                $busyDatesByTeamId,
+                $teams[$requesterIndex]->id,
+                $teams[$receiverIndex]->id,
+                $slot['scheduled_date'],
+            );
+
             ScrimRequest::create([
                 'status' => StatusScrimRequest::PENDING,
                 'scheduled_date' => $slot['scheduled_date'],
@@ -263,20 +294,188 @@ class DemoDataSeeder extends Seeder
                 'receiver_team_id' => $teams[$receiverIndex]->id,
             ]);
         }
+    }
 
-        for ($i = 0; $i < $n; $i++) {
-            $slot = $this->randomFutureScrimSlot();
-            $request = ScrimRequest::create([
-                'status' => StatusScrimRequest::ACCEPTED,
-                'scheduled_date' => $slot['scheduled_date'],
-                'scheduled_time' => $slot['scheduled_time'],
-                'number_of_games' => $slot['number_of_games'],
-                'message' => null,
-                'responded_at' => now(),
-                'requester_team_id' => $teams[$i]->id,
-                'receiver_team_id' => $teams[($i + 1) % $n]->id,
-            ]);
-            $this->createAcceptedScrimPair($request);
+    /**
+     * @param  list<Team>  $teams
+     * @param  array<int, array<string, true>>  $busyDatesByTeamId
+     */
+    private function seedBulkScrimPairs(array $teams, array &$busyDatesByTeamId): void
+    {
+        $targetPairs = (int) (self::TARGET_SCRIM_RECORDS / 2);
+        $pairsCreated = 0;
+        $completedTarget = (int) round($targetPairs * 0.7);
+
+        $teamsById = collect($teams)->keyBy('id');
+        $schedulingDates = collect($this->buildScrimSchedulingDates());
+        $orderedDates = $schedulingDates
+            ->filter(fn (CarbonInterface $date): bool => $date->copy()->endOfDay()->lte(now()))
+            ->shuffle()
+            ->concat($schedulingDates->filter(fn (CarbonInterface $date): bool => $date->copy()->startOfDay()->gt(now()))->shuffle());
+
+        foreach ($orderedDates as $date) {
+            if ($pairsCreated >= $targetPairs) {
+                break;
+            }
+
+            $freeTeamIds = [];
+
+            foreach ($teams as $team) {
+                if (! $this->isTeamBusyOnDate($busyDatesByTeamId, $team->id, $date)) {
+                    $freeTeamIds[] = $team->id;
+                }
+            }
+
+            shuffle($freeTeamIds);
+
+            while (count($freeTeamIds) >= 2 && $pairsCreated < $targetPairs) {
+                $requesterTeamId = array_pop($freeTeamIds);
+                $receiverTeamId = array_pop($freeTeamIds);
+
+                $isCompleted = $pairsCreated < $completedTarget
+                    && $date->copy()->endOfDay()->lte(now());
+
+                $slot = $this->slotForDate($date);
+                $this->reserveTeamsOnDate($busyDatesByTeamId, $requesterTeamId, $receiverTeamId, $slot['scheduled_date']);
+
+                $this->createScrimPairWithSlot(
+                    $teamsById[$requesterTeamId],
+                    $teamsById[$receiverTeamId],
+                    $slot,
+                    $isCompleted ? StatusScrim::COMPLETED : StatusScrim::SCHEDULED,
+                );
+
+                $pairsCreated++;
+            }
+        }
+    }
+
+    /**
+     * @return list<CarbonInterface>
+     */
+    private function buildScrimSchedulingDates(): array
+    {
+        $dates = [];
+
+        $pastStart = now()->subMonth()->startOfMonth();
+        $pastEnd = now()->subHour();
+
+        if ($pastEnd->lt($pastStart)) {
+            $pastEnd = $pastStart->copy()->addDay();
+        }
+
+        for ($date = $pastStart->copy(); $date->lte($pastEnd); $date = $date->copy()->addDay()) {
+            $dates[] = $date->copy()->startOfDay();
+        }
+
+        $futureStart = now()->addDays(2)->startOfDay();
+        $futureEnd = now()->addDays(60)->startOfDay();
+
+        for ($date = $futureStart->copy(); $date->lte($futureEnd); $date = $date->copy()->addDay()) {
+            $dates[] = $date->copy();
+        }
+
+        return $dates;
+    }
+
+    /**
+     * @param  array<int, array<string, true>>  $busyDatesByTeamId
+     * @return array{scheduled_date: CarbonInterface, scheduled_time: string, number_of_games: int}|null
+     */
+    private function allocateScrimSlot(
+        int $teamAId,
+        int $teamBId,
+        CarbonInterface $rangeStart,
+        CarbonInterface $rangeEnd,
+        array $busyDatesByTeamId,
+    ): ?array {
+        $rangeStartDay = $rangeStart->copy()->startOfDay();
+        $rangeEndDay = $rangeEnd->copy()->startOfDay();
+
+        $candidates = collect($this->buildScrimSchedulingDates())
+            ->filter(function (CarbonInterface $date) use ($rangeStartDay, $rangeEndDay, $busyDatesByTeamId, $teamAId, $teamBId): bool {
+                $day = $date->copy()->startOfDay();
+
+                return $day->gte($rangeStartDay)
+                    && $day->lte($rangeEndDay)
+                    && ! $this->isTeamBusyOnDate($busyDatesByTeamId, $teamAId, $date)
+                    && ! $this->isTeamBusyOnDate($busyDatesByTeamId, $teamBId, $date);
+            })
+            ->shuffle();
+
+        $date = $candidates->first();
+
+        if ($date === null) {
+            return null;
+        }
+
+        return $this->slotForDate($date);
+    }
+
+    /**
+     * @return array{scheduled_date: CarbonInterface, scheduled_time: string, number_of_games: int}
+     */
+    private function slotForDate(CarbonInterface $date): array
+    {
+        return [
+            'scheduled_date' => $date->copy()->startOfDay(),
+            'scheduled_time' => sprintf('%02d:%02d:00', fake()->numberBetween(18, 22), fake()->randomElement([0, 15, 30, 45])),
+            'number_of_games' => fake()->numberBetween(2, 5),
+        ];
+    }
+
+    /**
+     * @param  array<int, array<string, true>>  $busyDatesByTeamId
+     */
+    private function reserveTeamsOnDate(array &$busyDatesByTeamId, int $teamAId, int $teamBId, CarbonInterface $date): void
+    {
+        $dateKey = $date->toDateString();
+        $busyDatesByTeamId[$teamAId][$dateKey] = true;
+        $busyDatesByTeamId[$teamBId][$dateKey] = true;
+    }
+
+    /**
+     * @param  array<int, array<string, true>>  $busyDatesByTeamId
+     */
+    private function isTeamBusyOnDate(array $busyDatesByTeamId, int $teamId, CarbonInterface $date): bool
+    {
+        return isset($busyDatesByTeamId[$teamId][$date->toDateString()]);
+    }
+
+    private function createScrimPairWithSlot(
+        Team $requesterTeam,
+        Team $receiverTeam,
+        array $slot,
+        StatusScrim $status,
+    ): void {
+        $scheduledAt = Carbon::parse(
+            $slot['scheduled_date']->format('Y-m-d').' '.$slot['scheduled_time']
+        );
+        $withSummary = $status === StatusScrim::COMPLETED && fake()->boolean(60);
+
+        $request = ScrimRequest::create([
+            'status' => StatusScrimRequest::ACCEPTED,
+            'scheduled_date' => $slot['scheduled_date'],
+            'scheduled_time' => $slot['scheduled_time'],
+            'number_of_games' => $slot['number_of_games'],
+            'message' => fake()->optional(0.35)->sentence(),
+            'responded_at' => $status === StatusScrim::COMPLETED
+                ? $scheduledAt->copy()->subDays(fake()->numberBetween(1, 5))
+                : now(),
+            'requester_team_id' => $requesterTeam->id,
+            'receiver_team_id' => $receiverTeam->id,
+        ]);
+
+        [$scrimReceiver, $scrimRequester] = $this->createAcceptedScrimPair(
+            $request,
+            $status,
+            $withSummary ? fake()->paragraph() : null,
+            $withSummary ? fake()->paragraph() : null,
+            $withSummary ? fake()->paragraph() : null,
+        );
+
+        if ($status === StatusScrim::COMPLETED) {
+            $this->seedMirroredGames($scrimRequester, $scrimReceiver);
         }
     }
 
@@ -379,47 +578,283 @@ class DemoDataSeeder extends Seeder
 
     /**
      * Reproduit la création des scrims après acceptation (modale show-scrim-request).
+     *
+     * @return array{0: Scrim, 1: Scrim}
      */
-    private function createAcceptedScrimPair(ScrimRequest $request): void
-    {
-        Scrim::create([
+    private function createAcceptedScrimPair(
+        ScrimRequest $request,
+        StatusScrim $status = StatusScrim::SCHEDULED,
+        ?string $summary = null,
+        ?string $advantages = null,
+        ?string $disadvantages = null,
+    ): array {
+        $scrimReceiver = Scrim::create([
             'scheduled_date' => $request->scheduled_date,
             'scheduled_time' => $request->scheduled_time,
             'number_of_games' => $request->number_of_games,
-            'status' => StatusScrim::SCHEDULED,
-            'summary' => null,
-            'advantages' => null,
-            'disadvantages' => null,
+            'status' => $status,
+            'summary' => $summary,
+            'advantages' => $advantages,
+            'disadvantages' => $disadvantages,
             'scrim_request_id' => $request->id,
             'opponent_team_id' => $request->requester_team_id,
             'team_id' => $request->receiver_team_id,
         ]);
-        Scrim::create([
+
+        $scrimRequester = Scrim::create([
             'scheduled_date' => $request->scheduled_date,
             'scheduled_time' => $request->scheduled_time,
             'number_of_games' => $request->number_of_games,
-            'status' => StatusScrim::SCHEDULED,
-            'summary' => null,
-            'advantages' => null,
-            'disadvantages' => null,
+            'status' => $status,
+            'summary' => $summary,
+            'advantages' => $advantages,
+            'disadvantages' => $disadvantages,
             'scrim_request_id' => $request->id,
             'opponent_team_id' => $request->receiver_team_id,
             'team_id' => $request->requester_team_id,
         ]);
+
+        return [$scrimReceiver, $scrimRequester];
+    }
+
+    private function seedMirroredGames(Scrim $scrimRequester, Scrim $scrimReceiver): void
+    {
+        $payloads = $this->buildScrimGamePayloads($scrimRequester);
+
+        $this->persistScrimGamePayloads($scrimRequester, $payloads);
+        $this->persistScrimGamePayloads($scrimReceiver, $this->mirrorScrimGamePayloads(
+            $scrimRequester,
+            $scrimReceiver,
+            $payloads,
+        ));
     }
 
     /**
-     * @return array{scheduled_date: Carbon, scheduled_time: string, number_of_games: int}
+     * @return list<array{
+     *     title: string,
+     *     duration: int,
+     *     is_victory: bool,
+     *     notes: ?string,
+     *     home_players: array<int, array{champion: string, kills: int, deaths: int, assists: int, cs: int}>,
+     *     opponent_starters: array<string, array{champion: string, kills: int, deaths: int, assists: int}>,
+     *     scrim_game_notes: list<array{type: TypeScrimGameNote, note: string}>
+     * }>
      */
-    private function randomFutureScrimSlot(): array
+    private function buildScrimGamePayloads(Scrim $scrim): array
     {
-        $date = now()->addDays(fake()->numberBetween(2, 60))->startOfDay();
+        $starters = $this->starterMembersForTeam($scrim->team_id);
+        $championPool = $this->championNames();
+        $payloads = [];
 
-        return [
-            'scheduled_date' => $date,
-            'scheduled_time' => sprintf('%02d:%02d:00', fake()->numberBetween(18, 22), fake()->randomElement([0, 15, 30, 45])),
-            'number_of_games' => fake()->numberBetween(2, 5),
-        ];
+        for ($gameIndex = 1; $gameIndex <= $scrim->number_of_games; $gameIndex++) {
+            $usedChampions = [];
+            $homePlayers = [];
+            $opponentStarters = [];
+
+            foreach ($starters as $member) {
+                $champion = $this->pickUniqueChampion($championPool, $usedChampions);
+                $homePlayers[$member->id] = [
+                    'champion' => $champion,
+                    'kills' => fake()->numberBetween(0, 12),
+                    'deaths' => fake()->numberBetween(0, 8),
+                    'assists' => fake()->numberBetween(0, 18),
+                    'cs' => fake()->numberBetween(120, 280),
+                ];
+            }
+
+            foreach (self::OPPONENT_STARTER_ROLES as $role) {
+                $champion = $this->pickUniqueChampion($championPool, $usedChampions);
+                $opponentStarters[$role] = [
+                    'champion' => $champion,
+                    'kills' => fake()->numberBetween(0, 12),
+                    'deaths' => fake()->numberBetween(0, 8),
+                    'assists' => fake()->numberBetween(0, 18),
+                ];
+            }
+
+            $gameNotes = [];
+            if (fake()->boolean(30)) {
+                $gameNotes[] = [
+                    'type' => TypeScrimGameNote::POSITIVE,
+                    'note' => fake()->sentence(),
+                ];
+            }
+            if (fake()->boolean(30)) {
+                $gameNotes[] = [
+                    'type' => TypeScrimGameNote::NEGATIVE,
+                    'note' => fake()->sentence(),
+                ];
+            }
+
+            $payloads[] = [
+                'title' => 'Game '.$gameIndex,
+                'duration' => fake()->numberBetween(1200, 2400),
+                'is_victory' => fake()->boolean(55),
+                'notes' => fake()->optional(0.25)->sentence(),
+                'home_players' => $homePlayers,
+                'opponent_starters' => $opponentStarters,
+                'scrim_game_notes' => $gameNotes,
+            ];
+        }
+
+        return $payloads;
+    }
+
+    /**
+     * @param  list<array{
+     *     title: string,
+     *     duration: int,
+     *     is_victory: bool,
+     *     notes: ?string,
+     *     home_players: array<int, array{champion: string, kills: int, deaths: int, assists: int, cs: int}>,
+     *     opponent_starters: array<string, array{champion: string, kills: int, deaths: int, assists: int}>,
+     *     scrim_game_notes: list<array{type: TypeScrimGameNote, note: string}>
+     * }>  $payloads
+     * @return list<array{
+     *     title: string,
+     *     duration: int,
+     *     is_victory: bool,
+     *     notes: ?string,
+     *     home_players: array<int, array{champion: string, kills: int, deaths: int, assists: int, cs: int}>,
+     *     opponent_starters: array<string, array{champion: string, kills: int, deaths: int, assists: int}>,
+     *     scrim_game_notes: list<array{type: TypeScrimGameNote, note: string}>
+     * }>
+     */
+    private function mirrorScrimGamePayloads(Scrim $sourceScrim, Scrim $targetScrim, array $payloads): array
+    {
+        $sourceStarters = $this->starterMembersForTeam($sourceScrim->team_id);
+        $targetStarters = $this->starterMembersForTeam($targetScrim->team_id);
+
+        $mirrored = [];
+
+        foreach ($payloads as $payload) {
+            $homePlayers = [];
+            $opponentStarters = [];
+
+            foreach ($targetStarters as $member) {
+                $roleKey = $this->roleInGameToOpponentKey($member->roleInGame);
+                $opponentStats = $payload['opponent_starters'][$roleKey];
+                $homePlayers[$member->id] = [
+                    'champion' => $opponentStats['champion'],
+                    'kills' => $opponentStats['kills'],
+                    'deaths' => $opponentStats['deaths'],
+                    'assists' => $opponentStats['assists'],
+                    'cs' => fake()->numberBetween(120, 280),
+                ];
+            }
+
+            foreach ($sourceStarters as $member) {
+                $roleKey = $this->roleInGameToOpponentKey($member->roleInGame);
+                $homeStats = $payload['home_players'][$member->id];
+                $opponentStarters[$roleKey] = [
+                    'champion' => $homeStats['champion'],
+                    'kills' => $homeStats['kills'],
+                    'deaths' => $homeStats['deaths'],
+                    'assists' => $homeStats['assists'],
+                ];
+            }
+
+            $mirrored[] = [
+                'title' => $payload['title'],
+                'duration' => $payload['duration'],
+                'is_victory' => ! $payload['is_victory'],
+                'notes' => $payload['notes'],
+                'home_players' => $homePlayers,
+                'opponent_starters' => $opponentStarters,
+                'scrim_game_notes' => $payload['scrim_game_notes'],
+            ];
+        }
+
+        return $mirrored;
+    }
+
+    /**
+     * @param  list<array{
+     *     title: string,
+     *     duration: int,
+     *     is_victory: bool,
+     *     notes: ?string,
+     *     home_players: array<int, array{champion: string, kills: int, deaths: int, assists: int, cs: int}>,
+     *     opponent_starters: array<string, array{champion: string, kills: int, deaths: int, assists: int}>,
+     *     scrim_game_notes: list<array{type: TypeScrimGameNote, note: string}>
+     * }>  $payloads
+     */
+    private function persistScrimGamePayloads(Scrim $scrim, array $payloads): void
+    {
+        foreach ($payloads as $payload) {
+            $scrimGame = ScrimGame::create([
+                'title' => $payload['title'],
+                'duration' => $payload['duration'],
+                'is_victory' => $payload['is_victory'],
+                'notes' => $payload['notes'],
+                'scrim_id' => $scrim->id,
+                'opponent_team_members_starters' => $payload['opponent_starters'],
+            ]);
+
+            foreach ($payload['home_players'] as $teamMemberId => $player) {
+                ScrimGamePlayer::create([
+                    'scrim_game_id' => $scrimGame->id,
+                    'team_member_id' => $teamMemberId,
+                    'champion' => $player['champion'],
+                    'kills' => $player['kills'],
+                    'deaths' => $player['deaths'],
+                    'assists' => $player['assists'],
+                    'cs' => $player['cs'],
+                ]);
+            }
+
+            foreach ($payload['scrim_game_notes'] as $note) {
+                ScrimGameNote::create([
+                    'scrim_game_id' => $scrimGame->id,
+                    'type' => $note['type'],
+                    'note' => $note['note'],
+                ]);
+            }
+        }
+    }
+
+    /**
+     * @return Collection<int, TeamMember>
+     */
+    private function starterMembersForTeam(int $teamId): Collection
+    {
+        return TeamMember::query()
+            ->where('team_id', $teamId)
+            ->where('is_starter', true)
+            ->orderBy('roleInGame')
+            ->get();
+    }
+
+    private function roleInGameToOpponentKey(RoleInGame $role): string
+    {
+        return match ($role) {
+            RoleInGame::TOP => 'top',
+            RoleInGame::JUNGLE => 'jungle',
+            RoleInGame::MID => 'mid',
+            RoleInGame::ADC => 'bot',
+            RoleInGame::SUPPORT => 'support',
+        };
+    }
+
+    /**
+     * @param  list<string>  $pool
+     * @param  list<string>  $used
+     */
+    private function pickUniqueChampion(array $pool, array &$used): string
+    {
+        $available = array_values(array_diff($pool, $used));
+        $champion = fake()->randomElement($available);
+        $used[] = $champion;
+
+        return $champion;
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function championNames(): array
+    {
+        return collect(getChampionsList())->pluck('name')->all();
     }
 
     private function delayBetweenUsers(): void
@@ -537,7 +972,7 @@ class DemoDataSeeder extends Seeder
                 'match_id' => 'EUW1_'.Str::upper(Str::random(10)).'_'.$i,
                 'game_duration' => fake()->numberBetween(1200, 2400),
                 'played_at' => fake()->dateTimeBetween('-45 days', 'now'),
-                'champion_name' => fake()->randomElement(self::CHAMPION_NAMES),
+                'champion_name' => fake()->randomElement($this->championNames()),
                 'champion_id' => fake()->numberBetween(1, 999),
                 'champion_level' => fake()->numberBetween(1, 18),
                 'role' => fake()->randomElement(['TOP', 'JUNGLE', 'MIDDLE', 'BOTTOM', 'UTILITY']),
