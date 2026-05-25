@@ -101,9 +101,9 @@ new class extends Component
                 x-cloak
                 class="absolute top-full mt-3 left-12 flex flex-col gap-4 w-56 origin-top shadow-lg bg-bg-widget p-4 z-50">
                 <li class="">
-                    <a href="{{ route('team.create') }}" title="{{ __('layouts/team.create_team_cta_title') }}" class="px-3 hover:text-gold transition ease-in-out duration-150 flex items-center gap-2 cursor-pointer">
-                        <flux:icon.plus class="size-4" />
-                        Créer une équipe
+                    <a href="{{ route('team.index') }}" wire:navigate title="{{ __('layouts/team.team_lobby_cta_title') }}" class="px-3 hover:text-gold transition ease-in-out duration-150 flex items-center gap-2 cursor-pointer">
+                        <flux:icon.squares-2x2 class="size-4" />
+                        {{ __('layouts/team.team_lobby') }}
                     </a>
                 </li>
                 @foreach ($userTeams as $userTeam)

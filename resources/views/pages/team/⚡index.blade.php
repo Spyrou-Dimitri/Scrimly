@@ -12,9 +12,15 @@ new #[Layout('layouts::choose_a_team')] class extends Component
     public User $currentUser;
     public Collection $teamMembers;
 
-    public function mount()
+    public function mount(): void
     {
         $this->currentUser = Auth::user();
+
+        if ($this->currentUser->current_team_id !== null) {
+            $this->currentUser->update(['current_team_id' => null]);
+            $this->currentUser->refresh();
+        }
+
         $this->teamMembers = TeamMember::where('user_id', $this->currentUser->id)
             ->where('status', StatusInTeam::ACCEPTED)
             ->with('team')
