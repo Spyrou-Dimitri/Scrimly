@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Enums\AbsenceJustification;
+use App\Enums\DayOfTheWeek;
 use App\Enums\DefaultAvatar;
 use App\Enums\DefaultTeam;
 use App\Enums\Language;
@@ -15,6 +17,8 @@ use App\Enums\StatusScrim;
 use App\Enums\StatusScrimRequest;
 use App\Enums\StatusTask;
 use App\Enums\TypeScrimGameNote;
+use App\Models\Absence;
+use App\Models\PlayerDefaultSchedule;
 use App\Models\RiotMatch;
 use App\Models\RiotProfile;
 use App\Models\Scrim;
@@ -221,6 +225,7 @@ class DemoDataSeeder extends Seeder
             $team->averageEloScore();
 
             $this->seedTasksForTeam($team, $coachMember);
+            $this->seedPlayerAvailabilitiesForTeam($team);
         }
 
         $this->seedScrimsAndScrimRequests($teams);
@@ -1008,6 +1013,110 @@ class DemoDataSeeder extends Seeder
             'message' => null,
             'joined_at' => now(),
         ]);
+    }
+
+    private function seedPlayerAvailabilitiesForTeam(Team $team): void
+    {
+        $players = TeamMember::query()
+            ->where('team_id', $team->id)
+            ->where('roleInTeam', RoleInTeam::PLAYER)
+            ->get();
+
+        foreach ($players as $player) {
+            $this->seedDefaultSchedulesForMember($player);
+            $this->seedAbsencesForMember($player);
+        }
+    }
+
+    private function seedDefaultSchedulesForMember(TeamMember $member): void
+    {
+        $activeDays = collect(DayOfTheWeek::cases())
+            ->shuffle()
+            ->take(fake()->numberBetween(3, 6));
+
+        foreach ($activeDays as $day) {
+            $slot = $this->randomAvailabilitySlot();
+
+            PlayerDefaultSchedule::create([
+                'team_member_id' => $member->id,
+                'day_of_week' => $day->value,
+                'start_time' => $slot['start'],
+                'end_time' => $slot['end'],
+            ]);
+        }
+    }
+
+    private function seedAbsencesForMember(TeamMember $member): void
+    {
+        if (! fake()->boolean(40)) {
+            return;
+        }
+
+        $absenceCount = fake()->numberBetween(1, 4);
+        $usedDates = [];
+
+        foreach (collect($this->buildScrimSchedulingDates())->shuffle() as $date) {
+            if (count($usedDates) >= $absenceCount) {
+                break;
+            }
+
+            $dateKey = $date->toDateString();
+
+            if (isset($usedDates[$dateKey])) {
+                continue;
+            }
+
+            $usedDates[$dateKey] = true;
+
+            Absence::create([
+                'team_member_id' => $member->id,
+                'date' => $dateKey,
+                'justification' => fake()->randomElement(AbsenceJustification::cases()),
+            ]);
+        }
+    }
+
+    /**
+     * Créneau sur grille 30 min (08:00–23:00), aligné avec les règles de la modale disponibilités.
+     *
+     * @return array{start: string, end: string}
+     */
+    private function randomAvailabilitySlot(): array
+    {
+        if (fake()->boolean(70)) {
+            $eveningStarts = ['18:00', '18:30', '19:00', '19:30', '20:00', '20:30'];
+            $eveningEnds = ['21:00', '21:30', '22:00', '22:30', '23:00'];
+            $start = fake()->randomElement($eveningStarts);
+            $end = fake()->randomElement($eveningEnds);
+
+            if ($this->availabilityStartIsBeforeEnd($start, $end)) {
+                return ['start' => $start, 'end' => $end];
+            }
+        }
+
+        $startSlot = fake()->numberBetween(0, 22);
+        $length = fake()->numberBetween(4, 8);
+        $endSlot = min($startSlot + $length, 30);
+
+        return [
+            'start' => $this->formatAvailabilityHalfHour($startSlot),
+            'end' => $this->formatAvailabilityHalfHour($endSlot),
+        ];
+    }
+
+    private function formatAvailabilityHalfHour(int $slotIndex): string
+    {
+        $totalMinutes = (8 * 60) + ($slotIndex * 30);
+
+        return sprintf('%02d:%02d', intdiv($totalMinutes, 60), $totalMinutes % 60);
+    }
+
+    private function availabilityStartIsBeforeEnd(string $start, string $end): bool
+    {
+        [$startHour, $startMinute] = array_map(intval(...), explode(':', $start));
+        [$endHour, $endMinute] = array_map(intval(...), explode(':', $end));
+
+        return ($startHour * 60 + $startMinute) < ($endHour * 60 + $endMinute);
     }
 
     private function seedTasksForTeam(Team $team, TeamMember $coachMember): void
