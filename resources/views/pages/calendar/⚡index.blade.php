@@ -5,7 +5,7 @@ use Livewire\Attributes\Layout;
 use Illuminate\Support\Collection;
 use App\Models\Scrim;
 use App\Models\Absence;
-
+use Carbon\Carbon;
 new #[Layout('layouts::team')] class extends Component
 
 {
@@ -17,7 +17,7 @@ new #[Layout('layouts::team')] class extends Component
             ->get()
             ->map(fn(Scrim $scrim) => [
                 'title' => 'Scrim vs ' . $scrim->opponentTeam->name,
-                'start' => $scrim->scheduled_at->toIso8601String(),
+                'start' => $scrim->scheduled_at,
                 'url' => route('scrims.show', [
                     'slug' => currentTeam()->slug,
                     'id' => $scrim->id,
@@ -44,6 +44,14 @@ new #[Layout('layouts::team')] class extends Component
         $this->events = collect($scrims)->concat(collect($absences))->values()->all();
 
     }
+    public function handleDateClick(string $date): void
+    {
+        $this->dispatch('open_modal', [
+            'form' => 'calendar.show-a-day',
+            'model_id' => Carbon::parse($date)->format('Y-m-d'),
+        ]);
+
+    }
 };
 ?>
 
@@ -52,6 +60,6 @@ new #[Layout('layouts::team')] class extends Component
         <h2 class="text-[32px] font-bold">
             {{ __('pages/calendar/index.title') }}
         </h2>
-        <div id="calendar" data-events='@json($events)'></div>
+        <div id="calendar" wire:ignore data-events='@json($events)'></div>
     </section>
 </div>

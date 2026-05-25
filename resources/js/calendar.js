@@ -31,7 +31,14 @@ export const Calendar = {
                 right: 'dayGridMonth,timeGridWeek'
               },
               events: events,
+            dateClick: (info) => {
+                const wireId = calendarEl.closest('[wire\\:id]')?.getAttribute('wire:id');
+                if (wireId) {
+                    console.log(wireId);
+                }
+                Livewire.find(wireId).call('handleDateClick', info.dateStr);
 
+            }
         });
         
         calendarInstance.render();
