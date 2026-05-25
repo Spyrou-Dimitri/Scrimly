@@ -34,7 +34,7 @@ new class extends Component {
 ?>
 
 <div
-    class="fixed top-20 right-8 z-50 flex flex-col gap-2"
+    class="fixed top-20 right-8 z-90 flex flex-col gap-2"
     aria-live="polite"
     aria-atomic="true">
     @foreach($toasts as $toast)
