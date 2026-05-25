@@ -46,7 +46,6 @@ new class extends Component
 
     public function openModalEditAbsence(int $absenceId): void
     {
-        $this->denyIfCannotManageAvailability();
         $this->dispatch('open_modal', [
             'form' => 'modals::absence.edit-absence',
             'model_id' => $absenceId,
@@ -55,7 +54,6 @@ new class extends Component
 
     public function openModalDeleteAbsence(int $absenceId): void
     {
-        $this->denyIfCannotManageAvailability();
         $this->dispatch('open_modal', [
             'form' => 'modals::absence.delete-absence',
             'model_id' => $absenceId,

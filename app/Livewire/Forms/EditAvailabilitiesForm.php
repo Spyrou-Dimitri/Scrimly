@@ -29,23 +29,22 @@ class EditAvailabilitiesForm extends Form
         ];
 
         foreach (DayOfTheWeek::cases() as $day) {
-            $key = (string) $day->value;
             $dayValue = $day->value;
 
-            $rules["startTimes.{$key}"] = [
-                Rule::requiredIf(fn () => (bool) ($this->slotEnabled[$dayValue] ?? false)),
-                'nullable',
+            $rules["startTimes.{$dayValue}"] = [
+                Rule::excludeIf(fn () => !($this->slotEnabled[$dayValue] ?? false)),
+                'required',
                 'date_format:H:i',
                 'regex:/^(0[89]|1[0-9]|2[0-3]):(00|30)$/',
-                'before:endTimes.{$key}',
+                "before:endTimes.{$dayValue}",
             ];
 
-            $rules["endTimes.{$key}"] = [
-                Rule::requiredIf(fn () => (bool) ($this->slotEnabled[$dayValue] ?? false)),
-                'nullable',
+            $rules["endTimes.{$dayValue}"] = [
+                Rule::excludeIf(fn () => !($this->slotEnabled[$dayValue] ?? false)),
+                'required',
                 'date_format:H:i',
                 'regex:/^(0[89]|1[0-9]|2[0-3]):(00|30)$/',
-                "after:startTimes.{$key}",
+                "after:startTimes.{$dayValue}",
             ];
         }
 
@@ -58,7 +57,7 @@ class EditAvailabilitiesForm extends Form
 
         foreach (DayOfTheWeek::cases() as $day) {
             $dayValue = $day->value;
-            $enabled = (bool) ($this->slotEnabled[$dayValue] ?? false);
+            $enabled =  ($this->slotEnabled[$dayValue] ?? false);
 
             if ($enabled) {
                 PlayerDefaultSchedule::updateOrCreate(
