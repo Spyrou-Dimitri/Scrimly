@@ -16,4 +16,5 @@ return [
     'onboarding_description' => 'Créez votre équipe ou rejoignez-en une !',
     'bench_title' => 'Remplacants',
     'staff_title' => 'Coaches & Staff',
+    'pending_applications_title' => 'Candidatures en cours',
 ];
