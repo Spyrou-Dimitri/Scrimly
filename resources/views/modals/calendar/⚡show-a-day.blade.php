@@ -147,8 +147,7 @@ new class extends Component
                 @foreach ($allEventsThisDay as $event)
                 <li class="col-span-12" wire:key="calendar-event-{{ $event->id }}">
                     <article
-                        class="relative flex flex-col border-l-2 bg-bg-card p-4 basic-shadow md:p-5"
-                        style="border-left-color: {{ $event->type->color() }}">
+                        class="relative flex flex-col bg-bg-card p-4 basic-shadow md:p-5">
                         <div class="relative z-[1] flex flex-col gap-2">
                             <h4 class="text-xl font-bold text-white">
                                 {{ $event->title }}
@@ -180,6 +179,28 @@ new class extends Component
                 :count="$allTeamMembersAvailabilitiesThisDay->count()"
                 heading-level="h3"
                 panel-class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                <li class="col-span-2 sm:col-span-3">
+                    <ul class="mb-2 flex flex-wrap gap-x-6 gap-y-2" aria-label="{{ __('modals/calendar/show-a-day.availabilities_title') }}">
+                        <li class="flex items-center gap-2">
+                            <span class="size-2.5 shrink-0 rounded-full bg-green-500" aria-hidden="true"></span>
+                            <span class="text-xs font-medium text-text-secondary">
+                                {{ __('modals/calendar/show-a-day.availability_legend_available') }}
+                            </span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="size-2.5 shrink-0 rounded-full bg-gray-500" aria-hidden="true"></span>
+                            <span class="text-xs font-medium text-text-secondary">
+                                {{ __('modals/calendar/show-a-day.availability_legend_unavailable') }}
+                            </span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="size-2.5 shrink-0 rounded-full bg-red-500" aria-hidden="true"></span>
+                            <span class="text-xs font-medium text-text-secondary">
+                                {{ __('modals/calendar/show-a-day.availability_legend_absent') }}
+                            </span>
+                        </li>
+                    </ul>
+                </li>
                 @if ($allTeamMembersAvailabilitiesThisDay->isEmpty())
                 <li class="col-span-2 sm:col-span-3">
                     <p class="text-sm text-text-secondary">
@@ -192,20 +213,34 @@ new class extends Component
                     <article class="flex items-center gap-3 bg-bg-card p-4 basic-shadow">
                         @if ($teamMember->absences->where('date', Carbon::parse($this->date))->isNotEmpty())
                         <span
-                            class="size-2.5 shrink-0 rounded-full bg-red-500"
+                            class="mt-1 size-2.5 shrink-0 rounded-full bg-red-500"
                             aria-hidden="true"></span>
                         @elseif ($teamMember->playerDefaultSchedules->where('day_of_week', $dayOfWeek)->isNotEmpty())
                         <span
-                            class="size-2.5 shrink-0 rounded-full bg-green-500"
+                            class="mt-1 size-2.5 shrink-0 rounded-full bg-green-500"
                             aria-hidden="true"></span>
                         @else
                         <span
-                            class="size-2.5 shrink-0 rounded-full bg-gray-500"
+                            class="mt-1 size-2.5 shrink-0 rounded-full bg-gray-500"
                             aria-hidden="true"></span>
                         @endif
-                        <span class="truncate text-sm font-medium text-white">
-                            {{ $teamMember->user->username }}
-                        </span>
+                        <div class="min-w-0 flex flex-col gap-0.5">
+                            <span class="truncate text-sm font-medium text-white">
+                                {{ $teamMember->user->username }}
+                            </span>
+                            @if ($teamMember->absences->where('date', Carbon::parse($this->date))->isNotEmpty())
+                            <span class="text-xs text-text-secondary">
+                                {{ $teamMember->absences->where('date', Carbon::parse($this->date))->first()->justification->label() }}
+                            </span>
+                            @elseif ($teamMember->playerDefaultSchedules->where('day_of_week', $dayOfWeek)->isNotEmpty())
+                            <span class="text-xs text-text-secondary">
+                                {{ __('modals/calendar/show-a-day.availability_time_format', [
+                                    'start' => $teamMember->playerDefaultSchedules->where('day_of_week', $dayOfWeek)->first()->start_time,
+                                    'end' => $teamMember->playerDefaultSchedules->where('day_of_week', $dayOfWeek)->first()->end_time,
+                                ]) }}
+                            </span>
+                            @endif
+                        </div>
                     </article>
                 </li>
                 @endforeach

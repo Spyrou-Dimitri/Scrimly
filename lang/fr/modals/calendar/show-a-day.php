@@ -15,5 +15,9 @@ return [
     'no_scrims' => 'Aucun scrim prévu ce jour.',
     'no_events' => 'Aucun événement prévu ce jour.',
     'no_availabilities' => 'Aucun joueur disponible ce jour.',
+    'availability_legend_available' => 'Disponible',
+    'availability_legend_unavailable' => 'Non disponible',
+    'availability_legend_absent' => 'Absent',
+    'availability_time_format' => ':start – :end',
     'opponent_unknown' => 'Adversaire inconnu',
 ];

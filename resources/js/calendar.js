@@ -6,7 +6,6 @@ import listPlugin from '@fullcalendar/list';
 
 let calendarInstance = null;
 
-
 export const Calendar = {
     init() {
         const calendarEl = document.getElementById('calendar');
@@ -28,19 +27,18 @@ export const Calendar = {
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
-                right: 'dayGridMonth,timeGridWeek'
-              },
-              events: events,
+                right: 'dayGridMonth,timeGridWeek',
+            },
+            events: events,
             dateClick: (info) => {
                 const wireId = calendarEl.closest('[wire\\:id]')?.getAttribute('wire:id');
                 if (wireId) {
                     console.log(wireId);
                 }
                 Livewire.find(wireId).call('handleDateClick', info.dateStr);
-
-            }
+            },
         });
-        
+
         calendarInstance.render();
 
         window.addEventListener('resize', () => {
@@ -53,12 +51,10 @@ export const Calendar = {
             } else {
                 newView = 'listWeek';
             }
-                calendarInstance.changeView(newView);
+            calendarInstance.changeView(newView);
         });
-
     },
     getInitialView() {
-        
         if (window.innerWidth >= 1024) {
             return 'dayGridMonth';
         } else if (window.innerWidth >= 768) {
@@ -66,5 +62,5 @@ export const Calendar = {
         } else {
             return 'listWeek';
         }
-    }
+    },
 };

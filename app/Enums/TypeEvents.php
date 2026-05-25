@@ -22,10 +22,10 @@ enum TypeEvents: string
     public function color(): string
     {
         return match ($this) {
-            self::MEETING => '#6366F1',
-            self::TOURNAMENT => '#F97316',
-            self::BREAK => '#10B981',
-            self::OTHER => '#378ADD',
+            self::MEETING => '#4F46E5',
+            self::TOURNAMENT => '#C2410C',
+            self::BREAK => '#047857',
+            self::OTHER => '#2563EB',
         };
     }
 }
