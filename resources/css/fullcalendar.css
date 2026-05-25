@@ -49,5 +49,13 @@
     .fc-list-day-cushion {
         @apply bg-bg-widget text-gold;
     }
+
+
+    /* Event colors */
+    .fc-event {
+        @apply p-1 w-[95%] mx-auto border-none;
+    }
+
+    
     
 }

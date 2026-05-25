@@ -5,9 +5,11 @@ namespace App\Models;
 use App\Enums\StatusScrim;
 use App\Observers\ScrimObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 #[ObservedBy(ScrimObserver::class)]
 class Scrim extends Model
@@ -27,7 +29,6 @@ class Scrim extends Model
 
     protected $casts = [
         'scheduled_date' => 'date',
-        'scheduled_time' => 'datetime',
         'number_of_games' => 'integer',
         'status' => StatusScrim::class,
     ];
@@ -50,5 +51,14 @@ class Scrim extends Model
     public function scrimGames(): HasMany
     {
         return $this->hasMany(ScrimGame::class)->orderBy('id');
+    }
+
+    protected function scheduledAt(): Attribute
+    {
+        return Attribute::get(function (): Carbon {
+            return Carbon::parse(
+                $this->scheduled_date->format('Y-m-d').' '.$this->scheduled_time
+            );
+        });
     }
 }

@@ -279,8 +279,7 @@ new #[Layout('layouts::team')] class extends Component
                     @foreach ($this->scrims as $scrim)
                     @php
                     $opponent = $scrim->opponentTeam;
-                    $scheduledAt = $scrim->scheduled_time;
-                    $scheduledDate = $scrim->scheduled_date;
+                    $scheduledAt = $scrim->scheduled_at;
                     @endphp
                     <li class="col-span-12">
                         <article x-on:click="$el.querySelector('[data-scrim-link]')?.click()" class="relative cursor-pointer flex flex-col border-l-2 border-gold bg-bg-card p-4 basic-shadow md:p-5 card-animated-border">
@@ -289,7 +288,7 @@ new #[Layout('layouts::team')] class extends Component
                                 <div class="flex min-w-0 flex-1 items-center gap-4 md:gap-6">
                                     <div class="flex w-[4.25rem] shrink-0 flex-col gap-1 items-center border-r border-white/10 md:w-[4.75rem]">
                                         <p class="text-xs font-semibold uppercase  text-white">{{ $scheduledAt->translatedFormat('M') }}</p>
-                                        <p class="text-2xl font-bold text-white">{{ $scheduledDate->format('j') }}</p>
+                                        <p class="text-2xl font-bold text-white">{{ $scheduledAt->format('j') }}</p>
                                         <span class="h-0.5 w-8 shrink-0 bg-gold" aria-hidden="true"></span>
                                     </div>
                                     <div class="flex min-w-0 flex-1 items-center gap-3 md:gap-4">
@@ -459,7 +458,7 @@ new #[Layout('layouts::team')] class extends Component
                             {{ $scrim->opponentTeam?->name ?? __('pages/scrims/index.upcoming_opponent_unknown') }}
                         </p>
                         <p class="text-xs font-bold text-text-secondary">
-                            {{ $scrim->scheduled_date->translatedFormat('d M Y') }} - {{ $scrim->scheduled_time->format('H:i') }}
+                            {{ $scrim->scheduled_at->translatedFormat('d M Y') }} - {{ $scrim->scheduled_at->format('H:i') }}
                         </p>
                     </td>
                     <td class="p-6">

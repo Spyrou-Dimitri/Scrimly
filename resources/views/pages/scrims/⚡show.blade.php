@@ -168,7 +168,7 @@ new #[Layout('layouts::team')] class extends Component
                     {{ __('pages/scrims/show.widget_time') }}
                 </p>
                 <p class="mt-1 text-xl font-bold">
-                    {{$this->scrim->scheduled_time->format('H:i')}}
+                    {{ $this->scrim->scheduled_at->format('H:i') }}
                 </p>
             </div>
 

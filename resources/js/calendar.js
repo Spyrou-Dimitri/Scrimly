@@ -6,9 +6,12 @@ import listPlugin from '@fullcalendar/list';
 
 let calendarInstance = null;
 
+
 export const Calendar = {
     init() {
         const calendarEl = document.getElementById('calendar');
+
+        const events = JSON.parse(calendarEl.dataset.events);
         if (!calendarEl) {
             return;
         }
@@ -27,17 +30,7 @@ export const Calendar = {
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek'
               },
-              events: [
-                {
-                    title: 'Scrim vs G2',
-                    start: '2026-05-24T19:00:00',
-                },
-                {
-                    title: 'Tournois vs G2',
-                    start: '2026-05-25T19:00:00',
-                }
-
-            ],
+              events: events,
 
         });
         
