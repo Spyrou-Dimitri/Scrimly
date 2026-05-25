@@ -3,6 +3,8 @@
 use App\Enums\DayOfTheWeek;
 use App\Models\TeamMember;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Gate;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -23,8 +25,20 @@ new class extends Component
         $this->absences = $teamMember->absences()->orderBy('date', 'asc')->get();
     }
 
+    #[Computed]
+    public function canManageAvailability(): bool
+    {
+        return Gate::allows('manageAvailability', $this->teamMember);
+    }
+
+    private function denyIfCannotManageAvailability(): void
+    {
+        abort_unless(Gate::allows('manageAvailability', $this->teamMember), 403);
+    }
+
     public function openModalAddAvailability(): void
     {
+        $this->denyIfCannotManageAvailability();
         $this->dispatch('open_modal', [
             'form' => 'edit-availabilities',
             'model_id' => $this->teamMember->id,
@@ -34,6 +48,7 @@ new class extends Component
 
     public function openModalAddAbsence(): void
     {
+        $this->denyIfCannotManageAvailability();
         $this->dispatch('open_modal', [
             'form' => 'modals::absence.add-absence',
             'model_id' => $this->teamMember->id,
@@ -42,6 +57,7 @@ new class extends Component
 
     public function openModalEditAbsence(int $absenceId): void
     {
+        $this->denyIfCannotManageAvailability();
         $this->dispatch('open_modal', [
             'form' => 'modals::absence.edit-absence',
             'model_id' => $absenceId,
@@ -50,6 +66,7 @@ new class extends Component
 
     public function openModalDeleteAbsence(int $absenceId): void
     {
+        $this->denyIfCannotManageAvailability();
         $this->dispatch('open_modal', [
             'form' => 'modals::absence.delete-absence',
             'model_id' => $absenceId,
@@ -86,9 +103,11 @@ new class extends Component
             <h3 class="font-spaceGrotesk text-2xl font-bold text-white">
                 {{ __('pages/roster/show.availability.section_title') }}
             </h3>
+            @if ($this->canManageAvailability)
             <button wire:click="openModalAddAvailability" class="cta-primary">
                 {{ __('pages/roster/show.availability.add_availability') }}
             </button>
+            @endif
         </div>
 
         <div class="grid grid-cols-[auto_repeat(7,1fr)] gap-x-4 bg-bg-widget p-6 shadow-basic"
@@ -150,9 +169,11 @@ new class extends Component
             <h3 class="font-spaceGrotesk text-2xl font-bold text-white">
                 {{ __('modals/edit-availabilities.absence_title') }}
             </h3>
+            @if ($this->canManageAvailability)
             <button wire:click="openModalAddAbsence" class="cta-primary">
                 {{ __('modals/edit-availabilities.add_absence') }}
             </button>
+            @endif
         </div>
         <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1">
             @if ($this->absences->isEmpty())
@@ -168,6 +189,7 @@ new class extends Component
                         </p>
                         <p class="text-xl font-bold">{{ $absence->justification->label() }}</p>
                     </div>
+                    @if ($this->canManageAvailability)
                     <div class="flex items-center gap-2">
                         <button class="cursor-pointer hover:text-gold transition-colors duration-150"
                                 wire:click="openModalEditAbsence({{ $absence->id }})">
@@ -178,6 +200,7 @@ new class extends Component
                             <x-flux::icon name="trash" class="w-5 h-5" />
                         </button>
                     </div>
+                    @endif
                 </li>
             @endforeach
             @endif

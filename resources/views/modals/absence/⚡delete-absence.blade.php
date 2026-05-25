@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Absence;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
 new class extends Component
@@ -9,7 +10,12 @@ new class extends Component
 
     public function mount(int $model_id): void
     {
-        $this->absence = Absence::findOrFail($model_id);
+        $this->absence = Absence::query()
+            ->whereKey($model_id)
+            ->whereHas('teamMember', fn ($query) => $query->where('team_id', currentTeam()->id))
+            ->firstOrFail();
+
+        abort_unless(Gate::allows('manageAvailability', $this->absence->teamMember), 403);
     }
 
     public function closeModal()
@@ -19,6 +25,8 @@ new class extends Component
 
     public function deleteAbsence()
     {
+        abort_unless(Gate::allows('manageAvailability', $this->absence->teamMember), 403);
+
         $this->absence->delete();
         $this->dispatch('close_modal');
         $this->dispatch('refresh_absences');

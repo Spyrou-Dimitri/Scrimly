@@ -3,6 +3,7 @@
 use App\Enums\AbsenceJustification;
 use App\Livewire\Forms\Absence\AddAbsenceForm;
 use App\Models\TeamMember;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
 new class extends Component
@@ -14,11 +15,18 @@ new class extends Component
 
     public function mount(int $model_id): void
     {
-        $this->teamMember = TeamMember::findOrFail($model_id);
+        $this->teamMember = TeamMember::query()
+            ->whereKey($model_id)
+            ->where('team_id', currentTeam()->id)
+            ->firstOrFail();
+
+        abort_unless(Gate::allows('manageAvailability', $this->teamMember), 403);
     }
 
     public function store(): void
     {
+        abort_unless(Gate::allows('manageAvailability', $this->teamMember), 403);
+
         $this->form->store($this->teamMember->id);
 
         $this->dispatch('close_modal');

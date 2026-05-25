@@ -4,6 +4,7 @@ use App\Enums\DayOfTheWeek;
 use App\Livewire\Forms\EditAvailabilitiesForm;
 use App\Models\TeamMember;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
 new class extends Component
@@ -16,7 +17,11 @@ new class extends Component
     {
         $this->teamMember = TeamMember::query()
             ->with('playerDefaultSchedules')
-            ->findOrFail($model_id);
+            ->whereKey($model_id)
+            ->where('team_id', currentTeam()->id)
+            ->firstOrFail();
+
+        abort_unless(Gate::allows('manageAvailability', $this->teamMember), 403);
 
         foreach (DayOfTheWeek::cases() as $day) {
             $this->form->slotEnabled[$day->value] = false;
@@ -37,6 +42,8 @@ new class extends Component
 
     public function saveAvailabilities(): void
     {
+        abort_unless(Gate::allows('manageAvailability', $this->teamMember), 403);
+
         $this->form->saveAvailabilities($this->teamMember->id);
         $this->dispatch('close_modal');
         $this->dispatch('refresh_default_schedules');
