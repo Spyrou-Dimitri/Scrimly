@@ -50,6 +50,11 @@ class Team extends Model
         return $this->hasMany(TeamApplication::class);
     }
 
+    public function events(): HasMany
+    {
+        return $this->hasMany(Event::class);
+    }
+
     public function sentScrimRequests(): HasMany
     {
         return $this->hasMany(ScrimRequest::class, 'requester_team_id');
