@@ -53,7 +53,7 @@ class JoinTeamForm extends Form
         $teamId = Team::where('code', $validated['team_code'])->first()->id;
         $userId = Auth::user()->id;
 
-        $application = TeamApplication::create([
+        TeamApplication::create([
             'team_id' => $teamId,
             'user_id' => $userId,
             'roleInTeam' => $validated['roleInTeam'],
@@ -61,8 +61,6 @@ class JoinTeamForm extends Form
             'motivation' => $validated['motivation'],
             'status' => StatusApplication::PENDING,
         ]);
-
-        $application->save();
     }
 
     public function updatedRoleInTeam(): void

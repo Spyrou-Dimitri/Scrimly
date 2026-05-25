@@ -10,19 +10,37 @@ use App\Enums\RoleInGame;
 use App\Livewire\Forms\JoinTeamForm;
 use Livewire\WithFileUploads;
 use App\Models\Team;
+use App\Models\TeamApplication;
 use Livewire\Attributes\Computed;
+use Illuminate\Support\Facades\Gate;
 
 new #[Layout('layouts::choose_a_team')] class extends Component {
     public JoinTeamForm $form;
 
     public function joinTeam(): void
     {
+        $this->form->validate();
+
+        $authorization = Gate::inspect('canApplyForTeam', [TeamApplication::class, $this->teamFinder]);
+
+        if ($authorization->denied()) {
+            $this->dispatch('toast', [
+                'title' => __('policies/roster.error_title'),
+                'message' => $authorization->message(),
+                'type' => 'error',
+            ]);
+
+            return;
+        }
+
         $this->form->store();
+
         session()->flash('toast', [
             'type' => 'success',
             'message' => __('toasts/toasts.team_applied'),
         ]);
-        redirect(route('team.index'));
+
+        $this->redirect(route('team.index'));
     }
     #[Computed]
     public function teamFinder(): Team|null
