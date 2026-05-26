@@ -18,16 +18,16 @@ enum LolTier: string
     public function label(): string
     {
         return match ($this) {
-            self::IRON => 'Iron',
-            self::BRONZE => 'Bronze',
-            self::SILVER => 'Silver',
-            self::GOLD => 'Gold',
-            self::PLATINUM => 'Platinum',
-            self::EMERALD => 'Emerald',
-            self::DIAMOND => 'Diamond',
-            self::MASTER => 'Master',
-            self::GRANDMASTER => 'Grandmaster',
-            self::CHALLENGER => 'Challenger',
+            self::IRON => __('enums/lol-tier.iron'),
+            self::BRONZE => __('enums/lol-tier.bronze'),
+            self::SILVER => __('enums/lol-tier.silver'),
+            self::GOLD => __('enums/lol-tier.gold'),
+            self::PLATINUM => __('enums/lol-tier.platinum'),
+            self::EMERALD => __('enums/lol-tier.emerald'),
+            self::DIAMOND => __('enums/lol-tier.diamond'),
+            self::MASTER => __('enums/lol-tier.master'),
+            self::GRANDMASTER => __('enums/lol-tier.grandmaster'),
+            self::CHALLENGER => __('enums/lol-tier.challenger'),
         };
     }
 

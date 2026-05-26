@@ -13,13 +13,14 @@ enum StatusScrim: string
     public function label(): string
     {
         return match ($this) {
-            self::SCHEDULED => 'Planifié',
-            self::IN_PROGRESS => 'En cours',
-            self::ABORTED => 'Stoppé',
-            self::COMPLETED => 'Terminé',
-            self::CANCELLED => 'Annulé',
+            self::SCHEDULED => __('enums/status-scrim.upcoming'),
+            self::IN_PROGRESS => __('enums/status-scrim.in_progress'),
+            self::ABORTED => __('enums/status-scrim.aborted'),
+            self::COMPLETED => __('enums/status-scrim.completed'),
+            self::CANCELLED => __('enums/status-scrim.cancelled'),
         };
     }
+
     public static function historyCases(): array
     {
         return [

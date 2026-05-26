@@ -34,7 +34,4 @@ return [
     'history_view_title' => 'Voir le scrim',
     'history_edit_title' => 'Modifier le scrim',
     'history_delete_title' => 'Supprimer le scrim',
-    'outcome_victory' => 'Victoire',
-    'outcome_defeat' => 'Défaite',
-    'outcome_draw' => 'Égalité',
 ];

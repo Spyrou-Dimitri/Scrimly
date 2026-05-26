@@ -1,0 +1,18 @@
+<?php
+
+return [
+    'monday' => 'Lundi',
+    'tuesday' => 'Mardi',
+    'wednesday' => 'Mercredi',
+    'thursday' => 'Jeudi',
+    'friday' => 'Vendredi',
+    'saturday' => 'Samedi',
+    'sunday' => 'Dimanche',
+    'monday_short' => 'Lun',
+    'tuesday_short' => 'Mar',
+    'wednesday_short' => 'Mer',
+    'thursday_short' => 'Jeu',
+    'friday_short' => 'Ven',
+    'saturday_short' => 'Sam',
+    'sunday_short' => 'Dim',
+];

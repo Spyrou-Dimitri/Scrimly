@@ -11,9 +11,9 @@ enum RoleInTeam: string
     public function label(): string
     {
         return match ($this) {
-            self::COACH => 'Coach',
-            self::PLAYER => 'Joueur',
-            self::STAFF => 'Staff',
+            self::COACH => __('enums/role-in-team.coach'),
+            self::PLAYER => __('enums/role-in-team.player'),
+            self::STAFF => __('enums/role-in-team.staff'),
         };
     }
 }

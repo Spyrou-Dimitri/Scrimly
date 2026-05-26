@@ -13,11 +13,11 @@ enum RoleInGame: string
     public function label(): string
     {
         return match ($this) {
-            self::TOP => 'Top',
-            self::JUNGLE => 'Jungle',
-            self::MID => 'Mid',
-            self::ADC => 'ADC',
-            self::SUPPORT => 'Support',
+            self::TOP => __('enums/role-in-game.top'),
+            self::JUNGLE => __('enums/role-in-game.jungle'),
+            self::MID => __('enums/role-in-game.mid'),
+            self::ADC => __('enums/role-in-game.adc'),
+            self::SUPPORT => __('enums/role-in-game.support'),
         };
     }
 
@@ -31,5 +31,4 @@ enum RoleInGame: string
             self::SUPPORT => 'img/Role/support.png',
         };
     }
-    
 }

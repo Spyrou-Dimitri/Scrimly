@@ -145,7 +145,7 @@ test('le modal de créneaux habituels affiche le titre et les libellés des jour
         ->test('modals::edit-availabilities', ['model_id' => $teamMember->id])
         ->assertSuccessful()
         ->assertSee(__('modals/edit-availabilities.title'), escape: false)
-        ->assertSee(__('modals/edit-availabilities.monday'), escape: false)
+        ->assertSee(__('enums/day-of-the-week.monday'), escape: false)
         ->assertSee(__('modals/edit-availabilities.save'), escape: false);
 });
 

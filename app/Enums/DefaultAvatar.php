@@ -24,12 +24,12 @@ enum DefaultAvatar: string
     public function label(): string
     {
         return match ($this) {
-            self::CAMILLE => 'Camille',
-            self::RYZE => 'Ryze',
-            self::JARVAN => 'Jarvan IV',
-            self::ALISTAR => 'Alistar',
-            self::DIANA => 'Diana',
-            self::YUUMI => 'Yuumi',
+            self::CAMILLE => __('enums/default-avatar.camille'),
+            self::RYZE => __('enums/default-avatar.ryze'),
+            self::JARVAN => __('enums/default-avatar.jarvan'),
+            self::ALISTAR => __('enums/default-avatar.alistar'),
+            self::DIANA => __('enums/default-avatar.diana'),
+            self::YUUMI => __('enums/default-avatar.yuumi'),
         };
     }
 }

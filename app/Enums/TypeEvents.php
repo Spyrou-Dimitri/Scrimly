@@ -12,10 +12,10 @@ enum TypeEvents: string
     public function label(): string
     {
         return match ($this) {
-            self::MEETING => 'Rencontre Fan',
-            self::TOURNAMENT => 'Tournoi',
-            self::BREAK => 'Pause',
-            self::OTHER => 'Autre',
+            self::MEETING => __('enums/type-events.meeting'),
+            self::TOURNAMENT => __('enums/type-events.tournament'),
+            self::BREAK => __('enums/type-events.break'),
+            self::OTHER => __('enums/type-events.other'),
         };
     }
 

@@ -11,9 +11,9 @@ enum StatusApplication: string
     public function label(): string
     {
         return match ($this) {
-            self::PENDING => 'En attente',
-            self::ACCEPTED => 'Accepté',
-            self::REJECTED => 'Rejeté',
+            self::PENDING => __('enums/status-application.pending'),
+            self::ACCEPTED => __('enums/status-application.accepted'),
+            self::REJECTED => __('enums/status-application.rejected'),
         };
     }
 }

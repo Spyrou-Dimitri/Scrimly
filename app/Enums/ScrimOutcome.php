@@ -24,9 +24,9 @@ enum ScrimOutcome: string
     public function label(): string
     {
         return match ($this) {
-            self::Victory => __('pages/scrims/index.outcome_victory'),
-            self::Defeat => __('pages/scrims/index.outcome_defeat'),
-            self::Draw => __('pages/scrims/index.outcome_draw'),
+            self::Victory => __('enums/scrim-outcome.victory'),
+            self::Defeat => __('enums/scrim-outcome.defeat'),
+            self::Draw => __('enums/scrim-outcome.draw'),
         };
     }
 

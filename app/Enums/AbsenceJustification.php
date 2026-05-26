@@ -12,10 +12,10 @@ enum AbsenceJustification: string
     public function label(): string
     {
         return match ($this) {
-            self::MEDICAL => 'Médical',
-            self::EXAM => 'Examen',
-            self::VACATION => 'Vacances',
-            self::OTHER => 'Autre',
+            self::MEDICAL => __('enums/absence-justification.medical'),
+            self::EXAM => __('enums/absence-justification.exam'),
+            self::VACATION => __('enums/absence-justification.vacation'),
+            self::OTHER => __('enums/absence-justification.other'),
         };
     }
 

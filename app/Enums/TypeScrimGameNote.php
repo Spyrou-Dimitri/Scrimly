@@ -10,8 +10,8 @@ enum TypeScrimGameNote: string
     public function label(): string
     {
         return match ($this) {
-            self::POSITIVE => 'Positive',
-            self::NEGATIVE => 'Negative',
+            self::POSITIVE => __('enums/type-scrim-game-note.positive'),
+            self::NEGATIVE => __('enums/type-scrim-game-note.negative'),
         };
     }
 }

@@ -11,9 +11,9 @@ enum StatusTask: string
     public function label(): string
     {
         return match ($this) {
-            self::TODO => 'À faire',
-            self::IN_PROGRESS => 'En cours',
-            self::DONE => 'Terminé',
+            self::TODO => __('enums/status-task.todo'),
+            self::IN_PROGRESS => __('enums/status-task.in_progress'),
+            self::DONE => __('enums/status-task.done'),
         };
     }
 

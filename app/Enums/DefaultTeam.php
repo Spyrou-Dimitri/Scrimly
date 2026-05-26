@@ -11,7 +11,6 @@ enum DefaultTeam: string
     case FRELJORD = 'Freljord';
     case VOID = 'Void';
 
-
     public function getPath(): string
     {
         return 'img/IconsTeams/'.$this->value.'.webp';
@@ -25,12 +24,12 @@ enum DefaultTeam: string
     public function label(): string
     {
         return match ($this) {
-            self::IONIA => 'Ionia',
-            self::NOXUS => 'Noxus',
-            self::PILTOVER => 'Piltover',
-            self::DEMACIA => 'Demacia',
-            self::FRELJORD => 'Freljord',
-            self::VOID => 'Void',
+            self::IONIA => __('enums/default-team.ionia'),
+            self::NOXUS => __('enums/default-team.noxus'),
+            self::PILTOVER => __('enums/default-team.piltover'),
+            self::DEMACIA => __('enums/default-team.demacia'),
+            self::FRELJORD => __('enums/default-team.freljord'),
+            self::VOID => __('enums/default-team.void'),
         };
     }
 }

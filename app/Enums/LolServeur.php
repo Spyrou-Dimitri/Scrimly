@@ -24,22 +24,22 @@ enum LolServeur: string
     public function label(): string
     {
         return match ($this) {
-            self::BR => 'Brésil',
-            self::EUNE => 'Europe du Nord et de l\'Est',
-            self::EUW => 'Europe de l\'Ouest',
-            self::JP => 'Japon',
-            self::KR => 'Corée du Sud',
-            self::LAN => 'Amérique latine Nord',
-            self::LAS => 'Amérique latine Sud',
-            self::NA => 'Amérique du Nord',
-            self::OCE => 'Océanie',
-            self::PH => 'Philippines',
-            self::RU => 'Russie',
-            self::SG => 'Singapour, Malaisie et Indonésie',
-            self::TR => 'Turquie',
-            self::TW => 'Taïwan, Hong Kong et Macao',
-            self::VN => 'Vietnam',
-            self::CN => 'Chine',
+            self::BR => __('enums/lol-serveur.br'),
+            self::EUNE => __('enums/lol-serveur.eune'),
+            self::EUW => __('enums/lol-serveur.euw'),
+            self::JP => __('enums/lol-serveur.jp'),
+            self::KR => __('enums/lol-serveur.kr'),
+            self::LAN => __('enums/lol-serveur.lan'),
+            self::LAS => __('enums/lol-serveur.las'),
+            self::NA => __('enums/lol-serveur.na'),
+            self::OCE => __('enums/lol-serveur.oce'),
+            self::PH => __('enums/lol-serveur.ph'),
+            self::RU => __('enums/lol-serveur.ru'),
+            self::SG => __('enums/lol-serveur.sg'),
+            self::TR => __('enums/lol-serveur.tr'),
+            self::TW => __('enums/lol-serveur.tw'),
+            self::VN => __('enums/lol-serveur.vn'),
+            self::CN => __('enums/lol-serveur.cn'),
         };
     }
 
@@ -47,6 +47,7 @@ enum LolServeur: string
     {
         return '--color-tag-server';
     }
+
     public function color(): string
     {
         return 'text-tag-server';
