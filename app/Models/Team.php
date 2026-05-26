@@ -54,6 +54,10 @@ class Team extends Model
     {
         return $this->hasMany(Event::class);
     }
+    public function scrims(): HasMany
+    {
+        return $this->hasMany(Scrim::class);
+    }
 
     public function sentScrimRequests(): HasMany
     {
@@ -63,6 +67,10 @@ class Team extends Model
     public function receivedScrimRequests(): HasMany
     {
         return $this->hasMany(ScrimRequest::class, 'receiver_team_id');
+    }
+    public function tasks(): HasMany
+    {
+        return $this->hasMany(Task::class);
     }
 
     protected function tag(): Attribute

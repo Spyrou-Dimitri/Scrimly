@@ -31,6 +31,10 @@ class Task extends Model
     {
         return $this->belongsTo(TeamMember::class, 'created_by');
     }
+    public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class);
+    }
 
     public function teamMember(): BelongsTo
     {
