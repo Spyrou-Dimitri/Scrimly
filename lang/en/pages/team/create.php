@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'title' => '<span class="text-gold">Create</span> a team',
+    'slogan' => 'Start by creating your team to access collaborative features.',
+    'description' => 'Description',
+    'description_placeholder' => 'Your team description',
+    'team_name' => 'Team name',
+    'team_name_placeholder' => 'Telecom 1',
+    'team_tag' => 'Team tag',
+    'team_tag_placeholder' => 'T1',
+    'server' => 'Server',
+    'server_placeholder' => 'Server',
+    'goal' => 'Goal',
+    'goal_placeholder' => 'Goal',
+    'language' => 'Language',
+    'roleInTeam' => 'Role in team',
+    'roleInGame' => 'In-game role',
+    'cancel' => 'Cancel',
+    'create' => 'Create team',
+    'logo' => 'Your team logo',
+    'logo_section_title' => 'Team logo',
+    'logo_section_description' => 'Personalize your team by uploading a logo image.',
+    'logo_preview_placeholder' => 'Your logo will appear here after upload.',
+    'upload_logo' => 'Upload a logo',
+    'choose_logo_preset' => 'Or choose a preset logo',
+    'logo_image_alt' => 'Team logo',
+];

@@ -195,6 +195,38 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'email' => 'email address',
+        'password' => 'password',
+        'name' => 'name',
+        'first_name' => 'first name',
+        'last_name' => 'last name',
+        'username' => 'username',
+        'riot_tag' => 'Riot ID',
+        'phone' => 'phone',
+        'address' => 'address',
+        'city' => 'city',
+        'country' => 'country',
+        'postal_code' => 'postal code',
+        'message' => 'message',
+        'subject' => 'subject',
+        'date' => 'date',
+        'title' => 'title',
+        'description' => 'description',
+        'content' => 'content',
+        'price' => 'price',
+        'quantity' => 'quantity',
+        'riot_tag' => 'Riot ID',
+        'startTime.*' => 'start time',
+        'endTime.*' => 'end time',
+        'justification' => 'justification',
+        'absenceDay' => 'absence date',
+        'dueDate' => 'Due date',
+        'assigneeUserId' => 'Player',
+        'files.*' => 'file',
+        'links.*.url' => 'link',
+        'links.*.title' => 'link title',
+
+    ],
 
 ];

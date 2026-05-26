@@ -1,0 +1,52 @@
+<?php
+
+return [
+    'page_title' => 'Add a game',
+    'scrim_label' => 'Scrim: :teams',
+    'main_fieldset_legend' => 'Main information',
+    'name_label' => 'Name',
+    'duration_label' => 'Game duration',
+    'duration_minutes_aria' => 'Minutes',
+    'duration_seconds_aria' => 'Seconds',
+    'minutes_suffix' => 'min',
+    'seconds_suffix' => 'sec',
+    'result_label' => 'Result',
+    'result_win' => 'Victory',
+    'result_loss' => 'Defeat',
+    'side_label' => 'Your team side',
+    'side_blue_side' => 'Blue',
+    'side_red_side' => 'Red',
+    'create_button' => 'Create game',
+    'update_button' => 'Save changes',
+    'cancel_button' => 'Cancel',
+    'name_placeholder' => 'Game 1',
+
+    'score_draft_legend' => 'Score & draft',
+    'draft_home_fieldset_legend' => 'Your team lineup — score and draft',
+    'draft_away_fieldset_legend' => 'Opponent lineup — score and draft',
+
+    'champion_label' => 'Champion played',
+    'champion_select_placeholder' => 'Select a champion',
+    'score_label' => 'Score',
+    'kda_kill_placeholder' => 'K',
+    'kda_death_placeholder' => 'D',
+    'kda_assist_placeholder' => 'A',
+
+    'opponent_lineup_name' => 'Opponent',
+
+    'role_top' => 'Top',
+    'role_jungle' => 'Jungle',
+    'role_mid' => 'Mid',
+    'role_bot' => 'Bot',
+    'role_support' => 'Support',
+
+    'notes_fieldset_legend' => 'Game notes',
+    'positive_notes_title' => 'Positive points',
+    'negative_notes_title' => 'Negative points',
+    'add_note' => 'Add',
+    'no_positive_notes' => 'No positive points',
+    'no_negative_notes' => 'No negative points',
+    'field_note_content' => 'Note',
+    'field_note_placeholder' => 'Excellent vision control around Baron at 20 min',
+    'error_too_short_note' => 'Note too short (minimum 3 characters)',
+];

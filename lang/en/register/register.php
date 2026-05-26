@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'title' => 'Sign up',
+    'welcome' => '<span class="text-gold">Create</span> your account',
+    'welcome_description' => 'Create your account to start using Scrimly',
+    'form_title' => 'Registration area',
+    'username' => 'Username',
+    'riot_id' => 'Riot ID',
+    'email' => 'Email',
+    'password' => 'Password',
+    'password_placeholder' => '**************',
+    'toggle_password' => 'Show or hide password',
+    'avatar_section_title' => 'Profile picture',
+    'avatar_section_description' => 'Personalize your account by uploading a photo.',
+    'choose_avatar' => 'Or choose an avatar',
+    'show_password' => 'Show password',
+    'hide_password' => 'Hide password',
+    'register' => 'Create my account',
+    'already_registered' => 'Already have an account?',
+    'title_cta' => 'Go to the sign-in area',
+    'login' => 'Sign in!',
+    'avatar_section_image' => 'Profile picture',
+    'upload_photo' => 'Upload a photo',
+    'preview_placeholder' => 'Your photo will appear here after upload.',
+];

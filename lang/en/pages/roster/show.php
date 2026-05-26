@@ -28,8 +28,8 @@ return [
         'level_badge' => 'Lvl :level',
     ],
     'availability' => [
-        'section_title' => 'Availability',
-        'add_availability' => 'Add availability',
+        'section_title' => 'Regular time slots',
+        'add_availability' => 'Edit',
     ],
     'homework' => [
         'empty' => 'No homework in progress.',
