@@ -51,6 +51,34 @@ class EditAvailabilitiesForm extends Form
         return $rules;
     }
 
+    protected function validationAttributes(): array
+    {
+        return [
+            'startTimes.*' => __('modals/edit-availabilities.start_time'),
+            'endTimes.*' => __('modals/edit-availabilities.end_time'),
+        ];
+    }
+
+    protected function messages(): array
+    {
+        $messages = [];
+
+        foreach (DayOfTheWeek::cases() as $day) {
+            $dayValue = $day->value;
+
+            $messages["startTimes.{$dayValue}.before"] = __('modals/edit-availabilities.start_time_before_end');
+            $messages["endTimes.{$dayValue}.after"] = __('modals/edit-availabilities.end_time_after_start');
+            $messages["startTimes.{$dayValue}.required"] = __('modals/edit-availabilities.start_time_required');
+            $messages["endTimes.{$dayValue}.required"] = __('modals/edit-availabilities.end_time_required');
+            $messages["startTimes.{$dayValue}.regex"] = __('modals/edit-availabilities.invalid_time');
+            $messages["endTimes.{$dayValue}.regex"] = __('modals/edit-availabilities.invalid_time');
+            $messages["startTimes.{$dayValue}.date_format"] = __('modals/edit-availabilities.invalid_time');
+            $messages["endTimes.{$dayValue}.date_format"] = __('modals/edit-availabilities.invalid_time');
+        }
+
+        return $messages;
+    }
+
     public function saveAvailabilities(int $teamMemberId): void
     {
         $this->validate();

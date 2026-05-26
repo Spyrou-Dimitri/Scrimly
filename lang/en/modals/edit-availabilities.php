@@ -21,4 +21,11 @@ return [
     'saturday_short' => 'Sat',
     'sunday_short' => 'Sun',
     'day' => 'Availability for',
+    'start_time' => 'start time',
+    'end_time' => 'end time',
+    'start_time_required' => 'The start time is required.',
+    'end_time_required' => 'The end time is required.',
+    'start_time_before_end' => 'The start time must be before the end time.',
+    'end_time_after_start' => 'The end time must be after the start time.',
+    'invalid_time' => 'The selected time is not valid.',
 ];
