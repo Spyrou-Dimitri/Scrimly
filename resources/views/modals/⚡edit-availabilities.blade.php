@@ -83,19 +83,22 @@ new class extends Component
                 <legend class="sr-only">
                     {{ __('modals/edit-availabilities.day') }} {{ $day->label() }}
                 </legend>
-                <label class="flex min-w-0 cursor-pointer items-center gap-3 sm:w-36">
-                    <input
-                        type="checkbox"
-                        wire:model.live="form.slotEnabled.{{ $day->value }}"
-                        class="size-5 shrink-0 cursor-pointer rounded border-2 border-gold-border bg-input-bg accent-gold">
-                    <span
-                        @class([ 'text-base font-medium' , 'text-text-primary'=> $form->slotEnabled[$day->value],
-                        'text-text-secondary' => ! $form->slotEnabled[$day->value],
-                        ])>
-                        {{ $day->label() }}
-                    </span>
-                </label>
-                <div class="flex flex-col gap-3 sm:flex-row sm:items-end">
+                <div class="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-x-3">
+                    <label class="flex min-w-0 cursor-pointer items-center gap-3 sm:w-36">
+                        <input
+                            type="checkbox"
+                            wire:model.live="form.slotEnabled.{{ $day->value }}"
+                            class="size-5 shrink-0 cursor-pointer rounded border-2 border-gold-border bg-input-bg accent-gold">
+                        <span
+                            @class([
+                                'text-base font-medium',
+                                'text-text-primary' => $form->slotEnabled[$day->value],
+                                'text-text-secondary' => ! $form->slotEnabled[$day->value],
+                            ])>
+                            {{ $day->label() }}
+                        </span>
+                    </label>
+                    <div class="flex flex-col gap-3 sm:flex-row sm:items-end">
                         <x-forms.select
                             :label="__('modals/edit-availabilities.from')"
                             :name="'availability-start-'.$day->value"
@@ -104,22 +107,30 @@ new class extends Component
                             :inputDisabled="! $form->slotEnabled[$day->value]"
                             :labelNextToSelect="true"
                             wire:model.live="form.startTimes.{{ $day->value }}" />
-                        <div class="flex flex-col gap-2">
-                            <x-forms.select
-                                :label="__('modals/edit-availabilities.to')"
-                                :name="'availability-end-'.$day->value"
-                                :options="$timeSlotOptions"
-                                :disabled="'-- : --'"
-                                :inputDisabled="! $form->slotEnabled[$day->value]"
-                                :labelNextToSelect="true"
-                                wire:model.live="form.endTimes.{{ $day->value }}" />
-                            @error("form.endTimes.{$day->value}")
+                        <x-forms.select
+                            :label="__('modals/edit-availabilities.to')"
+                            :name="'availability-end-'.$day->value"
+                            :options="$timeSlotOptions"
+                            :disabled="'-- : --'"
+                            :inputDisabled="! $form->slotEnabled[$day->value]"
+                            :labelNextToSelect="true"
+                            wire:model.live="form.endTimes.{{ $day->value }}" />
+                    </div>
+                </div>
+                @if ($errors->has("form.startTimes.{$day->value}") || $errors->has("form.endTimes.{$day->value}"))
+                    <div class="flex flex-col gap-1">
+                        @error("form.startTimes.{$day->value}")
                             <span class="font-spaceGrotesk text-input-error font-semibold">
                                 {{ $message }}
                             </span>
-                            @enderror
-                        </div>
+                        @enderror
+                        @error("form.endTimes.{$day->value}")
+                            <span class="font-spaceGrotesk text-input-error font-semibold">
+                                {{ $message }}
+                            </span>
+                        @enderror
                     </div>
+                @endif
             </fieldset>
 
             @endforeach
