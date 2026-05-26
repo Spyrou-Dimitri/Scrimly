@@ -21,6 +21,7 @@ return [
         resource_path('views/tabs'),
         resource_path('views/livewire'),
         resource_path('views/tasks-views'),
+        resource_path('views/dashboard-views'),
     ],
 
     /*
@@ -43,6 +44,7 @@ return [
         'tabs' => resource_path('views/tabs'),
         'livewire' => resource_path('views/livewire'),
         'tasks-views' => resource_path('views/tasks-views'),
+        'dashboard-views' => resource_path('views/dashboard-views'),
     ],
 
     /*

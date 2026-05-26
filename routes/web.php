@@ -7,13 +7,16 @@ Route::view('/login', 'login')->name('login')->middleware('guest');
 Route::view('/register', 'register')->name('register')->middleware('guest');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::view('dashboard', 'dashboard')->name('dashboard');
+    Route::view('dashboardddd', 'dashboard')->name('dashboarddddd');
     Route::livewire('team', 'pages::team.index')->name('team.index');
     Route::livewire('team/create', 'pages::team.create')->name('team.create');
     Route::livewire('team/join', 'pages::team.join')->name('team.join');
     Route::livewire('profile.show', 'pages::profile.show')->name('profile.show');
 
     Route::middleware('ensure.user.has.active.team')->group(function () {
+
+        // Dashboard
+        Route::livewire('/{slug}/dashboard', 'pages::dashboard')->name('dashboard');
 
         // Team
         Route::livewire('/{slug}/team/show/{id}', 'pages::team.show')->name('team.show');

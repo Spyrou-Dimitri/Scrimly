@@ -21,7 +21,7 @@ new class extends Component
                 'label' => __('layouts/team.nav.dashboard'),
                 'icon' => 'squares-2x2',
                 'route' => 'dashboard',
-                'href' => route('dashboard'),
+                'href' => route('dashboard', ['slug' => currentTeam()->slug]),
             ],
             [
                 'label' => __('layouts/team.nav.calendar'),
@@ -100,7 +100,7 @@ new class extends Component
         </h2>
         <div class="flex h-16 items-center px-6 flex-shrink-0">
             <a
-                href="{{ route('dashboard') }}"
+                href="{{ route('dashboard', ['slug' => currentTeam()->slug]) }}"
                 wire:navigate
                 class="text-gold text-2xl font-bold tracking-wide">
                 Scrimly
