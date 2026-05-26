@@ -309,7 +309,6 @@ class DemoDataSeeder extends Seeder
     {
         $targetPairs = (int) (self::TARGET_SCRIM_RECORDS / 2);
         $pairsCreated = 0;
-        $completedTarget = (int) round($targetPairs * 0.7);
 
         $teamsById = collect($teams)->keyBy('id');
         $schedulingDates = collect($this->buildScrimSchedulingDates());
@@ -337,8 +336,9 @@ class DemoDataSeeder extends Seeder
                 $requesterTeamId = array_pop($freeTeamIds);
                 $receiverTeamId = array_pop($freeTeamIds);
 
-                $isCompleted = $pairsCreated < $completedTarget
-                    && $date->copy()->endOfDay()->lte(now());
+                $status = $date->copy()->endOfDay()->lte(now())
+                    ? StatusScrim::COMPLETED
+                    : StatusScrim::SCHEDULED;
 
                 $slot = $this->slotForDate($date);
                 $this->reserveTeamsOnDate($busyDatesByTeamId, $requesterTeamId, $receiverTeamId, $slot['scheduled_date']);
@@ -347,7 +347,7 @@ class DemoDataSeeder extends Seeder
                     $teamsById[$requesterTeamId],
                     $teamsById[$receiverTeamId],
                     $slot,
-                    $isCompleted ? StatusScrim::COMPLETED : StatusScrim::SCHEDULED,
+                    $status,
                 );
 
                 $pairsCreated++;

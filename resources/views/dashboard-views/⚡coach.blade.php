@@ -43,6 +43,7 @@ new class extends Component
     {
         return $this->team->scrims()
             ->with('opponentTeam')
+            ->where('scheduled_date', '>=', now())
             ->where('status', StatusScrim::SCHEDULED)
             ->orderBy('scheduled_date', 'asc')
             ->first();
@@ -59,10 +60,10 @@ new class extends Component
 ?>
 
 <div>
-    {{ $this->membersCount }} membres
-    {{ $this->scrimsCount }} scrims
-    {{ $this->tasksInProgressCount }} tâches en cours
-    {{ $this->nextScrim ? 'Prochain scrim : ' . $this->nextScrim->opponentTeam->name : 'Aucun scrim programmé' }}
-    {{ $this->nextEvent ? 'Prochain événement : ' . $this->nextEvent->title : 'Aucun événement programmé' }}
-
+    <section>
+        <h2 class="text-[32px] font-bold">
+            {!! __('pages/dashboard/index.coach.title', ['teamMemberName' => Auth::user()->username, 'teamName' => $this->team->name]) !!}
+        </h2>
+    </section>
+    <div id="winrate-chart"></div>
 </div>
