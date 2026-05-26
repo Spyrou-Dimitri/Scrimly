@@ -153,11 +153,7 @@ new #[Layout('layouts::team')] class extends Component {
                 <div class="relative z-[1] flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between xl:gap-4">
                     <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between md:gap-4 xl:contents">
                         <div class="flex min-w-0 shrink-0 items-center gap-3 md:gap-4">
-                            @if ($candidate->user->avatar)
-                            <img class="aspect-square h-auto w-16 shrink-0 object-cover md:w-20 xl:w-[96px]" src="{{Storage::disk('public')->url('images/avatar/variants/480x480/' . $candidate->user->avatar)}}" alt="Photo de profil de {{ $candidate->user->username }}">
-                            @else
-                            <img src="{{ asset('/img/basicIcon.webp') }}" class="aspect-square h-auto w-16 shrink-0 object-cover md:w-20 xl:w-[96px]" alt="Photo de profil de {{ $candidate->user->username }}">
-                            @endif
+                            <img class="aspect-square h-auto w-16 shrink-0 object-cover md:w-20 xl:w-[96px]" src="{{$candidate->user->avatar_url}}" alt="Photo de profil de {{ $candidate->user->username }}">
                             <div class="min-w-0">
                                 <h3 class="truncate text-lg font-bold text-gold md:text-xl xl:text-2xl">{{ $candidate->user->username }}</h3>
                                 <p class="truncate text-sm text-text-gray md:text-base">{{ $candidate->user->riot_tag }}</p>
