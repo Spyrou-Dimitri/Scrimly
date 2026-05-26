@@ -113,9 +113,14 @@ new #[Layout('layouts::team')] class extends Component
             </div>
             <div class="w-full grid grid-cols-1 gap-4 md:grid-cols-9  lg:gap-8">
                 <div class="flex flex-row flex-wrap md:flex-col gap-2 md:col-span-3">
+                    
                     <div class="flex-1 flex flex-col gap-1">
                         <span class="text-base text-white">{{ __('pages/roster/show.role_in_game_label') }}</span>
-                        <span class="text-xl font-semibold text-gold">{{ $teamMember->roleInGame->label() }}</span>
+                        @if ($teamMember->roleInGame)
+                            <span class="text-xl font-semibold text-gold">{{ $teamMember->roleInGame->label() }}</span>
+                        @else
+                            <span class="text-xl font-semibold text-text-gray"> - </span>
+                        @endif
                     </div>
                     <div class="flex-1 flex flex-col gap-1">
                         <span class="text-base text-white">{{ __('pages/roster/show.kda_average_label') }}</span>
