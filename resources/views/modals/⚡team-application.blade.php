@@ -121,20 +121,16 @@ new class extends Component
 
 <div>
     <x-layout.head-modal :width="'5xl'" :height="'75'" :title="__('modals/team-application.title') . ' ' . $this->candidate->user->username">
-        <div class="flex flex-col md:flex-row md:items-center lg:grid lg:grid-cols-12 gap-6">
+        <div class="flex flex-col md:flex-row md:items-center lg:grid lg:grid-cols-12 mb-6 gap-6">
             <div class="flex flex-col md:flex-row items-center gap-4 md:items-center md:shrink-0 lg:col-span-3">
-                @if ($this->candidate->user->avatar)
-                <img class="w-full h-auto md:w-20 md:h-20 object-cover" src="{{Storage::disk('public')->url('images/avatar/variants/480x480/' . $this->candidate->user->avatar)}}" alt="Photo de profil de {{ $this->candidate->user->username }}">
-                @else
-                <img src="{{ asset('/img/basicIcon.webp') }}" class="w-full h-auto md:w-20 md:h-20 object-cover" alt="Photo de profil de {{ $this->candidate->user->username }}">
-                @endif
-                <div class="text-center md:text-left">
+                <img class="w-full h-auto md:w-20 md:h-20 object-cover" src="{{$this->candidate->user->avatar_url}}" alt="Photo de profil de {{ $this->candidate->user->username }}">
+                <div class="flex flex-col gap-1 text-center md:text-left">
                     <h3 class="text-2xl text-gold font-bold">{{ $this->candidate->user->username }}</h3>
                     <p class="text-text-gray">{{ $this->candidate->user->riot_tag }}</p>
                 </div>
             </div>
             <div class="flex flex-wrap justify-around gap-6 md:flex-1 lg:contents">
-                <div class="text-center lg:col-span-3">
+                <div class="text-center lg:col-span-3 flex flex-col gap-1">
                     <p class="text-text-gray">Role souhaite</p>
                     <div class="text-xl font-bold text-white flex justify-center items-center gap-2">
                         @if ($candidate->roleInTeam === RoleInTeam::COACH || $candidate->roleInTeam === RoleInTeam::STAFF)
@@ -142,11 +138,10 @@ new class extends Component
                         @else
                         <img src="{{ asset($this->candidate->roleInGame->icon()) }}" class="w-8 h-8" alt="{{ $this->candidate->roleInGame->label() }}">
                         <p>{{ $this->candidate->roleInGame->label() }}</p>
-                        <p>{{ $this->candidate->roleInGame->label() }}</p>
                         @endif
                     </div>
                 </div>
-                <div class="text-center lg:col-span-3">
+                <div class="text-center lg:col-span-3 flex flex-col gap-1">
                     <p class="text-text-gray">Rang actuel</p>
                     <div class="text-xl font-bold text-white flex justify-center items-center gap-2">
                         @if ($this->candidate->user->tier)
@@ -159,26 +154,29 @@ new class extends Component
                         @endif
                     </div>
                 </div>
-                <div class="text-center lg:col-span-3">
+                <div class="text-center lg:col-span-3 flex flex-col gap-1">
                     <p class="text-text-gray">Winrate</p>
-                    <p class="text-gold text-xl font-bold">
-                        @if ($this->candidate->user->riotProfile)
-                        {{ $this->candidate->user->riotProfile->getWinratePercentage() }}% 
-                        @else
-                        -
-                        @endif
-                    </p>
-                    <p class="text-text-white text-sm">
-                        @if ($this->candidate->user->riotProfile)
-                        {{ $this->candidate->user->riotProfile->wins }}V / {{ $this->candidate->user->riotProfile->losses }}D
-                        @else
-                        -
-                        @endif
-                    </p>
+                    <div class="flex flex-col gap-0.5">
+                        <p class="text-gold text-xl font-bold">
+                            @if ($this->candidate->user->riotProfile)
+                            {{ $this->candidate->user->riotProfile->getWinratePercentage() }}%
+                            @else
+                            -
+                            @endif
+                        </p>
+                        <p class="text-text-white text-sm">
+                            @if ($this->candidate->user->riotProfile)
+                            {{ $this->candidate->user->riotProfile->wins }}V / {{ $this->candidate->user->riotProfile->losses }}D
+                            @else
+                            -
+                            @endif
+                        </p>
+                    </div>
+
                 </div>
             </div>
         </div>
-        <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-2 mb-6">
             <h3 class="text-gold font-bold text-2xl">Motivation</h3>
             <p class="text-white">{{ $this->candidate->motivation }}</p>
         </div>
@@ -186,7 +184,7 @@ new class extends Component
         @can('manageTeam', User::class)
         <div class="border-t-2 border-gray-500 pt-6">
             <fieldset>
-                <legend class="mb-6 text-gold font-bold text-xl lg:text-2xl">
+                <legend class="mb-2 text-gold font-bold text-xl lg:text-2xl">
                     Gestion de la candidature
                 </legend>
                 <div class="grid gap-4">
