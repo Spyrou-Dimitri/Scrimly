@@ -7,6 +7,7 @@ use App\Enums\StatusTask;
 use App\Models\Scrim;
 use App\Enums\StatusScrim;
 use App\Models\Event;
+use App\Enums\StatusApplication;
 
 new class extends Component
 {
@@ -56,14 +57,92 @@ new class extends Component
             ->orderBy('date', 'asc')
             ->first();
     }
+    #[Computed]
+    public function teamApplicationsCount(): int
+    {
+        return $this->team->teamApplications()->where('status', StatusApplication::PENDING)->count();
+    }
 };
 ?>
 
 <div>
-    <section>
+    <section class="flex flex-col gap-6">
         <h2 class="text-[32px] font-bold">
             {!! __('pages/dashboard/index.coach.title', ['teamMemberName' => Auth::user()->username, 'teamName' => $this->team->name]) !!}
         </h2>
+        <div class="flex flex-row flex-wrap justify-center md:grid md:grid-cols-13 gap-6">
+            <div class=" w-full md:col-span-4 md:row-span-2 bg-bg-widget justify-center p-6 shadow-basic">
+                <p class="text-text-secondary ">
+                    {{__('pages/dashboard/index.coach.winrate')}}
+                </p>
+                <div class="" id="winrate-chart"></div>
+            </div>
+            <div class="flex flex-row flex-wrap justify-center gap-6 sm:grid md:col-span-9 sm:grid-cols-9 md:row-span1">
+                <div class="flex flex-col gap-2 bg-bg-widget justify-center w-full p-6 shadow-basic  sm:col-span-3">
+                    <p class="text-text-secondary ">
+                        {{__('pages/dashboard/index.coach.members_count')}}
+                    </p>
+                    <p class="text-[40px] leading-none text-center text-gold font-bold">
+                        {{ $this->membersCount }}
+                    </p>
+                </div>
+                <div class="flex flex-col gap-2 bg-bg-widget justify-center p-6 shadow-basic  w-full sm:col-span-3">
+                    <p class="text-text-secondary ">
+                        {{__('pages/dashboard/index.coach.scrims_count')}}
+                    </p>
+                    <p class="text-[40px] leading-none text-center text-gold font-bold">
+                        {{ $this->scrimsCount }}
+                    </p>
+                </div>
+                <div class="flex flex-col gap-2 bg-bg-widget justify-center p-6 shadow-basic  w-full sm:col-span-3">
+                    <p class="text-text-secondary ">
+                        {{__('pages/dashboard/index.coach.tasks_count')}}
+                    </p>
+                    <p class="text-[40px] leading-none text-center text-gold font-bold">
+                        {{ $this->tasksInProgressCount }}
+                    </p>
+                </div>
+            </div>
+            <div class="flex flex-row flex-wrap justify-center gap-6 sm:grid md:col-span-9 sm:grid-cols-9 md:row-span-1">
+                <div class="flex flex-col gap-2 bg-bg-widget justify-center p-6 shadow-basic  w-full sm:col-span-3">
+                    <p class="text-text-secondary ">
+                        {{__('pages/dashboard/index.coach.next_scrim')}}
+                    </p>
+                    @if ($this->nextScrim)
+                    <p class="text-2xl text-center text-gold font-bold">
+                        {{ $this->nextScrim->opponentTeam->name }}
+                    </p>
+                    @else
+                    <p class="text-2xl text-center text-gold font-bold">
+                        -
+                    </p>
+                    @endif
+                </div>
+                <div class="flex flex-col gap-2 bg-bg-widget justify-center p-6 shadow-basic  w-full sm:col-span-3">
+                    <p class="text-text-secondary ">
+                        {{__('pages/dashboard/index.coach.next_event')}}
+                    </p>
+                    @if ($this->nextEvent)
+                    <p class="text-2xl text-center text-gold font-bold">
+                        {{ $this->nextEvent->title }}
+                    </p>
+                    @else
+                    <p class="text-2xl text-center text-gold font-bold">
+                        -
+                    </p>
+                    @endif
+                </div>
+                <div class="flex flex-col gap-2 bg-bg-widget justify-center p-6 shadow-basic  w-full sm:col-span-3">
+                    <p class="text-text-secondary ">
+                        {{__('pages/dashboard/index.coach.team_applications_count')}}
+                    </p>
+                    <p class="text-[40px] leading-none text-center text-gold font-bold  w-full">
+                        {{ $this->teamApplicationsCount }}
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
     </section>
-    <div id="winrate-chart"></div>
 </div>
