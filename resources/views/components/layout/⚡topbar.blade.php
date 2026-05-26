@@ -57,6 +57,45 @@ new class extends Component
 
         $this->redirectRoute('roster.index', ['slug' => $team->slug]);
     }
+    public function setLocale(string $locale): void
+    {
+        if (! $this->currentUser) {
+            return;
+        }
+
+        if (! in_array($locale, config('locales.supported'), true)) {
+            $this->dispatch('toast', [
+                'title' => __('layouts/team.language_not_supported_title'),
+                'message' => __('layouts/team.language_not_supported'),
+                'type' => 'error',
+            ]);
+
+            return;
+        }
+
+        $this->currentUser->update(['locale' => $locale]);
+        session(['locale' => $locale]);
+
+        // Cas ou le navigateur limite le referer (Mise en place du à une explication de l'IA)
+        $fallback = $this->team
+            ? route('roster.index', ['slug' => $this->team->slug])
+            : route('team.index');
+
+        $redirectUrl = request()->headers->get('Referer') ?? url()->previous();
+
+        $appHost = parse_url(config('app.url'), PHP_URL_HOST);
+        $redirectHost = is_string($redirectUrl) ? parse_url($redirectUrl, PHP_URL_HOST) : null;
+
+        if (
+            blank($redirectUrl)
+            || str_contains($redirectUrl, '/livewire')
+            || ($redirectHost !== null && $appHost !== null && $redirectHost !== $appHost)
+        ) {
+            $redirectUrl = $fallback;
+        }
+
+        $this->redirect($redirectUrl, navigate: false);
+    }
 };
 ?>
 
@@ -85,7 +124,7 @@ new class extends Component
                         src="{{ $team->logo_url }}"
                         alt="{{ $team->name }}"
                         class="w-9 h-9 object-contain">
-                    
+
                     <div class="flex items-center relative gap-2 transition ease-in-out duration-150 hover:text-gold">
                         <span class="text-inherit font-semibold text-base lg:text-lg truncate">
                             {{ $team->name }}
@@ -108,7 +147,6 @@ new class extends Component
                 </li>
                 @foreach ($userTeams as $userTeam)
                 <li class="">
-
                     <button wire:click="switchTeam({{ $userTeam->id }})" class="px-3 hover:text-gold transition ease-in-out duration-150 flex items-center gap-2 cursor-pointer">
                         @if ($userTeam->logo)
                         <img src="{{ Storage::disk('public')->url('images/logoTeam/variants/128x128/' . $userTeam->logo) }}"
@@ -137,6 +175,76 @@ new class extends Component
     </div>
 
     <div class="flex items-center gap-3 lg:gap-5">
+        @php
+        $currentLocale = in_array(app()->getLocale(), ['fr', 'en'], true) ? app()->getLocale() : 'fr';
+        @endphp
+        <div
+            x-data="{ openLocale: false }"
+            @click.outside="openLocale = false"
+            class="relative">
+            <button
+                type="button"
+                @click="openLocale = !openLocale"
+                class="flex items-center text-white gap-2 min-w-0 hover:text-gold transition-colors cursor-pointer"
+                aria-label="{{ __('layouts/team.language_aria') }}"
+                aria-haspopup="listbox"
+                :aria-expanded="openLocale">
+                <span
+                    @class([ 'fi fis shrink-0 rounded-sm ring-1 ring-white/10' , 'fi-fr'=> $currentLocale === 'fr',
+                    'fi-gb' => $currentLocale === 'en',
+                    ])
+                    style="font-size: 1.5rem; line-height: 1.5rem;"
+                    aria-hidden="true"></span>
+                <div class="flex items-center relative gap-2 transition ease-in-out duration-150">
+                    <span class="text-inherit font-semibold text-sm lg:text-base truncate">
+                        {{ $currentLocale === 'en' ? __('layouts/team.language_en') : __('layouts/team.language_fr') }}
+                    </span>
+                    <flux:icon.chevron-down class="size-4" />
+                </div>
+            </button>
+            <ul
+                x-show="openLocale"
+                x-transition
+                x-cloak
+                role="listbox"
+                class="absolute top-full right-0 mt-3 flex flex-col gap-4 w-48 origin-top shadow-lg bg-bg-widget p-4 z-50">
+                <li>
+                    <button
+                        wire:click="setLocale('fr')"
+                        type="button"
+                        class="w-full px-3 hover:text-gold transition ease-in-out duration-150 flex items-center gap-2 cursor-pointer {{ $currentLocale === 'fr' ? 'text-gold' : 'text-white' }}">
+                        <span class="fi fi-fr fis shrink-0 rounded-sm ring-1 ring-white/10" style="font-size: 1.5rem; line-height: 1.5rem;" aria-hidden="true"></span>
+                        <span class="relative font-medium
+                            before:content-[''] before:w-full before:h-[2px]
+                            before:scale-x-0 before:bg-gold
+                            before:absolute before:-bottom-0.5 before:left-0
+                            before:origin-left
+                            before:transition-transform before:duration-150 before:ease-in-out
+                            hover:before:scale-x-100">
+                            {{ __('layouts/team.language_fr') }}
+                        </span>
+                    </button>
+                </li>
+                <li>
+                    <button
+                        wire:click="setLocale('en')"
+                        type="button"
+                        class="w-full px-3 hover:text-gold transition ease-in-out duration-150 flex items-center gap-2 cursor-pointer {{ $currentLocale === 'en' ? 'text-gold' : 'text-white' }}">
+                        <span class="fi fi-gb fis shrink-0 rounded-sm ring-1 ring-white/10" style="font-size: 1.5rem; line-height: 1.5rem;" aria-hidden="true"></span>
+                        <span class="relative font-medium
+                            before:content-[''] before:w-full before:h-[2px]
+                            before:scale-x-0 before:bg-gold
+                            before:absolute before:-bottom-0.5 before:left-0
+                            before:origin-left
+                            before:transition-transform before:duration-150 before:ease-in-out
+                            hover:before:scale-x-100">
+                            {{ __('layouts/team.language_en') }}
+                        </span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+
         <button
 
             class="relative p-2 text-white hover:text-gold transition-colors cursor-pointer"
@@ -159,7 +267,7 @@ new class extends Component
                 <img src="{{ $this->currentUser->avatar_url }}"
                     alt="{{ $this->currentUser->username }}"
                     class="size-9 rounded-full object-cover flex-shrink-0">
-                
+
 
                 <span class="hidden sm:inline-block relative text-white font-medium max-w-[160px]
                  before:content-[''] before:absolute before:bottom-0 before:left-0 

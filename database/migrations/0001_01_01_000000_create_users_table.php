@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('avatar_type')->default('default');
             $table->string('avatar_value')->default('Camille');
+            $table->string('locale')->default('fr');
             $table->unsignedBigInteger('current_team_id')->nullable()->index();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

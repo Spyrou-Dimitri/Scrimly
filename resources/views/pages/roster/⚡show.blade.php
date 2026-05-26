@@ -90,7 +90,7 @@ new #[Layout('layouts::team')] class extends Component
                 class="aspect-square w-full object-cover">
         </div>
         <div class="flex w-full flex-col items-center gap-4 md:gap-6 text-center lg:col-span-9 lg:col-start-4 lg:items-stretch lg:justify-center lg:text-left">
-            <div class="flex min-w-0 flex-col items-center lg:items-start">
+            <div class="flex min-w-0 flex-col items-center lg:items-start gap-1">
                 <div class="flex justify-center gap-2 sm:gap-4 flex-wrap">
                     <h2 class="font-spaceGrotesk text-3xl font-bold text-gold md:text-4xl">{{ $user->username }}</h2>
                     <div class="flex shrink-0 items-center gap-2">
@@ -112,9 +112,9 @@ new #[Layout('layouts::team')] class extends Component
                 @endif
             </div>
             <div class="w-full grid grid-cols-1 gap-4 md:grid-cols-9  lg:gap-8">
-                <div class="flex flex-row flex-wrap md:flex-col gap-2 md:col-span-3">
+                <div class="flex flex-row flex-wrap md:flex-col gap-2 lg:gap-4 md:col-span-3">
                     
-                    <div class="flex-1 flex flex-col gap-1">
+                    <div class="flex-1 flex flex-col gap-1 md:flex-none">
                         <span class="text-base text-white">{{ __('pages/roster/show.role_in_game_label') }}</span>
                         @if ($teamMember->roleInGame)
                             <span class="text-xl font-semibold text-gold">{{ $teamMember->roleInGame->label() }}</span>
@@ -122,18 +122,18 @@ new #[Layout('layouts::team')] class extends Component
                             <span class="text-xl font-semibold text-text-gray"> - </span>
                         @endif
                     </div>
-                    <div class="flex-1 flex flex-col gap-1">
+                    <div class="flex-1 flex flex-col gap-1 md:flex-none">
                         <span class="text-base text-white">{{ __('pages/roster/show.kda_average_label') }}</span>
                         <span class="text-xl font-semibold text-gold">{{ number_format($kda, 2, ',', ' ') }}</span>
                     </div>
                 </div>
 
-                <div class="flex flex-row flex-wrap gap-2 md:flex-col md:col-span-3">
-                    <div class="flex-1 flex flex-col gap-1">
+                <div class="flex flex-row flex-wrap gap-2 lg:gap-4 md:flex-col md:col-span-3">
+                    <div class="flex-1 flex flex-col gap-1 md:flex-none">
                         <span class="text-base text-white">{{ __('pages/roster/show.role_in_team_label') }}</span>
                         <span class="text-xl font-semibold text-gold">{{ $teamMember->roleInTeam->label() }}</span>
                     </div>
-                    <div class="flex-1 flex flex-col gap-1">
+                    <div class="flex-1 flex flex-col gap-1 md:flex-none">
                         <span class="text-base text-white">{{ __('pages/roster/show.winrate_label') }}</span>
                         <span class="text-xl font-semibold text-gold">{{ $winrate }}%</span>
                         <div class="h-2 w-full lg:w-1/2 overflow-hidden bg-bg-card">
@@ -144,16 +144,16 @@ new #[Layout('layouts::team')] class extends Component
                     </div>
                 </div>
 
-                <div class="flex flex-row flex-wrap gap-2 md:flex-col md:col-span-3">
-                    <div class="flex-1 flex flex-col gap-1">
+                <div class="flex flex-row flex-wrap gap-2 lg:gap-4 md:flex-col md:col-span-3">
+                    <div class="flex-1 flex flex-col gap-1 md:flex-none">
                         <span class="text-base text-white">{{ __('pages/roster/show.member_since_label') }}</span>
                         <span class="text-xl font-semibold text-gold">
                             {{ $teamMember->joined_at?->format('d/m/Y') ?? __('pages/roster/show.member_since_unknown') }}
                         </span>
                     </div>
-                    <div class="flex-1 flex flex-col gap-2">
+                    <div class="flex-1 flex flex-col gap-2 md:flex-none">
                         <span class="text-base text-white">{{ __('pages/roster/show.recent_champions_label') }}</span>
-                        <div class="flex items-center justify-center md:justify-start gap-2" aria-hidden="true">
+                        <div class="flex items-center justify-center lg:justify-start gap-2" aria-hidden="true">
                             @foreach ($recentChampions as $champion)
                             <img src="https://ddragon.leagueoflegends.com/cdn/{{ $ddragonVersion }}/img/champion/{{ $champion }}.png" alt="Champion" class="aspect-square w-12 shrink-0 rounded border border-[#2C2D34] bg-bg-card/60">
                             @endforeach

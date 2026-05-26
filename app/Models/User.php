@@ -28,6 +28,7 @@ class User extends Authenticatable
         'password',
         'avatar_type',
         'avatar_value',
+        'locale',
         'current_team_id',
     ];
 

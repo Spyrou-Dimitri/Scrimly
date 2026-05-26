@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import '../../vendor/livewire/flux/dist/flux.css';
+@import 'flag-icons/css/flag-icons.min.css';
 @import './fullcalendar.css';
 
 @source '../views';
