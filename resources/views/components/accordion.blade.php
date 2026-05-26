@@ -26,7 +26,7 @@
                     @endif
                 </h3>
             @else
-                <h2 class="text-[32px] fontbold">
+                <h2 class="text-[32px] font-bold">
                     {{ $title }}
                     @if ($count)
                         <span class="text-gold font-bold">({{ $count }})</span>
