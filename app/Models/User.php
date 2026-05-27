@@ -40,7 +40,7 @@ class User extends Authenticatable
     public function getAvatarUrlAttribute(): string
     {
         if ($this->avatar_type === 'upload' && $this->avatar_value) {
-            return Storage::disk('public')->url('images/avatar/variants/480x480/'.$this->avatar_value);
+            return Storage::disk('public')->url('images/avatar/variants/400x400/'.$this->avatar_value);
         }
 
         if ($this->avatar_type === 'default' && $this->avatar_value) {
@@ -48,6 +48,17 @@ class User extends Authenticatable
         }
 
         return asset('img/avatars/defaults/Camille.webp');
+    }
+
+    public function getAvatarSrcsetAttribute(): ?string
+    {
+        if ($this->avatar_type !== 'upload' || blank($this->avatar_value)) {
+            return null;
+        }
+        $value = $this->avatar_value;
+        $url = fn (int $size) => Storage::disk('public')->url("images/avatar/variants/{$size}x{$size}/{$value}");
+        return "{$url(70)} 70w, {$url(400)} 400w, {$url(620)} 620w";
+
     }
 
     protected function riotTag(): Attribute

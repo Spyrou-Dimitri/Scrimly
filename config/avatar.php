@@ -2,10 +2,10 @@
 
 return [
     'sizes' => [
-        'table' => ['width' => '128', 'height' => '128'],
-        'small' => ['width' => '480', 'height' => '480'],
-        'medium' => ['width' => '720', 'height' => '720'],
-        'large' => ['width' => '930', 'height' => '930'],
+        'thumbnail' => ['width' => '70', 'height' => '70'],
+        'card-medium' => ['width' => '400', 'height' => '400'],
+        'card-large' => ['width' => '620', 'height' => '620'],
+        
     ],
     'jpeg_compression' => 80,
     'original_path' => 'images/avatar/originals',
