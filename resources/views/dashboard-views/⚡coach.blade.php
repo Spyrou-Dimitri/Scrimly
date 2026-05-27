@@ -58,6 +58,22 @@ new class extends Component
             ->first();
     }
     #[Computed]
+    public function winrateInScrims()
+    {
+        $allScrimGames = 0;
+        $allScrimGamesVictory = 0;
+        $querryForAllScrims = Scrim::query()
+            ->where('team_id', $this->team->id)
+            ->with('scrimGames')
+            ->get();
+            foreach ($querryForAllScrims as $scrim) {
+                $allScrimGames += $scrim->scrimGames->count();
+                $allScrimGamesVictory += $scrim->scrimGames->where('is_victory', true)->count();
+            }
+
+        return $allScrimGamesVictory / $allScrimGames * 100;
+    }
+    #[Computed]
     public function teamApplicationsCount(): int
     {
         return $this->team->teamApplications()->where('status', StatusApplication::PENDING)->count();
@@ -66,33 +82,28 @@ new class extends Component
 ?>
 
 <div>
+    @dump($this->winrateInScrims)
     <section class="flex flex-col gap-6">
         <h2 class="text-[32px] font-bold">
             {!! __('pages/dashboard/index.coach.title', ['teamMemberName' => Auth::user()->username, 'teamName' => $this->team->name]) !!}
         </h2>
         <div class="flex flex-row flex-wrap justify-center md:grid md:grid-cols-13 gap-6">
             <div class=" w-full md:col-span-4 md:row-span-2 bg-bg-widget justify-center p-6 shadow-basic">
-                <p class="text-text-secondary ">
-                    {{__('pages/dashboard/index.coach.winrate')}}
-                </p>
                 <div class="" id="winrate-chart"></div>
             </div>
             <div class="flex flex-row flex-wrap justify-center gap-6 sm:grid md:col-span-9 sm:grid-cols-9 md:row-span1">
                 <x-cards.stats-dashboard
                     class="sm:col-span-3"
                     :title="__('pages/dashboard/index.coach.members_count')"
-                    :value="$this->membersCount"
-                />
+                    :value="$this->membersCount" />
                 <x-cards.stats-dashboard
                     class="sm:col-span-3"
                     :title="__('pages/dashboard/index.coach.scrims_count')"
-                    :value="$this->scrimsCount"
-                />
+                    :value="$this->scrimsCount" />
                 <x-cards.stats-dashboard
                     class="sm:col-span-3"
                     :title="__('pages/dashboard/index.coach.tasks_count')"
-                    :value="$this->tasksInProgressCount"
-                />
+                    :value="$this->tasksInProgressCount" />
             </div>
             <div class="flex flex-row flex-wrap justify-center gap-6 sm:grid md:col-span-9 sm:grid-cols-9 md:row-span-1">
                 <div class="flex flex-col gap-2 bg-bg-widget justify-center p-6 shadow-basic  w-full sm:col-span-3">
@@ -126,8 +137,7 @@ new class extends Component
                 <x-cards.stats-dashboard
                     class="sm:col-span-3"
                     :title="__('pages/dashboard/index.coach.team_applications_count')"
-                    :value="$this->teamApplicationsCount"
-                />
+                    :value="$this->teamApplicationsCount" />
             </div>
 
         </div>
