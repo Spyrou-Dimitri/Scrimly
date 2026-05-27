@@ -78,30 +78,21 @@ new class extends Component
                 <div class="" id="winrate-chart"></div>
             </div>
             <div class="flex flex-row flex-wrap justify-center gap-6 sm:grid md:col-span-9 sm:grid-cols-9 md:row-span1">
-                <div class="flex flex-col gap-2 bg-bg-widget justify-center w-full p-6 shadow-basic  sm:col-span-3">
-                    <p class="text-text-secondary ">
-                        {{__('pages/dashboard/index.coach.members_count')}}
-                    </p>
-                    <p class="text-[40px] leading-none text-center text-gold font-bold">
-                        {{ $this->membersCount }}
-                    </p>
-                </div>
-                <div class="flex flex-col gap-2 bg-bg-widget justify-center p-6 shadow-basic  w-full sm:col-span-3">
-                    <p class="text-text-secondary ">
-                        {{__('pages/dashboard/index.coach.scrims_count')}}
-                    </p>
-                    <p class="text-[40px] leading-none text-center text-gold font-bold">
-                        {{ $this->scrimsCount }}
-                    </p>
-                </div>
-                <div class="flex flex-col gap-2 bg-bg-widget justify-center p-6 shadow-basic  w-full sm:col-span-3">
-                    <p class="text-text-secondary ">
-                        {{__('pages/dashboard/index.coach.tasks_count')}}
-                    </p>
-                    <p class="text-[40px] leading-none text-center text-gold font-bold">
-                        {{ $this->tasksInProgressCount }}
-                    </p>
-                </div>
+                <x-cards.stats-dashboard
+                    class="sm:col-span-3"
+                    :title="__('pages/dashboard/index.coach.members_count')"
+                    :value="$this->membersCount"
+                />
+                <x-cards.stats-dashboard
+                    class="sm:col-span-3"
+                    :title="__('pages/dashboard/index.coach.scrims_count')"
+                    :value="$this->scrimsCount"
+                />
+                <x-cards.stats-dashboard
+                    class="sm:col-span-3"
+                    :title="__('pages/dashboard/index.coach.tasks_count')"
+                    :value="$this->tasksInProgressCount"
+                />
             </div>
             <div class="flex flex-row flex-wrap justify-center gap-6 sm:grid md:col-span-9 sm:grid-cols-9 md:row-span-1">
                 <div class="flex flex-col gap-2 bg-bg-widget justify-center p-6 shadow-basic  w-full sm:col-span-3">
@@ -132,14 +123,11 @@ new class extends Component
                     </p>
                     @endif
                 </div>
-                <div class="flex flex-col gap-2 bg-bg-widget justify-center p-6 shadow-basic  w-full sm:col-span-3">
-                    <p class="text-text-secondary ">
-                        {{__('pages/dashboard/index.coach.team_applications_count')}}
-                    </p>
-                    <p class="text-[40px] leading-none text-center text-gold font-bold  w-full">
-                        {{ $this->teamApplicationsCount }}
-                    </p>
-                </div>
+                <x-cards.stats-dashboard
+                    class="sm:col-span-3"
+                    :title="__('pages/dashboard/index.coach.team_applications_count')"
+                    :value="$this->teamApplicationsCount"
+                />
             </div>
 
         </div>
