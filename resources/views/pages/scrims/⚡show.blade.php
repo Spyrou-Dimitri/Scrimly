@@ -53,7 +53,6 @@ new #[Layout('layouts::team')] class extends Component
         } else {
             redirect()->route('scrims.games.create', ['slug' => $this->scrim->team->slug, 'id' => $this->scrim->id]);
         }
-
     }
 
     public function openModalCompleteScrim(): void
@@ -103,6 +102,24 @@ new #[Layout('layouts::team')] class extends Component
         ]);
     }
 
+    public function openModalCancelScrim(): void
+    {
+        if (Gate::denies('manageTeam', User::class)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/scrim.error_title'),
+                'message' => __('policies/scrim.error_cancel_scrim'),
+                'type' => 'error',
+            ]);
+
+            return;
+        }
+
+        $this->dispatch('open_modal', [
+            'form' => 'modals::scrims.cancel-scrim',
+            'model_id' => $this->scrim->id,
+        ]);
+    }
+
     #[On('refresh_scrim')]
     public function refreshScrim(): void
     {
@@ -130,17 +147,23 @@ new #[Layout('layouts::team')] class extends Component
                 <span class="text-gold">{{ $this->scrim->opponentTeam?->name ?? __('pages/scrims/show.opponent_unknown') }}</span>
             </h2>
             @if ($this->scrim->status === StatusScrim::IN_PROGRESS)
-                @can('manageTeam', User::class)
-                <button wire:click="openModalCompleteScrim()" title="{{ __('pages/scrims/show.mark_as_completed') }}" class="cta-primary">
-                    {{ __('pages/scrims/show.mark_as_completed') }}
-                </button>
-                @endcan
+            @can('manageTeam', User::class)
+            <button wire:click="openModalCompleteScrim()" title="{{ __('pages/scrims/show.mark_as_completed') }}" class="cta-primary">
+                {{ __('pages/scrims/show.mark_as_completed') }}
+            </button>
+            @endcan
             @elseif ($this->scrim->status !== StatusScrim::COMPLETED)
-                @can('manageTeam', User::class)
+            @can('manageTeam', User::class)
+            <div class="flex flex-row flex-wrap items-center gap-4">
                 <button wire:click="openModalStartScrim()" title="{{ __('pages/scrims/show.start_scrim') }}" class="cta-primary">
-                        {{ __('pages/scrims/show.start_scrim') }}
-                    </button>
-                @endcan
+                    {{ __('pages/scrims/show.start_scrim') }}
+                </button>
+                <x-destructive wire:click="openModalCancelScrim()" title="{{ __('pages/scrims/show.cancel_scrim_title') }}">
+                    {{ __('pages/scrims/show.cancel_scrim') }}
+                </x-destructive>
+            </div>
+
+            @endcan
             @endif
         </div>
 

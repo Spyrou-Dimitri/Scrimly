@@ -5,6 +5,8 @@ return [
     'title_prefix' => 'Scrim vs ',
     'mark_as_completed' => 'Marquer comme terminé',
     'start_scrim' => 'Démarrer le scrim',
+    'cancel_scrim_title' => 'Annuler le scrim',
+    'cancel_scrim' => 'Annuler',
     'widget_time' => 'Heures prévues',
     'widget_date' => 'Date prévue',
     'widget_game_count' => 'Nbr de games jouées',
