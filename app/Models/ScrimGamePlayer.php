@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class ScrimGamePlayer extends Model
 {
@@ -36,5 +37,16 @@ class ScrimGamePlayer extends Model
         }
 
         return round($totalKda / $totalDeaths, 2);
+    }
+    public function scrim(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            Scrim::class,
+            ScrimGame::class,
+            'id',
+            'id',
+            'scrim_game_id',
+            'scrim_id'
+        );
     }
 }

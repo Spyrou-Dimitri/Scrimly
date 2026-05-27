@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Enums\StatusScrim;
 
 #[ObservedBy(TeamMemberObserver::class)]
 class TeamMember extends Model
@@ -68,4 +69,34 @@ class TeamMember extends Model
     {
         return $this->roleInTeam === RoleInTeam::COACH || $this->roleInTeam === RoleInTeam::STAFF || $this->team->creator_id === $this->user_id;
     }
+
+
+
+    public function overallScrimKda(?int $teamId = null): float
+    {
+        $query = $this->scrimGamePlayers()
+            ->whereHas('scrim', function ($q) use ($teamId) {
+                $q->whereIn('status', [StatusScrim::COMPLETED, StatusScrim::ABORTED]);
+                if ($teamId !== null) {
+                    $q->where('team_id', $teamId);
+                }
+            });
+        $totalKda = $query->sum('kills') + $query->sum('assists');
+        $totalDeaths = $query->sum('deaths');
+        if ($totalDeaths === 0) {
+            return $totalKda;
+        }
+        return round($totalKda / $totalDeaths, 2);
+    }
+
+    public function favoriteChampionScrim(): ?string
+    {
+        return $this->scrimGamePlayers()
+            ->select('champion')
+            ->selectRaw('COUNT(*) as games_count')
+            ->groupBy('champion')
+            ->orderByDesc('games_count')
+            ->value('champion');
+    }
+    
 }

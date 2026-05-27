@@ -26,7 +26,7 @@ class RiotProfile extends Model
         'synced_at',
     ];
 
-   
+
     protected function casts(): array
     {
         return [
@@ -62,7 +62,7 @@ class RiotProfile extends Model
         $numberOfAssists = $allMatches->sum('assists');
         $totalKda = $numberOfKills + $numberOfAssists;
         if ($numberOfDeaths === 0) {
-            return 0;
+            return $totalKda;
         }
         return round($totalKda / $numberOfDeaths, 2);
     }
@@ -82,5 +82,19 @@ class RiotProfile extends Model
         $tierValue = $this->tier->numericValue();
 
         return ($tierValue * 400) + ($divisionValue * 100) + ($this->lp ?? 0);
+    }
+    public function favoriteChampion(): ?string
+    {
+        return $this->riotMatches()
+            ->select('champion_name')
+            ->selectRaw('COUNT(*) as games_count')
+            ->groupBy('champion_name')
+            ->orderByDesc('games_count')
+            ->value('champion_name');
+    }
+
+    public function totalGames(): int
+    {
+        return $this->wins + $this->losses;
     }
 }

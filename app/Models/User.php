@@ -119,4 +119,5 @@ class User extends Authenticatable
 
         return $teamMember?->isCoachOrStaff() ?? false;
     }
+    
 }
