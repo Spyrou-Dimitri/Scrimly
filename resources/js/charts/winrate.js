@@ -1,56 +1,145 @@
 import ApexCharts from 'apexcharts';
+import { settings } from '../settings';
 
-export const WinrateChart = {
-    options: {
-        chart: {
-            height: 350,
-            type: "radialBar",
-          },
-        
-          series: [],
-          colors: ["#C99C3D"],
-          plotOptions: {
-            radialBar: {
-              hollow: {
+const chartOptions = {
+    chart: {
+        height: 350,
+        type: 'radialBar',
+    },
+    colors: ['#C99C3D'],
+    plotOptions: {
+        radialBar: {
+            hollow: {
                 margin: 0,
-                size: "70%",
-              },
-              
-              dataLabels: {
+                size: '70%',
+            },
+            dataLabels: {
                 name: {
-                  offsetY: -10,
-                  color: "#fff",
-                  fontSize: "13px"
+                    offsetY: -10,
+                    color: '#fff',
+                    fontSize: '13px',
                 },
                 value: {
-                  color: "#fff",
-                  fontSize: "30px",
-                  show: true
-                }
-              }
-            }
-          },
-          fill: {
-            type: "gradient",
-            gradient: {
-              type: "vertical",
-              gradientToColors: ["#F4C25D"],
-              stops: [0, 100]
-            }
-          },
-          stroke: {
-            lineCap: "round"
-          },
-          labels: ["Taux de victoire Scrim"]
+                    color: '#fff',
+                    fontSize: '30px',
+                    show: true,
+                },
+            },
+        },
     },
-    init() {
-        const chart = document.getElementById('winrate-chart');
-        const winrate = JSON.parse(chart.dataset.property);
-        this.options.series = [winrate];
-        if (this.chartInstance) {
-            chartInstance.destroy();
+    fill: {
+        type: 'gradient',
+        gradient: {
+            type: 'vertical',
+            gradientToColors: ['#F4C25D'],
+            stops: [0, 100],
+        },
+    },
+    stroke: {
+        lineCap: 'round',
+    },
+};
+
+let refreshFrame = null;
+
+export const WinrateChart = {
+    chart: null,
+    isSetup: false,
+
+    getElement() {
+        return document.getElementById(settings.chartsElementId);
+    },
+
+    readData(element) {
+        const data = JSON.parse(element.dataset.property);
+
+        return {
+            value: data.value ?? 0,
+            label: data.label ?? '',
+        };
+    },
+
+    destroy() {
+        if (this.chart) {
+            this.chart.destroy();
+            this.chart = null;
         }
-        this.chartInstance = new ApexCharts(chart, this.options);
-        this.chartInstance.render();
-    }
+    },
+
+    clearStaleMarkup(element) {
+        if (! this.chart && element.querySelector('.apexcharts-canvas')) {
+            element.replaceChildren();
+        }
+    },
+
+    render(element, value, label) {
+        this.destroy();
+        this.clearStaleMarkup(element);
+
+        this.chart = new ApexCharts(element, {
+            ...chartOptions,
+            series: [value],
+            labels: [label],
+        });
+        this.chart.render();
+    },
+
+    refresh() {
+        const element = this.getElement();
+
+        if (! element) {
+            this.destroy();
+
+            return;
+        }
+
+        const { value, label } = this.readData(element);
+        const hasRenderedChart = element.querySelector('.apexcharts-canvas') !== null;
+
+        if (this.chart && hasRenderedChart) {
+            this.chart.updateSeries([value]);
+            this.chart.updateOptions({ labels: [label] });
+
+            return;
+        }
+
+        this.render(element, value, label);
+    },
+
+    scheduleRefresh() {
+        if (refreshFrame !== null) {
+            cancelAnimationFrame(refreshFrame);
+        }
+
+        refreshFrame = requestAnimationFrame(() => {
+            refreshFrame = null;
+            this.refresh();
+        });
+    },
+
+    registerLivewireHooks() {
+        if (this.isSetup) {
+            return;
+        }
+
+        this.isSetup = true;
+
+        document.addEventListener('livewire:navigated', () => this.scheduleRefresh());
+
+        document.addEventListener('livewire:init', () => {
+            this.scheduleRefresh();
+
+            Livewire.hook('morphed', () => {
+                if (this.getElement()) {
+                    this.scheduleRefresh();
+                }
+            });
+
+            Livewire.hook('morph.removed', ({ el }) => {
+                if (el.id === settings.chartsElementId) {
+                    this.destroy();
+                }
+            });
+        });
+    },
 };

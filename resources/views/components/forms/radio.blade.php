@@ -7,9 +7,14 @@
     'columns' => 4,
     'variant' => 'default',
     'gridGapClass' => 'gap-6',
+    'fitContent' => false,
 ])
 
-<div class="flex flex-col gap-2 w-full">
+<div @class([
+    'flex flex-col gap-2',
+    'w-full' => ! $fitContent,
+    'w-fit' => $fitContent,
+])>
     @if($hasLabel && $label)
         <p class="block font-medium text-white">
             {{ $label }}
@@ -20,8 +25,14 @@
     @endif
 
     <div
-        class="grid {{ $gridGapClass }}"
-        style="grid-template-columns: repeat({{ $columns }}, minmax(0, 1fr))"
+        @class([
+            $gridGapClass,
+            'grid' => ! $fitContent,
+            'flex flex-wrap' => $fitContent,
+        ])
+        @unless($fitContent)
+            style="grid-template-columns: repeat({{ $columns }}, minmax(0, 1fr))"
+        @endunless
     >
         @foreach($options as $option)
             @php
@@ -53,7 +64,10 @@
 
             <label
                 x-data
-                class="relative cursor-pointer"
+                @class([
+                    'relative cursor-pointer',
+                    'w-fit' => $fitContent,
+                ])
             >
                 <input
                     type="radio"

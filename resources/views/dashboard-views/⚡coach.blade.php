@@ -154,7 +154,10 @@ new class extends Component
         <div class="flex flex-row flex-wrap justify-center md:grid md:grid-cols-[repeat(13,minmax(0,1fr))] gap-6">
 
             <div class=" w-full md:col-span-4 md:row-span-2 bg-bg-widget justify-center p-6 shadow-basic">
-                <div class="" id="winrate-chart" data-property="@json($this->winrateInScrims)"></div>
+                <div class="" id="winrate-chart" data-property='@json([
+                    "value" => $this->winrateInScrims, 
+                    "label" => __("pages/dashboard/index.coach.winrate")])'>
+                </div>
             </div>
             <div class="flex flex-row flex-wrap justify-center gap-6 sm:grid md:col-span-9 sm:grid-cols-9 md:row-span1">
                 <x-cards.stats-dashboard

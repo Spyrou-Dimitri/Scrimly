@@ -30,6 +30,15 @@ return [
         ],
     ],
     'player' => [
-        'title' => 'Dashboard Player',
+        'title' => 'Bon retour chez <span class="font-bold text-gold">:teamName</span> :username',
+        'stats_scrim' => 'Stats scrims',
+        'stats_game' => 'Stats parties',
+        'average_kda_scrim' => 'KDA moyen (scrims)',
+        'average_kda_game' => 'KDA moyen (parties)',
+        'total_scrims' => 'Scrims joués',
+        'total_games' => 'Parties jouées',
+        'winrate_scrim' => 'Taux de victoire (scrims)',
+        'winrate_game' => 'Taux de victoire (parties)',
+        'favorite_champion' => 'Champion favori',
     ],
 ];
