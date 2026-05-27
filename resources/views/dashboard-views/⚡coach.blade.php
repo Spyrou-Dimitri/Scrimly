@@ -9,6 +9,9 @@ use App\Enums\StatusScrim;
 use App\Models\Event;
 use App\Enums\StatusApplication;
 use App\Enums\ScrimOutcome;
+use Illuminate\Support\Collection;
+use App\Enums\StatusScrimRequest;
+
 new class extends Component
 {
     public Team $team;
@@ -69,10 +72,62 @@ new class extends Component
     {
         return $this->team->teamApplications()->where('status', StatusApplication::PENDING)->count();
     }
+
+    #[Computed]
+    public function nextScrims(): Collection
+    {
+        return $this->team->scrims()
+            ->with('opponentTeam')
+            ->where('scheduled_date', '>=', now())
+            ->where('status', StatusScrim::SCHEDULED)
+            ->orderBy('scheduled_date', 'asc')
+            ->limit(3)
+            ->get();
+    }
+    #[Computed]
+    public function newScrimRequests(): Collection
+    {
+        return $this->team->receivedScrimRequests()
+            ->with('requesterTeam')
+            ->where('status', StatusScrimRequest::PENDING)
+            ->orderBy('created_at', 'desc')
+            ->limit(3)
+            ->get();
+    }
+    #[Computed]
+    public function recentUpdatedTasks(): Collection
+    {
+        return $this->team->tasks()
+            ->where('status', StatusTask::IN_PROGRESS)
+            ->orderBy('updated_at', 'desc')
+            ->limit(3)
+            ->get();
+    }
+    #[Computed]
+    public function lastScrimsResult(): Collection
+    {
+        return $this->team->scrims()
+            ->with('opponentTeam')
+            ->where('status', StatusScrim::COMPLETED)
+            ->orWhere('status', StatusScrim::ABORTED)
+            ->orderBy('updated_at', 'desc')
+            ->limit(3)
+            ->get();
+    }
+    #[Computed]
+    public function lastEvents(): Collection
+    {
+        return $this->team->events()
+            ->where('date', '>=', now())
+            ->orderBy('date', 'desc')
+            ->limit(3)
+            ->get();
+    }
 };
 ?>
 
 <div>
+    @dump($this->lastEvents)
     <section class="flex flex-col gap-6">
         <h2 class="text-[32px] font-bold">
             {!! __('pages/dashboard/index.coach.title', ['teamMemberName' => Auth::user()->username, 'teamName' => $this->team->name]) !!}
@@ -138,6 +193,7 @@ new class extends Component
             <h3 class="sr-only">
                 {{ __('pages/dashboard/index.coach.quick_actions') }}
             </h3>
+
         </div>
 
     </section>
