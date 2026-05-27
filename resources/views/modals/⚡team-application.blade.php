@@ -123,7 +123,11 @@ new class extends Component
     <x-layout.head-modal :width="'5xl'" :height="'75'" :title="__('modals/team-application.title') . ' ' . $this->candidate->user->username">
         <div class="flex flex-col md:flex-row md:items-center lg:grid lg:grid-cols-12 mb-6 gap-6">
             <div class="flex flex-col md:flex-row items-center gap-4 md:items-center md:shrink-0 lg:col-span-3">
-                <img class="w-full h-auto md:w-20 md:h-20 object-cover" src="{{$this->candidate->user->avatar_url}}" alt="Photo de profil de {{ $this->candidate->user->username }}">
+                <x-user-avatar
+                    :user="$this->candidate->user"
+                    preset="modal-preview"
+                    class="w-full h-auto md:w-20 md:h-20 object-cover"
+                />
                 <div class="flex flex-col gap-1 text-center md:text-left">
                     <h3 class="text-2xl text-gold font-bold">{{ $this->candidate->user->username }}</h3>
                     <p class="text-text-gray">{{ $this->candidate->user->riot_tag }}</p>

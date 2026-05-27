@@ -253,7 +253,7 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                     <article class="flex flex-col gap-4 bg-bg-card p-4 shadow-basic">
                         <div class="flex flex-wrap items-center gap-2">
                             <div class="flex items-center gap-2">
-                                <img src="{{ $teamMember->user->avatar_url }}" alt="{{ $teamMember->user->username }}" class="w-10 h-10">
+                                <x-user-avatar :user="$teamMember->user" preset="thumbnail" class="w-10 h-10" />
                                 <h4 class="text-xl font-semibold text-gold">
                                     {{ $teamMember->user->username }} - {{ $teamMember->roleInGame->label() }}
                                 </h4>

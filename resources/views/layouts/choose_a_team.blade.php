@@ -31,9 +31,11 @@ $currentUser = auth()->user();
                     title="{{ __('layouts/team.edit_profile_cta_title') }}"
                     class="flex items-center g ap-2 lg:gap-3 group">
 
-                    <img src="{!! $currentUser->avatar_url !!}"
-                        alt="{{ $currentUser->username }}"
-                        class="size-9 rounded-full object-cover flex-shrink-0">
+                    <x-user-avatar
+                        :user="$currentUser"
+                        preset="topbar"
+                        class="size-9 rounded-full object-cover flex-shrink-0"
+                    />
 
 
 

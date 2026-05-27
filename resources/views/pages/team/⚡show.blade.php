@@ -202,12 +202,14 @@ $memberSince = $team->created_at->isoFormat('D MMMM YYYY');
         <div class="grid grid-cols-12 gap-4 sm:gap-6">
             @foreach ($this->starterMembers as $member)
             <div class="col-span-12 flex gap-3 bg-bg-widget p-4 basic-shadow md:col-span-6 lg:col-span-4">
-                <img
-                    src="{{ $member->avatar_url }}"
+                <x-user-avatar
+                    :user="$member"
+                    preset="team-row"
                     alt=""
                     class="size-[60px] shrink-0 object-cover"
                     width="60"
-                    height="60">
+                    height="60"
+                />
                 <div class="min-w-0 flex-1">
                     <p class="truncate font-bold text-white">{{ $member->username }}</p>
                     <div class="mt-1 flex min-w-0 items-center gap-1.5 text-sm text-text-secondary">

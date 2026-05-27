@@ -22,14 +22,11 @@ $tierLine .= ' • '.$memberUser->rank;
     <span class="card-animated-border-right-edge" aria-hidden="true"></span>
     <div class="relative">
         <div class="relative overflow-hidden">
-            <img
-                src="{{ $memberUser->avatar_url }}"
-                @if ($memberUser->avatar_srcset)
-                    srcset="{{ $memberUser->avatar_srcset }}"
-                    sizes="(min-width: 768px) 33vw, 100vw"
-                @endif
-                alt="Photo de profil de {{ $memberUser->username }}"
-                class="aspect-square w-full object-cover">
+            <x-user-avatar
+                :user="$memberUser"
+                preset="player-card"
+                class="aspect-square w-full object-cover"
+            />
             
         </div>
         <div class="absolute right-2 top-2 z-10 flex items-center gap-2" @click.stop>

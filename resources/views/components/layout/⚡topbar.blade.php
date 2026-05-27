@@ -264,9 +264,11 @@ new class extends Component
                 title="{{ __('layouts/team.edit_profile_cta_title') }}"
                 class="flex items-center gap-2 lg:gap-3 group">
 
-                <img src="{{ $this->currentUser->avatar_url }}"
-                    alt="{{ $this->currentUser->username }}"
-                    class="size-9 rounded-full object-cover flex-shrink-0">
+                <x-user-avatar
+                    :user="$this->currentUser"
+                    preset="topbar"
+                    class="size-9 rounded-full object-cover flex-shrink-0"
+                />
 
 
                 <span class="hidden sm:inline-block relative text-white font-medium max-w-[160px]
