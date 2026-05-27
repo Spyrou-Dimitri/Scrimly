@@ -6,9 +6,15 @@ use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Computed;
+use App\Enums\ScrimOutcome;
+
 new class extends Component
 {
     public Scrim $scrim;
+    public int $gameWins;
+    public int $gameLosses;
+    public ?ScrimOutcome $outcome = null;
+
 
     public function mount(int $model_id): void
     {
@@ -20,6 +26,10 @@ new class extends Component
             $this->scrim->team_id === currentTeam()->id,
             403,
         );
+
+        $this->gameWins = $this->scrim->scrimGames->where('is_victory', true)->count();
+        $this->gameLosses = $this->scrim->scrimGames->where('is_victory', false)->count();
+        $this->outcome = ScrimOutcome::fromCounts($this->gameWins, $this->gameLosses);
     }
 
     public function closeModal(): void
@@ -49,9 +59,15 @@ new class extends Component
         }
 
         if (!$this->isAbortedScrim) {
-        $this->scrim->update(['status' => StatusScrim::COMPLETED]); 
+            $this->scrim->update([
+                'status' => StatusScrim::COMPLETED,
+                'outcome' => $this->outcome,
+            ]);
         } else {
-            $this->scrim->update(['status' => StatusScrim::ABORTED]);
+            $this->scrim->update([
+                'status' => StatusScrim::ABORTED,
+                'outcome' => $this->outcome,
+            ]);
         }
 
         $this->dispatch('close_modal');
@@ -68,16 +84,14 @@ new class extends Component
     {
         return $this->scrim->scrimGames->count() < $this->scrim->number_of_games;
     }
-
 };
 ?>
 
 <div class="w-full">
     <x-layout.head-modal
         :width="'2xl'"
-        :title="__('modals/scrims/finish-scrim.title') . ' • ' . ($this->scrim->opponentTeam?->name ?? __('pages/scrims/show.opponent_unknown'))"
-    >
-
+        :title="__('modals/scrims/finish-scrim.title') . ' • ' . ($this->scrim->opponentTeam?->name ?? __('pages/scrims/show.opponent_unknown'))">
+        @dump($this->outcome)
         <form wire:submit.prevent="finishScrim" class="flex w-full flex-col gap-6 pt-2">
             <div class="flex w-full flex-col gap-3">
                 <div

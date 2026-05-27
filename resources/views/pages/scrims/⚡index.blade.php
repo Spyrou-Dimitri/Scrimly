@@ -449,9 +449,6 @@ new #[Layout('layouts::team')] class extends Component
             </thead>
             <tbody class="bg-bg-widget">
                 @foreach ($this->scrimHistory as $scrim)
-                @php
-                $outcome = ScrimOutcome::fromCounts($scrim->wins_count, $scrim->losses_count);
-                @endphp
                 <tr wire:key="scrim-history-{{ $scrim->id }}">
                     <td class="p-6">
                         <p class="block truncate font-bold text-gold">
@@ -465,8 +462,8 @@ new #[Layout('layouts::team')] class extends Component
                         <span class="{{ $scrim->status->macaron() }} text-sm">{{ $scrim->status->label() }}</span>
                     </td>
                     <td class="p-6">
-                        @if ($outcome)
-                        <span class="{{ $outcome->macaron() }}">{{ $outcome->label() }}</span>
+                        @if ($scrim->outcome)
+                        <span class="{{ $scrim->outcome->macaron() }}">{{ $scrim->outcome->label() }}</span>
                         @else
                         <span class="text-text-secondary">-</span>
                         @endif

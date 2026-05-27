@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\StatusScrim;
+use App\Enums\ScrimOutcome;
 use App\Observers\ScrimObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -21,6 +22,7 @@ class Scrim extends Model
         'status',
         'summary',
         'advantages',
+        'outcome',
         'disadvantages',
         'scrim_request_id',
         'opponent_team_id',
@@ -31,6 +33,7 @@ class Scrim extends Model
         'scheduled_date' => 'date',
         'number_of_games' => 'integer',
         'status' => StatusScrim::class,
+        'outcome' => ScrimOutcome::class,
     ];
 
     public function scrimRequest(): BelongsTo

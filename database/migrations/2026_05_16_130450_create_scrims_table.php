@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ScrimOutcome;
 use App\Enums\StatusScrim;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Migrations\Migration;
@@ -16,6 +17,7 @@ return new class extends Migration
             $table->time('scheduled_time')->default(CarbonImmutable::now()->toTimeString());
             $table->tinyInteger('number_of_games')->default(1);
             $table->enum('status', StatusScrim::cases());
+            $table->enum('outcome', ScrimOutcome::cases())->nullable();
             $table->text('summary')->nullable();
             $table->text('advantages')->nullable();
             $table->text('disadvantages')->nullable();
