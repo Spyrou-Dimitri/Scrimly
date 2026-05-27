@@ -47,7 +47,10 @@ export const WinrateChart = {
         const chart = document.getElementById('winrate-chart');
         const winrate = JSON.parse(chart.dataset.property);
         this.options.series = [winrate];
-        const chartInstance = new ApexCharts(chart, this.options);
-        chartInstance.render();
+        if (this.chartInstance) {
+            chartInstance.destroy();
+        }
+        this.chartInstance = new ApexCharts(chart, this.options);
+        this.chartInstance.render();
     }
 };
