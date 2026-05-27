@@ -12,6 +12,7 @@ use App\Enums\LolServeur;
 use App\Enums\LolTier;
 use App\Enums\RoleInGame;
 use App\Enums\RoleInTeam;
+use App\Enums\ScrimOutcome;
 use App\Enums\StatusInTeam;
 use App\Enums\StatusScrim;
 use App\Enums\StatusScrimRequest;
@@ -632,6 +633,19 @@ class DemoDataSeeder extends Seeder
             $scrimReceiver,
             $payloads,
         ));
+
+        $this->syncScrimOutcomeFromGames($scrimRequester);
+        $this->syncScrimOutcomeFromGames($scrimReceiver);
+    }
+
+    private function syncScrimOutcomeFromGames(Scrim $scrim): void
+    {
+        $wins = $scrim->scrimGames()->where('is_victory', true)->count();
+        $losses = $scrim->scrimGames()->where('is_victory', false)->count();
+
+        $scrim->update([
+            'outcome' => ScrimOutcome::fromCounts($wins, $losses),
+        ]);
     }
 
     /**

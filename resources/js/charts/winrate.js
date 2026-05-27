@@ -7,7 +7,7 @@ export const WinrateChart = {
             type: "radialBar",
           },
         
-          series: [67],
+          series: [],
           colors: ["#C99C3D"],
           plotOptions: {
             radialBar: {
@@ -44,8 +44,10 @@ export const WinrateChart = {
           labels: ["Taux de victoire Scrim"]
     },
     init() {
-        console.log('test');
-        const chart = new ApexCharts(document.getElementById('winrate-chart'), this.options);
-        chart.render();
+        const chart = document.getElementById('winrate-chart');
+        const winrate = JSON.parse(chart.dataset.property);
+        this.options.series = [winrate];
+        const chartInstance = new ApexCharts(chart, this.options);
+        chartInstance.render();
     }
 };

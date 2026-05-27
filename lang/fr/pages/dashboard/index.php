@@ -10,6 +10,8 @@ return [
         'winrate' => 'Taux de victoire en scrims',
         'next_event' => 'Prochain événement',
         'team_applications_count' => 'Candidatures en attente',
+        'quick_stats' => 'Statistiques & informations rapides',
+        'quick_actions' => 'Actions rapides',
     ],
     'player' => [
         'title' => 'Dashboard Player',

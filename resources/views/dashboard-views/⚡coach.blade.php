@@ -8,7 +8,7 @@ use App\Models\Scrim;
 use App\Enums\StatusScrim;
 use App\Models\Event;
 use App\Enums\StatusApplication;
-
+use App\Enums\ScrimOutcome;
 new class extends Component
 {
     public Team $team;
@@ -58,20 +58,11 @@ new class extends Component
             ->first();
     }
     #[Computed]
-    public function winrateInScrims()
+    public function winrateInScrims(): float
     {
-        $allScrimGames = 0;
-        $allScrimGamesVictory = 0;
-        $querryForAllScrims = Scrim::query()
-            ->where('team_id', $this->team->id)
-            ->with('scrimGames')
-            ->get();
-            foreach ($querryForAllScrims as $scrim) {
-                $allScrimGames += $scrim->scrimGames->count();
-                $allScrimGamesVictory += $scrim->scrimGames->where('is_victory', true)->count();
-            }
-
-        return $allScrimGamesVictory / $allScrimGames * 100;
+        $allScrims = $this->team->scrims()->count();
+        $winScrims = $this->team->scrims()->where('outcome', ScrimOutcome::Victory)->count();
+        return round($winScrims / $allScrims * 100, 1);
     }
     #[Computed]
     public function teamApplicationsCount(): int
@@ -82,14 +73,16 @@ new class extends Component
 ?>
 
 <div>
-    @dump($this->winrateInScrims)
     <section class="flex flex-col gap-6">
         <h2 class="text-[32px] font-bold">
             {!! __('pages/dashboard/index.coach.title', ['teamMemberName' => Auth::user()->username, 'teamName' => $this->team->name]) !!}
         </h2>
         <div class="flex flex-row flex-wrap justify-center md:grid md:grid-cols-13 gap-6">
+            <h3 class="sr-only">
+                {{ __('pages/dashboard/index.coach.quick_stats') }}
+            </h3>
             <div class=" w-full md:col-span-4 md:row-span-2 bg-bg-widget justify-center p-6 shadow-basic">
-                <div class="" id="winrate-chart"></div>
+                <div class="" id="winrate-chart" data-property="@json($this->winrateInScrims)"></div>
             </div>
             <div class="flex flex-row flex-wrap justify-center gap-6 sm:grid md:col-span-9 sm:grid-cols-9 md:row-span1">
                 <x-cards.stats-dashboard
@@ -140,6 +133,11 @@ new class extends Component
                     :value="$this->teamApplicationsCount" />
             </div>
 
+        </div>
+        <div>
+            <h3 class="sr-only">
+                {{ __('pages/dashboard/index.coach.quick_actions') }}
+            </h3>
         </div>
 
     </section>
