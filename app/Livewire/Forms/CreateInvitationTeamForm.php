@@ -51,7 +51,10 @@ class CreateInvitationTeamForm extends Form
     {
         $this->validate();
 
-        if (Gate::denies('create', [TeamInvitation::class, $team, $user])) {
+        $authorization = Gate::inspect('create', [TeamInvitation::class, $team, $user]);
+        if ($authorization->denied()) {
+            $this->addError('error', $authorization->message());
+
             return false;
         }
 

@@ -33,7 +33,15 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
             return;
         }
 
-        $this->form->store();
+        if (! $this->form->store()) {
+            $this->dispatch('toast', [
+                'title' => __('policies/roster.error_title'),
+                'message' => $this->form->getErrorBag()->first('error'),
+                'type' => 'error',
+            ]);
+
+            return;
+        }
 
         session()->flash('toast', [
             'type' => 'success',

@@ -28,30 +28,21 @@ new #[Layout('layouts::team')] class extends Component
         if (!$this->userFinder) {
             return;
         }
-        if (Gate::denies('manageTeam', User::class)) {
+
+        $authorization = Gate::inspect('create', [TeamInvitation::class, currentTeam(), $this->userFinder]);
+        if ($authorization->denied()) {
             $this->dispatch('toast', [
                 'title' => __('policies/roster.error_title'),
-                'message' => __('policies/roster.error_manage_roster'),
+                'message' => $authorization->message(),
                 'type' => 'error',
             ]);
 
             return;
         }
-
-        if (Gate::denies('create', [TeamInvitation::class, currentTeam(), $this->userFinder])) {
-            $this->dispatch('toast', [
-                'title' => __('policies/roster.error_title'),
-                'message' => __('toasts/toasts.invitation_already_sent'),
-                'type' => 'error',
-            ]);
-
-            return;
-        }
-
         if (! $this->form->store(currentTeam(), $this->userFinder)) {
             $this->dispatch('toast', [
                 'title' => __('policies/roster.error_title'),
-                'message' => __('toasts/toasts.invitation_already_sent'),
+                'message' => $this->form->getErrorBag()->first('error'),
                 'type' => 'error',
             ]);
 

@@ -8,6 +8,7 @@ use App\Enums\StatusApplication;
 use App\Models\Team;
 use App\Models\TeamApplication;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
@@ -46,21 +47,32 @@ class JoinTeamForm extends Form
         ];
     }
 
-    public function store(): void
+    public function store(): bool
     {
         $validated = $this->validate();
 
-        $teamId = Team::where('code', $validated['team_code'])->first()->id;
-        $userId = Auth::user()->id;
+        $team = Team::query()
+            ->where('code', $validated['team_code'])
+            ->firstOrFail();
+
+        $authorization = Gate::inspect('canApplyForTeam', [TeamApplication::class, $team]);
+
+        if ($authorization->denied()) {
+            $this->addError('error', $authorization->message());
+
+            return false;
+        }
 
         TeamApplication::create([
-            'team_id' => $teamId,
-            'user_id' => $userId,
+            'team_id' => $team->id,
+            'user_id' => Auth::id(),
             'roleInTeam' => $validated['roleInTeam'],
             'roleInGame' => $validated['roleInGame'],
             'motivation' => $validated['motivation'],
             'status' => StatusApplication::PENDING,
         ]);
+
+        return true;
     }
 
     public function updatedRoleInTeam(): void
