@@ -16,4 +16,12 @@ enum StatusApplication: string
             self::REJECTED => __('enums/status-application.rejected'),
         };
     }
+    public function macaron(): string
+    {
+        return match ($this) {
+            self::PENDING => 'bg-gray-500 py-2 px-4 rounded-full',
+            self::ACCEPTED => 'bg-green-800 py-2 px-4 rounded-full',
+            self::REJECTED => 'bg-red-700 py-2 px-4 rounded-full',
+        };
+    }
 }

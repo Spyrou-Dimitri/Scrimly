@@ -44,7 +44,7 @@
                 x-on:click.prevent="open = !open"
                 :aria-expanded="open">
                 <flux:icon.chevron-down
-                    class="size-8 transition-all duration-150 ease-in-out text-text-gray group-hover:text-gold"
+                    class="size-8 transition-all duration-150 ease-in-out group-hover:text-gold {{ $open ? 'rotate-0 text-gold' : '-rotate-90 text-text-gray' }}"
                     ::class="open ? 'rotate-0 text-gold' : '-rotate-90 text-text-gray'" />
             </button>
         </div>
@@ -53,7 +53,9 @@
     <{{ $panelTag }}
         @class([$panelClass])
         x-show="open"
-        x-cloak
+        @unless($open)
+            x-cloak
+        @endunless
         x-transition:enter="transition ease-out duration-150"
         x-transition:enter-start="opacity-0 -translate-y-2"
         x-transition:enter-end="opacity-100 translate-y-0"

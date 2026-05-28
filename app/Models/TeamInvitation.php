@@ -5,11 +5,14 @@ namespace App\Models;
 use App\Enums\RoleInGame;
 use App\Enums\RoleInTeam;
 use App\Enums\StatusInvitation;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TeamInvitation extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'team_id',
         'status',
