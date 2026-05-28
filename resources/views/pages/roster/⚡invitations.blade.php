@@ -13,6 +13,10 @@ use App\Models\TeamInvitation;
 new #[Layout('layouts::team')] class extends Component
 {
     public CreateInvitationTeamForm $form;
+    public function mount(): void
+    {
+        abort_if(Gate::denies('manageTeam', User::class), 403, __('policies/roster.error_manage_roster'));
+    }
     #[Computed]
     public function userFinder(): User|null
     {
