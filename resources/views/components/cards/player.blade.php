@@ -104,7 +104,7 @@ $tierLine .= ' • '.$memberUser->rank;
         <div class="flex min-w-0 flex-1 flex-col gap-3">
             <div class="relative z-[1] flex min-w-0 flex-row items-stretch gap-2 md:flex-col md:gap-3 lg:flex-row lg:items-stretch lg:gap-3 xl:gap-4">
                 <div class="flex min-w-0 flex-1 flex-col gap-1 lg:basis-0 lg:grow-[3]">
-                    <h3 class="truncate text-2xl font-bold text-gold">{{ $memberUser->username }}</h3>
+                    <h4 class="truncate text-xl font-bold text-gold">{{ $memberUser->username }}</h4>
                     @if ($memberUser->riot_tag)
                     <p class="truncate font-mono text-sm lg:text-xs 2xl:text-sm text-text-gray">{{ $memberUser->riot_tag }}</p>
                     @endif

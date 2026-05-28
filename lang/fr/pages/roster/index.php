@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'title' => 'Gestion du roster',
+    'create_invitation_cta' => 'Inviter un joueur',
+    'create_invitation_title' => 'Inviter un joueur à rejoindre l\'équipe',
     'application_title' => 'Candidature',
     'is_starter_title' => 'Roster principal',
     'online' => 'En ligne',
