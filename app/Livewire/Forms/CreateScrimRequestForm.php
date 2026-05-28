@@ -8,6 +8,7 @@ use App\Models\Team;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
+use App\Models\User;
 
 class CreateScrimRequestForm extends Form
 {
@@ -39,9 +40,8 @@ class CreateScrimRequestForm extends Form
 
         $receiverTeam = Team::query()->findOrFail($teamId);
 
-        if (Gate::denies('create', [ScrimRequest::class, $receiverTeam])) {
+        if (Gate::denies('manageTeam', User::class)) {
             $this->addError('error', __('modals/scrims/propose-scrim.duplicate_pending'));
-
             return false;
         }
 

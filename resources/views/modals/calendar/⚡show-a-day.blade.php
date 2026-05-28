@@ -9,6 +9,8 @@ use App\Models\TeamMember;
 use App\Enums\RoleInTeam;
 use App\Enums\TypeEvents;
 use App\Livewire\Forms\Calendar\CreateEventForm;
+use Illuminate\Support\Facades\Gate;
+use App\Models\User;
 
 new class extends Component
 {
@@ -51,8 +53,16 @@ new class extends Component
 
     public function storeEvent(): void
     {
-        $this->form->store($this->date, currentTeam()->id);
+        if (Gate::denies('manageTeam', User::class)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/calendar.error_title'),
+                'message' => __('policies/calendar.error_manage_calendar'),
+                'type' => 'error',
+            ]);
+            return;
+        }
 
+        $this->form->store($this->date, currentTeam()->id);
         $this->form->reset();
         $this->loadDayData();
 
@@ -127,7 +137,8 @@ new class extends Component
                 :open="true"
                 :count="$allEventsThisDay->count()"
                 heading-level="h3">
-                <x-slot:actions>
+                @can('manageTeam', User::class)
+                <x-slot:actions>    
                     <button
                         type="button"
                         @click="showCreateEvent = true"
@@ -136,6 +147,7 @@ new class extends Component
                         {{ __('modals/calendar/show-a-day.create_event') }}
                     </button>
                 </x-slot:actions>
+                @endcan
 
                 @if ($allEventsThisDay->isEmpty())
                 <li class="col-span-12">

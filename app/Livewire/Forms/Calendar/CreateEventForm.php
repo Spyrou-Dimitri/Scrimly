@@ -4,8 +4,10 @@ namespace App\Livewire\Forms\Calendar;
 
 use App\Enums\TypeEvents;
 use App\Models\Event;
+use App\Models\User;
 use Illuminate\Validation\Rule;
 use Livewire\Form;
+use Illuminate\Support\Facades\Gate;
 
 class CreateEventForm extends Form
 {
@@ -68,9 +70,18 @@ class CreateEventForm extends Form
         }
     }
 
-    public function store(string $date, int $teamId): void
+    public function store(string $date, int $teamId): bool 
     {
         $validated = $this->validate();
+
+        if (Gate::denies('manageTeam', User::class)) {
+            session()->flash('toast', [
+                'title' => __('policies/team.error_title'),
+                'message' => __('policies/team.error_manage_team'),
+                'type' => 'error',
+            ]);
+            return false;
+        }
 
         Event::create([
             'title' => $validated['title'],
@@ -81,5 +92,7 @@ class CreateEventForm extends Form
             'type' => $validated['type'],
             'team_id' => $teamId,
         ]);
+
+        return true;
     }
 }

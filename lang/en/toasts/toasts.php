@@ -8,4 +8,8 @@ return [
     'task_updated' => 'Homework updated successfully',
     'game_created' => 'Game created successfully',
     'game_updated' => 'Game updated successfully',
+    'invitation_sent' => 'Invitation sent successfully',
+    'invitation_already_sent' => 'You have already invited this user',
+    'invitation_accepted' => 'Invitation accepted, welcome to the team',
+    'invitation_refused' => 'Invitation declined',
 ];
