@@ -130,7 +130,7 @@ new #[Layout('layouts::team')] class extends Component {
             <h2 class="text-[32px] font-bold">
                 {{ __('pages/roster/index.title') }}
             </h2>
-            @can('create', [TeamInvitation::class, currentTeam()])
+            @can('manageTeam', User::class)
             <x-cta :href="route('roster.invitations.create', ['slug' => currentTeam()->slug])" :title="__('pages/roster/index.create_invitation_title')" :class="'primary'">
                 {{ __('pages/roster/index.create_invitation_cta') }}
             </x-cta>

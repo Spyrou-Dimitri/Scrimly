@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Enums\StatusApplication;
 use App\Enums\StatusInTeam;
+use App\Enums\StatusInvitation;
 use App\Models\Team;
 use App\Models\TeamApplication;
 use App\Models\TeamMember;
@@ -39,6 +40,13 @@ class TeamApplicationPolicy
             ->where('status', StatusApplication::PENDING)
             ->exists()) {
             return Response::deny(__('policies/roster.error_apply_pending_application'));
+        }
+
+        if ($team->teamInvitations()
+            ->where('user_id', $user->id)
+            ->where('status', StatusInvitation::PENDING)
+            ->exists()) {
+            return Response::deny(__('policies/roster.error_apply_pending_invitation'));
         }
 
         return Response::allow();
