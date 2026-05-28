@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use App\Enums\StatusInvitation;
-use App\Enums\RoleInTeam;
 use App\Enums\RoleInGame;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Enums\RoleInTeam;
+use App\Enums\StatusInvitation;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TeamInvitation extends Model
 {
@@ -15,6 +15,7 @@ class TeamInvitation extends Model
         'status',
         'roleInTeam',
         'roleInGame',
+        'motivation',
         'user_id',
     ];
 

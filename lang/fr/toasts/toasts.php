@@ -8,4 +8,6 @@ return [
     'task_updated' => 'Devoir mis à jour avec succès',
     'game_created' => 'Partie créée avec succès',
     'game_updated' => 'Partie mise à jour avec succès',
+    'invitation_sent' => 'Invitation envoyée avec succès',
+    'invitation_already_sent' => 'Vous avez déjà invité cet utilisateur',
 ];
