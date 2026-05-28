@@ -76,6 +76,10 @@ class Team extends Model
     {
         return $this->hasMany(Task::class);
     }
+    public function teamInvitations(): HasMany
+    {
+        return $this->hasMany(TeamInvitation::class);
+    }
 
     protected function tag(): Attribute
     {

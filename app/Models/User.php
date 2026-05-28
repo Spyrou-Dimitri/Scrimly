@@ -106,6 +106,10 @@ class User extends Authenticatable
             ->withPivot('roleInTeam', 'roleInGame', 'joined_at')
             ->withTimestamps();
     }
+    public function teamInvitations(): HasMany
+    {
+        return $this->hasMany(TeamInvitation::class);
+    }
 
     public function teamApplications(): HasMany
     {
