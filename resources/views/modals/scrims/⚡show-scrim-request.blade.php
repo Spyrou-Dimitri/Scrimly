@@ -128,10 +128,11 @@ $requesterTeam = $this->scrimRequest->requesterTeam;
         ])">
         <div class="flex flex-col gap-6 pt-1" wire:click.stop>
             <div class="flex flex-row items-center gap-4 border-b border-white/10 pb-5">
-                <img
-                    src="{{ $requesterTeam->logo_url }}"
-                    alt="{{ $requesterTeam->name }}"
-                    class="size-[4.5rem] shrink-0 rounded-sm object-cover ring-1 ring-white/15 md:size-[5rem]" />
+                <x-team-logo
+                    :team="$requesterTeam"
+                    preset="scrim-row"
+                    class="size-[4.5rem] shrink-0 rounded-sm object-cover ring-1 ring-white/15 md:size-[5rem]"
+                />
                 <div class="min-w-0 flex-1">
                     <p class="truncate text-xl font-bold text-text-primary md:text-2xl">
                         {{ $requesterTeam->name }}

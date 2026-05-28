@@ -210,10 +210,11 @@ new #[Layout('layouts::team')] class extends Component
 
         <div class="grid grid-cols-1 items-center gap-8 pt-8 lg:grid-cols-3 lg:pt-0">
             <div class="flex flex-col items-center gap-4">
-                <img
-                    src="{{ $activeScrim->team->logo_url }}"
-                    alt="{{ $activeScrim->team->name }}"
-                    class="size-20 object-cover md:size-24" />
+                <x-team-logo
+                    :team="$activeScrim->team"
+                    preset="team-finder"
+                    class="size-20 object-cover md:size-24"
+                />
                 <p class="text-center text-xl font-bold text-text-primary md:text-2xl">
                     {{ $activeScrim->team->name }}
                 </p>
@@ -231,10 +232,13 @@ new #[Layout('layouts::team')] class extends Component
             </div>
 
             <div class="flex flex-col items-center gap-4">
-                <img
-                    src="{{ $activeScrim->opponentTeam?->logo_url }}"
-                    alt="{{ $activeScrim->opponentTeam?->name ?? __('pages/scrims/index.upcoming_opponent_unknown') }}"
-                    class="size-20 object-cover md:size-24" />
+                @if ($activeScrim->opponentTeam)
+                <x-team-logo
+                    :team="$activeScrim->opponentTeam"
+                    preset="team-finder"
+                    class="size-20 object-cover md:size-24"
+                />
+                @endif
                 <p class="text-center text-xl font-bold text-text-primary md:text-2xl">
                     {{ $activeScrim->opponentTeam?->name ?? __('pages/scrims/index.upcoming_opponent_unknown') }}
                 </p>
@@ -292,10 +296,11 @@ new #[Layout('layouts::team')] class extends Component
                                         <span class="h-0.5 w-8 shrink-0 bg-gold" aria-hidden="true"></span>
                                     </div>
                                     <div class="flex min-w-0 flex-1 items-center gap-3 md:gap-4">
-                                        <img
-                                            src="{{ $opponent->logo_url }}"
-                                            alt="{{ $opponent->name }}"
-                                            class="size-14 shrink-0 object-cover md:size-16" />
+                                        <x-team-logo
+                                            :team="$opponent"
+                                            preset="scrim-row"
+                                            class="size-14 shrink-0 object-cover md:size-16"
+                                        />
                                         <div class="flex flex-col gap-1">
                                             <h4 class="text-xl font-bold text-white">{{ $opponent->name }}</h4>
                                             <p class="text-sm text-text-secondary">
@@ -331,10 +336,11 @@ new #[Layout('layouts::team')] class extends Component
                             <span class="card-animated-border-right-edge" aria-hidden="true"></span>
                             <div class="relative z-[1] flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                                 <div class="flex min-w-0 flex-1 items-center gap-3 md:gap-4">
-                                    <img
-                                        src="{{ $otherTeam->logo_url }}"
-                                        alt="{{ $otherTeam->name }}"
-                                        class="size-14 shrink-0 rounded object-cover md:size-16" />
+                                    <x-team-logo
+                                        :team="$otherTeam"
+                                        preset="scrim-row"
+                                        class="size-14 shrink-0 rounded object-cover md:size-16"
+                                    />
                                     <div class="min-w-0">
                                         <h4 class="truncate text-[20px] font-bold text-white">{{ $otherTeam->name }}</h4>
                                         <p class="mt-1 text-sm text-text-secondary">
@@ -375,10 +381,11 @@ new #[Layout('layouts::team')] class extends Component
                         <article class="relative flex flex-col bg-bg-card p-4 basic-shadow md:p-5">
                             <div class="relative z-[1] flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                                 <div class="flex min-w-0 flex-1 items-center gap-3 md:gap-4">
-                                    <img
-                                        src="{{ $otherTeam->logo_url }}"
-                                        alt="{{ $otherTeam->name }}"
-                                        class="size-14 shrink-0 rounded object-cover md:size-16" />
+                                    <x-team-logo
+                                        :team="$otherTeam"
+                                        preset="scrim-row"
+                                        class="size-14 shrink-0 rounded object-cover md:size-16"
+                                    />
                                     <div class="min-w-0">
                                         <h4 class="truncate text-[20px] font-bold text-white">{{ $otherTeam->name }}</h4>
                                         <p class="mt-1 text-sm text-text-secondary">

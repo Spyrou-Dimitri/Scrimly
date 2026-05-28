@@ -29,16 +29,13 @@ $currentUser = auth()->user();
             <div class="flex items-center gap-2 lg:gap-3">
                 <a href="{{ route('profile.show') }}"
                     title="{{ __('layouts/team.edit_profile_cta_title') }}"
-                    class="flex items-center g ap-2 lg:gap-3 group">
+                    class="flex items-center gap-2 lg:gap-3 group">
 
                     <x-user-avatar
                         :user="$currentUser"
                         preset="topbar"
                         class="size-9 rounded-full object-cover flex-shrink-0"
                     />
-
-
-
 
                     <span class="hidden sm:inline-block relative text-white font-medium max-w-[160px]
                  before:content-[''] before:absolute before:bottom-0 before:left-0 
@@ -50,6 +47,16 @@ $currentUser = auth()->user();
                         {{ $currentUser->username }}
                     </span>
                 </a>
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button
+                        type="submit"
+                        title="{{ __('layouts/team.logout') }}"
+                        class="cta-danger cta-danger--outline rounded-full size-10">
+                        <flux:icon name="power" class="size-6" />
+                    </button>
+                </form>
             </div>
             @endif
 

@@ -79,11 +79,11 @@ $memberSince = $team->created_at->isoFormat('D MMMM YYYY');
         <div class="grid grid-cols-12 items-start gap-6 lg:gap-8">
             <div class="col-span-12 flex justify-center self-start lg:col-span-3 lg:justify-start">
                 <div class="relative size-40 shrink-0 overflow-hidden  sm:size-44 lg:w-full lg:size-48">
-                    <img
-                        src="{{ $team->logo_url }}"
-                        alt="{{ $team->name }}"
+                    <x-team-logo
+                        :team="$team"
+                        preset="team-hero"
                         class="size-full object-cover"
-                        loading="lazy">
+                    />
                 </div>
             </div>
 

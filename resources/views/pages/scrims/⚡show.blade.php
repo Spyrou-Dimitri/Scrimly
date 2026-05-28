@@ -298,7 +298,11 @@ new #[Layout('layouts::team')] class extends Component
                     <h4 class="sr-only">{{ __('pages/scrims/show.score_section_title') }}</h4>
                     <div class="grid grid-cols-1 items-center gap-4 lg:grid-cols-3">
                         <div class="flex flex-row items-center gap-4">
-                            <img src="{{ $this->scrim->team->logo_url }}" alt="{{ $this->scrim->team->name }}" class="size-15">
+                            <x-team-logo
+                                :team="$this->scrim->team"
+                                preset="scrim-row"
+                                class="size-15"
+                            />
                             <p class="text-center text-2xl font-bold text-text-primary lg:text-left">
                                 {{ $this->scrim->team->name }}
                             </p>
@@ -321,7 +325,13 @@ new #[Layout('layouts::team')] class extends Component
                             <p class="text-center text-2xl font-bold text-text-primary lg:text-right">
                                 {{ $this->scrim->opponentTeam?->name }}
                             </p>
-                            <img src="{{ $this->scrim->opponentTeam?->logo_url }}" alt="{{ $this->scrim->opponentTeam?->name }}" class="size-15">
+                            @if ($this->scrim->opponentTeam)
+                            <x-team-logo
+                                :team="$this->scrim->opponentTeam"
+                                preset="scrim-row"
+                                class="size-15"
+                            />
+                            @endif
 
                         </div>
                     </div>

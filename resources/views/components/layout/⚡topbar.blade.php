@@ -3,7 +3,6 @@
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
@@ -120,10 +119,11 @@ new class extends Component
                 <button type="button"
                     @click="openTeams = !openTeams; if (openTeams) $wire.loadTeams(); if (!openTeams) $wire.unloadTeams()"
                     type="button" class="flex items-center text-white gap-3 min-w-0 hover:text-gold transition-colors cursor-pointer">
-                    <img
-                        src="{{ $team->logo_url }}"
-                        alt="{{ $team->name }}"
-                        class="w-9 h-9 object-contain">
+                    <x-team-logo
+                        :team="$team"
+                        preset="topbar"
+                        class="w-9 h-9 object-contain"
+                    />
 
                     <div class="flex items-center relative gap-2 transition ease-in-out duration-150 hover:text-gold">
                         <span class="text-inherit font-semibold text-base lg:text-lg truncate">
@@ -148,15 +148,11 @@ new class extends Component
                 @foreach ($userTeams as $userTeam)
                 <li class="">
                     <button wire:click="switchTeam({{ $userTeam->id }})" class="px-3 hover:text-gold transition ease-in-out duration-150 flex items-center gap-2 cursor-pointer">
-                        @if ($userTeam->logo)
-                        <img src="{{ Storage::disk('public')->url('images/logoTeam/variants/128x128/' . $userTeam->logo) }}"
-                            alt="{{ $userTeam->name }}"
-                            class="size-6 object-cover">
-                        @else
-                        <img src="{{ asset('/img/basicIcon.webp') }}"
-                            alt="{{ $userTeam->name }}"
-                            class="size-6 object-cover">
-                        @endif
+                        <x-team-logo
+                            :team="$userTeam"
+                            preset="team-switcher"
+                            class="size-6 object-cover"
+                        />
                         <span class="relative
                  before:content-[''] before:w-full before:h-[2px]
                  before:scale-x-0 before:bg-gold

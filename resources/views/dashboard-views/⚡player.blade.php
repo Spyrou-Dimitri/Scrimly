@@ -291,10 +291,11 @@ new class extends Component
                                         <span class="h-0.5 w-8 shrink-0 bg-gold" aria-hidden="true"></span>
                                     </div>
                                     <div class="flex flex-1 items-center gap-3 md:gap-4">
-                                        <img
-                                            src="{{ $opponent->logo_url }}"
-                                            alt="{{ $opponent->name }}"
-                                            class="size-14 shrink-0 object-cover md:size-16" />
+                                        <x-team-logo
+                                            :team="$opponent"
+                                            preset="scrim-row"
+                                            class="size-14 shrink-0 object-cover md:size-16"
+                                        />
                                         <div class="flex flex-col gap-1">
                                             <h4 class="truncate text-xl font-bold text-white">{{ $opponent->name }}</h4>
                                             <p class="text-sm text-text-secondary">
@@ -340,10 +341,14 @@ new class extends Component
                             <div class="relative z-[1] flex flex-col gap-4">
                                 <div class="flex flex-col gap-4 sm:flex-row flex-wrap sm:items-center sm:justify-between">
                                     <div class="flex flex-1 items-center gap-3 md:gap-4">
-                                        <img
-                                            src="{{ $opponent?->logo_url }}"
-                                            alt="{{ $opponent?->name ?? __('pages/scrims/index.upcoming_opponent_unknown') }}"
-                                            class="size-14 shrink-0 object-cover md:size-16" />
+                                        @if ($opponent)
+                                        <x-team-logo
+                                            :team="$opponent"
+                                            preset="scrim-row"
+                                            :alt="$opponent->name"
+                                            class="size-14 shrink-0 object-cover md:size-16"
+                                        />
+                                        @endif
                                         <div class="flex flex-1 flex-wrap items-center gap-4">
                                             <h4 class="truncate text-xl font-bold text-white">
                                                 {{ $opponent?->name ?? __('pages/scrims/index.upcoming_opponent_unknown') }}

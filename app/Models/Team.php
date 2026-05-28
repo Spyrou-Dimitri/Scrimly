@@ -5,15 +5,16 @@ namespace App\Models;
 use App\Enums\Language;
 use App\Enums\LolGoal;
 use App\Enums\LolServeur;
+use App\Enums\ScrimOutcome;
 use App\Enums\StatusInTeam;
+use App\Enums\StatusScrim;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
-use App\Enums\StatusScrim;
-use App\Enums\ScrimOutcome;
+
 class Team extends Model
 {
     use HasFactory;
@@ -55,6 +56,7 @@ class Team extends Model
     {
         return $this->hasMany(Event::class);
     }
+
     public function scrims(): HasMany
     {
         return $this->hasMany(Scrim::class);
@@ -69,6 +71,7 @@ class Team extends Model
     {
         return $this->hasMany(ScrimRequest::class, 'receiver_team_id');
     }
+
     public function tasks(): HasMany
     {
         return $this->hasMany(Task::class);
@@ -77,8 +80,8 @@ class Team extends Model
     protected function tag(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => strtoupper($value),
-            set: fn($value) => strtoupper($value),
+            get: fn ($value) => strtoupper($value),
+            set: fn ($value) => strtoupper($value),
         );
     }
 
@@ -92,14 +95,26 @@ class Team extends Model
     public function getLogoUrlAttribute(): string
     {
         if ($this->logo_type === 'upload' && $this->logo_value) {
-            return Storage::disk('public')->url('images/logoTeam/variants/480x480/' . $this->logo_value);
+            return Storage::disk('public')->url('images/logoTeam/variants/300x300/'.$this->logo_value);
         }
 
         if ($this->logo_type === 'default' && $this->logo_value) {
-            return asset('img/IconsTeams/' . $this->logo_value . '.webp');
+            return asset('img/IconsTeams/'.$this->logo_value.'.webp');
         }
 
-        return asset('img/IconsTeams/Demacia/.webp');
+        return asset('img/IconsTeams/Demacia.webp');
+    }
+
+    public function getLogoSrcsetAttribute(): ?string
+    {
+        if ($this->logo_type !== 'upload' || blank($this->logo_value)) {
+            return null;
+        }
+        $value = $this->logo_value;
+        $url = fn ($size) => Storage::disk('public')->url('images/logoTeam/variants/'.$size.'x'.$size.'/'.$value);
+
+        return "{$url(80)} 80w, {$url(300)} 300w, {$url(400)} 400w";
+
     }
 
     private static function uniqueCodeGenerator(): string
@@ -135,6 +150,7 @@ class Team extends Model
         $this->starter_average_elo = round($averageEloOfTeam);
         $this->save();
     }
+
     public function overallScrimWinrate(): float
     {
         $query = Scrim::query()
@@ -142,9 +158,10 @@ class Team extends Model
             ->whereIn('status', [StatusScrim::COMPLETED, StatusScrim::ABORTED]);
         $allScrim = $query->count();
         $allWinScrim = $query
-        ->whereIn('status', [StatusScrim::COMPLETED, StatusScrim::ABORTED])
-        ->where('outcome', ScrimOutcome::Victory)
-        ->count();
+            ->whereIn('status', [StatusScrim::COMPLETED, StatusScrim::ABORTED])
+            ->where('outcome', ScrimOutcome::Victory)
+            ->count();
+
         return round(($allWinScrim / $allScrim) * 100, 2);
     }
 }

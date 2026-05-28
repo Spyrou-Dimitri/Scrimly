@@ -27,12 +27,12 @@
     <div class="relative z-[1] flex min-h-0 flex-1 flex-col gap-4 pointer-events-none">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-4">
             <div class="size-14 shrink-0 overflow-hidden sm:size-20">
-                <img
-                    src="{{ $team->logo_url }}"
+                <x-team-logo
+                    :team="$team"
+                    preset="team-finder"
                     alt=""
                     class="size-full object-cover"
-                    loading="lazy"
-                >
+                />
             </div>
             <div class="flex-1">
                 <h3 class="truncate text-2xl font-bold text-white">{{ $team->name }}</h3>

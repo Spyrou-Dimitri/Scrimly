@@ -62,7 +62,7 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
                     {{ __('pages/team/join.form_legend') }}
                 </legend>
                 <div class="flex flex-col gap-4">
-                    <div class="flex flex-row gap-6">
+                    <div class="flex flex-col gap-4 sm:flex-row sm:gap-6">
                         <x-forms.input wire:model.live="form.team_code" :required="true" :placeholder="__('pages/team/join.team_code_placeholder')" :type="'text'" :name="'team_code'" class="w-full" :label="__('pages/team/join.team_code')">
                             @error('form.team_code')
                             <span class="font-spaceGrotesk text-input-error font-semibold">
@@ -114,7 +114,11 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
                     @endif
                 </h3>
                 @if($this->teamFinder)
-                    <img src="{{ $this->teamFinder->logo_url }}" class=" px-16 py-4 w-full h-auto object-fit" alt="{{ $this->teamFinder->name }}">
+                    <x-team-logo
+                        :team="$this->teamFinder"
+                        preset="join-preview"
+                        class="px-16 py-4 w-full h-auto object-fit"
+                    />
                     
                 @else
                 <div class="px-16 py-4 w-full h-auto object-fit">

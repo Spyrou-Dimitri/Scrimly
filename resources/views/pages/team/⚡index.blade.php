@@ -92,7 +92,11 @@ new #[Layout('layouts::choose_a_team')] class extends Component
                         aria-label="{{ $teamMember->team->name }}"></button>
 
                     <div class="relative z-[1] flex min-h-full w-full flex-col items-center justify-between gap-4 pointer-events-none">
-                        <img src="{{ $teamMember->team->logo_url }}" class="m-auto h-auto w-[250px] object-fit" alt="{{ $teamMember->team->name }}">
+                        <x-team-logo
+                            :team="$teamMember->team"
+                            preset="lobby-card"
+                            class="m-auto h-auto w-[250px] object-fit"
+                        />
                         <h3 class="text-center text-2xl font-bold">{{ $teamMember->team->name }}</h3>
                         <p class="text-center  text-text-secondary">
                             {{ $teamMember->roleInTeam->label() }}
@@ -129,10 +133,11 @@ new #[Layout('layouts::choose_a_team')] class extends Component
                         <li
                             wire:key="pending-application-{{ $application->id }}"
                             class="flex flex-wrap items-center gap-4 shadow-basic bg-bg-card p-4">
-                            <img
-                                src="{{ $application->team->logo_url }}"
-                                alt="{{ $application->team->name }}"
-                                class="size-12 shrink-0 object-contain sm:size-14">
+                            <x-team-logo
+                                :team="$application->team"
+                                preset="pending-row"
+                                class="size-12 shrink-0 object-contain sm:size-14"
+                            />
 
                             <div class="min-w-0 flex-1">
                                 <h4 class="truncate text-xl font-bold">{{ $application->team->name }}</h4>
