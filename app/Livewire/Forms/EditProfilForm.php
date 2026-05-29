@@ -42,7 +42,7 @@ class EditProfilForm extends Form
                 'min:7',
                 'max:22',
                 'regex:/^[\p{L}\p{N}][\p{L}\p{N} ]{1,14}[\p{L}\p{N}]#[A-Za-z0-9]{3,5}$/u',
-                new ValidRiotId,
+                Rule::when($this->riotTagChanged(), [new ValidRiotId]),
             ],
             'avatar' => ['nullable', 'image', 'max:2048'],
             'default_avatar' => ['required', Rule::enum(DefaultAvatar::class)],
@@ -106,7 +106,7 @@ class EditProfilForm extends Form
 
             if (blank($validated['riot_tag'])) {
                 $user->riotProfile?->delete();
-            } else {
+            } elseif ($this->riotTagChanged()) {
                 $riotAccount = ValidRiotId::$validatedAccount;
                 $riotProfile = $user->riotProfile()->updateOrCreate(
                     ['user_id' => $user->id],
@@ -142,5 +142,12 @@ class EditProfilForm extends Form
             $directory = sprintf(config('avatar.variant_pattern'), $size['width'], $size['height']);
             $disk->delete($directory . '/' . $filename);
         }
+    }
+private function riotTagChanged(): bool
+    {
+        $user = User::query()->with('riotProfile')->findOrFail(Auth::id());
+        $futurNewRiotTag = filled($this->riot_tag) ? trim($this->riot_tag) : null;
+        $oldRiotTag = $user->riotProfile?->riot_tag;
+        return $futurNewRiotTag !== $oldRiotTag;
     }
 }

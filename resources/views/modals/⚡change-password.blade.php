@@ -3,11 +3,13 @@
 use App\Models\User;
 use Livewire\Component;
 use App\Livewire\Forms\ChangePasswordForm;
+use Illuminate\Support\Facades\Auth;
 
 new class extends Component {
     public ChangePasswordForm $form;
-    public function mount($model_id)
+    public function mount(int $model_id)
     {
+        abort_unless(Auth::user()->id === $model_id, 403);
         $this->form->user = User::findOrFail($model_id);
     }
 

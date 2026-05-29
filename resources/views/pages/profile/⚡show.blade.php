@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Livewire\Forms\EditProfilForm;
 use App\Enums\DefaultAvatar;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\RateLimiter;
 
 new class extends Component
 {
@@ -65,6 +66,17 @@ new class extends Component
 
     public function updateProfil(): void
     {
+        $keyForRateLimiter = 'update-profil-'.Auth::user()->id;
+        
+        if (RateLimiter::tooManyAttempts($keyForRateLimiter, 1)) {
+            $this->dispatch('toast', [
+                'type' => 'error',
+                'message' => __('toasts/toasts.too_many_attempts'),
+            ]);
+            return;
+        }
+        RateLimiter::hit($keyForRateLimiter, 60);
+
         $this->form->edit($this->preset_selected);
         $this->syncAvatarInputsFromStoredUser();
 
