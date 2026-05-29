@@ -10,8 +10,10 @@ return [
     'game_updated' => 'Game updated successfully',
     'invitation_sent' => 'Invitation sent successfully',
     'invitation_already_sent' => 'You have already invited this user',
-    'invitation_accepted' => 'Invitation accepted, welcome to the team',
+    'invitation_accepted' => 'Invitation accepted',
+    'invitation_accepted_message' => 'You have successfully joined :team.',
     'invitation_refused' => 'Invitation declined',
+    'invitation_refused_message' => 'You have declined the invitation from :team.',
     'application_cancelled' => 'Application cancelled',
     'application_cancelled_message' => 'Your request to join :team has been withdrawn.',
 ];

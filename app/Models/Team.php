@@ -76,6 +76,7 @@ class Team extends Model
     {
         return $this->hasMany(Task::class);
     }
+
     public function teamInvitations(): HasMany
     {
         return $this->hasMany(TeamInvitation::class);
@@ -148,6 +149,10 @@ class Team extends Model
             return null;
         }
         $averageWithoutNull = array_filter($scores);
+
+        if ($averageWithoutNull === []) {
+            return null;
+        }
 
         $averageEloOfTeam = array_sum($averageWithoutNull) / count($averageWithoutNull);
 
