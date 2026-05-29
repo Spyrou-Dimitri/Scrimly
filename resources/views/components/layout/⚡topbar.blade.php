@@ -100,7 +100,7 @@ new class extends Component
 
 <header
 
-    class="flex-shrink-0 h-16 flex items-center justify-between
+    class="flex-shrink-0 h-16 flex items-center justify-between gap-4
            px-4 lg:px-6
            bg-bg-main border-b basic-shadow border-[#2C2D34]">
     <div class="flex items-center gap-3 min-w-0">
@@ -108,7 +108,7 @@ new class extends Component
             type="button"
             x-data
             @click="$dispatch('sidebar-toggle')"
-            class="lg:hidden p-2 -ml-2 text-white hover:text-gold transition-colors cursor-pointer"
+            class="lg:hidden p-2 -ml-2 text-white hover:text-gold  transition-colors cursor-pointer"
             aria-label="{{ __('layouts/team.open_menu_aria') }}">
             <flux:icon.bars-3 class="size-6" />
         </button>
@@ -118,7 +118,7 @@ new class extends Component
             <h2>
                 <button type="button"
                     @click="openTeams = !openTeams; if (openTeams) $wire.loadTeams(); if (!openTeams) $wire.unloadTeams()"
-                    type="button" class="flex items-center text-white gap-3 min-w-0 hover:text-gold transition-colors cursor-pointer">
+                    type="button" class="flex  items-center text-white gap-3 min-w-0 hover:text-gold transition-colors cursor-pointer">
                     <x-team-logo
                         :team="$team"
                         preset="topbar"
@@ -126,7 +126,7 @@ new class extends Component
                     />
 
                     <div class="flex items-center relative gap-2 transition ease-in-out duration-150 hover:text-gold">
-                        <span class="text-inherit font-semibold text-base lg:text-lg truncate">
+                        <span class="font-semibold sr-only sm:not-sr-only text-base lg:text-lg truncate">
                             {{ $team->name }}
                         </span>
                         <flux:icon.chevron-down class="size-4" />
@@ -192,7 +192,7 @@ new class extends Component
                     style="font-size: 1.5rem; line-height: 1.5rem;"
                     aria-hidden="true"></span>
                 <div class="flex items-center relative gap-2 transition ease-in-out duration-150">
-                    <span class="text-inherit font-semibold text-sm lg:text-base truncate">
+                    <span class="text-inherit font-semibold text-sm lg:text-base sr-only sm:not-sr-only truncate">
                         {{ $currentLocale === 'en' ? __('layouts/team.language_en') : __('layouts/team.language_fr') }}
                     </span>
                     <flux:icon.chevron-down class="size-4" />

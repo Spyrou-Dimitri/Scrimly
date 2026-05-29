@@ -25,4 +25,5 @@ return [
     ],
 
     'logout' => 'Se déconnecter',
+    'view_team_profile_title' => 'Voir le profil de l\'équipe',
 ];

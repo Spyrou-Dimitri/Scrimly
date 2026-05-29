@@ -131,7 +131,37 @@ new class extends Component
             @endforeach
         </nav>
 
-        <div class="p-4 flex-shrink-0">
+        @php
+            use App\Enums\LolTier;
+
+            $team = currentTeam();
+            $averageEloTier = LolTier::fromStarterAverageElo($team->starter_average_elo);
+        @endphp
+
+        <div class="flex flex-shrink-0 flex-col gap-3 p-4">
+            <a
+                href="{{ route('team.show', ['slug' => $team->slug, 'id' => $team->id]) }}"
+                wire:navigate
+                title="{{ __('layouts/team.view_team_profile_title') }}"
+                @click="open = false"
+                class="flex items-center gap-3 bg-bg-card p-3 transition-colors duration-150 hover:bg-white/5">
+                <div class="size-10 shrink-0 overflow-hidden rounded-lg bg-white/5">
+                    <x-team-logo
+                        :team="$team"
+                        preset="thumbnail"
+                        class="size-full object-cover"
+                    />
+                </div>
+                <div class="min-w-0 flex-1">
+                    <p class="truncate font-semibold text-white">{{ $team->name }}</p>
+                    @if ($averageEloTier)
+                        <p @class(['truncate text-sm', $averageEloTier->color()])>{{ $averageEloTier->label() }}</p>
+                    @else
+                        <p class="truncate text-sm text-text-secondary">{{ __('pages/team/show.unranked') }}</p>
+                    @endif
+                </div>
+            </a>
+
             <button
                 type="button"
                 title="{{ __('layouts/team.logout') }}"

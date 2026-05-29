@@ -25,4 +25,5 @@ return [
     ],
 
     'logout' => 'Log out',
+    'view_team_profile_title' => 'View team profile',
 ];
