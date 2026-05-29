@@ -43,6 +43,12 @@ new #[Layout('layouts::choose_a_team')] class extends Component
         $this->loadData();
     }
 
+    #[On('refresh_applications')]
+    public function refreshApplications(): void
+    {
+        $this->loadData();
+    }
+
     public function selectTeam(int $teamId): void
     {
         $team = $this->currentUser->teams->firstWhere('id', $teamId);
@@ -76,6 +82,13 @@ new #[Layout('layouts::choose_a_team')] class extends Component
         ]);
     }
 
+    public function openModalCancelApplication(int $applicationId): void
+    {
+        $this->dispatch('open_modal', [
+            'form' => 'cancel-application',
+            'model_id' => $applicationId,
+        ]);
+    }
     private function loadData(): void
     {
         $this->teamMembers = TeamMember::query()
@@ -293,6 +306,7 @@ new #[Layout('layouts::choose_a_team')] class extends Component
                                 @switch($application->status)
                                 @case(StatusApplication::PENDING)
                                 <button
+                                    wire:click="openModalCancelApplication({{ $application->id }})"
                                     type="button"
                                     title="{{ __('pages/team/index.sent_applications_cancel_title') }}"
                                     class="cta-danger cta-danger--outline inline-flex size-9 shrink-0 items-center justify-center !p-0">

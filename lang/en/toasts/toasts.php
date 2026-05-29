@@ -12,4 +12,6 @@ return [
     'invitation_already_sent' => 'You have already invited this user',
     'invitation_accepted' => 'Invitation accepted, welcome to the team',
     'invitation_refused' => 'Invitation declined',
+    'application_cancelled' => 'Application cancelled',
+    'application_cancelled_message' => 'Your request to join :team has been withdrawn.',
 ];

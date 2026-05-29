@@ -10,4 +10,6 @@ return [
     'game_updated' => 'Partie mise à jour avec succès',
     'invitation_sent' => 'Invitation envoyée avec succès',
     'invitation_already_sent' => 'Vous avez déjà invité cet utilisateur',
+    'application_cancelled' => 'Candidature annulée',
+    'application_cancelled_message' => 'Votre demande pour rejoindre :team a été retirée.',
 ];

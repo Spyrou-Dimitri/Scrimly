@@ -73,12 +73,12 @@ new class extends Component
             </section>
 
             <footer class="flex flex-col-reverse justify-between gap-3 sm:flex-row">
-                <button type="button" class="cta-secondary">
+                <x-destructive type="button">
                     {{ __('modals/team-invitation.refuse') }}
-                </button>
-                <button type="button" class="cta-primary">
+                </x-destructive>
+                <x-accept type="button">
                     {{ __('modals/team-invitation.accept') }}
-                </button>
+                </x-accept>
             </footer>
         </div>
     </x-layout.head-modal>

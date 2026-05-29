@@ -230,12 +230,12 @@ new class extends Component
         @elseif ($this->candidate->roleInTeam !== RoleInTeam::PLAYER)
         @can('manageTeam', User::class)
         <div class="flex justify-between gap-2">
-            <button wire:click="refuse" class="cta-secondary">
+            <x-destructive wire:click="refuse">
                 Refuser
-            </button>
-            <button wire:click="accept" class="cta-primary">
+            </x-destructive>
+            <x-accept wire:click="accept">
                 Accepter
-            </button>
+            </x-accept>
         </div>
         @endcan
         @endif
