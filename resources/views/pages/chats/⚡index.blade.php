@@ -69,24 +69,27 @@ new #[Layout('layouts::team')] class extends Component
 ?>
 
 <div class="-mx-6 -my-8 flex h-[calc(100dvh-4rem)] max-h-[calc(100dvh-4rem)] flex-col gap-6 overflow-hidden px-6 py-8">
-    <h2 class="shrink-0 text-[32px] font-bold text-white">
+    <h2
+        x-data="chatPresence({{ currentTeam()->id }}, {{ currentMember()->user_id }})"
+        class="shrink-0 text-[32px] font-bold text-white">
         {{ __('pages/chats/index.title') }}
     </h2>
 
     <section
         class="flex min-h-0 flex-1 flex-col overflow-hidden bg-bg-widget shadow-basic"
-        aria-label="{{ __('pages/chats/index.title') }}">
+        aria-label="{{ __('pages/chats/index.title') }}"
+        x-data="chatPresence({{ currentTeam()->id }}, {{ currentMember()->user_id }})">
         <div
-        x-data="{
+            x-data="{
         scroll() {
-        this.$nextTick(() => {
-            $el.scrollTo(0, $el.scrollHeight);
-        });
-    }
-}"
-        x-init="scroll()"
-        x-on:scroll-to-the-end.window="scroll()"
-        
+            this.$nextTick(() => {
+                this.$el.scrollTo(0, this.$el.scrollHeight);
+            });
+        }
+    }"
+            x-init="scroll()"
+            x-on:scroll-to-the-end.window="scroll()"
+
             class="min-h-0 flex-1 overflow-y-auto overscroll-contain p-6">
             @if ($this->chatMessages->isEmpty())
             <p class="flex h-full min-h-[12rem] items-center justify-center text-center text-text-secondary">
@@ -132,10 +135,18 @@ new #[Layout('layouts::team')] class extends Component
             @endif
         </div>
 
+        <p
+            class="h-5 px-6 mb-2 text-sm italic text-text-secondary"
+            x-show="typingLabel !== ''"
+            x-text="typingLabel"
+            aria-live="polite"></p>
         <form
             wire:submit.prevent="sendMessage"
+            x-on:keydown.throttle.500ms="notifyTyping(@js(currentMember()->user->username))"
             class="sticky bottom-0 z-10 shrink-0 border-t border-input-border bg-bg-widget px-4 pb-6 pt-4 sm:px-6">
+
             <div class="flex flex-col gap-3 sm:flex-row sm:items-stretch sm:gap-4">
+
                 <div class="min-w-0 flex-1">
                     <x-forms.input
                         wire:model="content"
