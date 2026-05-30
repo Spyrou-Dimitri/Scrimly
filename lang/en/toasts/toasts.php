@@ -3,6 +3,7 @@
 return [
     'profil_updated' => 'Profile updated successfully',
     'team_created' => 'created successfully',
+    'team_updated' => 'Team updated successfully',
     'team_applied' => 'Application sent successfully',
     'task_created' => 'Homework created successfully',
     'task_updated' => 'Homework updated successfully',

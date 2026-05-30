@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'title' => 'Modifier l\'équipe',
+    'slogan' => 'Mettez à jour les informations de votre équipe.',
+    'delete_team_cta' => 'Supprimer l\'équipe',
+    'information_section_title' => 'Informations de l\'équipe',
+    'description' => 'Description',
+    'description_placeholder' => 'Description de votre équipe',
+    'team_name' => 'Nom de l\'équipe',
+    'team_name_placeholder' => 'Telecom 1',
+    'server' => 'Serveur',
+    'goal' => 'Objectif',
+    'language' => 'Langue',
+    'cancel' => 'Annuler',
+    'save' => 'Enregistrer les modifications',
+    'logo' => 'Logo de l\'équipe',
+    'logo_section_title' => 'Logo de l\'équipe',
+    'logo_section_description' => 'Personnalisez votre équipe en important un visuel pour le logo.',
+    'logo_preview_placeholder' => 'Votre logo apparaîtra ici après import.',
+    'upload_logo' => 'Importer un logo',
+    'choose_logo_preset' => 'Ou choisissez un logo prédéfini',
+    'logo_image_alt' => 'Logo de l\'équipe',
+    'default_logo' => 'Logo prédéfini',
+];

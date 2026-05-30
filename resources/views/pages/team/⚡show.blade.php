@@ -92,6 +92,11 @@ $memberSince = $team->created_at->isoFormat('D MMMM YYYY');
                     <h2 class="text-[32px] font-bold text-gold">
                         {{ $team->name }}
                     </h2>
+                    @can('manageTeam', \App\Models\User::class)
+                    <x-cta :class="'primary'" :href="route('team.edit', ['slug' => currentTeam()->slug, 'id' => $team->id])" :title="__('pages/team/show.edit_team')">
+                        {{ __('pages/team/show.edit_team') }}
+                    </x-cta>
+                    @endcan
                     @if ($this->alreadySendScrimRequest)
                     <div class="flex items-center gap-2 bg-red-900/60 p-2 text-left text-white">
                         <flux:icon name="exclamation-triangle" variant="outline" class="size-12 shrink-0" />

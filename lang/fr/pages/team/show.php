@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'edit_team' => 'Modifier l\'équipe',
     'propose_scrim' => 'Proposer un scrim',
     'member_since' => 'Membre depuis : :date',
     'see_more' => 'Voir plus',

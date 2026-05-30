@@ -1,0 +1,24 @@
+<?php
+
+return [
+    'title' => '<span class="text-gold">Edit</span> team',
+    'slogan' => 'Update your team information.',
+    'information_section_title' => 'Team information',
+    'description' => 'Description',
+    'description_placeholder' => 'Your team description',
+    'team_name' => 'Team name',
+    'team_name_placeholder' => 'Telecom 1',
+    'server' => 'Server',
+    'goal' => 'Goal',
+    'language' => 'Language',
+    'cancel' => 'Cancel',
+    'save' => 'Save changes',
+    'logo' => 'Team logo',
+    'logo_section_title' => 'Team logo',
+    'logo_section_description' => 'Personalize your team by uploading a logo image.',
+    'logo_preview_placeholder' => 'Your logo will appear here after upload.',
+    'upload_logo' => 'Upload a logo',
+    'choose_logo_preset' => 'Or choose a preset logo',
+    'logo_image_alt' => 'Team logo',
+    'default_logo' => 'Preset logo',
+];
