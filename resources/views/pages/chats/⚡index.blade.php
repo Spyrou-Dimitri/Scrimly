@@ -11,8 +11,14 @@ new #[Layout('layouts::team')] class extends Component
 {
     public string $content = '';
 
-    #[Computed]
-    public function chatMessages(): Collection
+    public Collection $chatMessages;
+
+    public function mount(): void
+    {
+        $this->chatMessages = $this->loadChatMessages();
+    }
+
+    public function loadChatMessages(): Collection
     {
         return Message::query()
             ->with('teamMember.user')
@@ -36,8 +42,8 @@ new #[Layout('layouts::team')] class extends Component
 
         $this->content = '';
 
-        unset($this->chatMessages);
-
+        $message->load('teamMember.user');
+        $this->chatMessages->push($message);
         $this->dispatch('toast', [
             'type' => 'success',
             'message' => __('pages/chats/index.sent_toast'),
@@ -50,9 +56,12 @@ new #[Layout('layouts::team')] class extends Component
         ];
     }
 
-    public function onMessageReceived(): void
+    public function onMessageReceived($event): void
     {
-        unset($this->chatMessages);
+        $messageId = $event['messageId'];
+
+        $message = Message::query()->with('teamMember.user')->find($messageId);
+        $this->chatMessages->push($message);
     }
 };
 ?>
