@@ -48,6 +48,7 @@ new #[Layout('layouts::team')] class extends Component
             'type' => 'success',
             'message' => __('pages/chats/index.sent_toast'),
         ]);
+        $this->dispatch('scroll-to-the-end');
     }
     public function getListeners(): array
     {
@@ -62,6 +63,7 @@ new #[Layout('layouts::team')] class extends Component
 
         $message = Message::query()->with('teamMember.user')->find($messageId);
         $this->chatMessages->push($message);
+        $this->dispatch('scroll-to-the-end');
     }
 };
 ?>
@@ -75,8 +77,16 @@ new #[Layout('layouts::team')] class extends Component
         class="flex min-h-0 flex-1 flex-col overflow-hidden bg-bg-widget shadow-basic"
         aria-label="{{ __('pages/chats/index.title') }}">
         <div
-        x-data="{ scroll: () => { $el.scrollTo(0, $el.scrollHeight); }}"
+        x-data="{
+        scroll() {
+        this.$nextTick(() => {
+            $el.scrollTo(0, $el.scrollHeight);
+        });
+    }
+}"
         x-init="scroll()"
+        x-on:scroll-to-the-end.window="scroll()"
+        
             class="min-h-0 flex-1 overflow-y-auto overscroll-contain p-6">
             @if ($this->chatMessages->isEmpty())
             <p class="flex h-full min-h-[12rem] items-center justify-center text-center text-text-secondary">
