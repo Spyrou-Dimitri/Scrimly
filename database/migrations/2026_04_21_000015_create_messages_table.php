@@ -10,12 +10,8 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('team_id')->constrained('teams')->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->text('content');
-            $table->string('file_path')->nullable();
-            $table->string('file_name')->nullable();
-            $table->integer('file_size')->nullable();
+            $table->foreignId('team_member_id')->constrained('team_members')->cascadeOnDelete();
             $table->timestamps();
         });
     }

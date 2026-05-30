@@ -56,8 +56,8 @@ new class extends Component
             [
                 'label' => __('layouts/team.nav.chat'),
                 'icon' => 'chat-bubble-left-right',
-                'route' => null,
-                'href' => '#',
+                'route' => 'chats.index',
+                'href' => route('chats.index', ['slug' => currentTeam()->slug]),
             ],
         ];
     }

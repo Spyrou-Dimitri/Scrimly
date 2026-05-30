@@ -45,6 +45,11 @@ class TeamMember extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class);
+    }
+
     public function playerDefaultSchedules(): HasMany
     {
         return $this->hasMany(PlayerDefaultSchedule::class);

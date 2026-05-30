@@ -40,7 +40,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::livewire('/{slug}/scrims/{id}/games/create', 'pages::scrims.games.create')->name('scrims.games.create');
         Route::livewire('/{slug}/scrims/{id}/games/edit/{gameId}', 'pages::scrims.games.edit')->name('scrims.games.edit');
 
+        // Calendrier
         Route::livewire('/{slug}/calendar', 'pages::calendar.index')->name('calendar.index');
+
+        //Chats
+        Route::livewire('/{slug}/chats', 'pages::chats.index')->name('chats.index');
     });
 });
 
