@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use App\Events\MessageSent;
 
 new #[Layout('layouts::team')] class extends Component
 {
@@ -16,6 +17,7 @@ new #[Layout('layouts::team')] class extends Component
         return Message::query()
             ->with('teamMember.user')
             ->whereHas('teamMember', fn($query) => $query->where('team_id', currentTeam()->id))
+            ->oldest()
             ->get();
     }
 
@@ -25,10 +27,12 @@ new #[Layout('layouts::team')] class extends Component
             'content' => ['required', 'string', 'max:2000'],
         ]);
 
-        Message::query()->create([
+        $message = Message::query()->create([
             'content' => $this->content,
             'team_member_id' => currentMember()->id,
         ]);
+
+        broadcast(new MessageSent($message, currentTeam()->id))->toOthers();
 
         $this->content = '';
 
@@ -38,6 +42,17 @@ new #[Layout('layouts::team')] class extends Component
             'type' => 'success',
             'message' => __('pages/chats/index.sent_toast'),
         ]);
+    }
+    public function getListeners(): array
+    {
+        return [
+            'echo-private:chat.' . currentTeam()->id . ',.message.sent' => 'onMessageReceived',
+        ];
+    }
+
+    public function onMessageReceived(): void
+    {
+        unset($this->chatMessages);
     }
 };
 ?>
