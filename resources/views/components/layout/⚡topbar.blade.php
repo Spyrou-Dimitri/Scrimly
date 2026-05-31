@@ -138,7 +138,7 @@ new class extends Component
                 x-show="openTeams"
                 x-transition
                 x-cloak
-                class="absolute top-full mt-3 left-12 flex flex-col gap-4 w-56 origin-top shadow-lg bg-bg-widget p-4 z-50">
+                class="absolute max-h-[240px] overflow-y-auto top-full mt-3 left-12 flex flex-col gap-4 w-56 origin-top shadow-lg bg-bg-widget p-4 z-50">
                 <li class="">
                     <a href="{{ route('team.index') }}" wire:navigate title="{{ __('layouts/team.team_lobby_cta_title') }}" class="px-3 hover:text-gold transition ease-in-out duration-150 flex items-center gap-2 cursor-pointer">
                         <flux:icon.squares-2x2 class="size-4" />
