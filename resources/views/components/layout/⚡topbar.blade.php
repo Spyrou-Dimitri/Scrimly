@@ -115,7 +115,9 @@ new class extends Component
 
         @if ($team)
         <div x-data="{ openTeams: false }" @click.outside="if (openTeams) { openTeams = false; $wire.unloadTeams() }" class="relative">
-            <h2>
+            <h2 class="sr-only">
+                {{$team->name}}
+            </h2>
                 <button type="button"
                     @click="openTeams = !openTeams; if (openTeams) $wire.loadTeams(); if (!openTeams) $wire.unloadTeams()"
                     type="button" class="flex  items-center text-white gap-3 min-w-0 hover:text-gold transition-colors cursor-pointer">
@@ -133,7 +135,6 @@ new class extends Component
                     </div>
 
                 </button>
-            </h2>
             <ul
                 x-show="openTeams"
                 x-transition
