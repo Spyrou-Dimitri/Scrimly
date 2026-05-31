@@ -63,7 +63,7 @@ $currentUser = auth()->user();
         </nav>
     </header>
 
-    <main class="flex-1 flex flex-col items-center justify-center py-12 px-6">
+    <main class="flex-1 flex max-w-[1600px] mx-auto w-full flex-col items-center justify-center py-12 px-6">
         {{ $slot }}
     </main>
 

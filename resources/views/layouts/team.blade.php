@@ -25,7 +25,7 @@
 
     <livewire:layout.topbar />
 
-    <main class="flex-1 overflow-y-auto bg-bg-main lg:col-start-2 lg:row-start-2">
+    <main class="flex-1 overflow-y-auto bg-bg-main max-w-[1600px] mx-auto lg:col-start-2 lg:row-start-2">
         <div class="px-6 py-8">
             {{ $slot }}
         </div>
