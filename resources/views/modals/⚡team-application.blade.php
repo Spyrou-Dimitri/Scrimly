@@ -182,7 +182,11 @@ new class extends Component
         </div>
         <div class="flex flex-col gap-2 mb-6">
             <h3 class="text-gold font-bold text-2xl">Motivation</h3>
+            @if ($this->candidate->motivation)
             <p class="text-white">{{ $this->candidate->motivation }}</p>
+            @else
+            <p class="text-text-secondary">{{ __('modals/team-application.no_motivation') }}</p>
+            @endif
         </div>
         @if ($this->candidate->roleInTeam === RoleInTeam::PLAYER)
         @can('manageTeam', User::class)

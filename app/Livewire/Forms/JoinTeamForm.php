@@ -33,7 +33,7 @@ class JoinTeamForm extends Form
             'team_code' => ['required', 'string', 'max:6', 'exists:teams,code'],
             'roleInTeam' => ['required', Rule::enum(RoleInTeam::class)],
             'roleInGame' => ['nullable', Rule::requiredIf($this->roleInTeam === RoleInTeam::PLAYER), Rule::enum(RoleInGame::class)],
-            'motivation' => ['required', 'string', 'max:1000'],
+            'motivation' => ['nullable', 'string', 'max:1000'],
         ];
     }
 
