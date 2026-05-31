@@ -441,10 +441,10 @@ new #[Layout('layouts::team')] class extends Component
                         <ul class="flex flex-col gap-2" role="list" aria-label="{{ __('pages/tasks/show.upload_existing_heading') }}">
                             @foreach ($this->task->submissions as $submission)
                             <li class="flex items-center justify-between gap-2 border border-input-border bg-bg-card px-4 py-4">
-                                <span class="flex items-center gap-3 min-w-0">
+                                <a target="_blank" rel="noopener noreferrer" href="{{ Storage::disk('public')->url($submission->file_path) }}" class="flex items-center gap-3 min-w-0">
                                     <flux:icon name="document" class="size-5 shrink-0 text-gold" />
-                                    <span class="truncate">{{ $submission->file_name }}</span>
-                                </span>
+                                    <span class="truncate hover:text-gold transition-colors duration-150">{{ $submission->file_name }}</span>
+                                </a>
                             </li>
                             @endforeach
                         </ul>
