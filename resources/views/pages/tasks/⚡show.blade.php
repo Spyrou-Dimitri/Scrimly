@@ -472,10 +472,10 @@ new #[Layout('layouts::team')] class extends Component
                             <ul class="flex flex-col gap-2" role="list" aria-label="{{ __('pages/tasks/show.upload_pending_heading') }}">
                                 @foreach ($this->submissions as $index => $submission)
                                 <li class="flex items-center justify-between gap-2 border border-dashed border-gold/35 bg-input-bg/60 px-4 py-4">
-                                    <span class="flex items-center gap-3 min-w-0">
+                                    <a target="_blank" rel="noopener noreferrer" href="{{ $submission->temporaryUrl() }}" class="flex items-center gap-3 min-w-0">
                                         <flux:icon name="document" class="size-5 shrink-0 text-gold" />
-                                        <span class="truncate">{{ $submission->getClientOriginalName() }}</span>
-                                    </span>
+                                        <span class="truncate hover:text-gold transition-colors duration-150">{{ $submission->getClientOriginalName() }}</span>
+                                    </a>
                                     <button type="button" wire:click="removeFile({{ $index }})" class="cursor-pointer hover:text-red-700/90 transition-all duration-150">
                                         <flux:icon name="trash" class="size-5" />
                                     </button>

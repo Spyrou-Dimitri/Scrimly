@@ -130,7 +130,7 @@ new #[Layout('layouts::team')] class extends Component
 
 <div>
     <section class="flex flex-col gap-8">
-        <h2 class="text-2xl font-bold">
+        <h2 class="text-[32px] font-bold">
             {{ __('pages/tasks/create.title') }}
         </h2>
         <form wire:submit.prevent="store" class="flex flex-col gap-6">
@@ -252,7 +252,7 @@ new #[Layout('layouts::team')] class extends Component
                     </fieldset>
 
                     {{-- Ressources et fichiers --}}
-                    <fieldset class="flex flex-col gap-6 bg-bg-widget self-start p-6 shadow-basic">
+                    <fieldset class="flex min-w-0 flex-col gap-6 self-start overflow-hidden bg-bg-widget p-6 shadow-basic lg:col-span-1">
                         <legend class="sr-only">
                             {{ __('pages/tasks/create.resources_legend') }}
                         </legend>
@@ -261,14 +261,28 @@ new #[Layout('layouts::team')] class extends Component
                         </h3>
 
                         @if (count($this->form->files) > 0)
-                        <ul class="flex flex-col gap-2" role="list">
+                        <ul class="flex min-w-0 flex-col gap-2" role="list">
                             @foreach ($this->form->files as $index => $file)
-                            <li class="flex items-center bg-bg-card p-6 justify-between gap-2">
-                                <span class="flex items-center gap-3 min-w-0">
+                            <li class="flex min-w-0 items-center justify-between gap-2 bg-bg-card p-6">
+                                <a
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    href="{{ $file->temporaryUrl() }}"
+                                    class="flex min-w-0 flex-1 items-center gap-3"
+                                >
                                     <flux:icon name="document" class="size-5 shrink-0 text-gold" />
-                                    <span class="truncate">{{ $file->getClientOriginalName() }}</span>
-                                </span>
-                                <button type="button" wire:click="removeFile({{ $index }})" class="cursor-pointer hover:text-red-700/90 transition-all duration-150">
+                                    <div class="w-0 min-w-0 flex-1 overflow-hidden">
+                                        <span
+                                            class="block truncate hover:text-gold transition-colors duration-150"
+                                            title="{{ $file->getClientOriginalName() }}"
+                                        >{{ $file->getClientOriginalName() }}</span>
+                                    </div>
+                                </a>
+                                <button
+                                    type="button"
+                                    wire:click="removeFile({{ $index }})"
+                                    class="shrink-0 cursor-pointer hover:text-red-700/90 transition-all duration-150"
+                                >
                                     <flux:icon name="trash" class="size-5" />
                                 </button>
                             </li>
@@ -337,7 +351,7 @@ new #[Layout('layouts::team')] class extends Component
                         <ul class="flex flex-col gap-2" role="list">
                             @foreach ($this->form->links as $index => $link)
                             <li class="flex items-center bg-bg-card p-6 justify-between gap-2">
-                                <span class="flex items-center gap-3 min-w-0">
+                                <span class="flex items-center gap-3">
                                     <flux:icon name="play" class="size-5 shrink-0 text-gold" />
                                     <span class="truncate">{{ $link['title'] ?? $link['url'] }}</span>
                                 </span>
