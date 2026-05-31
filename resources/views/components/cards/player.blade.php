@@ -18,22 +18,29 @@ $tierLine .= ' • '.$memberUser->rank;
 }
 @endphp
 
-<article @click="$el.querySelector('[data-profil-link]')?.click()" {{ $attributes->merge(['class' => 'relative cursor-pointer border-l-2 border-gold flex min-h-full flex-col bg-bg-card p-4 basic-shadow md:p-5 card-animated-border']) }}>
+<article x-data="chatPresence({{ currentTeam()->id }}, {{ currentMember()->user_id }})" @click="$el.querySelector('[data-profil-link]')?.click()" {{ $attributes->merge(['class' => 'relative cursor-pointer border-l-2 border-gold flex min-h-full flex-col bg-bg-card p-4 basic-shadow md:p-5 card-animated-border']) }}>
     <span class="card-animated-border-right-edge" aria-hidden="true"></span>
     <div class="relative">
         <div class="relative overflow-hidden">
             <x-user-avatar
                 :user="$memberUser"
                 preset="player-card"
-                class="aspect-square w-full object-cover"
-            />
-            
+                class="aspect-square w-full object-cover" />
+
         </div>
         <div class="absolute right-2 top-2 z-10 flex items-center gap-2" @click.stop>
-            <span class="inline-flex flex-1 items-center gap-1.5 bg-bg-widget px-3 py-2 text-xs font-medium text-white">
-                <span class="size-1.5 shrink-0 rounded-full bg-task-done" aria-hidden="true"></span>
-                {{ __('pages/roster/index.online') }}
-            </span>
+            <template x-if="onlineMembers.some(member => member.id === {{ $memberUser->id }})">
+                <span class="inline-flex flex-1 items-center gap-1.5 bg-bg-widget px-3 py-2 text-xs font-medium text-white">
+                    <span class="size-1.5 shrink-0 rounded-full bg-green-500" aria-hidden="true"></span>
+                    {{ __('pages/roster/index.online') }}
+                </span>
+            </template>
+            <template x-if="!onlineMembers.some(member => member.id === {{ $memberUser->id }})">
+                <span class="inline-flex flex-1 items-center gap-1.5 bg-bg-widget px-3 py-2 text-xs font-medium text-white">
+                    <span class="size-1.5 shrink-0 rounded-full bg-red-500" aria-hidden="true"></span>
+                    {{ __('pages/roster/index.offline') }}
+                </span>
+            </template>
             <div
                 class="relative shrink-0"
                 x-data="{ open: false }"
@@ -134,7 +141,7 @@ $tierLine .= ' • '.$memberUser->rank;
         </div>
 
         <div class="mt-auto">
-            <x-cta  wire:navigate data-profil-link :class="'cta-primary'" :widthFull="true" :href="route('roster.show', [currentTeam()->slug, $teamMember->id])" :title="__('pages/roster/index.view_profile_title') . ' ' . $memberUser->username">
+            <x-cta wire:navigate data-profil-link :class="'cta-primary'" :widthFull="true" :href="route('roster.show', [currentTeam()->slug, $teamMember->id])" :title="__('pages/roster/index.view_profile_title') . ' ' . $memberUser->username">
                 {{ __('pages/roster/index.view_profile') }}
             </x-cta>
         </div>

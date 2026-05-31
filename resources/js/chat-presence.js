@@ -1,9 +1,10 @@
 document.addEventListener('alpine:init', () => {
-    window.Alpine.data('chatPresence', (teamId, currentUserId) => ({
+    window.Alpine.data('chatPresence', (teamId, currentUserId, labels = {}) => ({
         onlineMembers: [],
         typingMembers: {},
-        typingTimer: {},     
-        
+        typingTimer: {},
+        labels,
+
         init(){
             const channel = window.Echo.join(`presence.chat.${teamId}`);
 
@@ -46,6 +47,35 @@ document.addEventListener('alpine:init', () => {
             if (names.length === 1) return `${names[0]} est en train d'ecrire...`;
             return `${names.length} membres sont en train d'ecrire...`;
         },
+
+        get previewOnlineMembers() {
+            return this.onlineMembers.slice(0, 3);
+        },
+
+        get previewOnlineNames() {
+            return this.previewOnlineMembers.map((member) => member.username).join(', ');
+        },
+
+        get remainingOnlineCount() {
+            return Math.max(0, this.onlineMembers.length - this.previewOnlineMembers.length);
+        },
+
+        get onlineStatusSuffix() {
+            if (this.onlineMembers.length === 0) {
+                return '';
+            }
+
+            if (this.remainingOnlineCount === 0) {
+                return this.labels.onlineSuffix ?? ' sont en ligne';
+            }
+
+            if (this.remainingOnlineCount === 1) {
+                return this.labels.onlineAndOneOther ?? ' et 1 autre sont en ligne';
+            }
+
+            return (this.labels.onlineAndOthers ?? ' et :count autres sont en ligne')
+                .replace(':count', this.remainingOnlineCount);
+        },
     }));
-    
+
 });

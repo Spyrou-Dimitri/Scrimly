@@ -4,6 +4,7 @@ return [
     'application_title' => 'Application',
     'is_starter_title' => 'Main roster',
     'online' => 'Online',
+    'offline' => 'Offline',
     'view_profile' => 'View profile',
     'view_profile_title' => 'Go to profile of',
     'member_menu' => 'Player actions',

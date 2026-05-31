@@ -7,4 +7,7 @@ return [
     'send' => 'Envoyer',
     'you' => 'Vous',
     'sent_toast' => 'Message envoyé.',
+    'online_suffix' => ' sont en ligne',
+    'online_and_one_other' => ' et 1 autre sont en ligne',
+    'online_and_others' => ' et :count autres sont en ligne',
 ];

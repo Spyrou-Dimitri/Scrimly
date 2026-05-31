@@ -7,6 +7,7 @@ return [
     'application_title' => 'Candidature',
     'is_starter_title' => 'Roster principal',
     'online' => 'En ligne',
+    'offline' => 'Hors ligne',
     'view_profile' => 'Voir le profil',
     'view_profile_title' => 'Accéder au profil de',
     'member_menu' => 'Actions du joueur',
