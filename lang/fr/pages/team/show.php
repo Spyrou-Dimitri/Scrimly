@@ -2,6 +2,7 @@
 
 return [
     'edit_team' => 'Modifier l\'équipe',
+    'code_copied' => 'Copié !',
     'propose_scrim' => 'Proposer un scrim',
     'member_since' => 'Membre depuis : :date',
     'see_more' => 'Voir plus',

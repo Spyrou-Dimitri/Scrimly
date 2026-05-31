@@ -82,16 +82,41 @@ $memberSince = $team->created_at->isoFormat('D MMMM YYYY');
                     <x-team-logo
                         :team="$team"
                         preset="team-hero"
-                        class="size-full object-cover"
-                    />
+                        class="size-full object-cover" />
                 </div>
             </div>
 
             <div class="col-span-12 flex flex-col gap-4 lg:col-span-9">
                 <div class="flex  justify-between gap-4 flex-row  flex-wrap items-center">
-                    <h2 class="text-[32px] font-bold text-gold">
-                        {{ $team->name }}
-                    </h2>
+                    <div class="flex flex-wrap items-center gap-4">
+                        <h2 class="text-[32px] font-bold text-gold">
+                            {{ $team->name }}
+                        </h2>
+                        @if ($team->code)
+                        <div
+                            class="relative"
+                            x-data="{ copied: false }"
+                            x-on:click="
+                                navigator.clipboard.writeText(@js($team->code));
+                                copied = true;
+                                setTimeout(() => copied = false, 2000);
+                            ">
+                            <div class="flex group cursor-pointer flex-wrap items-center gap-2 rounded-md bg-bg-widget p-3 text-white">
+                                <p class="font-bold text-text-secondary">
+                                    Code :
+                                    <span class="text-white group-hover:text-gold">{{ $team->code }}</span>
+                                </p>
+                                <flux:icon name="clipboard" variant="outline" class="size-5 shrink-0 group-hover:text-gold" />
+                            </div>
+                            <span
+                                x-show="copied"
+                                x-cloak
+                                x-transition
+                                class="pointer-events-none absolute left-full top-1/2 z-10 ml-2 -translate-y-1/2 whitespace-nowrap rounded-md bg-gold px-2.5 py-1 text-xs font-semibold text-bg-main shadow-basic"
+                            >{{ __('pages/team/show.code_copied') }}</span>
+                        </div>
+                        @endif
+                    </div>
                     @can('manageTeam', \App\Models\User::class)
                     <x-cta :class="'primary'" :href="route('team.edit', ['slug' => currentTeam()->slug, 'id' => $team->id])" :title="__('pages/team/show.edit_team')">
                         {{ __('pages/team/show.edit_team') }}
@@ -213,8 +238,7 @@ $memberSince = $team->created_at->isoFormat('D MMMM YYYY');
                     alt=""
                     class="size-[60px] shrink-0 object-cover"
                     width="60"
-                    height="60"
-                />
+                    height="60" />
                 <div class="min-w-0 flex-1">
                     <p class="truncate font-bold text-white">{{ $member->username }}</p>
                     <div class="mt-1 flex min-w-0 items-center gap-1.5 text-sm text-text-secondary">

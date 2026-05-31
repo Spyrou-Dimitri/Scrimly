@@ -1,7 +1,9 @@
 <?php
 
 return [
+    'edit_team' => 'Edit team',
     'propose_scrim' => 'Propose a scrim',
+    'code_copied' => 'Copied!',
     'member_since' => 'Member since: :date',
     'see_more' => 'See more',
     'see_less' => 'See less',
