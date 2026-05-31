@@ -183,6 +183,14 @@ return [
         'attribute-name' => [
             'rule-name' => 'message-personnalisé',
         ],
+        'newFiles' => [
+            'uploaded' => 'Le fichier n\'a pas pu être envoyé. Vérifiez qu\'il fait moins de 10 Mo et que le format est PDF, JPG, PNG ou WebP.',
+        ],
+        'newFiles.*' => [
+            'max' => 'Le fichier ne doit pas dépasser 10 Mo.',
+            'mimes' => 'Format non accepté. Utilisez PDF, JPG, PNG ou WebP.',
+            'uploaded' => 'Le fichier n\'a pas pu être envoyé. Vérifiez qu\'il fait moins de 10 Mo et que le format est PDF, JPG, PNG ou WebP.',
+        ],
     ],
 
     /*
@@ -228,6 +236,8 @@ return [
         'links.*.url' => 'lien',
         'links.*.title' => 'titre du lien',
 
+        'newFiles' => 'fichier',
+        'newFiles.*' => 'fichier',
     ],
 
 ];

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use App\Livewire\Forms\CreateTaskForm;
+use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -71,9 +72,33 @@ new #[Layout('layouts::team')] class extends Component
 
     public function updatedNewFiles(): void
     {
+        try {
+            $this->validate(
+                [
+                    'newFiles.*' => ['file', 'max:10240', 'mimes:pdf,jpg,jpeg,png,webp'],
+                ],
+                [
+                    'newFiles.*.uploaded' => __('pages/tasks/create.error_file_upload'),
+                    'newFiles.*.max' => __('pages/tasks/create.error_file_too_large'),
+                    'newFiles.*.mimes' => __('pages/tasks/create.error_file_type'),
+                ],
+                [
+                    'newFiles.*' => __('pages/tasks/create.field_file'),
+                ]
+            );
+        } catch (ValidationException $exception) {
+            $this->addError('newFiles', $exception->validator->errors()->first());
+
+            $this->newFiles = [];
+            $this->fileInputResetKey++;
+
+            return;
+        }
+
         foreach ($this->newFiles as $file) {
             $this->form->files[] = $file;
         }
+
         $this->newFiles = [];
         $this->fileInputResetKey++;
     }
@@ -268,21 +293,18 @@ new #[Layout('layouts::team')] class extends Component
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     href="{{ $file->temporaryUrl() }}"
-                                    class="flex min-w-0 flex-1 items-center gap-3"
-                                >
+                                    class="flex min-w-0 flex-1 items-center gap-3">
                                     <flux:icon name="document" class="size-5 shrink-0 text-gold" />
                                     <div class="w-0 min-w-0 flex-1 overflow-hidden">
                                         <span
                                             class="block truncate hover:text-gold transition-colors duration-150"
-                                            title="{{ $file->getClientOriginalName() }}"
-                                        >{{ $file->getClientOriginalName() }}</span>
+                                            title="{{ $file->getClientOriginalName() }}">{{ $file->getClientOriginalName() }}</span>
                                     </div>
                                 </a>
                                 <button
                                     type="button"
                                     wire:click="removeFile({{ $index }})"
-                                    class="shrink-0 cursor-pointer hover:text-red-700/90 transition-all duration-150"
-                                >
+                                    class="shrink-0 cursor-pointer hover:text-red-700/90 transition-all duration-150">
                                     <flux:icon name="trash" class="size-5" />
                                 </button>
                             </li>
@@ -296,6 +318,10 @@ new #[Layout('layouts::team')] class extends Component
                         @error('form.files.*')
                         <p class="text-red-500 font-bold text-sm">{{ $message }}</p>
                         @enderror
+                        @error('newFiles')
+                        <p class="text-red-500 font-bold text-sm">{{ $message }}</p>
+                        @enderror
+
 
                         <div
                             class="border border-dashed transition-colors duration-150 hover:border-gold bg-input-bg/80 duration-150"
@@ -309,6 +335,7 @@ new #[Layout('layouts::team')] class extends Component
                                 $refs.taskCreateFilesInput.files = $event.dataTransfer.files;
                                 $refs.taskCreateFilesInput.dispatchEvent(new Event('change', { bubbles: true }));
                             ">
+
                             <label
                                 for="task-files-input"
                                 class="relative flex min-h-[8rem] flex-col items-center justify-center gap-3 px-4 py-8 text-center text-text-secondary cursor-pointer">
