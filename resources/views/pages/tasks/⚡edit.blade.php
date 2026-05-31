@@ -10,6 +10,7 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Illuminate\Validation\ValidationException;
 
 new #[Layout('layouts::team')] class extends Component
 {
@@ -78,6 +79,30 @@ new #[Layout('layouts::team')] class extends Component
 
     public function updatedNewFiles(): void
     {
+        try {
+            $this->validate(
+                [
+                    'newFiles.*' => ['file', 'max:10240', 'mimes:pdf,jpg,jpeg,png,webp'],
+                ],
+                [
+                    'newFiles.*.uploaded' => __('pages/tasks/edit.error_file_upload'),
+                    'newFiles.*.max' => __('pages/tasks/edit.error_file_too_large'),
+                    'newFiles.*.mimes' => __('pages/tasks/edit.error_file_type'),
+                ],
+                [
+                    'newFiles.*.uploaded' => __('pages/tasks/edit.error_file_upload'),
+                ]
+
+            );
+        } catch (ValidationException $exception) {
+            $this->addError('newFiles', $exception->validator->errors()->first());
+
+            $this->newFiles = [];
+            $this->fileInputResetKey++;
+
+            return;
+        }
+
         foreach ($this->newFiles as $file) {
             $this->form->files[] = $file;
         }
@@ -330,6 +355,9 @@ new #[Layout('layouts::team')] class extends Component
                         </p>
                         @endif
                         @error('form.files.*')
+                        <p class="text-red-500 font-bold text-sm">{{ $message }}</p>
+                        @enderror
+                        @error('newFiles')
                         <p class="text-red-500 font-bold text-sm">{{ $message }}</p>
                         @enderror
 

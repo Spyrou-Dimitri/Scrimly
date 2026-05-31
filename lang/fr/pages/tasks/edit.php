@@ -33,4 +33,8 @@ return [
     'resources_legend' => 'Ressources',
     'links_legend' => 'Liens',
     'subtasks_legend' => 'Sous-tâches',
+    'field_file' => 'fichier',
+    'error_file_upload' => 'Le fichier n\'a pas pu être envoyé. Vérifiez qu\'il fait moins de 10 Mo et que le format est PDF, JPG, PNG ou WebP.',
+    'error_file_too_large' => 'Le fichier ne doit pas dépasser 10 Mo.',
+    'error_file_type' => 'Format non accepté. Utilisez PDF, JPG, PNG ou WebP.',
 ];

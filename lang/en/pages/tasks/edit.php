@@ -33,4 +33,8 @@ return [
     'resources_legend' => 'Resources',
     'links_legend' => 'Links',
     'subtasks_legend' => 'Subtasks',
+    'field_file' => 'file',
+    'error_file_upload' => 'The file could not be uploaded. Make sure it is under 10 MB and in PDF, JPG, PNG, or WebP format.',
+    'error_file_too_large' => 'The file must not exceed 10 MB.',
+    'error_file_type' => 'Unsupported format. Use PDF, JPG, PNG, or WebP.',
 ];
