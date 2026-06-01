@@ -57,4 +57,24 @@ return [
             ],
         ]
     ],
+    'how-it-works' => [
+        'title' => '<span class="text-gold">Lancez-vous</span> en quelques clics',
+        'description' => 'Découvrez comment utiliser Scrimly pour organiser votre équipe et progresser ensemble.',
+        'steps' => [
+            'invite_join' => [
+                'title' => 'Créer ou rejoignez une équipe',
+                'description' => 'Inscrivez-vous gratuitement et créez votre équipe en quelques clics. Un code unique est généré automatiquement pour inviter vos joueurs. Vous pouvez également rejoindre une équipe existante en saisissant le code qui lui est associé.',
+            ],
+            'manage_players' => [
+                'title' => 'Invitez et gérer vos joueurs',
+                'description' => 'Partagez le code de votre équipe à vos joueurs. Ils s\'inscrivent, saisissent le code et demandent à rejoindre l\'équipe. Vous validez les demandes en un clic, gérez votre effectif en définissant les titulaires et les remplaçants, et organisez également votre staff pour une gestion complète de votre équipe.',
+            ],
+            'plan_scrims' => [
+                'title' => 'Gérez et progressez',
+                'description' => 'Planifiez vos scrims et événements à venir grâce à un calendrier partagé accessible à toute l’équipe. Communiquez rapidement avec vos joueurs et votre staff via le chat d’équipe, assignez des tâches, définissez des objectifs et suivez leur progression. Toutes les informations essentielles sont centralisées au même endroit pour simplifier l’organisation et permettre à chacun de rester informé et impliqué.',
+            ],
+
+
+        ],
+    ],
 ];

@@ -35,7 +35,7 @@ $currentUser = auth()->user();
                     </x-cta>
 
                     <x-cta
-                        href="#comment-ca-marche"
+                        href="#how-it-works"
                         :title="__('welcome.nav.how_it_works_title')"
                         :class="'nav'">
                         {{ __('welcome.nav.how_it_works') }}
@@ -93,14 +93,14 @@ $currentUser = auth()->user();
         </nav>
     </header>
 
-    <main>
+    <main class="max-w-[1600px] mx-auto">
         <section id="hero" class="relative h-[calc(100dvh-5.5rem)] overflow-hidden">
             <picture class="absolute inset-0 block h-full w-full">
-                <source media="(min-width: 2000px)" srcset="{{ asset('img/welcome/Bg-2000.jpg') }}">
-                <source media="(min-width: 1600px)" srcset="{{ asset('img/welcome/Bg-1600.jpg') }}">
-                <source media="(min-width: 1200px)" srcset="{{ asset('img/welcome/Bg-1200.jpg') }}">
-                <source media="(min-width: 800px)" srcset="{{ asset('img/welcome/Bg-800.jpg') }}">
-                <img src="{{ asset('img/welcome/Bg-400.jpg') }}" alt="" class="h-full w-full object-cover" aria-hidden="true">
+                <source media="(min-width: 2000px)" srcset="{{ asset('img/welcome/landing/Bg-2000.jpg') }}">
+                <source media="(min-width: 1600px)" srcset="{{ asset('img/welcome/landing/Bg-1600.jpg') }}">
+                <source media="(min-width: 1200px)" srcset="{{ asset('img/welcome/landing/Bg-1200.jpg') }}">
+                <source media="(min-width: 800px)" srcset="{{ asset('img/welcome/landing/Bg-800.jpg') }}">
+                <img src="{{ asset('img/welcome/landing/Bg-400.jpg') }}" alt="" class="h-full w-full object-cover" aria-hidden="true">
             </picture>
 
             <div class="flex flex-col px-8 py-10 text-center gap-6 absolute origin-center top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-3xl backdrop-blur-[1px]">
@@ -170,7 +170,7 @@ $currentUser = auth()->user();
             </div>
 
         </section>
-        <section id="fonctionnalites" class="scroll-mt-[5.5rem] py-12 px-6 flex flex-col items-center justify-center gap-6">
+        <section id="fonctionnalites" class="scroll-mt-[5.5rem] py-12 px-6 flex flex-col items-center justify-center gap-10">
             <div class="flex flex-col items-center justify-center gap-4">
                 <h2 class="text-[40px] font-bold text-center leading-none">
                     {!! __('welcome.Features.title') !!}
@@ -203,9 +203,70 @@ $currentUser = auth()->user();
                 <x-cards.feature
                     icon="check-circle"
                     title="{{ __('welcome.Features.cards.Checklist.title') }}"
-                    description="{{ __('welcome.Features.cards.Checklist.description') }}" />    
+                    description="{{ __('welcome.Features.cards.Checklist.description') }}" />
             </div>
 
+        </section>
+        <section id="how-it-works" class="bg-bg-widget py-12 px-6 flex flex-col items-center justify-center gap-10">
+            <div class="flex flex-col items-center justify-center gap-4">
+                <h2 class="text-[40px] font-bold text-center leading-none">
+                    {!! __('welcome.how-it-works.title') !!}
+                </h2>
+                <p class="text-center text-xl text-text-secondary">
+                    {{ __('welcome.how-it-works.description') }}
+                </p>
+            </div>
+            <ul class="flex flex-col gap-20">
+                <li>
+                    <x-text-media
+                        :number="'1'"
+                        :title="(__('welcome.how-it-works.steps.invite_join.title'))"
+                        :description="(__('welcome.how-it-works.steps.invite_join.description'))">
+                        <x-slot:media>
+                            <picture class="block w-full">
+                                <source media="(min-width: 1400px)" srcset="{{ asset('img/welcome/how-it-work/first-step/create-800.jpg') }}">
+                                <source media="(min-width: 1000px)" srcset="{{ asset('img/welcome/how-it-work/first-step/create-600.jpg') }}">
+                                <source media="(min-width: 768px)" srcset="{{ asset('img/welcome/how-it-work/first-step/create-800.jpg') }}">
+                                <source media="(min-width: 530px)" srcset="{{ asset('img/welcome/how-it-work/first-step/create-800.jpg') }}">
+                                <img src="{{ asset('img/welcome/how-it-work/first-step/create-480.jpg') }}" alt="" class="w-full aspect-video object-cover" aria-hidden="true">
+                            </picture>
+                        </x-slot:media>
+                    </x-text-media>
+                </li>
+                <li>
+                    <x-text-media
+                        number="2"
+                        title="{{ __('welcome.how-it-works.steps.manage_players.title') }}"
+                        description="{{ __('welcome.how-it-works.steps.manage_players.description') }}"
+                        reverse>
+                        <x-slot:media>
+                            <picture class="block w-full">
+                                <source media="(min-width: 1400px)" srcset="{{ asset('img/welcome/how-it-work/second-step/roster-800.jpg') }}">
+                                <source media="(min-width: 1000px)" srcset="{{ asset('img/welcome/how-it-work/second-step/roster-600.jpg') }}">
+                                <source media="(min-width: 768px)" srcset="{{ asset('img/welcome/how-it-work/second-step/roster-800.jpg') }}">
+                                <source media="(min-width: 530px)" srcset="{{ asset('img/welcome/how-it-work/second-step/roster-800.jpg') }}">
+                                <img src="{{ asset('img/welcome/how-it-work/second-step/roster-800.jpg') }}" alt="" class="w-full aspect-video object-cover" aria-hidden="true">
+                            </picture>
+                        </x-slot:media>
+                    </x-text-media>
+                </li>
+                <li>
+                    <x-text-media
+                        number="3"
+                        title="{{ __('welcome.how-it-works.steps.plan_scrims.title') }}"
+                        description="{{ __('welcome.how-it-works.steps.plan_scrims.description') }}">
+                        <x-slot:media>
+                            <picture class="block w-full">
+                                <source media="(min-width: 1400px)" srcset="{{ asset('img/welcome/how-it-work/third-step/manage-800.jpg') }}">
+                                <source media="(min-width: 1000px)" srcset="{{ asset('img/welcome/how-it-work/third-step/manage-600.jpg') }}">
+                                <source media="(min-width: 768px)" srcset="{{ asset('img/welcome/how-it-work/third-step/manage-800.jpg') }}">
+                                <source media="(min-width: 530px)" srcset="{{ asset('img/welcome/how-it-work/third-step/manage-800.jpg') }}">
+                                <img src="{{ asset('img/welcome/how-it-work/third-step/manage-800.jpg') }}" alt="" class="w-full aspect-video object-cover" aria-hidden="true">
+                            </picture>
+                        </x-slot:media>
+                    </x-text-media>
+                </li>
+            </ul>
         </section>
 
     </main>

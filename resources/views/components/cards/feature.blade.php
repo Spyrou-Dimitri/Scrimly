@@ -4,10 +4,10 @@
     'description',
 ])
 
-<article {{ $attributes->merge(['class' => 'flex shadow-basic flex-col items-center text-white gap-6 border bg-bg-widget border-black p-8 text-center text-black']) }}>
+<article {{ $attributes->merge(['class' => 'flex shadow-basic flex-col items-center text-white gap-6  bg-bg-widget p-8 text-center text-black']) }}>
     <flux:icon name="{{ $icon }}" class="size-12 shrink-0 text-gold" />
 
-    <h3 class="text-2xl text-white font-bold leading-tight">
+    <h3 class="text-[32px] text-white font-bold leading-tight">
         {{ $title }}
     </h3>
 
