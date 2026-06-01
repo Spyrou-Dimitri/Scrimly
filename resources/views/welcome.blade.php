@@ -93,207 +93,211 @@ $currentUser = auth()->user();
         </nav>
     </header>
 
-    <main class="max-w-[1600px] mx-auto">
-        <section id="hero" class="relative h-[calc(100dvh-5.5rem)] overflow-hidden">
+    <main>
+        <section id="hero" class="relative h-[calc(100dvh-5.5rem)] overflow-hidden bg-bg-main">
             <picture class="absolute inset-0 block h-full w-full">
-                <source media="(min-width: 2000px)" srcset="{{ asset('img/welcome/landing/Bg-2000.jpg') }}">
-                <source media="(min-width: 1600px)" srcset="{{ asset('img/welcome/landing/Bg-1600.jpg') }}">
-                <source media="(min-width: 1200px)" srcset="{{ asset('img/welcome/landing/Bg-1200.jpg') }}">
-                <source media="(min-width: 800px)" srcset="{{ asset('img/welcome/landing/Bg-800.jpg') }}">
-                <img src="{{ asset('img/welcome/landing/Bg-400.jpg') }}" alt="" class="h-full w-full object-cover" aria-hidden="true">
+                <source media="(min-width: 1600px)" srcset="{{ asset('img/welcome/landing/Bg-2000.jpg') }}">
+                <source media="(min-width: 1200px)" srcset="{{ asset('img/welcome/landing/Bg-1600.jpg') }}">
+                <source media="(min-width: 800px)" srcset="{{ asset('img/welcome/landing/Bg-1200.jpg') }}">
+                <img src="{{ asset('img/welcome/landing/Bg-2000.jpg') }}" alt="" class="h-full w-full object-cover" aria-hidden="true">
             </picture>
 
-            <div class="flex flex-col px-8 py-10 text-center gap-6 absolute origin-center top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-3xl w-full backdrop-blur-[1px]">
-                <div class="relative z-10 pb-6 border-b border-white/60 flex flex-col  items-center gap-6">
-                    <div class="text-center">
-                        <h2 class="welcome-heading-hero text-gold flex flex-col items-center justify-center gap-2">
-                            {{ __('welcome.hero.title') }}
-                            <span class="welcome-heading-hero-sub block text-white">
-                                {{ __('welcome.hero.slogan') }}
+            <div class="relative z-10 mx-auto flex h-full w-full max-w-[1600px] items-center justify-center px-6 py-10">
+                <div class="flex w-full max-w-3xl flex-col gap-6 text-center backdrop-blur-[1px]">
+                    <div class="relative z-10 pb-6 border-b border-white/60 flex flex-col  items-center gap-6">
+                        <div class="text-center">
+                            <h2 class="welcome-heading-hero text-gold flex flex-col items-center justify-center gap-2">
+                                {{ __('welcome.hero.title') }}
+                                <span class="welcome-heading-hero-sub block text-white">
+                                    {{ __('welcome.hero.slogan') }}
+                                </span>
+                            </h2>
+
+                        </div>
+                        <p class="welcome-body-lead text-center">
+                            {{ __('welcome.hero.description') }}
+                            <span class="block">
+                                {{ __('welcome.hero.description_2') }}
                             </span>
-                        </h2>
+                        </p>
+                        <div class="flex flex-wrap items-center justify-center gap-4">
+                            <x-cta
+                                href="{{ route('register') }}"
+                                :title="__('welcome.hero.cta_register_title')"
+                                :class="'primary'">
+                                {{ __('welcome.hero.cta_register') }}
+                            </x-cta>
+                            <x-cta
+                                href="{{ route('login') }}"
+                                :title="__('welcome.hero.cta_login_title')"
+                                :class="'secondary'">
+                                {{ __('welcome.hero.cta_login') }}
+                            </x-cta>
+                        </div>
 
                     </div>
-                    <p class="welcome-body-lead text-center">
-                        {{ __('welcome.hero.description') }}
-                        <span class="block">
-                            {{ __('welcome.hero.description_2') }}
-                        </span>
-                    </p>
-                    <div class="flex flex-wrap items-center justify-center gap-4">
-                        <x-cta
-                            href="{{ route('register') }}"
-                            :title="__('welcome.hero.cta_register_title')"
-                            :class="'primary'">
-                            {{ __('welcome.hero.cta_register') }}
-                        </x-cta>
-                        <x-cta
-                            href="{{ route('login') }}"
-                            :title="__('welcome.hero.cta_login_title')"
-                            :class="'secondary'">
-                            {{ __('welcome.hero.cta_login') }}
-                        </x-cta>
-                    </div>
-
+                    <ul class="flex flex-row flex-wrap items-center justify-between gap-4">
+                        <li class="text-gold flex flex-row items-center gap-1">
+                            <flux:icon name="user-group" class="size-6" />
+                            <span class="text-text-secondary">
+                                {{ $numbersTeams }}
+                            </span>
+                            <span class="text-text-secondary">
+                                {{ __('welcome.hero.teams') }}
+                            </span>
+                        </li>
+                        <li class="text-gold flex flex-row items-center gap-1">
+                            <flux:icon name="user" class="size-6" />
+                            <span class="text-text-secondary">
+                                {{ $numbersUsers }}
+                            </span>
+                            <span class="text-text-secondary">
+                                {{ __('welcome.hero.users') }}
+                            </span>
+                        </li>
+                        <li class="text-gold flex flex-row items-center gap-1">
+                            <flux:icon name="trophy" class="size-6" />
+                            <span class="text-text-secondary">
+                                {{ $numbersScrims }}
+                            </span>
+                            <span class="text-text-secondary">
+                                {{ __('welcome.hero.scrims') }}
+                            </span>
+                        </li>
+                    </ul>
                 </div>
-                <ul class="flex flex-row flex-wrap items-center justify-between gap-4">
-                    <li class="text-gold flex flex-row items-center gap-1">
-                        <flux:icon name="user-group" class="size-6" />
-                        <span class="text-text-secondary">
-                            {{ $numbersTeams }}
-                        </span>
-                        <span class="text-text-secondary">
-                            {{ __('welcome.hero.teams') }}
-                        </span>
+            </div>
+        </section>
+        <section id="fonctionnalites" class="scroll-mt-[5.5rem] bg-bg-main-2 py-12">
+            <div class="mx-auto flex w-full max-w-[1600px] flex-col items-center justify-center gap-10 px-6">
+                <div class="flex flex-col items-center justify-center gap-4">
+                    <h2 class="welcome-heading-section text-center">
+                        {!! __('welcome.Features.title') !!}
+                    </h2>
+                    <p class="welcome-body-lead text-center text-text-secondary">
+                        {{ __('welcome.Features.slogan') }}
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <x-cards.feature
+                        icon="calendar-days"
+                        title="{{ __('welcome.Features.cards.calendar.title') }}"
+                        description="{{ __('welcome.Features.cards.calendar.description') }}" />
+                    <x-cards.feature
+                        icon="book-open"
+                        title="{{ __('welcome.Features.cards.tasks.title') }}"
+                        description="{{ __('welcome.Features.cards.tasks.description') }}" />
+                    <x-cards.feature
+                        icon="user-group"
+                        title="{{ __('welcome.Features.cards.roster.title') }}"
+                        description="{{ __('welcome.Features.cards.roster.description') }}" />
+                    <x-cards.feature
+                        icon="chart-bar"
+                        title="{{ __('welcome.Features.cards.followData.title') }}"
+                        description="{{ __('welcome.Features.cards.followData.description') }}" />
+                    <x-cards.feature
+                        icon="chat-bubble-left-right"
+                        title="{{ __('welcome.Features.cards.chat.title') }}"
+                        description="{{ __('welcome.Features.cards.chat.description') }}" />
+                    <x-cards.feature
+                        icon="check-circle"
+                        title="{{ __('welcome.Features.cards.Checklist.title') }}"
+                        description="{{ __('welcome.Features.cards.Checklist.description') }}" />
+                </div>
+            </div>
+        </section>
+        <section id="how-it-works" class="bg-bg-main py-12">
+            <div class="mx-auto flex w-full max-w-[1600px] flex-col items-center justify-center gap-10 px-6">
+                <div class="flex flex-col items-center justify-center gap-4">
+                    <h2 class="welcome-heading-section text-center">
+                        {!! __('welcome.how-it-works.title') !!}
+                    </h2>
+                    <p class="welcome-body-lead text-center text-text-secondary">
+                        {{ __('welcome.how-it-works.description') }}
+                    </p>
+                </div>
+                <ul class="flex flex-col gap-20">
+                    <li>
+                        <x-text-media
+                            :number="'1'"
+                            :title="(__('welcome.how-it-works.steps.invite_join.title'))"
+                            :description="(__('welcome.how-it-works.steps.invite_join.description'))">
+                            <x-slot:media>
+                                <picture class="block w-full">
+                                    <source media="(min-width: 1400px)" srcset="{{ asset('img/welcome/how-it-work/first-step/create-800.jpg') }}">
+                                    <source media="(min-width: 1000px)" srcset="{{ asset('img/welcome/how-it-work/first-step/create-600.jpg') }}">
+                                    <source media="(min-width: 768px)" srcset="{{ asset('img/welcome/how-it-work/first-step/create-800.jpg') }}">
+                                    <source media="(min-width: 530px)" srcset="{{ asset('img/welcome/how-it-work/first-step/create-800.jpg') }}">
+                                    <img src="{{ asset('img/welcome/how-it-work/first-step/create-480.jpg') }}" alt="" class="w-full aspect-video object-cover" aria-hidden="true">
+                                </picture>
+                            </x-slot:media>
+                        </x-text-media>
                     </li>
-                    <li class="text-gold flex flex-row items-center gap-1">
-                        <flux:icon name="user" class="size-6" />
-                        <span class="text-text-secondary">
-                            {{ $numbersUsers }}
-                        </span>
-                        <span class="text-text-secondary">
-                            {{ __('welcome.hero.users') }}
-                        </span>
+                    <li>
+                        <x-text-media
+                            number="2"
+                            title="{{ __('welcome.how-it-works.steps.manage_players.title') }}"
+                            description="{{ __('welcome.how-it-works.steps.manage_players.description') }}"
+                            reverse>
+                            <x-slot:media>
+                                <picture class="block w-full">
+                                    <source media="(min-width: 1400px)" srcset="{{ asset('img/welcome/how-it-work/second-step/roster-800.jpg') }}">
+                                    <source media="(min-width: 1000px)" srcset="{{ asset('img/welcome/how-it-work/second-step/roster-600.jpg') }}">
+                                    <source media="(min-width: 768px)" srcset="{{ asset('img/welcome/how-it-work/second-step/roster-800.jpg') }}">
+                                    <source media="(min-width: 530px)" srcset="{{ asset('img/welcome/how-it-work/second-step/roster-800.jpg') }}">
+                                    <img src="{{ asset('img/welcome/how-it-work/second-step/roster-800.jpg') }}" alt="" class="w-full aspect-video object-cover" aria-hidden="true">
+                                </picture>
+                            </x-slot:media>
+                        </x-text-media>
                     </li>
-                    <li class="text-gold flex flex-row items-center gap-1">
-                        <flux:icon name="trophy" class="size-6" />
-                        <span class="text-text-secondary">
-                            {{ $numbersScrims }}
-                        </span>
-                        <span class="text-text-secondary">
-                            {{ __('welcome.hero.scrims') }}
-                        </span>
+                    <li>
+                        <x-text-media
+                            number="3"
+                            title="{{ __('welcome.how-it-works.steps.plan_scrims.title') }}"
+                            description="{{ __('welcome.how-it-works.steps.plan_scrims.description') }}">
+                            <x-slot:media>
+                                <picture class="block w-full">
+                                    <source media="(min-width: 1400px)" srcset="{{ asset('img/welcome/how-it-work/third-step/manage-800.jpg') }}">
+                                    <source media="(min-width: 1000px)" srcset="{{ asset('img/welcome/how-it-work/third-step/manage-600.jpg') }}">
+                                    <source media="(min-width: 768px)" srcset="{{ asset('img/welcome/how-it-work/third-step/manage-800.jpg') }}">
+                                    <source media="(min-width: 530px)" srcset="{{ asset('img/welcome/how-it-work/third-step/manage-800.jpg') }}">
+                                    <img src="{{ asset('img/welcome/how-it-work/third-step/manage-800.jpg') }}" alt="" class="w-full aspect-video object-cover" aria-hidden="true">
+                                </picture>
+                            </x-slot:media>
+                        </x-text-media>
                     </li>
                 </ul>
             </div>
-
         </section>
-        <section id="fonctionnalites" class="scroll-mt-[5.5rem] py-12 px-6 flex flex-col items-center justify-center gap-10">
-            <div class="flex flex-col items-center justify-center gap-4">
-                <h2 class="welcome-heading-section text-center">
-                    {!! __('welcome.Features.title') !!}
-                </h2>
-                <p class="welcome-body-lead text-center text-text-secondary">
-                    {{ __('welcome.Features.slogan') }}
-                </p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <x-cards.feature
-                    icon="calendar-days"
-                    title="{{ __('welcome.Features.cards.calendar.title') }}"
-                    description="{{ __('welcome.Features.cards.calendar.description') }}" />
-                <x-cards.feature
-                    icon="book-open"
-                    title="{{ __('welcome.Features.cards.tasks.title') }}"
-                    description="{{ __('welcome.Features.cards.tasks.description') }}" />
-                <x-cards.feature
-                    icon="user-group"
-                    title="{{ __('welcome.Features.cards.roster.title') }}"
-                    description="{{ __('welcome.Features.cards.roster.description') }}" />
-                <x-cards.feature
-                    icon="chart-bar"
-                    title="{{ __('welcome.Features.cards.followData.title') }}"
-                    description="{{ __('welcome.Features.cards.followData.description') }}" />
-                <x-cards.feature
-                    icon="chat-bubble-left-right"
-                    title="{{ __('welcome.Features.cards.chat.title') }}"
-                    description="{{ __('welcome.Features.cards.chat.description') }}" />
-                <x-cards.feature
-                    icon="check-circle"
-                    title="{{ __('welcome.Features.cards.Checklist.title') }}"
-                    description="{{ __('welcome.Features.cards.Checklist.description') }}" />
-            </div>
-
-        </section>
-        <section id="how-it-works" class="bg-bg-widget py-12 px-6 flex flex-col items-center justify-center gap-10">
-            <div class="flex flex-col items-center justify-center gap-4">
-                <h2 class="welcome-heading-section text-center">
-                    {!! __('welcome.how-it-works.title') !!}
-                </h2>
-                <p class="welcome-body-lead text-center text-text-secondary">
-                    {{ __('welcome.how-it-works.description') }}
-                </p>
-            </div>
-            <ul class="flex flex-col gap-20">
-                <li>
-                    <x-text-media
-                        :number="'1'"
-                        :title="(__('welcome.how-it-works.steps.invite_join.title'))"
-                        :description="(__('welcome.how-it-works.steps.invite_join.description'))">
-                        <x-slot:media>
-                            <picture class="block w-full">
-                                <source media="(min-width: 1400px)" srcset="{{ asset('img/welcome/how-it-work/first-step/create-800.jpg') }}">
-                                <source media="(min-width: 1000px)" srcset="{{ asset('img/welcome/how-it-work/first-step/create-600.jpg') }}">
-                                <source media="(min-width: 768px)" srcset="{{ asset('img/welcome/how-it-work/first-step/create-800.jpg') }}">
-                                <source media="(min-width: 530px)" srcset="{{ asset('img/welcome/how-it-work/first-step/create-800.jpg') }}">
-                                <img src="{{ asset('img/welcome/how-it-work/first-step/create-480.jpg') }}" alt="" class="w-full aspect-video object-cover" aria-hidden="true">
-                            </picture>
-                        </x-slot:media>
-                    </x-text-media>
-                </li>
-                <li>
-                    <x-text-media
-                        number="2"
-                        title="{{ __('welcome.how-it-works.steps.manage_players.title') }}"
-                        description="{{ __('welcome.how-it-works.steps.manage_players.description') }}"
-                        reverse>
-                        <x-slot:media>
-                            <picture class="block w-full">
-                                <source media="(min-width: 1400px)" srcset="{{ asset('img/welcome/how-it-work/second-step/roster-800.jpg') }}">
-                                <source media="(min-width: 1000px)" srcset="{{ asset('img/welcome/how-it-work/second-step/roster-600.jpg') }}">
-                                <source media="(min-width: 768px)" srcset="{{ asset('img/welcome/how-it-work/second-step/roster-800.jpg') }}">
-                                <source media="(min-width: 530px)" srcset="{{ asset('img/welcome/how-it-work/second-step/roster-800.jpg') }}">
-                                <img src="{{ asset('img/welcome/how-it-work/second-step/roster-800.jpg') }}" alt="" class="w-full aspect-video object-cover" aria-hidden="true">
-                            </picture>
-                        </x-slot:media>
-                    </x-text-media>
-                </li>
-                <li>
-                    <x-text-media
-                        number="3"
-                        title="{{ __('welcome.how-it-works.steps.plan_scrims.title') }}"
-                        description="{{ __('welcome.how-it-works.steps.plan_scrims.description') }}">
-                        <x-slot:media>
-                            <picture class="block w-full">
-                                <source media="(min-width: 1400px)" srcset="{{ asset('img/welcome/how-it-work/third-step/manage-800.jpg') }}">
-                                <source media="(min-width: 1000px)" srcset="{{ asset('img/welcome/how-it-work/third-step/manage-600.jpg') }}">
-                                <source media="(min-width: 768px)" srcset="{{ asset('img/welcome/how-it-work/third-step/manage-800.jpg') }}">
-                                <source media="(min-width: 530px)" srcset="{{ asset('img/welcome/how-it-work/third-step/manage-800.jpg') }}">
-                                <img src="{{ asset('img/welcome/how-it-work/third-step/manage-800.jpg') }}" alt="" class="w-full aspect-video object-cover" aria-hidden="true">
-                            </picture>
-                        </x-slot:media>
-                    </x-text-media>
-                </li>
-            </ul>
-        </section>
-        <section id="invitation" class="py-24 md:pb-32 px-6 flex flex-col items-center justify-center gap-10 overflow-visible">
-            <div class="max-w-[80%] mx-auto grid grid-cols-1 md:grid-cols-2 bg-bg-widget p-10 gap-10 overflow-visible">
-                <div class="flex flex-col items-start justify-center gap-4">
-                    <h2 class="welcome-heading-section">
-                        {!! __('welcome.invitation.title') !!}
-                    </h2>
-                    <p class="text-text-secondary">
-                        {{ __('welcome.invitation.description') }}
-                    </p>
-                    <x-cta
-                        href="{{ route('register') }}"
-                        :title="__('welcome.invitation.cta_title')"
-                        :class="'primary'">
-                        {{ __('welcome.invitation.cta') }}
-                    </x-cta>
+        <section id="invitation" class="overflow-visible bg-bg-main-2 py-24 md:pb-32">
+            <div class="mx-auto flex w-full max-w-[1200px] flex-col items-center justify-center gap-10 px-6">
+                <div class="grid shadow-basic w-full grid-cols-1 gap-10 overflow-visible bg-bg-widget p-10 md:grid-cols-2">
+                    <div class="flex flex-col items-start justify-center gap-4">
+                        <h2 class="welcome-heading-section">
+                            {!! __('welcome.invitation.title') !!}
+                        </h2>
+                        <p class="text-text-secondary">
+                            {{ __('welcome.invitation.description') }}
+                        </p>
+                        <x-cta
+                            href="{{ route('register') }}"
+                            :title="__('welcome.invitation.cta_title')"
+                            :class="'primary'">
+                            {{ __('welcome.invitation.cta') }}
+                        </x-cta>
+                    </div>
+                    <div class="relative hidden md:block min-h-48 lg:min-h-64 overflow-visible">
+                        <img
+                            src="{{ asset('img/welcome/invitations/yasuo.png') }}"
+                            class="absolute -bottom-10 -right-25 w-[135%] max-w-none h-auto pointer-events-none select-none"
+                            alt=""
+                            aria-hidden="true">
+                    </div>
                 </div>
-                <div class="relative hidden md:block min-h-48 lg:min-h-64 overflow-visible">
-                    <img
-                        src="{{ asset('img/welcome/invitations/yasuo.png') }}"
-                        class="absolute -bottom-10 -right-25 w-[135%] max-w-none h-auto pointer-events-none select-none"
-                        alt=""
-                        aria-hidden="true">
-                </div>
-
             </div>
         </section>
-        <footer class="bg-bg-widget p-6 gap-10">
-            <div class="flex flex-row items-center justify-between gap-4">
+        <footer class="bg-bg-widget py-6">
+            <div class="mx-auto flex w-full max-w-[1600px] flex-row items-center justify-between gap-4 px-6">
                 <p class="w-full text-text-secondary">
                     {{ __('welcome.footer.Copyright') }}
                 </p>
