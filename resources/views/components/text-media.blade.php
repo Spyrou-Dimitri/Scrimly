@@ -11,7 +11,7 @@
             <span class="text-5xl font-bold text-black leading-none">{{ $number }}</span>
         </div>
 
-        <h3 class="text-[32px] font-bold leading-tight">
+        <h3 class="welcome-heading-step">
             {{ $title }}
         </h3>
 

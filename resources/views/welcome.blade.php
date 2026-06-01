@@ -103,18 +103,18 @@ $currentUser = auth()->user();
                 <img src="{{ asset('img/welcome/landing/Bg-400.jpg') }}" alt="" class="h-full w-full object-cover" aria-hidden="true">
             </picture>
 
-            <div class="flex flex-col px-8 py-10 text-center gap-6 absolute origin-center top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-3xl backdrop-blur-[1px]">
+            <div class="flex flex-col px-8 py-10 text-center gap-6 absolute origin-center top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-3xl w-full backdrop-blur-[1px]">
                 <div class="relative z-10 pb-6 border-b border-white/60 flex flex-col  items-center gap-6">
                     <div class="text-center">
-                        <h2 class="text-5xl font-bold text-gold flex flex-col items-center justify-center gap-2">
+                        <h2 class="welcome-heading-hero text-gold flex flex-col items-center justify-center gap-2">
                             {{ __('welcome.hero.title') }}
-                            <span class="block text-4xl font-bold text-white leading-none">
+                            <span class="welcome-heading-hero-sub block text-white">
                                 {{ __('welcome.hero.slogan') }}
                             </span>
                         </h2>
 
                     </div>
-                    <p class="text-xl text-center">
+                    <p class="welcome-body-lead text-center">
                         {{ __('welcome.hero.description') }}
                         <span class="block">
                             {{ __('welcome.hero.description_2') }}
@@ -136,46 +136,44 @@ $currentUser = auth()->user();
                     </div>
 
                 </div>
-                <div>
-                    <ul class="flex flex-row items-center justify-between gap-4">
-                        <li class="text-gold flex flex-row items-center gap-1">
-                            <flux:icon name="user-group" class="size-6" />
-                            <span class="text-text-secondary">
-                                {{ $numbersTeams }}
-                            </span>
-                            <span class="text-text-secondary">
-                                {{ __('welcome.hero.teams') }}
-                            </span>
-                        </li>
-                        <li class="text-gold flex flex-row items-center gap-1">
-                            <flux:icon name="user" class="size-6" />
-                            <span class="text-text-secondary">
-                                {{ $numbersUsers }}
-                            </span>
-                            <span class="text-text-secondary">
-                                {{ __('welcome.hero.users') }}
-                            </span>
-                        </li>
-                        <li class="text-gold flex flex-row items-center gap-1">
-                            <flux:icon name="trophy" class="size-6" />
-                            <span class="text-text-secondary">
-                                {{ $numbersScrims }}
-                            </span>
-                            <span class="text-text-secondary">
-                                {{ __('welcome.hero.scrims') }}
-                            </span>
-                        </li>
-                    </ul>
-                </div>
+                <ul class="flex flex-row flex-wrap items-center justify-between gap-4">
+                    <li class="text-gold flex flex-row items-center gap-1">
+                        <flux:icon name="user-group" class="size-6" />
+                        <span class="text-text-secondary">
+                            {{ $numbersTeams }}
+                        </span>
+                        <span class="text-text-secondary">
+                            {{ __('welcome.hero.teams') }}
+                        </span>
+                    </li>
+                    <li class="text-gold flex flex-row items-center gap-1">
+                        <flux:icon name="user" class="size-6" />
+                        <span class="text-text-secondary">
+                            {{ $numbersUsers }}
+                        </span>
+                        <span class="text-text-secondary">
+                            {{ __('welcome.hero.users') }}
+                        </span>
+                    </li>
+                    <li class="text-gold flex flex-row items-center gap-1">
+                        <flux:icon name="trophy" class="size-6" />
+                        <span class="text-text-secondary">
+                            {{ $numbersScrims }}
+                        </span>
+                        <span class="text-text-secondary">
+                            {{ __('welcome.hero.scrims') }}
+                        </span>
+                    </li>
+                </ul>
             </div>
 
         </section>
         <section id="fonctionnalites" class="scroll-mt-[5.5rem] py-12 px-6 flex flex-col items-center justify-center gap-10">
             <div class="flex flex-col items-center justify-center gap-4">
-                <h2 class="text-[40px] font-bold text-center leading-none">
+                <h2 class="welcome-heading-section text-center">
                     {!! __('welcome.Features.title') !!}
                 </h2>
-                <p class="text-center text-xl text-text-secondary">
+                <p class="welcome-body-lead text-center text-text-secondary">
                     {{ __('welcome.Features.slogan') }}
                 </p>
             </div>
@@ -209,10 +207,10 @@ $currentUser = auth()->user();
         </section>
         <section id="how-it-works" class="bg-bg-widget py-12 px-6 flex flex-col items-center justify-center gap-10">
             <div class="flex flex-col items-center justify-center gap-4">
-                <h2 class="text-[40px] font-bold text-center leading-none">
+                <h2 class="welcome-heading-section text-center">
                     {!! __('welcome.how-it-works.title') !!}
                 </h2>
-                <p class="text-center text-xl text-text-secondary">
+                <p class="welcome-body-lead text-center text-text-secondary">
                     {{ __('welcome.how-it-works.description') }}
                 </p>
             </div>
@@ -268,7 +266,42 @@ $currentUser = auth()->user();
                 </li>
             </ul>
         </section>
+        <section id="invitation" class="py-24 md:pb-32 px-6 flex flex-col items-center justify-center gap-10 overflow-visible">
+            <div class="max-w-[80%] mx-auto grid grid-cols-1 md:grid-cols-2 bg-bg-widget p-10 gap-10 overflow-visible">
+                <div class="flex flex-col items-start justify-center gap-4">
+                    <h2 class="welcome-heading-section">
+                        {!! __('welcome.invitation.title') !!}
+                    </h2>
+                    <p class="text-text-secondary">
+                        {{ __('welcome.invitation.description') }}
+                    </p>
+                    <x-cta
+                        href="{{ route('register') }}"
+                        :title="__('welcome.invitation.cta_title')"
+                        :class="'primary'">
+                        {{ __('welcome.invitation.cta') }}
+                    </x-cta>
+                </div>
+                <div class="relative hidden md:block min-h-48 lg:min-h-64 overflow-visible">
+                    <img
+                        src="{{ asset('img/welcome/invitations/yasuo.png') }}"
+                        class="absolute -bottom-10 -right-25 w-[135%] max-w-none h-auto pointer-events-none select-none"
+                        alt=""
+                        aria-hidden="true">
+                </div>
 
+            </div>
+        </section>
+        <footer class="bg-bg-widget p-6 gap-10">
+            <div class="flex flex-row items-center justify-between gap-4">
+                <p class="w-full text-text-secondary">
+                    {{ __('welcome.footer.Copyright') }}
+                </p>
+                <p class="w-full text-right">
+                    {!! __('welcome.footer.created_by') !!}
+                </p>
+            </div>
+        </footer>
     </main>
 </body>
 

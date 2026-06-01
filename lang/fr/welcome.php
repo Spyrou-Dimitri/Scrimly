@@ -77,4 +77,14 @@ return [
 
         ],
     ],
+    'invitation' => [
+        'title' => 'Osez <span class="text-gold">l\'excellence</span>',
+        'description' => 'Rejoignez les équipes qui utilisent Scrimly pour organiser leurs scrims, suivre la progression de leurs joueurs et atteindre leurs objectifs compétitifs.',
+        'cta_title' => 'S\'inscrire sur ScrimlyLol',
+        'cta' => 'Commencer maintenant',
+    ],
+    'footer' => [
+        'Copyright' => 'Copyright © 2026 ScrimlyLol. Tous droits réservés.',
+        'created_by' => 'Créé par <a href="https://dimitri-spyrou.com/" target="_blank" class="text-white hover:text-gold">Dimitri Spyrou</a>',
+    ],
 ];
