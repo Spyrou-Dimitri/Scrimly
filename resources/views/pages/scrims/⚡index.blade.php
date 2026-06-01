@@ -443,7 +443,8 @@ new #[Layout('layouts::team')] class extends Component
                 :disabled="__('pages/scrims/index.history_result_placeholder')"
             />
         </div>
-        <table class="w-full shadow-basic">
+        <div class="overflow-x-auto">
+        <table class="w-full shadow-basic min-w-[680px]">
             <thead class="bg-[#0D0E12]">
                 <tr>
                     <th class="text-left p-6">{{ __('pages/scrims/index.history_column_opponent') }}</th>
@@ -519,6 +520,7 @@ new #[Layout('layouts::team')] class extends Component
                 @endforeach
             </tbody>
         </table>
+        </div>
         {{ $this->scrimHistory->links() }}
     </section>
 

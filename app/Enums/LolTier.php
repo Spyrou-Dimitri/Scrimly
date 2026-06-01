@@ -31,9 +31,6 @@ enum LolTier: string
         };
     }
 
-    /**
-     * Classes utilitaires Tailwind (couleur du texte pour le rang affiché).
-     */
     public function color(): string
     {
         return match ($this) {

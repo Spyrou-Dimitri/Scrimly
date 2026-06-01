@@ -91,7 +91,7 @@ new class extends Component
 
 <div>
     <section class="flex flex-col gap-6">
-        <div class="flex justify-between items-center">
+        <div class="flex flex-wrap gap-4 justify-between items-center">
             <h2 class="text-2xl font-bold">
                 {{ __('pages/tasks/index.coach_title') }}
             </h2>
@@ -108,7 +108,8 @@ new class extends Component
             :options="$this->memberFilterOptions"
             :disabled="__('pages/tasks/index.coach_team_member_placeholder_disabled')" />
         </div>
-        <table class="w-full shadow-basic">
+        <div class="overflow-x-auto">
+        <table class="w-full shadow-basic min-w-[680px]">
             <thead class="bg-[#0D0E12]">
                 <tr class="">
                     <th class="text-left p-6 ">Devoir</th>
@@ -147,6 +148,7 @@ new class extends Component
                 </tr>
                 @endforeach
         </table>
+        </div>
         {{ $this->allTasks->links() }}
     </section>
 </div>
