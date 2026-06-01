@@ -100,7 +100,7 @@ class Team extends Model
     public function getLogoUrlAttribute(): string
     {
         if ($this->logo_type === 'upload' && $this->logo_value) {
-            return Storage::disk('public')->url('images/logoTeam/variants/300x300/'.$this->logo_value);
+            return Storage::disk(config('logoTeam.disk'))->url('images/logoTeam/variants/300x300/'.$this->logo_value);
         }
 
         if ($this->logo_type === 'default' && $this->logo_value) {
@@ -116,7 +116,7 @@ class Team extends Model
             return null;
         }
         $value = $this->logo_value;
-        $url = fn ($size) => Storage::disk('public')->url('images/logoTeam/variants/'.$size.'x'.$size.'/'.$value);
+        $url = fn ($size) => Storage::disk(config('logoTeam.disk'))->url('images/logoTeam/variants/'.$size.'x'.$size.'/'.$value);
 
         return "{$url(80)} 80w, {$url(300)} 300w, {$url(400)} 400w";
 

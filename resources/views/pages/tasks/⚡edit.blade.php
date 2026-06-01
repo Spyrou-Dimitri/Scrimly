@@ -137,7 +137,7 @@ new #[Layout('layouts::team')] class extends Component
             return;
         }
 
-        Storage::disk('public')->delete($file->file_path);
+        Storage::disk(config('taskFiles.disk'))->delete($file->file_path);
         $file->delete();
         $this->task->load('files');
     }

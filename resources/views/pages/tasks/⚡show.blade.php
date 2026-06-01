@@ -162,7 +162,7 @@ new #[Layout('layouts::team')] class extends Component
             TaskSubmission::create([
                 'file_name' => $submission->getClientOriginalName(),
                 'file_size' => $submission->getSize(),
-                'file_path' => Storage::disk('public')->putFileAs(config('taskSubmissions.path'), $submission, $submission->getClientOriginalName()),
+                'file_path' => Storage::disk(config('taskSubmissions.disk'))->putFileAs(config('taskSubmissions.path'), $submission, $submission->getClientOriginalName()),
                 'task_id' => $this->task->id,
             ]);
         }
@@ -283,7 +283,7 @@ new #[Layout('layouts::team')] class extends Component
                             <flux:icon name="document" class="size-6 shrink-0 text-gold" />
                             @endif
                             <a
-                                href="{{ Storage::disk('public')->url($file->file_path) }}"
+                                href="{{ Storage::disk(config('taskFiles.disk'))->url($file->file_path) }}"
                                 class="truncate hover:text-gold transition-colors duration-150"
                                 target="_blank"
                                 rel="noopener noreferrer">
@@ -441,7 +441,7 @@ new #[Layout('layouts::team')] class extends Component
                         <ul class="flex flex-col gap-2" role="list" aria-label="{{ __('pages/tasks/show.upload_existing_heading') }}">
                             @foreach ($this->task->submissions as $submission)
                             <li class="flex items-center justify-between gap-2 border border-input-border bg-bg-card px-4 py-4">
-                                <a target="_blank" rel="noopener noreferrer" href="{{ Storage::disk('public')->url($submission->file_path) }}" class="flex items-center gap-3 min-w-0">
+                                <a target="_blank" rel="noopener noreferrer" href="{{ Storage::disk(config('taskSubmissions.disk'))->url($submission->file_path) }}" class="flex items-center gap-3 min-w-0">
                                     <flux:icon name="document" class="size-5 shrink-0 text-gold" />
                                     <span class="truncate hover:text-gold transition-colors duration-150">{{ $submission->file_name }}</span>
                                 </a>

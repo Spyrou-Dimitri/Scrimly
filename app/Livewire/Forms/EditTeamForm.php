@@ -96,7 +96,7 @@ class EditTeamForm extends Form
 
             $extension = $validated['logo']->extension() ?: $validated['logo']->getClientOriginalExtension();
             $newOriginalFileName = uniqid().'.'.$extension;
-            $fullPathToOriginal = Storage::disk('public')->putFileAs(
+            $fullPathToOriginal = Storage::disk(config('logoTeam.disk'))->putFileAs(
                 config('logoTeam.original_path'),
                 $validated['logo'],
                 $newOriginalFileName
@@ -134,7 +134,7 @@ class EditTeamForm extends Form
 
     private function deleteStoredUploadLogo(string $filename): void
     {
-        $disk = Storage::disk('public');
+        $disk = Storage::disk(config('logoTeam.disk'));
         $disk->delete(config('logoTeam.original_path').'/'.$filename);
 
         foreach (config('logoTeam.sizes', []) as $size) {

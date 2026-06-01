@@ -95,7 +95,7 @@ class CreateTaskForm extends Form
             $extension = $temporaryFile->extension() ?: $temporaryFile->getClientOriginalExtension();
             $newName = uniqid().'.'.$extension;
 
-            $fullPath = Storage::disk('public')->putFileAs(
+            $fullPath = Storage::disk(config('taskFiles.disk'))->putFileAs(
                 config('taskFiles.original_path').'/'.$task->id,
                 $temporaryFile,
                 $newName,

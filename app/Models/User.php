@@ -40,7 +40,7 @@ class User extends Authenticatable
     public function getAvatarUrlAttribute(): string
     {
         if ($this->avatar_type === 'upload' && $this->avatar_value) {
-            return Storage::disk('public')->url('images/avatar/variants/400x400/'.$this->avatar_value);
+            return Storage::disk(config('avatar.disk'))->url('images/avatar/variants/400x400/'.$this->avatar_value);
         }
 
         if ($this->avatar_type === 'default' && $this->avatar_value) {
@@ -56,7 +56,8 @@ class User extends Authenticatable
             return null;
         }
         $value = $this->avatar_value;
-        $url = fn (int $size) => Storage::disk('public')->url("images/avatar/variants/{$size}x{$size}/{$value}");
+        $url = fn (int $size) => Storage::disk(config('avatar.disk'))->url("images/avatar/variants/{$size}x{$size}/{$value}");
+
         return "{$url(70)} 70w, {$url(400)} 400w, {$url(620)} 620w";
 
     }
@@ -106,6 +107,7 @@ class User extends Authenticatable
             ->withPivot('roleInTeam', 'roleInGame', 'joined_at')
             ->withTimestamps();
     }
+
     public function teamInvitations(): HasMany
     {
         return $this->hasMany(TeamInvitation::class);
@@ -134,5 +136,4 @@ class User extends Authenticatable
 
         return $teamMember?->isCoachOrStaff() ?? false;
     }
-    
 }

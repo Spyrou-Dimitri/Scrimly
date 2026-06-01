@@ -9,4 +9,5 @@ return [
     'jpeg_compression' => 80,
     'original_path' => 'images/logoTeam/originals',
     'variant_pattern' => 'images/logoTeam/variants/%sx%s',
+    'disk' => env('MEDIA_DISK', 'public'),
 ];

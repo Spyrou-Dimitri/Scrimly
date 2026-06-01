@@ -95,7 +95,7 @@ class CreateTeamForm extends Form
         if ($validated['logo']) {
             $extension = $validated['logo']->extension() ?: $validated['logo']->getClientOriginalExtension();
             $new_original_file_name = uniqid().'.'.$extension;
-            $full_path_to_original = Storage::disk('public')->putFileAs(
+            $full_path_to_original = Storage::disk(config('logoTeam.disk'))->putFileAs(
                 config('logoTeam.original_path'),
                 $validated['logo'],
                 $new_original_file_name

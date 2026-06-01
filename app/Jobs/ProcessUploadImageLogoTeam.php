@@ -10,20 +10,16 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image;
 
-
 class ProcessUploadImageLogoTeam implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public function __construct(public string $full_path_to_original,
-                                public string $new_original_file_name)
-    {
-
-    }
+        public string $new_original_file_name) {}
 
     public function handle(): void
     {
-        $disk = Storage::disk('public');
+        $disk = Storage::disk(config('logoTeam.disk'));
 
         $image = Image::decodeBinary(
             $disk->get($this->full_path_to_original)
@@ -40,7 +36,7 @@ class ProcessUploadImageLogoTeam implements ShouldQueue
 
             $path = sprintf($variant_pattern, $size['width'], $size['height']);
             $disk->put(
-                $path . '/' . $this->new_original_file_name,
+                $path.'/'.$this->new_original_file_name,
                 $variant->encodeUsingFileExtension($image_type, quality: $jpeg_compression),
             );
         }

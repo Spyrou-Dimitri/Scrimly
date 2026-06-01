@@ -19,7 +19,7 @@ class ProcessUploadImageAvatar implements ShouldQueue
 
     public function handle(): void
     {
-        $disk = Storage::disk('public');
+        $disk = Storage::disk(config('avatar.disk'));
 
         $image = Image::decodeBinary(
             $disk->get($this->full_path_to_original)

@@ -77,8 +77,8 @@ class EditProfilForm extends Form
 
                 $upload = $validated['avatar'];
                 $extension = $upload->extension() ?: $upload->getClientOriginalExtension();
-                $newOriginalFileName = uniqid('', true) . '.' . $extension;
-                $fullPathToOriginal = Storage::disk('public')->putFileAs(
+                $newOriginalFileName = uniqid('', true).'.'.$extension;
+                $fullPathToOriginal = Storage::disk(config('avatar.disk'))->putFileAs(
                     config('avatar.original_path'),
                     $upload,
                     $newOriginalFileName
@@ -135,19 +135,21 @@ class EditProfilForm extends Form
 
     private function deleteStoredUploadAvatar(string $filename): void
     {
-        $disk = Storage::disk('public');
-        $disk->delete(config('avatar.original_path') . '/' . $filename);
+        $disk = Storage::disk(config('avatar.disk'));
+        $disk->delete(config('avatar.original_path').'/'.$filename);
 
         foreach (config('avatar.sizes', []) as $size) {
             $directory = sprintf(config('avatar.variant_pattern'), $size['width'], $size['height']);
-            $disk->delete($directory . '/' . $filename);
+            $disk->delete($directory.'/'.$filename);
         }
     }
-private function riotTagChanged(): bool
+
+    private function riotTagChanged(): bool
     {
         $user = User::query()->with('riotProfile')->findOrFail(Auth::id());
         $futurNewRiotTag = filled($this->riot_tag) ? trim($this->riot_tag) : null;
         $oldRiotTag = $user->riotProfile?->riot_tag;
+
         return $futurNewRiotTag !== $oldRiotTag;
     }
 }

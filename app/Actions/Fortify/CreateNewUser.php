@@ -86,7 +86,7 @@ class CreateNewUser implements CreatesNewUsers
 
         $extension = $upload->extension() ?: $upload->getClientOriginalExtension();
         $filename = uniqid('', true).'.'.$extension;
-        $storedPath = Storage::disk('public')->putFileAs(
+        $storedPath = Storage::disk(config('avatar.disk'))->putFileAs(
             config('avatar.original_path'),
             $upload,
             $filename
