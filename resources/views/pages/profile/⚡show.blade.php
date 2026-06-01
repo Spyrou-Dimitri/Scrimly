@@ -68,7 +68,7 @@ new class extends Component
     {
         $keyForRateLimiter = 'update-profil-'.Auth::user()->id;
         
-        if (RateLimiter::tooManyAttempts($keyForRateLimiter, 1)) {
+        if (RateLimiter::tooManyAttempts($keyForRateLimiter, 3)) {
             $this->dispatch('toast', [
                 'type' => 'error',
                 'message' => __('toasts/toasts.too_many_attempts'),
