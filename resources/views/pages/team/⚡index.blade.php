@@ -62,7 +62,7 @@ new #[Layout('layouts::choose_a_team')] class extends Component
 
         Auth::user()->current_team_id = $team->id;
 
-        $this->redirect(route('roster.index', ['slug' => $team->slug]));
+        $this->redirect(route('dashboard', ['slug' => $team->slug]));
     }
 
     public function openTeamInvitationModal(int $invitationId): void
