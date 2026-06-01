@@ -10,10 +10,6 @@
 
 @php
 $currentUser = auth()->user();
-$numbersTeams = $numbersTeams;
-$numbersUsers = $numbersUsers;
-$numbersScrims = $numbersScrims;
-$realNumbersScrims = $realNumbersScrims;
 @endphp
 
 <body class="bg-bg-main text-text-primary font-sans">
@@ -110,9 +106,9 @@ $realNumbersScrims = $realNumbersScrims;
             <div class="flex flex-col px-8 py-10 text-center gap-6 absolute origin-center top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-3xl backdrop-blur-[1px]">
                 <div class="relative z-10 pb-6 border-b border-white/60 flex flex-col  items-center gap-6">
                     <div class="text-center">
-                        <h2 class="text-5xl font-bold text-gold">
+                        <h2 class="text-5xl font-bold text-gold flex flex-col items-center justify-center gap-2">
                             {{ __('welcome.hero.title') }}
-                            <span class="block text-4xl font-bold text-white">
+                            <span class="block text-4xl font-bold text-white leading-none">
                                 {{ __('welcome.hero.slogan') }}
                             </span>
                         </h2>
@@ -174,7 +170,43 @@ $realNumbersScrims = $realNumbersScrims;
             </div>
 
         </section>
-        
+        <section id="fonctionnalites" class="scroll-mt-[5.5rem] py-12 px-6 flex flex-col items-center justify-center gap-6">
+            <div class="flex flex-col items-center justify-center gap-4">
+                <h2 class="text-[40px] font-bold text-center leading-none">
+                    {!! __('welcome.Features.title') !!}
+                </h2>
+                <p class="text-center text-xl text-text-secondary">
+                    {{ __('welcome.Features.slogan') }}
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <x-cards.feature
+                    icon="calendar-days"
+                    title="{{ __('welcome.Features.cards.calendar.title') }}"
+                    description="{{ __('welcome.Features.cards.calendar.description') }}" />
+                <x-cards.feature
+                    icon="book-open"
+                    title="{{ __('welcome.Features.cards.tasks.title') }}"
+                    description="{{ __('welcome.Features.cards.tasks.description') }}" />
+                <x-cards.feature
+                    icon="user-group"
+                    title="{{ __('welcome.Features.cards.roster.title') }}"
+                    description="{{ __('welcome.Features.cards.roster.description') }}" />
+                <x-cards.feature
+                    icon="chart-bar"
+                    title="{{ __('welcome.Features.cards.followData.title') }}"
+                    description="{{ __('welcome.Features.cards.followData.description') }}" />
+                <x-cards.feature
+                    icon="chat-bubble-left-right"
+                    title="{{ __('welcome.Features.cards.chat.title') }}"
+                    description="{{ __('welcome.Features.cards.chat.description') }}" />
+                <x-cards.feature
+                    icon="check-circle"
+                    title="{{ __('welcome.Features.cards.Checklist.title') }}"
+                    description="{{ __('welcome.Features.cards.Checklist.description') }}" />    
+            </div>
+
+        </section>
 
     </main>
 </body>
