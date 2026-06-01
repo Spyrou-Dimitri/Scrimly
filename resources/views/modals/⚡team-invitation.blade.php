@@ -115,7 +115,7 @@ new class extends Component
                 <h4 class="text-2xl font-bold text-gold">
                     {{ __('modals/team-invitation.motivation') }}
                 </h4>
-                <p class="whitespace-pre-line text-white">
+                <p class="text-white">
                     @if (filled($invitation->motivation))
                     {{ $invitation->motivation }}
                     @else
