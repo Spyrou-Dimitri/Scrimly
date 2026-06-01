@@ -162,7 +162,7 @@ new #[Layout('layouts::team')] class extends Component
             TaskSubmission::create([
                 'file_name' => $submission->getClientOriginalName(),
                 'file_size' => $submission->getSize(),
-                'file_path' => Storage::disk(config('taskSubmissions.disk'))->putFileAs(config('taskSubmissions.path'), $submission, $submission->getClientOriginalName()),
+                'file_path' => $submission->storeAs(config('taskSubmissions.path'), $submission->getClientOriginalName(), ['disk' => config('taskSubmissions.disk')]),
                 'task_id' => $this->task->id,
             ]);
         }

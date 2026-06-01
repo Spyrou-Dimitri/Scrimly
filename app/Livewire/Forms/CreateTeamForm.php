@@ -12,7 +12,6 @@ use App\Enums\StatusInTeam;
 use App\Jobs\ProcessUploadImageLogoTeam;
 use App\Models\Team;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
@@ -95,10 +94,10 @@ class CreateTeamForm extends Form
         if ($validated['logo']) {
             $extension = $validated['logo']->extension() ?: $validated['logo']->getClientOriginalExtension();
             $new_original_file_name = uniqid().'.'.$extension;
-            $full_path_to_original = Storage::disk(config('logoTeam.disk'))->putFileAs(
+            $full_path_to_original = $validated['logo']->storeAs(
                 config('logoTeam.original_path'),
-                $validated['logo'],
-                $new_original_file_name
+                $new_original_file_name,
+                ['disk' => config('logoTeam.disk')]
             );
             if ($full_path_to_original) {
                 $validated['logo'] = $new_original_file_name;

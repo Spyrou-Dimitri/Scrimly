@@ -78,10 +78,10 @@ class EditProfilForm extends Form
                 $upload = $validated['avatar'];
                 $extension = $upload->extension() ?: $upload->getClientOriginalExtension();
                 $newOriginalFileName = uniqid('', true).'.'.$extension;
-                $fullPathToOriginal = Storage::disk(config('avatar.disk'))->putFileAs(
+                $fullPathToOriginal = $upload->storeAs(
                     config('avatar.original_path'),
-                    $upload,
-                    $newOriginalFileName
+                    $newOriginalFileName,
+                    ['disk' => config('avatar.disk')]
                 );
 
                 ProcessUploadImageAvatar::dispatchSync($fullPathToOriginal, $newOriginalFileName);

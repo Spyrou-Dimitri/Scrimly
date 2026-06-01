@@ -96,10 +96,10 @@ class EditTeamForm extends Form
 
             $extension = $validated['logo']->extension() ?: $validated['logo']->getClientOriginalExtension();
             $newOriginalFileName = uniqid().'.'.$extension;
-            $fullPathToOriginal = Storage::disk(config('logoTeam.disk'))->putFileAs(
+            $fullPathToOriginal = $validated['logo']->storeAs(
                 config('logoTeam.original_path'),
-                $validated['logo'],
-                $newOriginalFileName
+                $newOriginalFileName,
+                ['disk' => config('logoTeam.disk')]
             );
 
             if ($fullPathToOriginal) {

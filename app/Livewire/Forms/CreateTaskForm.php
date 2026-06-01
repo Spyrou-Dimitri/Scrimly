@@ -10,7 +10,6 @@ use App\Models\TeamMember;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -95,10 +94,10 @@ class CreateTaskForm extends Form
             $extension = $temporaryFile->extension() ?: $temporaryFile->getClientOriginalExtension();
             $newName = uniqid().'.'.$extension;
 
-            $fullPath = Storage::disk(config('taskFiles.disk'))->putFileAs(
+            $fullPath = $temporaryFile->storeAs(
                 config('taskFiles.original_path').'/'.$task->id,
-                $temporaryFile,
                 $newName,
+                ['disk' => config('taskFiles.disk')]
             );
 
             if ($fullPath === false || $fullPath === null) {
