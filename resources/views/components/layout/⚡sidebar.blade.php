@@ -155,7 +155,10 @@ new class extends Component
                 <div class="min-w-0 flex-1">
                     <p class="truncate font-semibold text-white">{{ $team->name }}</p>
                     @if ($averageEloTier)
+                    <div class="flex items-center gap-2">
+                        <img src="{{ asset($averageEloTier->icon()) }}" class="size-5" alt="{{ $averageEloTier->label() }}">
                         <p @class(['truncate text-sm', $averageEloTier->color()])>{{ $averageEloTier->label() }}</p>
+                    </div>
                     @else
                         <p class="truncate text-sm text-text-secondary">{{ __('pages/team/show.unranked') }}</p>
                     @endif
