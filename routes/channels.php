@@ -25,7 +25,7 @@ Broadcast::channel('presence.chat.{teamId}', function ($user, int $teamId) {
     if (! $isMember) {
         return null;
     }
-
+    
     return [
         'id' => $user->id,
         'username' => $user->username,

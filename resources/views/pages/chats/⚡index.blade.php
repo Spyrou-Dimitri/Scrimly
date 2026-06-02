@@ -73,6 +73,8 @@ new #[Layout('layouts::team')] class extends Component
         {{ currentTeam()->id }},
         {{ currentMember()->user_id }},
         @js([
+            'isOnline' => __('pages/chats/index.is_online'),
+            'isOffline' => __('pages/chats/index.is_offline'),
             'onlineSuffix' => __('pages/chats/index.online_suffix'),
             'onlineAndOneOther' => __('pages/chats/index.online_and_one_other'),
             'onlineAndOthers' => __('pages/chats/index.online_and_others'),

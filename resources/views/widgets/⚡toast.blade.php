@@ -59,6 +59,10 @@ new class extends Component {
         <div class="flex items-center gap-2">
             @if($toast['type'] === 'success')
             <flux:icon.check-circle class="w-6 h-6 text-green-500" />
+            @elseif($toast['type'] === 'wifi')
+            <flux:icon.wifi class="w-6 h-6 text-green-500" />
+            @elseif($toast['type'] === 'no-symbol')
+            <flux:icon.no-symbol class="w-6 h-6 text-red-500" />
             @elseif($toast['type'] === 'error')
             <flux:icon.x-circle class="w-6 h-6 text-red-500" />
             @elseif($toast['type'] === 'trash')
