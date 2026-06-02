@@ -69,7 +69,7 @@ new #[Layout('layouts::team')] class extends Component
 
 <div
     class="-mx-6 -my-8 flex h-[calc(100dvh-4rem)] max-h-[calc(100dvh-4rem)] flex-col gap-6 overflow-hidden px-6 py-8"
-    x-data="chatPresence(
+    x-data="chat(
         {{ currentTeam()->id }},
         {{ currentMember()->user_id }},
         @js([

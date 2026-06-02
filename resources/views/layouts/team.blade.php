@@ -25,7 +25,16 @@
 
     <livewire:layout.topbar />
 
-    <main class="flex-1 overflow-y-auto bg-bg-main max-w-[1600px] w-full  mx-auto lg:col-start-2 lg:row-start-2">
+    <main 
+    x-data="presence(
+        {{ currentTeam()->id }},
+        {{ currentMember()->user_id }},
+        @js([
+            'isOnline' => __('pages/chats/index.is_online'),
+            'isOffline' => __('pages/chats/index.is_offline'),
+        ])
+    )"
+    class="flex-1 overflow-y-auto bg-bg-main max-w-[1600px] w-full  mx-auto lg:col-start-2 lg:row-start-2">
         <div class="px-6 py-8">
             {{ $slot }}
         </div>

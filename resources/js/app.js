@@ -7,7 +7,8 @@ import { WinrateChart } from './charts/winrate.js';
  * allow your team to quickly build robust real-time web applications.
  */
 import './echo';
-import './chat-presence.js';
+import './chat.js';
+import './presence.js';
 
 
 function initCalendarIfNeeded() {

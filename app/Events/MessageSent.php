@@ -31,8 +31,8 @@ class MessageSent implements ShouldBroadcastNow
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('chat.' . $this->teamId),
-        ];
+            new PresenceChannel('chat.' . $this->teamId),
+        ];  
     }
     public function broadcastWith(): array
     {
