@@ -23,4 +23,9 @@ return [
     'avatar_section_image' => 'Image de profil',
     'upload_photo' => 'Importer une photo',
     'preview_placeholder' => 'Votre photo apparaîtra ici après import.',
+    'password_rules' => [
+        'length' => 'Doit contenir au moins 6 caractères',
+        'uppercase' => 'Doit contenir au moins une lettre majuscule',
+        'contains_number' => 'Doit contenir au moins un chiffre',
+    ],
 ];

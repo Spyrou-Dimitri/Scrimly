@@ -1,6 +1,7 @@
-import './password-toggle.js';
 import { AvatarPreview } from './previewAvatar.js';
 import { WinrateChart } from './charts/winrate.js';
+import { Password } from './password.js';
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
@@ -9,7 +10,6 @@ import { WinrateChart } from './charts/winrate.js';
 import './echo';
 import './chat.js';
 import './presence.js';
-
 
 function initCalendarIfNeeded() {
     if (! document.getElementById('calendar')) {
@@ -24,5 +24,6 @@ WinrateChart.registerLivewireHooks();
 WinrateChart.scheduleRefresh();
 
 AvatarPreview.init();
+Password.init();
 
 

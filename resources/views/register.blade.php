@@ -116,6 +116,7 @@ use App\Enums\DefaultAvatar;
                                 </label>
                                 <div class="relative">
                                     <input
+                                        data-password="input"
                                         type="password"
                                         name="password"
                                         id="password"
@@ -124,7 +125,7 @@ use App\Enums\DefaultAvatar;
                                         placeholder="{{ __('register/register.password_placeholder') }}">
                                     <button
                                         type="button"
-                                        data-password-toggle="password"
+                                        data-password-toggle="button"
                                         aria-label="{{ __('register/register.toggle_password') }}"
                                         aria-pressed="false"
                                         class="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3 text-gray-400 transition-colors hover:text-gold">
@@ -143,6 +144,29 @@ use App\Enums\DefaultAvatar;
                                     {{ $message }}
                                 </span>
                                 @enderror
+                                <ul class="flex flex-col gap-2 text-sm ">
+                                    <li data-password-rule="length" class="flex items-center gap-2 text-input-error">
+                                        <flux:icon data-password-rule="length-icon-error" name="x-circle" class="size-4 shrink-0 opacity-70" />
+                                        <flux:icon data-password-rule="length-icon-success" name="check-circle" class="hidden size-4 shrink-0 opacity-70" />
+                                        <span>
+                                            {{ __('register/register.password_rules.length') }}
+                                        </span>
+                                    </li>
+                                    <li data-password-rule="uppercase" class="flex items-center gap-2 text-input-error">
+                                        <flux:icon data-password-rule="uppercase-icon-error" name="x-circle" class="size-4 shrink-0 opacity-70" />
+                                        <flux:icon data-password-rule="uppercase-icon-success" name="check-circle" class="hidden size-4 shrink-0 opacity-70" />
+                                        <span>
+                                            {{ __('register/register.password_rules.uppercase') }}
+                                        </span>
+                                    </li>
+                                    <li data-password-rule="number" class="flex items-center gap-2 text-input-error">
+                                        <flux:icon data-password-rule="number-icon-error" name="x-circle" class="size-4 shrink-0 opacity-70" />
+                                        <flux:icon data-password-rule="number-icon-success" name="check-circle" class="hidden size-4 shrink-0 opacity-70" />
+                                        <span>
+                                            {{ __('register/register.password_rules.contains_number') }}
+                                        </span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                         <x-forms.submit class="w-full lg:w-fit lg:self-start">{{ __('register/register.register') }}</x-forms.submit>
