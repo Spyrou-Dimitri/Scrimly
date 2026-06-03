@@ -2,10 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\StatusInTeam;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Enums\StatusInTeam;
 
 class EnsureUserHasActiveTeam
 {
@@ -23,7 +23,7 @@ class EnsureUserHasActiveTeam
             return redirect()->route('team.index')->with('error', 'You must have an active team to access this page.');
         }
 
-        $team = $user->currentTeam;
+        $team = currentTeam();
 
         if (! $team) {
             $user->update(['current_team_id' => null]);
