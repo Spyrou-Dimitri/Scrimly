@@ -129,6 +129,7 @@ class User extends Authenticatable
             return false;
         }
 
+        $teamMember = currentMember();
         $teamMember = TeamMember::query()
             ->where('user_id', $this->id)
             ->where('team_id', $this->current_team_id)

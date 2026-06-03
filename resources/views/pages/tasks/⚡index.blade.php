@@ -20,7 +20,7 @@ new #[Layout('layouts::team')] class extends Component
     @else
         @php
             $playerColumnOrder = [\App\Enums\StatusTask::DONE, \App\Enums\StatusTask::IN_PROGRESS, \App\Enums\StatusTask::TODO];
-        @endphp
+        @endphp¨
         <livewire:tasks-views::player />
     @endcan
 

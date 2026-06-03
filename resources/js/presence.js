@@ -6,8 +6,6 @@ document.addEventListener('alpine:init', () => {
             const channel = window.Echo.join(`presence.${teamId}`);
             const detectionReload = 3000;
             const pendingReload = {};
-            console.log('teamId: ' + currentUserId);
-            
             
             channel.leaving((member) => {
                 pendingReload[member.id] = setTimeout(() => {
@@ -20,8 +18,6 @@ document.addEventListener('alpine:init', () => {
                     }]);
                 }, detectionReload);
             });
-            
-
             channel.joining((member) => {
                 if (pendingReload[member.id]) {
                     clearTimeout(pendingReload[member.id]);
@@ -34,7 +30,6 @@ document.addEventListener('alpine:init', () => {
                         message: `${member.username} ${this.labels.isOnline}`,
                     }]);
                 }
-
                     this.onlineMembers.push(member);
             });
             

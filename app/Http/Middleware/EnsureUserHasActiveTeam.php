@@ -20,21 +20,21 @@ class EnsureUserHasActiveTeam
         $user = $request->user();
 
         if (! $user->current_team_id) {
-            return redirect()->route('team.index')->with('error', 'You must have an active team to access this page.');
+            return redirect()->route('team.index');
         }
 
         $team = currentTeam();
 
         if (! $team) {
             $user->update(['current_team_id' => null]);
-
-            return redirect()->route('team.index')->with('error', 'Vous ne faites pas partie de cette équipe.');
+            return redirect()->route('team.index');
         }
 
-        $isAccepted = $user->teams()->where('team_id', $team->id)->where('status', StatusInTeam::ACCEPTED)->exists();
+        $isAccepted = $user->teams()->where('team_id', $team->id)
+        ->where('status', StatusInTeam::ACCEPTED)->exists();
 
         if (! $isAccepted) {
-            return redirect()->route('team.index')->with('error', 'Vous ne faites pas partie de cette équipe.');
+            return redirect()->route('team.index');
         }
 
         if ($slug !== $team->slug) {
