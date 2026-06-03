@@ -23,4 +23,10 @@ return [
     'avatar_section_image' => 'Profile picture',
     'upload_photo' => 'Upload a photo',
     'preview_placeholder' => 'Your photo will appear here after upload.',
+    'password_rules' => [
+        'length' => 'Must contain at least 8 characters',
+        'uppercase' => 'Must contain at least one uppercase letter',
+        'lowercase' => 'Must contain at least one lowercase letter',
+        'contains_number' => 'Must contain at least one number',
+    ],
 ];

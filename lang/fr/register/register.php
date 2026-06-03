@@ -24,8 +24,9 @@ return [
     'upload_photo' => 'Importer une photo',
     'preview_placeholder' => 'Votre photo apparaîtra ici après import.',
     'password_rules' => [
-        'length' => 'Doit contenir au moins 6 caractères',
+        'length' => 'Doit contenir au moins 8 caractères',
         'uppercase' => 'Doit contenir au moins une lettre majuscule',
+        'lowercase' => 'Doit contenir au moins une lettre minuscule',
         'contains_number' => 'Doit contenir au moins un chiffre',
     ],
 ];

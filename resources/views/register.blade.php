@@ -159,6 +159,13 @@ use App\Enums\DefaultAvatar;
                                             {{ __('register/register.password_rules.uppercase') }}
                                         </span>
                                     </li>
+                                    <li data-password-rule="lowercase" class="flex items-center gap-2 text-input-error">
+                                        <flux:icon data-password-rule="lowercase-icon-error" name="x-circle" class="size-4 shrink-0 opacity-70" />
+                                        <flux:icon data-password-rule="lowercase-icon-success" name="check-circle" class="hidden size-4 shrink-0 opacity-70" />
+                                        <span>
+                                            {{ __('register/register.password_rules.lowercase') }}
+                                        </span>
+                                    </li>
                                     <li data-password-rule="number" class="flex items-center gap-2 text-input-error">
                                         <flux:icon data-password-rule="number-icon-error" name="x-circle" class="size-4 shrink-0 opacity-70" />
                                         <flux:icon data-password-rule="number-icon-success" name="check-circle" class="hidden size-4 shrink-0 opacity-70" />
