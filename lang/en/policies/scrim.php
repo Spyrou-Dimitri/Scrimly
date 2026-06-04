@@ -10,4 +10,5 @@ return [
     'error_delete_game' => 'You do not have permission to delete a game.',
     'error_delete_scrim' => 'You do not have permission to delete a scrim.',
     'error_cancel_scrim' => 'You do not have permission to cancel a scrim.',
+    'error_edit_summary' => 'You do not have permission to edit the scrim summary.',
 ];

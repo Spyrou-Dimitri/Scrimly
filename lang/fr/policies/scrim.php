@@ -10,4 +10,5 @@ return [
     'error_delete_game' => 'Vous n\'avez pas les permissions de supprimer une game.',
     'error_delete_scrim' => 'Vous n\'avez pas les permissions de supprimer un scrim.',
     'error_cancel_scrim' => 'Vous n\'avez pas les permissions d\'annuler un scrim.',
+    'error_edit_summary' => 'Vous n\'avez pas les permissions de modifier le résumé du scrim.',
 ];

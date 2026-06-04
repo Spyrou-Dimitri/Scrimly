@@ -135,6 +135,34 @@ new #[Layout('layouts::team')] class extends Component
         ]);
     }
 
+    public function openModalEditSummary(): void
+    {
+        if (Gate::denies('manageTeam', User::class)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/scrim.error_title'),
+                'message' => __('policies/scrim.error_edit_summary'),
+                'type' => 'error',
+            ]);
+
+            return;
+        }
+
+        if ($this->scrim->status === StatusScrim::SCHEDULED) {
+            $this->dispatch('toast', [
+                'title' => __('policies/scrim.error_title'),
+                'message' => __('modals/scrims/edit-summary.error_scheduled'),
+                'type' => 'error',
+            ]);
+
+            return;
+        }
+
+        $this->dispatch('open_modal', [
+            'form' => 'modals::scrims.edit-summary',
+            'model_id' => $this->scrim->id,
+        ]);
+    }
+
     #[On('refresh_scrim')]
     public function refreshScrim(): void
     {
@@ -188,14 +216,13 @@ new #[Layout('layouts::team')] class extends Component
         </div>
 
         @php
-        $resolvedSummary = filled(trim(($this->scrim->summary ?? ''))) ? $this->scrim->summary : null;
         $gamesPlayed = $this->scrim->scrimGames->count();
         $gamesPlanned = $this->scrim->number_of_games;
         $opponentId = $this->scrim->opponent_team_id;
         @endphp
 
         <div
-            class="grid w-full grid-cols-2 md:grid-cols-8  gap-6 lg:grid-cols-12 ">
+            class="grid w-full grid-cols-2 md:grid-cols-8  items-start gap-6 lg:grid-cols-12 ">
             <div class="order-1 col-span-1 md:col-span-2 lg:col-span-3 flex flex-col bg-bg-widget p-6 shadow-basic lg:order-1 ">
                 <p class="text-sm text-gold font-bold">
                     {{ __('pages/scrims/show.widget_date') }}
@@ -203,7 +230,6 @@ new #[Layout('layouts::team')] class extends Component
                 <p class="mt-1 text-xl font-bold">
                     {{ $this->scrim->scheduled_date->locale(app()->getLocale())->translatedFormat('j M Y') }}
                 </p>
-
             </div>
 
             <div class="order-2 col-span-1 md:col-span-2 lg:col-span-3 flex flex-col bg-bg-widget p-6 shadow-basic lg:order-2 ">
@@ -216,12 +242,26 @@ new #[Layout('layouts::team')] class extends Component
             </div>
 
             <div class="order-5 col-span-2 md:col-span-full lg:col-span-6 flex min-h-[11rem] flex-col bg-bg-widget p-6 shadow-basic lg:order-3 lg:row-span-2">
-                <p class="text-sm text-gold font-bold">
-                    {{ __('pages/scrims/show.widget_summary') }}
-                </p>
-                @if ($resolvedSummary !== null)
+                <div class="flex flex-row flex-wrap items-center justify-between gap-4">
+                    <p class="text-sm text-gold font-bold">
+                        {{ __('pages/scrims/show.widget_summary') }}
+                    </p>
+                    @can('manageTeam', User::class)
+                        @if ($this->scrim->status !== StatusScrim::SCHEDULED)
+                            <button
+                                wire:click="openModalEditSummary"
+                                type="button"
+                                title="{{ __('pages/scrims/show.edit_summary_title') }}"
+                                class="cta-secondary">
+                                {{ __('pages/scrims/show.edit_summary') }}
+                            </button>
+                        @endif
+                    @endcan
+                </div>
+
+                @if (filled($this->scrim->summary))
                 <p class="mt-3 text-base text-text-primary">
-                    {{ $resolvedSummary }}
+                    {{ $this->scrim->summary }}
                 </p>
                 @else
                 <p class="mt-3 text-base text-text-secondary">
