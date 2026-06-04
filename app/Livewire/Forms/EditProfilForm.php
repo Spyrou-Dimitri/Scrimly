@@ -84,7 +84,7 @@ class EditProfilForm extends Form
                     ['disk' => config('avatar.disk')]
                 );
 
-                ProcessUploadImageAvatar::dispatch($fullPathToOriginal, $newOriginalFileName);
+                ProcessUploadImageAvatar::dispatchSync($fullPathToOriginal, $newOriginalFileName);
 
                 $avatarType = 'upload';
                 $avatarValue = $newOriginalFileName;
