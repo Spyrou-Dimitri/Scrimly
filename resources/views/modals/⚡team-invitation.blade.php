@@ -50,12 +50,14 @@ new class extends Component
                 ->where('status', StatusInTeam::ACCEPTED)
                 ->exists();
 
-            $this->invitation->team->members()->attach($this->invitation->user_id, [
+            TeamMember::updateOrCreate([
+                'team_id' => $this->invitation->team_id,
+                'user_id' => $this->invitation->user_id,
+            ], [
                 'roleInTeam' => $this->invitation->roleInTeam,
                 'roleInGame' => $this->invitation->roleInGame,
                 'status' => StatusInTeam::ACCEPTED,
                 'is_starter' => ! $hasStarterForRole,
-                'joined_at' => now(),
             ]);
 
             if (! $hasStarterForRole) {
