@@ -34,4 +34,5 @@ return [
     'history_view_title' => 'Voir le scrim',
     'history_edit_title' => 'Modifier le scrim',
     'history_delete_title' => 'Supprimer le scrim',
+    'no_scrim_in_progress' => 'Aucun scrim en cours',
 ];
