@@ -64,15 +64,7 @@ new class extends Component
     #[Computed]
     public function winrateInScrims(): float
     {
-        $allScrims = $this->team->scrims()->count();
-
-        if ($allScrims === 0) {
-            return 0.0;
-        }
-
-        $winScrims = $this->team->scrims()->where('outcome', ScrimOutcome::Victory)->count();
-
-        return round($winScrims / $allScrims * 100, 1);
+        return $this->team->overallScrimWinrate();
     }
     #[Computed]
     public function teamApplicationsCount(): int

@@ -171,6 +171,9 @@ class Team extends Model
             ->where('team_id', $this->id)
             ->whereIn('status', [StatusScrim::COMPLETED, StatusScrim::ABORTED]);
         $allScrim = $query->count();
+        if ($allScrim === 0) {
+            return 0.0;
+        }
         $allWinScrim = $query
             ->whereIn('status', [StatusScrim::COMPLETED, StatusScrim::ABORTED])
             ->where('outcome', ScrimOutcome::Victory)
