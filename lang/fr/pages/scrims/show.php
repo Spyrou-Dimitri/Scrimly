@@ -7,6 +7,8 @@ return [
     'start_scrim' => 'Démarrer le scrim',
     'cancel_scrim_title' => 'Annuler le scrim',
     'cancel_scrim' => 'Annuler',
+    'delete_scrim_title' => 'Supprimer le scrim',
+    'delete_scrim' => 'Supprimer',
     'widget_time' => 'Heures prévues',
     'widget_date' => 'Date prévue',
     'widget_game_count' => 'Nbr de games jouées',

@@ -23,10 +23,6 @@ export const Password = {
     },
 
     init() {
-        if (! this.passwordInput || ! this.toggleButton) {
-            return;
-        }
-
         this.isToggle();
         this.securePassword();
     },
@@ -51,7 +47,6 @@ export const Password = {
     securePassword() {
         this.passwordInput.addEventListener('input', () => {
             const value = this.passwordInput.value;
-
             this.setRuleState('length', value.length >= settings.passwordMinLength);
             this.setRuleState('uppercase', this.hasUpperCase(value));
             this.setRuleState('lowercase', this.hasLowerCase(value));

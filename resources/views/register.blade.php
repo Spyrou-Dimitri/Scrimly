@@ -17,7 +17,7 @@ use App\Enums\DefaultAvatar;
                     <fieldset class="avatar-fieldset m-0 flex min-w-0 flex-col gap-4 border-0 p-0 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:pl-8 lg:border-l lg:border-gold">
                         <legend class="sr-only">{{ __('register/register.avatar_section_title') }}</legend>
                         <div class="flex flex-col gap-2">
-                            <p class="w-full text-center text-xl font-bold text-gold lg:text-2xl">{{ __('register/register.avatar_section_title') }}</p>
+                            <p class="w-full text-center text-xl font-bold text-gold lg:text-[32px]">{{ __('register/register.avatar_section_title') }}</p>
                             <p class="text text-center text-text-secondary">{{ __('register/register.avatar_section_description') }}</p>
                         </div>
                         <div class="flex flex-col gap-4">
@@ -86,7 +86,7 @@ use App\Enums\DefaultAvatar;
                         </div>
                     </fieldset>
 
-                    <fieldset class="m-0 flex min-w-0 flex-col gap-4 border-0 p-0 lg:col-start-1 lg:row-start-2 lg:pr-8">
+                    <fieldset class="m-0 flex min-w-0 flex-col gap-4 border-0 p-0 lg:col-start-1 lg:mt-4 lg:row-start-2 lg:pr-8">
                         <legend class="sr-only">{{ __('register/register.form_title') }}</legend>
                         <div class="flex flex-col gap-4">
                             <x-forms.input :name="'username'" :label="__('register/register.username')" :type="'text'" :required="true" :placeholder="'Faker'">

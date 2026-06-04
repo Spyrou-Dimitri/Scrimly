@@ -119,6 +119,21 @@ new #[Layout('layouts::team')] class extends Component
             'model_id' => $this->scrim->id,
         ]);
     }
+    public function openModalDeleteScrim(): void
+    {
+        if (Gate::denies('manageTeam', User::class)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/scrim.error_title'),
+                'message' => __('policies/scrim.error_delete_scrim'),
+                'type' => 'error',
+            ]);
+            return;
+        }
+        $this->dispatch('open_modal', [
+            'form' => 'modals::scrims.delete-scrim',
+            'model_id' => $this->scrim->id,
+        ]);
+    }
 
     #[On('refresh_scrim')]
     public function refreshScrim(): void
@@ -152,7 +167,7 @@ new #[Layout('layouts::team')] class extends Component
                 {{ __('pages/scrims/show.mark_as_completed') }}
             </button>
             @endcan
-            @elseif ($this->scrim->status !== StatusScrim::COMPLETED)
+            @elseif ($this->scrim->status === StatusScrim::SCHEDULED)
             @can('manageTeam', User::class)
             <div class="flex flex-row flex-wrap items-center gap-4">
                 <button wire:click="openModalStartScrim()" title="{{ __('pages/scrims/show.start_scrim') }}" class="cta-primary">
@@ -162,7 +177,12 @@ new #[Layout('layouts::team')] class extends Component
                     {{ __('pages/scrims/show.cancel_scrim') }}
                 </x-destructive>
             </div>
-
+            @endcan
+            @elseif ($this->scrim->status === StatusScrim::COMPLETED || $this->scrim->status === StatusScrim::ABORTED)
+            @can('manageTeam', User::class)
+            <x-destructive wire:click="openModalDeleteScrim()" title="{{ __('pages/scrims/show.delete_scrim_title') }}">
+                {{ __('pages/scrims/show.delete_scrim') }}
+            </x-destructive>
             @endcan
             @endif
         </div>
@@ -301,8 +321,7 @@ new #[Layout('layouts::team')] class extends Component
                             <x-team-logo
                                 :team="$this->scrim->team"
                                 preset="scrim-row"
-                                class="size-15"
-                            />
+                                class="size-15" />
                             <p class="text-center text-2xl font-bold text-text-primary lg:text-left">
                                 {{ $this->scrim->team->name }}
                             </p>
@@ -329,8 +348,7 @@ new #[Layout('layouts::team')] class extends Component
                             <x-team-logo
                                 :team="$this->scrim->opponentTeam"
                                 preset="scrim-row"
-                                class="size-15"
-                            />
+                                class="size-15" />
                             @endif
 
                         </div>

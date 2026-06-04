@@ -14,7 +14,7 @@ new class extends Component
     public int $gameWins;
     public int $gameLosses;
     public ?ScrimOutcome $outcome = null;
-
+    public string $summary = '';
 
     public function mount(int $model_id): void
     {
@@ -30,6 +30,7 @@ new class extends Component
         $this->gameWins = $this->scrim->scrimGames->where('is_victory', true)->count();
         $this->gameLosses = $this->scrim->scrimGames->where('is_victory', false)->count();
         $this->outcome = ScrimOutcome::fromCounts($this->gameWins, $this->gameLosses);
+        $this->summary = $this->scrim->summary ?? '';
     }
 
     public function closeModal(): void
@@ -58,15 +59,25 @@ new class extends Component
             return;
         }
 
+        $validated = $this->validate([
+            'summary' => ['nullable', 'string', 'max:1000'],
+        ]);
+
+        $summary = filled($validated['summary'])
+            ? trim($validated['summary'])
+            : null;
+
         if (!$this->isAbortedScrim) {
             $this->scrim->update([
                 'status' => StatusScrim::COMPLETED,
                 'outcome' => $this->outcome,
+                'summary' => $summary,
             ]);
         } else {
             $this->scrim->update([
                 'status' => StatusScrim::ABORTED,
                 'outcome' => $this->outcome,
+                'summary' => $summary,
             ]);
         }
 
@@ -91,7 +102,6 @@ new class extends Component
     <x-layout.head-modal
         :width="'2xl'"
         :title="__('modals/scrims/finish-scrim.title') . ' • ' . ($this->scrim->opponentTeam?->name ?? __('pages/scrims/show.opponent_unknown'))">
-        @dump($this->outcome)
         <form wire:submit.prevent="finishScrim" class="flex w-full flex-col gap-6 pt-2">
             <div class="flex w-full flex-col gap-3">
                 <div
@@ -115,6 +125,26 @@ new class extends Component
                 </p>
             </div>
             @endif
+            <div class="flex flex-col gap-2">
+                <x-forms.textarea
+                    wire:model="summary"
+                    name="scrim-summary"
+                    :label="__('modals/scrims/finish-scrim.summary')"
+                    :placeholder="__('modals/scrims/finish-scrim.summary_placeholder')"
+                    :rows="5">
+                    @error('summary')
+                    <p class="text-red-500">{{ $message }}</p>
+                    @enderror
+                </x-forms.textarea>
+                @error('summary')
+                <p class="text-red-500">{{ $message }}</p>
+                @enderror
+                <p class="text-sm text-text-secondary italic">
+                    {{ __('modals/scrims/finish-scrim.summary_legend') }}
+                </p>
+            </div>
+
+
 
             <div class="flex w-full flex-wrap justify-center gap-3 sm:justify-between">
                 <button
