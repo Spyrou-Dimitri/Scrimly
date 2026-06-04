@@ -283,6 +283,13 @@ new #[Layout('layouts::team')] class extends Component
                     :open="true"
                     :count="$this->scrims->count()"
                     heading-level="h3">
+                    @if ($this->scrims->isEmpty())
+                    <li class="col-span-12">
+                        <p class="text-sm text-text-secondary">
+                            {{ __('pages/scrims/index.empty_upcoming_scrims') }}
+                        </p>
+                    </li>
+                    @else
                     @foreach ($this->scrims as $scrim)
                     @php
                     $opponent = $scrim->opponentTeam;
@@ -319,6 +326,7 @@ new #[Layout('layouts::team')] class extends Component
                         </article>
                     </li>
                     @endforeach
+                    @endif
                 </x-accordion>
             </div>
 
@@ -329,6 +337,13 @@ new #[Layout('layouts::team')] class extends Component
                     :open="true"
                     :count="$this->receivedScrimRequests->count()"
                     heading-level="h3">
+                    @if ($this->receivedScrimRequests->isEmpty())
+                    <li class="col-span-12">
+                        <p class="text-sm text-text-secondary">
+                            {{ __('pages/scrims/index.empty_received_requests') }}
+                        </p>
+                    </li>
+                    @else
                     @foreach ($this->receivedScrimRequests as $request)
                     @php
                     $otherTeam = $request->requesterTeam;
@@ -367,6 +382,7 @@ new #[Layout('layouts::team')] class extends Component
                         </article>
                     </li>
                     @endforeach
+                    @endif
                 </x-accordion>
 
                 {{-- Demande de scrims envoyés --}}
@@ -375,6 +391,13 @@ new #[Layout('layouts::team')] class extends Component
                     :open="true"
                     :count="$this->sentScrimRequests->count()"
                     heading-level="h3">
+                    @if ($this->sentScrimRequests->isEmpty())
+                    <li class="col-span-12">
+                        <p class="text-sm text-text-secondary">
+                            {{ __('pages/scrims/index.empty_sent_requests') }}
+                        </p>
+                    </li>
+                    @else
                     @foreach ($this->sentScrimRequests as $request)
                     @php
                     $otherTeam = $request->receiverTeam;
@@ -414,6 +437,7 @@ new #[Layout('layouts::team')] class extends Component
                         </article>
                     </li>
                     @endforeach
+                    @endif
                 </x-accordion>
             </div>
         </div>

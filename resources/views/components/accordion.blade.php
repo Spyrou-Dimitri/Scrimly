@@ -44,7 +44,7 @@
                 x-on:click.prevent="open = !open"
                 :aria-expanded="open">
                 <flux:icon.chevron-down
-                    class="size-8 transition-all duration-150 ease-in-out group-hover:text-gold {{ $open ? 'rotate-0 text-gold' : '-rotate-90 text-text-gray' }}"
+                    class="size-8 transition-all duration-150 ease-in-out group-hover:text-gold"
                     ::class="open ? 'rotate-0 text-gold' : '-rotate-90 text-text-gray'" />
             </button>
         </div>

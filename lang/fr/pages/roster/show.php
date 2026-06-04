@@ -17,7 +17,7 @@ return [
     ],
     'tabs_nav_label' => 'Sections du profil',
     'matches' => [
-        'section_title' => 'Historiques des parties',
+        'section_title' => 'Historique des parties',
         'no_riot_profile' => 'Aucun profil Riot lié à ce compte.',
         'empty' => 'Aucune partie enregistrée pour le moment.',
         'win' => 'Victoire',
