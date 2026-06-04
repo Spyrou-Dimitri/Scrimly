@@ -52,7 +52,7 @@ new #[Layout('layouts::team')] class extends Component
     public function getListeners(): array
     {
         return [
-            'echo-private:chat.' . currentTeam()->id . ',.message.sent' => 'onMessageReceived',
+            'echo-presence:chat.' . currentTeam()->id . ',.message.sent' => 'onMessageReceived',
         ];
     }
 
