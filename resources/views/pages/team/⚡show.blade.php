@@ -60,6 +60,11 @@ new #[Layout('layouts::team')] class extends Component
             'model_id' => $teamId,
         ]);
     }
+    public function reloadCode(): void
+    {
+        $this->team->reloadCode();
+        $this->team->save();
+    }
     public function openModalShowScrimRequest(int $scrimRequestId): void
     {
         $this->dispatch('open_modal', [
@@ -94,7 +99,7 @@ $canManageTeam = Gate::allows('manageTeam', User::class);
                         <h2 class="text-[32px] font-bold text-gold">
                             {{ $team->name }}
                         </h2>
-                        @if ($team->code)
+                        @if ($team->code && currentTeam()->id === $team->id)
                         <div
                             class="relative"
                             x-data="{ copied: false }"
@@ -117,9 +122,14 @@ $canManageTeam = Gate::allows('manageTeam', User::class);
                                 class="pointer-events-none absolute left-full top-1/2 z-10 ml-2 -translate-y-1/2 whitespace-nowrap rounded-md bg-gold px-2.5 py-1 text-xs font-semibold text-bg-main shadow-basic"
                             >{{ __('pages/team/show.code_copied') }}</span>
                         </div>
+                        @if ($canManageTeam)
+                        <button wire:click="reloadCode" class="cta-primary" title="{{ __('pages/team/show.reload_code') }}">
+                            <flux:icon name="arrow-path" variant="outline" class="size-5 shrink-0" />
+                        </button>
+                        @endif
                         @endif
                     </div>
-                    @if ($canManageTeam)
+                    @if ($canManageTeam && currentTeam()->id === $team->id)
                     <x-cta :class="'primary'" :href="route('team.edit', ['slug' => currentTeam()->slug, 'id' => $team->id])" :title="__('pages/team/show.edit_team')">
                         {{ __('pages/team/show.edit_team') }}
                     </x-cta>

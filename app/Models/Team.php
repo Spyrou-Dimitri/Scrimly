@@ -136,6 +136,11 @@ class Team extends Model
 
         return $code;
     }
+    public function reloadCode(): void
+    {
+        $this->code = self::uniqueCodeGenerator();
+        $this->save();
+    }
 
     public function averageEloScore()
     {

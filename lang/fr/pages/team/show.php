@@ -3,6 +3,9 @@
 return [
     'edit_team' => 'Modifier l\'équipe',
     'code_copied' => 'Copié !',
+    'reload_code' => 'Régénérer le code',
+    'code_reloaded' => 'Code régénéré',
+    'code_reloaded_message' => 'Le code de l\'équipe a été mis à jour.',
     'propose_scrim' => 'Proposer un scrim',
     'member_since' => 'Membre depuis : :date',
     'see_more' => 'Voir plus',

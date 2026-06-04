@@ -113,7 +113,7 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
                     </div>
                 </div>
             </fieldset>
-            <div class="flex flex-col gap-4 bg-bg-widget p-6 shadow-basic lg:col-span-4 w-full">
+            <div class="flex flex-col gap-4 bg-bg-widget p-6 shadow-basic lg:col-span-4 w-full self-start">
                 <h3 class="text-[20px] font-bold text-center">
                     @if($this->teamFinder)
                     Equipe sélectionnée :
