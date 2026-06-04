@@ -96,7 +96,7 @@ class CreateNewUser implements CreatesNewUsers
             return ['default', $fallbackDefault->value];
         }
 
-        ProcessUploadImageAvatar::dispatchSync($storedPath, $filename);
+        ProcessUploadImageAvatar::dispatch($storedPath, $filename);
 
         return ['upload', $filename];
     }
