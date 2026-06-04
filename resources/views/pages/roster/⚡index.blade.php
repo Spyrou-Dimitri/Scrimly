@@ -125,16 +125,19 @@ new #[Layout('layouts::team')] class extends Component {
 ?>
 
 <div class="flex flex-col gap-6">
+    @php
+    $canManageTeam = Gate::allows('manageTeam', User::class);
+    @endphp
     <section class="flex flex-col gap-6">
         <div class="flex items-center gap-4 justify-between">
             <h2 class="text-[32px] font-bold">
                 {{ __('pages/roster/index.title') }}
             </h2>
-            @can('manageTeam', User::class)
+            @if ($canManageTeam)
             <x-cta :href="route('roster.invitations.create', ['slug' => currentTeam()->slug])" :title="__('pages/roster/index.create_invitation_title')" :class="'primary'">
                 {{ __('pages/roster/index.create_invitation_cta') }}
             </x-cta>
-            @endcan
+            @endif
         </div>
         {{-- Candidatures --}}
         <x-accordion
@@ -215,7 +218,7 @@ new #[Layout('layouts::team')] class extends Component {
             @else
             @foreach ($starters as $teamMember)
             <li class="col-span-12 md:col-span-4">
-                <x-cards.player :team-member="$teamMember" />
+                <x-cards.player :team-member="$teamMember" :can-manage-team="$canManageTeam" />
             </li>
             @endforeach
             @endif
@@ -231,7 +234,7 @@ new #[Layout('layouts::team')] class extends Component {
             @else
             @foreach ($bench as $teamMember)
             <li class="col-span-12 md:col-span-4">
-                <x-cards.player :team-member="$teamMember" />
+                <x-cards.player :team-member="$teamMember" :can-manage-team="$canManageTeam" />
             </li>
             @endforeach
             @endif
@@ -247,7 +250,7 @@ new #[Layout('layouts::team')] class extends Component {
             @else
             @foreach ($staff as $teamMember)
             <li class="col-span-12 md:col-span-4">
-                <x-cards.player :team-member="$teamMember" />
+                <x-cards.player :team-member="$teamMember" :can-manage-team="$canManageTeam" />
             </li>
             @endforeach
             @endif

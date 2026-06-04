@@ -196,6 +196,9 @@ new #[Layout('layouts::team')] class extends Component
 ?>
 
 <div class="flex flex-col gap-8">
+    @php
+    $canManageTeam = Gate::allows('manageTeam', User::class);
+    @endphp
     <div wire:poll.10s class="contents">
     @if ($this->scrimInProgress)
     @php
@@ -526,7 +529,7 @@ new #[Layout('layouts::team')] class extends Component
                                 class="hover:text-gold transition-all duration-150">
                                 <flux:icon name="eye" class="w-5 h-5" />
                             </a>
-                            @can('manageTeam', User::class)
+                            @if ($canManageTeam)
                             <a
                                 wire:navigate
                                 href="{{ route('scrims.show', ['slug' => currentTeam()->slug, 'id' => $scrim->id]) }}"
@@ -540,7 +543,7 @@ new #[Layout('layouts::team')] class extends Component
                                 class="hover:text-red-700/90 transition-all duration-150 cursor-pointer">
                                 <flux:icon name="trash" class="w-5 h-5" />
                             </button>
-                            @endcan
+                            @endif
                         </div>
                     </td>
                 </tr>

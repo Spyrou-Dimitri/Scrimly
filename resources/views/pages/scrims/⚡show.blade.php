@@ -182,6 +182,7 @@ new #[Layout('layouts::team')] class extends Component
 <div class="flex flex-col gap-10">
     @php
     $ddragonVersion = config('riot.ddragon_version');
+    $canManageTeam = Gate::allows('manageTeam', User::class);
     @endphp
     <section class="flex flex-col gap-8">
         <div class="flex flex-row flex-wrap items-center justify-between gap-4">
@@ -190,13 +191,13 @@ new #[Layout('layouts::team')] class extends Component
                 <span class="text-gold">{{ $this->scrim->opponentTeam?->name ?? __('pages/scrims/show.opponent_unknown') }}</span>
             </h2>
             @if ($this->scrim->status === StatusScrim::IN_PROGRESS)
-            @can('manageTeam', User::class)
+            @if ($canManageTeam)
             <button wire:click="openModalCompleteScrim()" title="{{ __('pages/scrims/show.mark_as_completed') }}" class="cta-primary">
                 {{ __('pages/scrims/show.mark_as_completed') }}
             </button>
-            @endcan
+            @endif
             @elseif ($this->scrim->status === StatusScrim::SCHEDULED)
-            @can('manageTeam', User::class)
+            @if ($canManageTeam)
             <div class="flex flex-row flex-wrap items-center gap-4">
                 <button wire:click="openModalStartScrim()" title="{{ __('pages/scrims/show.start_scrim') }}" class="cta-primary">
                     {{ __('pages/scrims/show.start_scrim') }}
@@ -205,13 +206,13 @@ new #[Layout('layouts::team')] class extends Component
                     {{ __('pages/scrims/show.cancel_scrim') }}
                 </x-destructive>
             </div>
-            @endcan
+            @endif
             @elseif ($this->scrim->status === StatusScrim::COMPLETED || $this->scrim->status === StatusScrim::ABORTED)
-            @can('manageTeam', User::class)
+            @if ($canManageTeam)
             <x-destructive wire:click="openModalDeleteScrim()" title="{{ __('pages/scrims/show.delete_scrim_title') }}">
                 {{ __('pages/scrims/show.delete_scrim') }}
             </x-destructive>
-            @endcan
+            @endif
             @endif
         </div>
 
@@ -246,7 +247,7 @@ new #[Layout('layouts::team')] class extends Component
                     <p class="text-sm text-gold font-bold">
                         {{ __('pages/scrims/show.widget_summary') }}
                     </p>
-                    @can('manageTeam', User::class)
+                    @if ($canManageTeam)
                         @if ($this->scrim->status !== StatusScrim::SCHEDULED)
                             <button
                                 wire:click="openModalEditSummary"
@@ -256,7 +257,7 @@ new #[Layout('layouts::team')] class extends Component
                                 {{ __('pages/scrims/show.edit_summary') }}
                             </button>
                         @endif
-                    @endcan
+                    @endif
                 </div>
 
                 @if (filled($this->scrim->summary))
@@ -296,11 +297,11 @@ new #[Layout('layouts::team')] class extends Component
             <h2 class="text-[32px] font-bold">
                 {{ __('pages/scrims/show.games_title') }} <span class="text-gold font-bold">({{ $this->scrimGames->count() }})</span>
             </h2>
-            @can('manageTeam', User::class)
+            @if ($canManageTeam)
             <button wire:click="handleCreateGame()" title="{{ __('pages/scrims/show.create_game_title') }}" class="cta-primary">
                 {{ __('pages/scrims/show.create_game') }}
             </button>
-            @endcan
+            @endif
         </div>
         @if ($this->scrim->scrimGames->isNotEmpty())
         <div class="flex flex-col gap-4">
@@ -335,7 +336,7 @@ new #[Layout('layouts::team')] class extends Component
                     </div>
                 </x-slot:header>
 
-                @can('manageTeam', User::class)
+                @if ($canManageTeam)
                 <x-slot:actions>
                     <div class="flex flex-row items-center gap-4 pr-4 border-r border-white/10">
                         <a
@@ -353,7 +354,7 @@ new #[Layout('layouts::team')] class extends Component
                         </button>
                     </div>
                 </x-slot:actions>
-                @endcan
+                @endif
                 <section class="flex flex-col gap-4 border-t border-gold pt-6">
                     <h4 class="sr-only">{{ __('pages/scrims/show.score_section_title') }}</h4>
                     <div class="grid grid-cols-1 items-center gap-4 lg:grid-cols-3">

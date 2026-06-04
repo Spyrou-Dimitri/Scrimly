@@ -5,6 +5,7 @@ use App\Enums\RoleInGame;
 use App\Enums\RoleInTeam;
 use App\Enums\StatusInTeam;
 use App\Models\Team;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -72,6 +73,7 @@ new #[Layout('layouts::team')] class extends Component
 @php
 $tier = LolTier::fromStarterAverageElo($team->starter_average_elo);
 $memberSince = $team->created_at->isoFormat('D MMMM YYYY');
+$canManageTeam = Gate::allows('manageTeam', User::class);
 @endphp
 
 <div class="flex flex-col gap-12 lg:gap-16">
@@ -117,11 +119,11 @@ $memberSince = $team->created_at->isoFormat('D MMMM YYYY');
                         </div>
                         @endif
                     </div>
-                    @can('manageTeam', \App\Models\User::class)
+                    @if ($canManageTeam)
                     <x-cta :class="'primary'" :href="route('team.edit', ['slug' => currentTeam()->slug, 'id' => $team->id])" :title="__('pages/team/show.edit_team')">
                         {{ __('pages/team/show.edit_team') }}
                     </x-cta>
-                    @endcan
+                    @endif
                     @if ($this->alreadySendScrimRequest)
                     <div class="flex items-center gap-2 bg-red-900/60 p-2 text-left text-white">
                         <flux:icon name="exclamation-triangle" variant="outline" class="size-12 shrink-0" />

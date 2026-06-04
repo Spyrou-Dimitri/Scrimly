@@ -104,16 +104,19 @@ new #[Layout('layouts::team')] class extends Component
 ?>
 
 <div class="w-full max-w-[1600px] mx-auto">
+    @php
+    $canManageTeam = Gate::allows('manageTeam', User::class);
+    @endphp
     <section class="flex flex-col gap-8">
     <div class="flex items-center gap-4 justify-between">
             <h2 class="text-[32px] font-bold">
                 {{ __('pages/team/edit.title') }}
             </h2>
-            @can('manageTeam', User::class)
+            @if ($canManageTeam)
             <x-destructive type="button" wire:click="openModalDeleteTeam" :title="__('pages/team/edit.delete_team_title')">
                 {{ __('pages/team/edit.delete_team_cta') }}
             </x-destructive>
-            @endcan
+            @endif
         </div>
         <form wire:submit="updateTeam" class="flex flex-col gap-6 lg:grid lg:grid-cols-12 lg:items-start">
             <fieldset class="avatar-fieldset m-0 flex min-w-0 flex-col gap-4 border-0 bg-bg-widget p-6 shadow-basic lg:col-span-4 lg:col-start-1 lg:row-start-1 lg:row-span-2 lg:w-full">

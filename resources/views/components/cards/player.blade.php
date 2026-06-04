@@ -1,5 +1,6 @@
 @props([
 'teamMember',
+'canManageTeam' => false,
 ])
 
 @php
@@ -46,7 +47,7 @@ $tierLine .= ' • '.$memberUser->rank;
                 x-data="{ open: false }"
                 @click.outside="open = false"
                 @keydown.escape.window="open = false">
-                @can('manageTeam', \App\Models\User::class)
+                @if ($canManageTeam)
                 <button
                     type="button"
                     class="flex cursor-pointer size-8 items-center justify-center bg-bg-widget border border-transparent hover:border-gold transition-all duration-150 ease-in-out group text-white"
@@ -103,7 +104,7 @@ $tierLine .= ' • '.$memberUser->rank;
                     </button>
                     @endif
                 </div>
-                @endcan
+                @endif
             </div>
         </div>
     </div>

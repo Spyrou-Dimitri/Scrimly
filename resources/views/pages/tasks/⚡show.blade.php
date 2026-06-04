@@ -203,6 +203,9 @@ new #[Layout('layouts::team')] class extends Component
 ?>
 
 <div class="flex flex-col gap-10">
+    @php
+    $canManageTeam = Gate::allows('manageTeam', User::class);
+    @endphp
 
     <section class="flex flex-col gap-8">
         <div class="flex flex-col gap-6 lg:items-start lg:justify-between w-full">
@@ -214,7 +217,7 @@ new #[Layout('layouts::team')] class extends Component
                     <flux:icon name="arrow-left" class="size-4 group-hover:text-gold transition-colors duration-150" />
                     <span class="group-hover:text-gold transition-colors duration-150">{{ __('pages/tasks/show.back_to_list') }}</span>
                 </a>
-                @can('manageTeam', User::class)
+                @if ($canManageTeam)
                 <div class="flex flex-wrap items-center gap-2">
                     <x-cta
                         :href="route('tasks.edit', ['slug' => currentTeam()->slug, 'id' => $this->task->id])"
@@ -227,7 +230,7 @@ new #[Layout('layouts::team')] class extends Component
                         {{ __('pages/tasks/show.action_delete_task') }}
                     </x-destructive>
                 </div>
-                @endcan
+                @endif
             </div>
             <div class="flex flex-col gap-2 sm:flex-row sm:items-center w-full sm:justify-between">
                 <div class="flex flex-row gap-4 flex-wrap">
