@@ -174,7 +174,7 @@ new #[Layout('layouts::choose_a_team')] class extends Component
                                     class="size-full object-cover" />
                             </div>
                             <div class="min-w-0">
-                                <h3 class="truncate text-xl font-bold text-white">{{ $teamMember->team->name }}</h3>
+                                <h4 class="truncate text-xl font-bold text-white">{{ $teamMember->team->name }}</h4>
                                 <p class="truncate text-sm text-text-secondary">
                                     {{ $teamMember->roleInTeam->label() }}
                                     @if ($teamMember->roleInTeam === RoleInTeam::PLAYER && $teamMember->roleInGame)
@@ -225,7 +225,7 @@ new #[Layout('layouts::choose_a_team')] class extends Component
                                     class="size-full object-cover" />
                             </div>
                             <div class="min-w-0 flex-1">
-                                <h3 class="truncate text-xl font-bold text-white">{{ $invitation->team->name }}</h3>
+                                <h4 class="truncate text-xl font-bold text-white">{{ $invitation->team->name }}</h4>
                                 <p class="truncate text-sm text-text-secondary">
                                     {{ $invitation->roleInTeam->label() }}
                                     @if ($invitation->roleInTeam === RoleInTeam::PLAYER && $invitation->roleInGame)

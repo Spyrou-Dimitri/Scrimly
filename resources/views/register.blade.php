@@ -11,7 +11,7 @@ use App\Enums\DefaultAvatar;
                 <form method="POST" action="{{ route('register.store') }}" enctype="multipart/form-data" class="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-start lg:gap-x-0 lg:gap-y-0">
                     @csrf
                     <div class="flex flex-col gap-2 lg:col-start-1 lg:row-start-1 lg:pr-8">
-                        <h2 id="register-heading" class="text-center text-[32px] font-bold text-white lg:text-left">{!! __('register/register.welcome') !!}</h1>
+                        <h2 id="register-heading" class="text-center text-[32px] font-bold text-white lg:text-left">{!! __('register/register.welcome') !!}</h2>
                         <p class="text-center text-text-secondary lg:text-left">
                             {{ __('register/register.welcome_description') }}
                         </p>
