@@ -47,9 +47,7 @@ class RiotApiClient
         ];
     }
 
-    /**
-     * @return array{tier: string, rank: string, leaguePoints: int, wins: int, losses: int}|null
-     */
+    
     public function getSoloQueueRank(string $puuid): ?array
     {
         $response = Http::withHeaders([
