@@ -3,13 +3,15 @@ use App\Enums\DefaultAvatar;
 @endphp
 
 <x-layouts.auth title="Inscription • Scrimly">
-    <main id="main-content" aria-labelledby="register-heading" class="flex min-h-screen flex-col items-center justify-center gap-6 bg-bg-main p-6">
+    <main id="main-content" aria-labelledby="register-heading" class="flex flex-1 flex-col items-center justify-center gap-6 bg-bg-main p-6">
+    <x-auth.back-to-home />
+
         <section class="mx-auto flex w-full max-w-4xl flex-col gap-6">
             <div class="bg-bg-widget shadow-basic flex flex-col p-6 sm:p-10">
                 <form method="POST" action="{{ route('register.store') }}" enctype="multipart/form-data" class="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-start lg:gap-x-0 lg:gap-y-0">
                     @csrf
                     <div class="flex flex-col gap-2 lg:col-start-1 lg:row-start-1 lg:pr-8">
-                        <h1 id="register-heading" class="text-center text-[32px] font-bold text-white lg:text-left">{!! __('register/register.welcome') !!}</h1>
+                        <h2 id="register-heading" class="text-center text-[32px] font-bold text-white lg:text-left">{!! __('register/register.welcome') !!}</h1>
                         <p class="text-center text-text-secondary lg:text-left">
                             {{ __('register/register.welcome_description') }}
                         </p>

@@ -1,11 +1,12 @@
 <x-layouts.auth title="Connexion • Scrimly">
-    <main id="main-content" aria-labelledby="login-heading" class="lg:grid lg:grid-cols-12 bg-bg-main min-h-screen p-6 gap-6 lg:p-0 flex flex-col items-center justify-center">
+    <main id="main-content" aria-labelledby="login-heading" class="lg:grid lg:grid-cols-12 bg-bg-main flex-1 p-6 gap-6 lg:p-0 flex flex-col items-center justify-center">
         <div class="hidden lg:block lg:col-span-7" aria-hidden="true">
             <img src="{{ asset('/img/SejuHextech.jpg') }}" alt="" class="min-h-screen w-full object-cover">
         </div>
         <div class="lg:col-span-5 w-full max-w-md mx-auto flex flex-col gap-6">
             <div class="flex flex-col gap-2">
-                <h1 id="login-heading" class="text-[40px] text-white font-bold">{!! __('login/login.welcome') !!}</h1>
+                <x-auth.back-to-home />
+                <h2 id="login-heading" class="text-[40px] text-white font-bold">{!! __('login/login.welcome') !!}</h1>
                 <p class="text-white text-xl">{{ __('login/login.welcome_description') }}</p>
             </div>
             <div class="bg-bg-widget p-6 shadow-basic flex flex-col gap-8 lg:pr-6">
