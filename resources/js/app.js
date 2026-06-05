@@ -1,5 +1,5 @@
 import { AvatarPreview } from './previewAvatar.js';
-import { WinrateChart } from './charts/winrate.js';
+import './charts/winrate.js';
 import { Password } from './password.js';
 
 /**
@@ -17,11 +17,7 @@ function initCalendarIfNeeded() {
     }
     import('./calendar.js').then(({ Calendar }) => Calendar.init());
 }
-
 document.addEventListener('livewire:navigated', initCalendarIfNeeded);
-
-WinrateChart.registerLivewireHooks();
-WinrateChart.scheduleRefresh();
 
 AvatarPreview.init();
 Password.init();

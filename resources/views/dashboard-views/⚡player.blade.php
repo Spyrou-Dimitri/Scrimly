@@ -182,13 +182,15 @@ new class extends Component
         <div class="flex flex-row flex-wrap justify-center md:grid md:grid-cols-[repeat(13,minmax(0,1fr))] gap-6">
             <div class="w-full md:col-span-4 md:row-span-2 bg-bg-widget justify-center p-6 shadow-basic">
                 <div
-                    id="winrate-chart"
+                    x-data="winrateChart"
                     data-property='@json([
                         "value" => $this->winrate,
                         "label" => $this->statsScrim
                             ? __("pages/dashboard/index.player.winrate_scrim")
                             : __("pages/dashboard/index.player.winrate_game"),
-                    ])'></div>
+                    ])'>
+                    <div x-ref="chart" wire:ignore></div>
+                </div>
             </div>
             <div class="flex flex-row flex-wrap justify-center gap-6 sm:grid md:col-span-9 sm:grid-cols-9 md:row-span1">
                 <div class="flex flex-col gap-2 bg-bg-widget justify-center p-6 shadow-basic w-full sm:col-span-3">

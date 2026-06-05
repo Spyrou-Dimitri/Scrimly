@@ -1,5 +1,4 @@
 import ApexCharts from 'apexcharts';
-import { settings } from '../settings';
 
 const chartOptions = {
     chart: {
@@ -40,106 +39,48 @@ const chartOptions = {
     },
 };
 
-let refreshFrame = null;
+document.addEventListener('alpine:init', () => {
+    window.Alpine.data('winrateChart', () => ({
+        chart: null,
+        observer: null,
 
-export const WinrateChart = {
-    chart: null,
-    isSetup: false,
+        init() {
+            const { value, label } = this.readData();
 
-    getElement() {
-        return document.getElementById(settings.chartsElementId);
-    },
+            this.chart = new ApexCharts(this.$refs.chart, {
+                ...chartOptions,
+                series: [value],
+                labels: [label],
+            });
+            this.chart.render();
 
-    readData(element) {
-        const data = JSON.parse(element.dataset.property);
+            this.observer = new MutationObserver(() => this.update());
+            this.observer.observe(this.$el, {
+                attributes: true,
+                attributeFilter: ['data-property'],
+            });
+        },
 
-        return {
-            value: data.value ?? 0,
-            label: data.label ?? '',
-        };
-    },
+        readData() {
+            const data = JSON.parse(this.$el.dataset.property);
 
-    destroy() {
-        if (this.chart) {
-            this.chart.destroy();
-            this.chart = null;
-        }
-    },
+            return {
+                value: data.value ?? 0,
+                label: data.label ?? '',
+            };
+        },
 
-    clearStaleMarkup(element) {
-        if (! this.chart && element.querySelector('.apexcharts-canvas')) {
-            element.replaceChildren();
-        }
-    },
+        update() {
+            const { value, label } = this.readData();
 
-    render(element, value, label) {
-        this.destroy();
-        this.clearStaleMarkup(element);
-
-        this.chart = new ApexCharts(element, {
-            ...chartOptions,
-            series: [value],
-            labels: [label],
-        });
-        this.chart.render();
-    },
-
-    refresh() {
-        const element = this.getElement();
-
-        if (! element) {
-            this.destroy();
-
-            return;
-        }
-
-        const { value, label } = this.readData(element);
-        const hasRenderedChart = element.querySelector('.apexcharts-canvas') !== null;
-
-        if (this.chart && hasRenderedChart) {
             this.chart.updateSeries([value]);
             this.chart.updateOptions({ labels: [label] });
+        },
 
-            return;
-        }
-
-        this.render(element, value, label);
-    },
-
-    scheduleRefresh() {
-        if (refreshFrame !== null) {
-            cancelAnimationFrame(refreshFrame);
-        }
-
-        refreshFrame = requestAnimationFrame(() => {
-            refreshFrame = null;
-            this.refresh();
-        });
-    },
-
-    registerLivewireHooks() {
-        if (this.isSetup) {
-            return;
-        }
-
-        this.isSetup = true;
-
-        document.addEventListener('livewire:navigated', () => this.scheduleRefresh());
-
-        document.addEventListener('livewire:init', () => {
-            this.scheduleRefresh();
-
-            Livewire.hook('morphed', () => {
-                if (this.getElement()) {
-                    this.scheduleRefresh();
-                }
-            });
-
-            Livewire.hook('morph.removed', ({ el }) => {
-                if (el.id === settings.chartsElementId) {
-                    this.destroy();
-                }
-            });
-        });
-    },
-};
+        destroy() {
+            this.observer?.disconnect();
+            this.chart?.destroy();
+            this.chart = null;
+        },
+    }));
+});

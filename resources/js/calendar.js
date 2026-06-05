@@ -9,8 +9,8 @@ let calendarInstance = null;
 export const Calendar = {
     init() {
         const calendarEl = document.getElementById('calendar');
-
         const events = JSON.parse(calendarEl.dataset.events);
+
         if (!calendarEl) {
             return;
         }
@@ -31,7 +31,7 @@ export const Calendar = {
             },
             events: events,
             dateClick: (info) => {
-                const wireId = calendarEl.closest('[wire\\:id]')?.getAttribute('wire:id');
+                const wireId = calendarEl.closest('[data-calendar="calendar"]')?.getAttribute('wire:id');
                 if (wireId) {
                     console.log(wireId);
                 }

@@ -1,5 +1,4 @@
 export const settings = {
-    chartsElementId: 'winrate-chart',
     passwordMinLength: 8,
     passwordToggleButton: '[data-password-toggle="button"]',
     passwordInput: '[data-password="input"]',

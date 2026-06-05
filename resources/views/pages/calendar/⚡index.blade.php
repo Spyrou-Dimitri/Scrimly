@@ -48,7 +48,7 @@ new #[Layout('layouts::team')] class extends Component
 };
 ?>
 
-<div>
+<div data-calendar="calendar">
     <section class="flex flex-col gap-6">
         <h2 class="text-[32px] font-bold">
             {{ __('pages/calendar/index.title') }}
