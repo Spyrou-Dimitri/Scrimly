@@ -100,6 +100,11 @@ new #[Layout('layouts::team')] class extends Component
         ]);
         $this->redirect(route('scrims.show', ['id' => $this->scrim->id, 'slug' =>currentTeam()->slug]));
     }
+
+    public function render()
+    {
+        return $this->view()->title($this->game->title);
+    }
 };
 ?>
 

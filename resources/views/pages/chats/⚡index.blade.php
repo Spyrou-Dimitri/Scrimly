@@ -64,6 +64,11 @@ new #[Layout('layouts::team')] class extends Component
         $this->chatMessages->push($message);
         $this->dispatch('scroll-to-the-end');
     }
+
+    public function render()
+    {
+        return $this->view()->title(__('pages/chats/index.title'));
+    }
 };
 ?>
 

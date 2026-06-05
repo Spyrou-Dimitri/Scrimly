@@ -192,6 +192,11 @@ new #[Layout('layouts::team')] class extends Component
             'model_id' => $scrimId,
         ]);
     }
+
+    public function render()
+    {
+        return $this->view()->title(__('pages/scrims/index.title'));
+    }
 };
 ?>
 

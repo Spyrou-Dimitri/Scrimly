@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'title' => 'Roster management',
     'application_title' => 'Application',
     'is_starter_title' => 'Main roster',
     'online' => 'Online',

@@ -10,6 +10,11 @@ new #[Layout('layouts::team')] class extends Component
 {
     public array $events;
 
+    public function render()
+    {
+        return $this->view()->title(__('pages/calendar/index.title'));
+    }
+
     public function mount(): void
     {
         $scrims = Scrim::where('team_id', currentTeam()->id)

@@ -174,6 +174,13 @@ new #[Layout('layouts::team')] class extends Component
             'scrimGames.scrimGameNotes',
         ]);
     }
+
+    public function render()
+    {
+        return $this->view()->title(__('pages/scrims/show.title', [
+            'name' => $this->scrim->opponentTeam?->name ?? __('pages/scrims/show.opponent_unknown'),
+        ]));
+    }
 };
 
 

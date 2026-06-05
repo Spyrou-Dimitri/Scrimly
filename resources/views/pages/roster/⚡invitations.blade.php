@@ -56,6 +56,11 @@ new #[Layout('layouts::team')] class extends Component
 
         $this->redirect(route('roster.index', ['slug' => currentTeam()->slug]));
     }
+
+    public function render()
+    {
+        return $this->view()->title(__('pages/roster/invitations.title'));
+    }
 };
 ?>
 

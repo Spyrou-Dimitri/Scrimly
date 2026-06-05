@@ -70,6 +70,11 @@ new #[Layout('layouts::team')] class extends Component
     {
         $this->resetPage();
     }
+
+    public function render()
+    {
+        return $this->view()->title(__('pages/scrims/find.title'));
+    }
 };
 ?>
 

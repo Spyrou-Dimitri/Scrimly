@@ -100,6 +100,11 @@ new #[Layout('layouts::team')] class extends Component
             'id' => $this->team->id,
         ]);
     }
+
+    public function render()
+    {
+        return $this->view()->title(strip_tags(__('pages/team/edit.title')));
+    }
 };
 ?>
 

@@ -121,6 +121,11 @@ new #[Layout('layouts::team')] class extends Component {
             'model_id' => $teamMemberId,
         ]);
     }
+
+    public function render()
+    {
+        return $this->view()->title(__('pages/roster/index.title'));
+    }
 };
 ?>
 

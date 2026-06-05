@@ -3,7 +3,6 @@
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 use App\Models\User;
 use App\Livewire\Forms\EditProfilForm;
 use App\Enums\DefaultAvatar;
@@ -19,13 +18,6 @@ new class extends Component
     public EditProfilForm $form;
 
     public bool $preset_selected = true;
-
-    public function rendering(View $view): void
-    {
-        $view->layout(
-            Auth::user()->current_team_id ? 'layouts::team' : 'layouts::choose_a_team'
-        );
-    }
 
     public function mount(): void
     {
@@ -117,6 +109,15 @@ new class extends Component
         }
 
         return DefaultAvatar::from($this->form->default_avatar)->url();
+    }
+
+    public function render()
+    {
+        $layout = Auth::user()->current_team_id ? 'layouts::team' : 'layouts::choose_a_team';
+
+        return $this->view()
+            ->layout($layout)
+            ->title(__('layouts/team.edit_profile_cta_title'));
     }
 };
 ?>

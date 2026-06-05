@@ -35,6 +35,11 @@ new #[Layout('layouts::team')] class extends Component
 
         $this->teamMember = $member;
     }
+
+    public function render()
+    {
+        return $this->view()->title($this->teamMember->user->username);
+    }
 };
 ?>
 

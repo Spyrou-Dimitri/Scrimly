@@ -199,6 +199,11 @@ new #[Layout('layouts::team')] class extends Component
         $this->task->refresh();
         $this->task->load('subtasks');
     }
+
+    public function render()
+    {
+        return $this->view()->title($this->task->title);
+    }
 };
 ?>
 

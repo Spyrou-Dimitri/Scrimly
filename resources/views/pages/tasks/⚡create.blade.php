@@ -149,6 +149,11 @@ new #[Layout('layouts::team')] class extends Component
         ]);
         $this->redirect(route('tasks.index', ['slug' => currentTeam()->slug]));
     }
+
+    public function render()
+    {
+        return $this->view()->title(__('pages/tasks/create.title'));
+    }
 };
 
 ?>

@@ -72,6 +72,11 @@ new #[Layout('layouts::team')] class extends Component
             'model_id' => $scrimRequestId,
         ]);
     }
+
+    public function render()
+    {
+        return $this->view()->title($this->team->name);
+    }
 };
 ?>
 
