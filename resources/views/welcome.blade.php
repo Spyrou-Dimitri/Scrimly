@@ -12,7 +12,7 @@
 $currentUser = auth()->user();
 @endphp
 
-<body class="bg-bg-main text-text-primary font-sans">
+<body class="bg-bg-main text-text-primary">
     <header class="sticky top-0 z-20 shrink-0 flex items-center shadow-basic bg-bg-widget px-8 py-6">
         <h1 class="sr-only">
             ScrimlyLol
@@ -94,7 +94,10 @@ $currentUser = auth()->user();
     </header>
 
     <main>
-        <section id="hero" class="relative h-[calc(100dvh-5.5rem)] overflow-hidden bg-bg-main">
+        <section id="hero"
+            itemscope
+            itemtype="https://schema.org/SoftwareApplication"
+            class="relative h-[calc(100dvh-5.5rem)] overflow-hidden bg-bg-main">
             <picture class="absolute inset-0 block h-full w-full">
                 <source media="(min-width: 1600px)" srcset="{{ asset('img/welcome/landing/Bg-2000.jpg') }}">
                 <source media="(min-width: 1200px)" srcset="{{ asset('img/welcome/landing/Bg-1600.jpg') }}">
@@ -106,7 +109,9 @@ $currentUser = auth()->user();
                 <div class="flex w-full max-w-3xl flex-col gap-6 text-center backdrop-blur-[1px]">
                     <div class="relative z-10 pb-6 border-b border-white/60 flex flex-col  items-center gap-6">
                         <div class="text-center">
-                            <h2 class="welcome-heading-hero text-gold flex flex-col items-center justify-center gap-2">
+                            <h2
+                                itemprop="name"
+                                class="welcome-heading-hero text-gold flex flex-col items-center justify-center gap-2">
                                 {{ __('welcome.hero.title') }}
                                 <span class="welcome-heading-hero-sub block text-white">
                                     {{ __('welcome.hero.slogan') }}
@@ -114,7 +119,7 @@ $currentUser = auth()->user();
                             </h2>
 
                         </div>
-                        <p class="welcome-body-lead text-center">
+                        <p itemprop="description" class="welcome-body-lead text-center">
                             {{ __('welcome.hero.description') }}
                             <span class="block">
                                 {{ __('welcome.hero.description_2') }}
@@ -136,8 +141,8 @@ $currentUser = auth()->user();
                         </div>
 
                     </div>
-                    <ul class="flex flex-row flex-wrap items-center justify-between gap-4">
-                        <li class="text-gold flex flex-row items-center gap-1">
+                    <ul itemprop="aggregateRating" class="flex flex-row flex-wrap items-center justify-between gap-4">
+                        <li itemprop="contentRating" class="text-gold flex flex-row items-center gap-1">
                             <flux:icon name="user-group" class="size-6" />
                             <span class="text-text-secondary">
                                 {{ $numbersTeams }}
@@ -146,7 +151,7 @@ $currentUser = auth()->user();
                                 {{ __('welcome.hero.teams') }}
                             </span>
                         </li>
-                        <li class="text-gold flex flex-row items-center gap-1">
+                        <li itemprop="contentRating" class="text-gold flex flex-row items-center gap-1">
                             <flux:icon name="user" class="size-6" />
                             <span class="text-text-secondary">
                                 {{ $numbersUsers }}
@@ -155,7 +160,7 @@ $currentUser = auth()->user();
                                 {{ __('welcome.hero.users') }}
                             </span>
                         </li>
-                        <li class="text-gold flex flex-row items-center gap-1">
+                        <li itemprop="contentRating" class="text-gold flex flex-row items-center gap-1">
                             <flux:icon name="trophy" class="size-6" />
                             <span class="text-text-secondary">
                                 {{ $numbersScrims }}
@@ -168,56 +173,74 @@ $currentUser = auth()->user();
                 </div>
             </div>
         </section>
-        <section id="fonctionnalites" class="scroll-mt-[5.5rem] bg-bg-main-2 py-12">
+        <section id="fonctionnalites" class="scroll-mt-[5.5rem] bg-bg-main-2 py-12"
+            itemscope
+            itemtype="https://schema.org/ItemList">
             <div class="mx-auto flex w-full max-w-[1600px] flex-col items-center justify-center gap-10 px-6">
                 <div class="flex flex-col items-center justify-center gap-4">
-                    <h2 class="welcome-heading-section text-center">
+                    <h2
+
+                        itemprop="name"
+                        class="welcome-heading-section text-center">
                         {!! __('welcome.Features.title') !!}
                     </h2>
-                    <p class="welcome-body-lead text-center text-text-secondary">
+                    <p itemprop="description" class="welcome-body-lead text-center text-text-secondary">
                         {{ __('welcome.Features.slogan') }}
                     </p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <x-cards.feature
+                        itemprop="itemListElement"
                         icon="calendar-days"
                         title="{{ __('welcome.Features.cards.calendar.title') }}"
                         description="{{ __('welcome.Features.cards.calendar.description') }}" />
                     <x-cards.feature
+                        itemprop="itemListElement"
                         icon="book-open"
                         title="{{ __('welcome.Features.cards.tasks.title') }}"
                         description="{{ __('welcome.Features.cards.tasks.description') }}" />
                     <x-cards.feature
+                        itemprop="itemListElement"
                         icon="user-group"
                         title="{{ __('welcome.Features.cards.roster.title') }}"
                         description="{{ __('welcome.Features.cards.roster.description') }}" />
                     <x-cards.feature
+                        itemprop="itemListElement"
                         icon="chart-bar"
                         title="{{ __('welcome.Features.cards.followData.title') }}"
                         description="{{ __('welcome.Features.cards.followData.description') }}" />
                     <x-cards.feature
+                        itemprop="itemListElement"
                         icon="chat-bubble-left-right"
                         title="{{ __('welcome.Features.cards.chat.title') }}"
                         description="{{ __('welcome.Features.cards.chat.description') }}" />
                     <x-cards.feature
+                        itemprop="itemListElement"
                         icon="check-circle"
                         title="{{ __('welcome.Features.cards.Checklist.title') }}"
                         description="{{ __('welcome.Features.cards.Checklist.description') }}" />
                 </div>
             </div>
         </section>
-        <section id="how-it-works" class="bg-bg-main py-12">
+        <section
+
+            itemscope
+            itemtype="https://schema.org/HowTo"
+            id="how-it-works" class="bg-bg-main py-12">
             <div class="mx-auto flex w-full max-w-[1600px] flex-col items-center justify-center gap-10 px-6">
                 <div class="flex flex-col items-center justify-center gap-4">
-                    <h2 class="welcome-heading-section text-center">
+                    <h2
+                        itemprop="name"
+                        class="welcome-heading-section text-center">
                         {!! __('welcome.how-it-works.title') !!}
                     </h2>
-                    <p class="welcome-body-lead text-center text-text-secondary">
+                    <p itemprop="description"
+                        class="welcome-body-lead text-center text-text-secondary">
                         {{ __('welcome.how-it-works.description') }}
                     </p>
                 </div>
                 <ul class="flex flex-col gap-20">
-                    <li>
+                    <li itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
                         <x-text-media
                             :number="'1'"
                             :title="(__('welcome.how-it-works.steps.invite_join.title'))"
@@ -233,7 +256,7 @@ $currentUser = auth()->user();
                             </x-slot:media>
                         </x-text-media>
                     </li>
-                    <li>
+                    <li itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
                         <x-text-media
                             number="2"
                             title="{{ __('welcome.how-it-works.steps.manage_players.title') }}"
@@ -250,7 +273,7 @@ $currentUser = auth()->user();
                             </x-slot:media>
                         </x-text-media>
                     </li>
-                    <li>
+                    <li itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
                         <x-text-media
                             number="3"
                             title="{{ __('welcome.how-it-works.steps.plan_scrims.title') }}"
@@ -296,13 +319,25 @@ $currentUser = auth()->user();
                 </div>
             </div>
         </section>
-        <footer class="bg-bg-widget py-6">
+        <footer
+            itemscope
+            itemtype="https://schema.org/Organization"
+            class="bg-bg-widget py-6">
             <div class="mx-auto flex w-full max-w-[1600px] flex-row items-center justify-between gap-4 px-6">
-                <p class="w-full text-text-secondary">
+                <p  
+                itemprop="copyrightNotice"
+                class="w-full text-text-secondary">
                     {{ __('welcome.footer.Copyright') }}
                 </p>
-                <p class="w-full text-right">
+                <p 
+                
+                itemprop="creator"
+                itemscope
+                itemtype="https://schema.org/Person"
+                class="w-full text-right">
+                <span itemprop="name">
                     {!! __('welcome.footer.created_by') !!}
+                </span>
                 </p>
             </div>
         </footer>
