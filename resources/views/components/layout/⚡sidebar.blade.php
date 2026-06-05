@@ -96,7 +96,7 @@ new class extends Component
                lg:static lg:translate-x-0 lg:row-span-2 lg:col-start-1 lg:row-start-1"
         aria-label="{{ __('layouts/team.main_navigation_aria') }}">
         <h2 class="sr-only">
-            Barre latérale de navigation
+            {{ __('layouts/team.sidebar_heading') }}
         </h2>
         <div class="flex h-16 items-center px-6 flex-shrink-0">
             <a
@@ -109,7 +109,7 @@ new class extends Component
 
         <nav class="flex-1 overflow-y-auto px-4 py-6 flex flex-col gap-2">
             <h3 class="sr-only">
-                Navigation principale
+                {{ __('layouts/team.main_navigation_aria') }}
             </h3>
             @foreach ($this->navItems() as $item)
             @php
@@ -125,7 +125,7 @@ new class extends Component
                 ])
                 @if ($isActive) aria-current="page" @endif
                 >
-                <flux:icon name="{{ $item['icon'] }}" class="size-5 flex-shrink-0" />
+                <flux:icon name="{{ $item['icon'] }}" class="size-5 flex-shrink-0" aria-hidden="true" />
                 <span class="font-medium">{{ $item['label'] }}</span>
             </a>
             @endforeach
@@ -168,9 +168,10 @@ new class extends Component
             <button
                 type="button"
                 title="{{ __('layouts/team.logout') }}"
+                aria-label="{{ __('layouts/team.logout_aria') }}"
                 wire:click="logout"
                 class="cta-danger cta-danger--outline">
-                <flux:icon name="power" class="size-4 shrink-0" />
+                <flux:icon name="power" class="size-4 shrink-0" aria-hidden="true" />
                 <span class="font-medium">{{ __('layouts/team.logout') }}</span>
             </button>
         </div>

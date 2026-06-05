@@ -114,10 +114,10 @@ new #[Layout('layouts::choose_a_team')] class extends Component
 ?>
 
 <div class="flex w-full flex-col gap-10">
-    <section class="flex w-full flex-col items-center justify-center gap-8 text-center">
+    <section class="flex w-full flex-col items-center justify-center gap-8 text-center" aria-labelledby="team-index-heading">
         <div class="flex flex-col gap-4">
             @if ($currentUser->teams->count() === 0)
-            <h2 class="text-[40px] font-bold leading-tight">
+            <h2 id="team-index-heading" class="text-[40px] font-bold leading-tight">
                 {{ __('pages/team/index.onboarding_title') }}
                 <span class="text-gold font-bold">{{ $currentUser->username }}</span>
             </h2>
@@ -125,7 +125,7 @@ new #[Layout('layouts::choose_a_team')] class extends Component
                 {{ __('pages/team/index.onboarding_description') }}
             </p>
             @else
-            <h2 class="text-[40px] font-bold leading-tight">
+            <h2 id="team-index-heading" class="text-[40px] font-bold leading-tight">
                 {{ __('pages/team/index.title') }}
                 <span class="text-gold font-bold">{{ $currentUser->username }}</span> !
             </h2>
@@ -253,8 +253,8 @@ new #[Layout('layouts::choose_a_team')] class extends Component
 
     @if ($sentApplications->isNotEmpty())
     {{-- Candidatures envoyées --}}
-    <section class="flex flex-col gap-6">
-        <h2 class="text-2xl font-bold">
+    <section class="flex flex-col gap-6" aria-labelledby="team-sent-applications-heading">
+        <h2 id="team-sent-applications-heading" class="text-2xl font-bold">
             {{ __('pages/team/index.sent_applications_title') }}
             <span class="text-gold font-bold">({{ $sentApplications->count() }})</span>
         </h2>

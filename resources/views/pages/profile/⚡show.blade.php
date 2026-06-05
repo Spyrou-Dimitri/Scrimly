@@ -122,8 +122,8 @@ new class extends Component
 ?>
 
 <div>
-    <section class="flex flex-col gap-8">
-        <h2 class="text-[32px] font-bold ">
+    <section class="flex flex-col gap-8" aria-labelledby="profile-show-heading">
+        <h2 id="profile-show-heading" class="text-[32px] font-bold ">
             {{ __('profil/profil.title') }}
         </h2>
         <form wire:submit="updateProfil" class="grid grid-cols-1 gap-6 md:grid-cols-12">

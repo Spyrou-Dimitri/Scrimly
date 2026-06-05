@@ -207,7 +207,7 @@ new #[Layout('layouts::team')] class extends Component
     $canManageTeam = Gate::allows('manageTeam', User::class);
     @endphp
 
-    <section class="flex flex-col gap-8">
+    <section class="flex flex-col gap-8" aria-labelledby="tasks-show-heading">
         <div class="flex flex-col gap-6 lg:items-start lg:justify-between w-full">
             <div class="flex w-full flex-wrap items-center justify-between gap-3">
                 <a
@@ -234,7 +234,7 @@ new #[Layout('layouts::team')] class extends Component
             </div>
             <div class="flex flex-col gap-2 sm:flex-row sm:items-center w-full sm:justify-between">
                 <div class="flex flex-row gap-4 flex-wrap">
-                    <h2 class="text-[32px] font-bold text-white break-words">
+                    <h2 id="tasks-show-heading" class="text-[32px] font-bold text-white break-words">
                         {{ $this->task->title }}
                     </h2>
                     <span class="flex items-center {{ $this->task->status->macaron() }} ">
@@ -544,8 +544,8 @@ new #[Layout('layouts::team')] class extends Component
     </section>
 
     {{-- Commentaires --}}
-    <section class="flex flex-col gap-6">
-        <h2 class="text-[32px] font-bold">
+    <section class="flex flex-col gap-6" aria-labelledby="tasks-comments-heading">
+        <h2 id="tasks-comments-heading" class="text-[32px] font-bold">
             {{ __('pages/tasks/show.comments_count') }} ({{ $this->taskComments->count() }})
         </h2>
 

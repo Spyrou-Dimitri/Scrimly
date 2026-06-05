@@ -110,7 +110,7 @@ new class extends Component
             @click="$dispatch('sidebar-toggle')"
             class="lg:hidden p-2 -ml-2 text-white hover:text-gold  transition-colors cursor-pointer"
             aria-label="{{ __('layouts/team.open_menu_aria') }}">
-            <flux:icon.bars-3 class="size-6" />
+            <flux:icon.bars-3 class="size-6" aria-hidden="true" />
         </button>
 
         @if ($team)
@@ -120,7 +120,10 @@ new class extends Component
             </h2>
                 <button type="button"
                     @click="openTeams = !openTeams; if (openTeams) $wire.loadTeams(); if (!openTeams) $wire.unloadTeams()"
-                    type="button" class="flex  items-center text-white gap-3 min-w-0 hover:text-gold transition-colors cursor-pointer">
+                    aria-label="{{ __('layouts/team.team_switcher_aria') }}"
+                    aria-haspopup="listbox"
+                    :aria-expanded="openTeams"
+                    class="flex  items-center text-white gap-3 min-w-0 hover:text-gold transition-colors cursor-pointer">
                     <x-team-logo
                         :team="$team"
                         preset="topbar"
@@ -131,7 +134,7 @@ new class extends Component
                         <span class="font-semibold sr-only sm:not-sr-only text-base lg:text-lg truncate">
                             {{ $team->name }}
                         </span>
-                        <flux:icon.chevron-down class="size-4" />
+                        <flux:icon.chevron-down class="size-4" aria-hidden="true" />
                     </div>
 
                 </button>
@@ -139,10 +142,12 @@ new class extends Component
                 x-show="openTeams"
                 x-transition
                 x-cloak
+                role="listbox"
+                aria-label="{{ __('layouts/team.team_switcher_aria') }}"
                 class="absolute max-h-[240px] overflow-y-auto top-full mt-3 left-12 flex flex-col gap-4 w-56 origin-top shadow-lg bg-bg-widget p-4 z-50">
                 <li class="">
                     <a href="{{ route('team.index') }}" wire:navigate title="{{ __('layouts/team.team_lobby_cta_title') }}" class="px-3 hover:text-gold transition ease-in-out duration-150 flex items-center gap-2 cursor-pointer">
-                        <flux:icon.squares-2x2 class="size-4" />
+                        <flux:icon.squares-2x2 class="size-4" aria-hidden="true" />
                         {{ __('layouts/team.team_lobby') }}
                     </a>
                 </li>
@@ -196,7 +201,7 @@ new class extends Component
                     <span class="text-inherit font-semibold text-sm lg:text-base sr-only sm:not-sr-only truncate">
                         {{ $currentLocale === 'en' ? __('layouts/team.language_en') : __('layouts/team.language_fr') }}
                     </span>
-                    <flux:icon.chevron-down class="size-4" />
+                    <flux:icon.chevron-down class="size-4" aria-hidden="true" />
                 </div>
             </button>
             <ul
@@ -246,9 +251,9 @@ new class extends Component
 
             class="relative p-2 text-white hover:text-gold transition-colors cursor-pointer"
             aria-label="{{ __('layouts/team.notifications_aria') }}">
-            <flux:icon.bell class="size-6" />
+            <flux:icon.bell class="size-6" aria-hidden="true" />
 
-            <span class="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1
+            <span aria-hidden="true" class="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1
                      flex items-center justify-center
                      text-[11px] font-bold text-white
                      bg-red-600 rounded-full">
@@ -259,6 +264,7 @@ new class extends Component
         <div class="flex items-center gap-2 lg:gap-3">
             <a href="{{ route('profile.show') }}"
                 title="{{ __('layouts/team.edit_profile_cta_title') }}"
+                aria-label="{{ __('layouts/team.edit_profile_cta_title') }} : {{ $this->currentUser->username }}"
                 class="flex items-center gap-2 lg:gap-3 group">
 
                 <x-user-avatar

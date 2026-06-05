@@ -71,6 +71,8 @@ new class extends Component
         <x-layout.head-modal :width="'2xl'" :height="'75'" :title="__('modals/edit-availabilities.title')">
 
         <form class="flex flex-col gap-4" wire:submit.prevent="saveAvailabilities" wire:click.stop>
+            <fieldset class="m-0 flex flex-col gap-4 border-0 p-0">
+                <legend class="sr-only">{{ __('modals/edit-availabilities.title') }}</legend>
             @foreach (DayOfTheWeek::cases() as $day)
             @php
             $enabled = (bool) ($form->slotEnabled[$day->value] ?? false);
@@ -134,6 +136,7 @@ new class extends Component
             </fieldset>
 
             @endforeach
+            </fieldset>
 
             <div class="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-between sm:pt-4">
                 <button

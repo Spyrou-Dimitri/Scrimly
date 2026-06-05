@@ -85,6 +85,8 @@ new class extends Component
         :width="'2xl'"
         :title="__('modals/scrims/edit-summary.title') . ' • ' . ($this->scrim->opponentTeam?->name ?? __('pages/scrims/show.opponent_unknown'))">
         <form wire:submit.prevent="saveSummary" class="flex w-full flex-col gap-6 pt-2">
+            <fieldset class="m-0 flex w-full flex-col gap-6 border-0 p-0">
+                <legend class="sr-only">{{ __('modals/scrims/edit-summary.title') }}</legend>
             <x-forms.textarea
                 wire:model="summary"
                 name="scrim-summary-edit"
@@ -95,6 +97,7 @@ new class extends Component
                     <p class="text-red-500">{{ $message }}</p>
                 @enderror
             </x-forms.textarea>
+            </fieldset>
 
             <div class="flex w-full flex-wrap justify-center gap-3 sm:justify-between">
                 <button

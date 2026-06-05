@@ -160,9 +160,9 @@ new class extends Component
 ?>
 
 <div>
-    <section class="flex flex-col gap-6">
+    <section class="flex flex-col gap-6" aria-labelledby="dashboard-player-heading">
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <h2 class="text-[32px] font-bold">
+            <h2 id="dashboard-player-heading" class="text-[32px] font-bold">
                 {!! __('pages/dashboard/index.player.title', [
                     'teamName' => $this->team->name,
                     'username' => Auth::user()->username,
@@ -192,8 +192,8 @@ new class extends Component
                     <div x-ref="chart" wire:ignore></div>
                 </div>
             </div>
-            <div class="flex flex-row flex-wrap justify-center gap-6 sm:grid md:col-span-9 sm:grid-cols-9 md:row-span1">
-                <div class="flex flex-col gap-2 bg-bg-widget justify-center p-6 shadow-basic w-full sm:col-span-3">
+            <div class="flex flex-row flex-wrap justify-center gap-6 sm:grid md:col-span-9 sm:grid-cols-9 md:row-span1" role="list">
+                <div class="flex flex-col gap-2 bg-bg-widget justify-center p-6 shadow-basic w-full sm:col-span-3" role="listitem">
                     <p class="text-text-secondary">
                         {{ $this->statsScrim
                             ? __('pages/dashboard/index.player.average_kda_scrim')
@@ -204,12 +204,13 @@ new class extends Component
                     </p>
                 </div>
                 <x-cards.stats-dashboard
+                    role="listitem"
                     class="sm:col-span-3"
                     :title="$this->statsScrim
                         ? __('pages/dashboard/index.player.total_scrims')
                         : __('pages/dashboard/index.player.total_games')"
                     :value="$this->totalGames" />
-                <div class="flex flex-col gap-2 bg-bg-widget justify-center p-6 shadow-basic w-full sm:col-span-3">
+                <div class="flex flex-col gap-2 bg-bg-widget justify-center p-6 shadow-basic w-full sm:col-span-3" role="listitem">
                     <p class="text-text-secondary">
                         {{ __('pages/dashboard/index.player.favorite_champion') }}
                     </p>
@@ -224,8 +225,8 @@ new class extends Component
                     @endif
                 </div>
             </div>
-            <div class="flex flex-row flex-wrap justify-center gap-6 sm:grid md:col-span-9 sm:grid-cols-9 md:row-span-1">
-                <div class="flex flex-col gap-2 bg-bg-widget justify-center p-6 shadow-basic w-full sm:col-span-3">
+            <div class="flex flex-row flex-wrap justify-center gap-6 sm:grid md:col-span-9 sm:grid-cols-9 md:row-span-1" role="list">
+                <div class="flex flex-col gap-2 bg-bg-widget justify-center p-6 shadow-basic w-full sm:col-span-3" role="listitem">
                     <p class="text-text-secondary">
                         {{ __('pages/dashboard/index.coach.next_scrim') }}
                     </p>
@@ -239,7 +240,7 @@ new class extends Component
                     </p>
                     @endif
                 </div>
-                <div class="flex flex-col gap-2 bg-bg-widget justify-center p-6 shadow-basic w-full sm:col-span-3">
+                <div class="flex flex-col gap-2 bg-bg-widget justify-center p-6 shadow-basic w-full sm:col-span-3" role="listitem">
                     <p class="text-text-secondary">
                         {{ __('pages/dashboard/index.coach.next_event') }}
                     </p>
@@ -254,6 +255,7 @@ new class extends Component
                     @endif
                 </div>
                 <x-cards.stats-dashboard
+                    role="listitem"
                     class="sm:col-span-3"
                     :title="__('pages/dashboard/index.coach.tasks_count')"
                     :value="$this->tasksInProgressCount" />

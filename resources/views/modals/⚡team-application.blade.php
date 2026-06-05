@@ -133,8 +133,8 @@ new class extends Component
                     <p class="text-text-gray">{{ $this->candidate->user->riot_tag }}</p>
                 </div>
             </div>
-            <div class="flex flex-wrap justify-around gap-6 md:flex-1 lg:contents">
-                <div class="text-center lg:col-span-3 flex flex-col gap-1">
+            <div class="flex flex-wrap justify-around gap-6 md:flex-1 lg:contents" role="list">
+                <div role="listitem" class="text-center lg:col-span-3 flex flex-col gap-1">
                     <p class="text-text-gray">Role souhaite</p>
                     <div class="text-xl font-bold text-white flex justify-center items-center gap-2">
                         @if ($candidate->roleInTeam === RoleInTeam::COACH || $candidate->roleInTeam === RoleInTeam::STAFF)
@@ -145,7 +145,7 @@ new class extends Component
                         @endif
                     </div>
                 </div>
-                <div class="text-center lg:col-span-3 flex flex-col gap-1">
+                <div role="listitem" class="text-center lg:col-span-3 flex flex-col gap-1">
                     <p class="text-text-gray">Rang actuel</p>
                     <div class="text-xl font-bold text-white flex justify-center items-center gap-2">
                         @if ($this->candidate->user->tier)
@@ -158,7 +158,7 @@ new class extends Component
                         @endif
                     </div>
                 </div>
-                <div class="text-center lg:col-span-3 flex flex-col gap-1">
+                <div role="listitem" class="text-center lg:col-span-3 flex flex-col gap-1">
                     <p class="text-text-gray">Winrate</p>
                     <div class="flex flex-col gap-0.5">
                         <p class="text-gold text-xl font-bold">
@@ -214,7 +214,7 @@ new class extends Component
                 </div>
                 @if ($this->existingStarterRoleInGame)
                 <div class="flex items-center bg-red-900/60 mt-2 text-white p-2 gap-2">
-                    <flux:icon name="exclamation-triangle" variant="outline" class="w-12 h-12" />
+                    <flux:icon name="exclamation-triangle" variant="outline" class="w-12 h-12" aria-hidden="true" />
                     <p>
                         <span class="font-bold">{{$this->existingStarterRoleInGame->user->username}}</span> est déjà titulaire <span class="font-bold">{{$this->existingStarterRoleInGame->roleInGame->label()}}</span>. Il sera automatiquement passé en remplaçant si vous acceptez <span class="font-bold">{{$this->candidate->user->username}}</span> comme titulaire.
                     </p>

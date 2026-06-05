@@ -19,13 +19,20 @@
 <body class="bg-bg-main text-white font-spaceGrotesk h-screen overflow-hidden
              flex flex-col
              lg:grid lg:grid-cols-[auto_1fr] lg:grid-rows-[auto_1fr]">
+    <a href="#main-content"
+        class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 focus:rounded-lg focus:bg-bg-widget focus:px-4 focus:py-2 focus:text-white focus:shadow-basic">
+        {{ __('accessibility.skip_to_content') }}
+    </a>
+
     <h1 class="sr-only">Scrimly</h1>
 
     <livewire:layout.sidebar />
 
     <livewire:layout.topbar />
 
-    <main 
+    <main
+    id="main-content"
+    aria-label="{{ __('accessibility.main_content') }}"
     x-data="presence(
         {{ currentTeam()->id }},
         {{ currentMember()->user_id }},

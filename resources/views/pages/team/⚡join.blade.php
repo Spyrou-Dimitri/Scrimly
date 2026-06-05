@@ -60,8 +60,8 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
 ?>
 
 <div class="w-full max-w-[1600px] mx-auto">
-    <section class="flex flex-col gap-8">
-        <h2 class="text-[32px] font-bold ">
+    <section class="flex flex-col gap-8" aria-labelledby="team-join-heading">
+        <h2 id="team-join-heading" class="text-[32px] font-bold ">
             {{ __('pages/team/join.title') }}
         </h2>
         <form wire:submit="joinTeam" class="grid grid-cols-1 gap-6 lg:grid-cols-12">

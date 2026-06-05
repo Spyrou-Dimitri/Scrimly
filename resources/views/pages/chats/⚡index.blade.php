@@ -81,7 +81,7 @@ new #[Layout('layouts::team')] class extends Component
         ])
     )">
     <div class="flex shrink-0 items-center justify-between gap-4">
-        <h2 class="text-[32px] font-bold text-white">
+        <h2 id="chats-index-heading" class="text-[32px] font-bold text-white">
             {{ __('pages/chats/index.title') }}
         </h2>
 
@@ -116,7 +116,7 @@ new #[Layout('layouts::team')] class extends Component
 
     <section
         class="flex min-h-0 flex-1 flex-col overflow-hidden bg-bg-widget shadow-basic"
-        aria-label="{{ __('pages/chats/index.title') }}">
+        aria-labelledby="chats-index-heading">
         <div
             x-data="{
         scroll() {

@@ -266,6 +266,8 @@ new class extends Component
         :width="'2xl'"
         :title="__('modals/calendar/create-event.title')">
         <form wire:submit="storeEvent" class="flex flex-col gap-6" wire:click.stop>
+            <fieldset class="m-0 flex flex-col gap-6 border-0 p-0">
+                <legend class="sr-only">{{ __('modals/calendar/create-event.title') }}</legend>
             <x-forms.input
                 wire:model.live="form.title"
                 name="event-title"
@@ -330,6 +332,7 @@ new class extends Component
                     <span class="font-spaceGrotesk text-sm font-semibold text-input-error">{{ $message }}</span>
                 @enderror
             </x-forms.radio>
+            </fieldset>
 
             <div class="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-between sm:pt-4">
                 <button

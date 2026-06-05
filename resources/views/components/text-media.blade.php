@@ -8,7 +8,7 @@
 <article {{ $attributes->merge(['class' => 'grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center']) }}>
     <div @class(['flex flex-col gap-4', 'lg:order-2' => $reverse])>
         <div class="flex size-20 items-center justify-center rounded-full bg-gold shrink-0">
-            <span class="text-5xl font-bold text-black leading-none">{{ $number }}</span>
+            <span class="text-5xl font-bold text-black leading-none" aria-hidden="true">{{ $number }}</span>
         </div>
 
         <h3 class="welcome-heading-step">

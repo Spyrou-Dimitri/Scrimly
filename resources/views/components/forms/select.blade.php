@@ -11,11 +11,18 @@
     'new_instance_value' => false,
     'new_instance_label' => false,
     'labelNextToSelect' => false,
+    'srOnlyLabel' => false,
 ])
+
+@php
+    $hasError = $errors->has($name);
+    $errorId = $name.'-error';
+    $labelClass = $srOnlyLabel ? 'sr-only' : 'block font-medium';
+@endphp
 
 <div @class([ 'flex flex-col gap-2 w-full', 'sm:flex-row sm:items-center' => $labelNextToSelect ])>
     @if($hasLabel)
-        <label for="{{ $name }}" class="block font-medium">
+        <label for="{{ $name }}" class="{{ $labelClass }}">
             {{ $label }}
             @if($required)
                 <span class="text-gold font-bold">
@@ -33,6 +40,7 @@
             multiple
         @endif
         id="{{ $name }}"
+        @if($hasError) aria-invalid="true" aria-describedby="{{ $errorId }}" @endif
         @disabled($inputDisabled)
         @class([
             'box-border min-h-11 border-1 py-2 px-4 w-full border text-base text-white leading-normal',
@@ -77,6 +85,13 @@
             </option>
         @endforeach
     </select>
-        {{$slot}}
+
+    @error($name)
+        <span id="{{ $errorId }}" role="alert" class="font-spaceGrotesk text-input-error font-semibold">
+            {{ $message }}
+        </span>
+    @enderror
+
+    {{$slot}}
 
 </div>

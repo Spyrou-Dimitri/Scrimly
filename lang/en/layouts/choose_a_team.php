@@ -10,5 +10,5 @@ return [
     'mon_compte' => 'My account',
     'default_title' => 'Choose a team',
     'navigation_title' => 'Main navigation',
-
+    'footer_label' => 'Footer',
 ];

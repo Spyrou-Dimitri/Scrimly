@@ -74,7 +74,7 @@ new class extends Component
 }; ?>
 <div class="flex flex-col gap-8 lg:grid lg:grid-cols-12 lg:gap-8">
     {{-- Section calendrier --}}
-    <section class="flex flex-col gap-6 lg:col-span-8">
+    <section class="flex flex-col gap-6 lg:col-span-8" aria-labelledby="roster-availability-heading">
         @php
             $startHour = 8;
             $endHour = 23;
@@ -87,7 +87,7 @@ new class extends Component
         @endphp
 
         <div class="flex flex-row justify-between gap-4">
-            <h3 class="font-spaceGrotesk text-2xl font-bold text-white">
+            <h3 id="roster-availability-heading" class="font-spaceGrotesk text-2xl font-bold text-white">
                 {{ __('pages/roster/show.availability.section_title') }}
             </h3>
             @can('manageAvailability', $this->teamMember)
@@ -151,9 +151,9 @@ new class extends Component
     </section> {{-- Fermeture section calendrier --}}
 
     {{-- Section absence --}}
-    <section class="flex flex-col gap-6 lg:col-span-4">
+    <section class="flex flex-col gap-6 lg:col-span-4" aria-labelledby="roster-absences-heading">
         <div class="flex justify-between items-center gap-4">
-            <h3 class="font-spaceGrotesk text-2xl font-bold text-white">
+            <h3 id="roster-absences-heading" class="font-spaceGrotesk text-2xl font-bold text-white">
                 {{ __('modals/edit-availabilities.absence_title') }}
             </h3>
             @can('manageAvailability', $this->teamMember)

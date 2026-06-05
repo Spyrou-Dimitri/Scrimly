@@ -143,12 +143,13 @@ $requesterTeam = $this->scrimRequest->requesterTeam;
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-3" role="list">
                 {{-- Date & heure --}}
                 <div
+                    role="listitem"
                     class="flex flex-col gap-3 bg-bg-widget p-4 shadow-basic">
                     <div class="flex items-center gap-2 text-xs font-semibold text-gold">
-                        <flux:icon name="calendar-days" class="size-4 shrink-0" />
+                        <flux:icon name="calendar-days" class="size-4 shrink-0" aria-hidden="true" />
                         {{ __('modals/scrims/show-scrim-request.schedule_label') }}
                     </div>
                     <p class="text-sm font-medium capitalize text-text-primary">
@@ -160,9 +161,9 @@ $requesterTeam = $this->scrimRequest->requesterTeam;
                 </div>
 
                 {{-- Format --}}
-                <div class="flex flex-col gap-3 bg-bg-widget p-4 shadow-basic">
+                <div role="listitem" class="flex flex-col gap-3 bg-bg-widget p-4 shadow-basic">
                     <div class="flex items-center gap-2 text-xs font-semibold text-gold">
-                        <flux:icon name="scale" class="size-4 shrink-0" />
+                        <flux:icon name="scale" class="size-4 shrink-0" aria-hidden="true" />
                         {{ __('modals/scrims/show-scrim-request.format_label') }}
                     </div>
                     <p class="text-xl font-bold text-text-primary">
@@ -175,9 +176,10 @@ $requesterTeam = $this->scrimRequest->requesterTeam;
 
                 {{-- Statut --}}
                 <div
+                    role="listitem"
                     class="flex flex-col gap-3 bg-bg-widget p-4 shadow-basic">
                     <div class="flex items-center gap-2 text-xs font-semibold text-gold">
-                        <flux:icon name="clock" class="size-4 shrink-0" />
+                        <flux:icon name="clock" class="size-4 shrink-0" aria-hidden="true" />
                         {{ __('modals/scrims/show-scrim-request.status_label') }}
                     </div>
                     <div class="rounded-sm bg-bg-widget p-3 p-3">
@@ -191,7 +193,7 @@ $requesterTeam = $this->scrimRequest->requesterTeam;
             {{-- Message pleine largeur --}}
             <div class="flex flex-col gap-3 bg-bg-widget p-5 shadow-basic">
                 <div class="flex items-center gap-2 text-[11px] font-semibold text-gold">
-                    <flux:icon name="chat-bubble-left-ellipsis" class="size-4 shrink-0 text-gold" />
+                    <flux:icon name="chat-bubble-left-ellipsis" class="size-4 shrink-0 text-gold" aria-hidden="true" />
                     {{ __('modals/scrims/show-scrim-request.message_coach_label') }}
                 </div>
                 @if (filled($this->scrimRequest->message))

@@ -44,6 +44,8 @@ new class extends Component
 <div>
     <x-layout.head-modal :width="'xl'" :title="__('modals/absence/edit-absence.title')">
         <form wire:submit.prevent="editAbsence" class="flex w-full flex-col gap-4 pt-2" wire:click.stop>
+            <fieldset class="m-0 flex w-full flex-col gap-4 border-0 p-0">
+                <legend class="sr-only">{{ __('modals/absence/edit-absence.title') }}</legend>
             <div class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
                 <div class="flex min-w-0 flex-col gap-1">
                     <x-forms.input
@@ -69,6 +71,7 @@ new class extends Component
                     </x-forms.select>
                 </div>
             </div>
+            </fieldset>
 
             <div class="flex w-full flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-between sm:pt-4">
                 <button

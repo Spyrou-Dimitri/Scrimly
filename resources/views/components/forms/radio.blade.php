@@ -8,7 +8,14 @@
     'variant' => 'default',
     'gridGapClass' => 'gap-6',
     'fitContent' => false,
+    'srOnlyLabel' => false,
 ])
+
+@php
+    $hasError = $errors->has($name);
+    $errorId = $name.'-error';
+    $legendClass = $srOnlyLabel ? 'sr-only' : 'block font-medium text-white';
+@endphp
 
 <div @class([
     'flex flex-col gap-2',
@@ -16,7 +23,7 @@
     'w-fit' => $fitContent,
 ])>
     @if($hasLabel && $label)
-        <p class="block font-medium text-white">
+        <p class="{{ $legendClass }}" @if($hasError) id="{{ $errorId }}-legend" @endif>
             {{ $label }}
             @if($required)
                 <span class="text-gold font-bold">*</span>
@@ -25,6 +32,7 @@
     @endif
 
     <div
+        @if($hasError) role="group" aria-describedby="{{ $errorId }}" aria-invalid="true" @endif
         @class([
             $gridGapClass,
             'grid' => ! $fitContent,
@@ -88,6 +96,12 @@
             </label>
         @endforeach
     </div>
+
+    @error($name)
+        <span id="{{ $errorId }}" role="alert" class="font-spaceGrotesk text-input-error font-semibold">
+            {{ $message }}
+        </span>
+    @enderror
 
     {{ $slot }}
 </div>

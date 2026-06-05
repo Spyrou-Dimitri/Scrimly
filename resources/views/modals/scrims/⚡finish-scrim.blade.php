@@ -119,7 +119,7 @@ new class extends Component
             </div>
             @if ($this->isAbortedScrim)
             <div class="flex w-full items-center gap-2 bg-red-900/60 p-2 text-left text-white">
-                <flux:icon name="exclamation-triangle" variant="outline" class="size-12 shrink-0" />
+                <flux:icon name="exclamation-triangle" variant="outline" class="size-12 shrink-0" aria-hidden="true" />
                 <p class="text-sm sm:text-base">
                     {{ __('modals/scrims/finish-scrim.body_legend_aborted') }}
                 </p>

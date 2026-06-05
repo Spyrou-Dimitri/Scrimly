@@ -11,6 +11,10 @@
     $isHeadingH3 = $headingLevel === 'h3';
     $hasHeaderSlot = isset($header) && $header->isNotEmpty();
     $hasActionsSlot = isset($actions) && $actions->isNotEmpty();
+    $panelId = 'accordion-panel-'.md5(($title ?? 'section').($attributes->get('id') ?? ''));
+    $toggleLabel = $title
+        ? __('accessibility.toggle_section', ['title' => strip_tags($title)])
+        : __('accessibility.toggle_section', ['title' => __('accessibility.main_content')]);
 @endphp
 
 <section x-data="{ open: @js($open) }" {{ $attributes->merge(['class' => 'p-6 bg-bg-widget basic-shadow flex flex-col']) }}>
@@ -42,15 +46,19 @@
                 type="button"
                 class="group shrink-0 cursor-pointer"
                 x-on:click.prevent="open = !open"
-                :aria-expanded="open">
+                :aria-expanded="open"
+                aria-controls="{{ $panelId }}"
+                aria-label="{{ $toggleLabel }}">
                 <flux:icon.chevron-down
                     class="size-8 transition-all duration-150 ease-in-out group-hover:text-gold"
+                    aria-hidden="true"
                     ::class="open ? 'rotate-0 text-gold' : '-rotate-90 text-text-gray'" />
             </button>
         </div>
     </div>
 
     <{{ $panelTag }}
+        id="{{ $panelId }}"
         @class([$panelClass])
         x-show="open"
         @unless($open)

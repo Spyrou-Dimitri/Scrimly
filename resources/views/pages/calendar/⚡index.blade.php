@@ -49,8 +49,8 @@ new #[Layout('layouts::team')] class extends Component
 ?>
 
 <div data-calendar="calendar">
-    <section class="flex flex-col gap-6">
-        <h2 class="text-[32px] font-bold">
+    <section class="flex flex-col gap-6" aria-labelledby="calendar-index-heading">
+        <h2 id="calendar-index-heading" class="text-[32px] font-bold">
             {{ __('pages/calendar/index.title') }}
         </h2>
         <x-calendar.legend />

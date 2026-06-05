@@ -60,8 +60,8 @@ new #[Layout('layouts::team')] class extends Component
 ?>
 
 <div>
-    <section class="flex flex-col gap-8">
-        <h2 class="text-[32px] font-bold ">
+    <section class="flex flex-col gap-8" aria-labelledby="roster-invitations-heading">
+        <h2 id="roster-invitations-heading" class="text-[32px] font-bold ">
             {{ __('pages/roster/invitations.title') }}
         </h2>
         <form wire:submit="inviteUser" class="grid grid-cols-1 gap-6 lg:grid-cols-12">

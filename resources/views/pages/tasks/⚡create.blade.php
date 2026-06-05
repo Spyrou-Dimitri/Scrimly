@@ -154,8 +154,8 @@ new #[Layout('layouts::team')] class extends Component
 ?>
 
 <div>
-    <section class="flex flex-col gap-8">
-        <h2 class="text-[32px] font-bold">
+    <section class="flex flex-col gap-8" aria-labelledby="tasks-create-heading">
+        <h2 id="tasks-create-heading" class="text-[32px] font-bold">
             {{ __('pages/tasks/create.title') }}
         </h2>
         <form wire:submit.prevent="store" class="flex flex-col gap-6">

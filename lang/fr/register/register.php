@@ -22,6 +22,7 @@ return [
     'login' => 'Connectez-vous !',
     'avatar_section_image' => 'Image de profil',
     'upload_photo' => 'Importer une photo',
+    'delete_avatar' => 'Supprimer la photo importée',
     'preview_placeholder' => 'Votre photo apparaîtra ici après import.',
     'password_rules' => [
         'length' => 'Doit contenir au moins 8 caractères',

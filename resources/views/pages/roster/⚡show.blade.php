@@ -82,7 +82,7 @@ new #[Layout('layouts::team')] class extends Component
 @endphp
 
 <div class="flex w-full flex-col gap-8">
-    <div class="grid w-full grid-cols-1 gap-4 lg:grid-cols-12 lg:gap-6">
+    <section class="grid w-full grid-cols-1 gap-4 lg:grid-cols-12 lg:gap-6" aria-labelledby="roster-show-heading">
         <div class="mx-auto w-full max-w-[280px] lg:col-span-3 lg:mx-0 lg:max-w-none">
             <x-user-avatar
                 :user="$user"
@@ -93,7 +93,7 @@ new #[Layout('layouts::team')] class extends Component
         <div class="flex w-full flex-col items-center gap-4 md:gap-6 text-center lg:col-span-9 lg:col-start-4 lg:items-stretch lg:justify-center lg:text-left">
             <div class="flex min-w-0 flex-col items-center lg:items-start gap-1">
                 <div class="flex justify-center gap-2 sm:gap-4 flex-wrap">
-                    <h2 class="font-spaceGrotesk text-3xl font-bold text-gold md:text-4xl">{{ $user->username }}</h2>
+                    <h2 id="roster-show-heading" class="font-spaceGrotesk text-3xl font-bold text-gold md:text-4xl">{{ $user->username }}</h2>
                     <div class="flex shrink-0 items-center gap-2">
                         @if ($user->tier)
                         <img
@@ -164,7 +164,7 @@ new #[Layout('layouts::team')] class extends Component
             </div>
         </div>
 
-    </div>
+    </section>
     <nav class="border-b border-[#2C2D34]" aria-label="{{ __('pages/roster/show.tabs_nav_label') }}">
         <h2 class="sr-only">
             {{ __('pages/roster/show.tabs.title') }}

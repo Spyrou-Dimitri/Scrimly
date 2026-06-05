@@ -94,9 +94,9 @@ new class extends Component
     $canManageTeam = Gate::allows('manageTeam', User::class);
 
     @endphp
-    <section class="flex flex-col gap-6">
+    <section class="flex flex-col gap-6" aria-labelledby="tasks-coach-heading">
         <div class="flex flex-wrap gap-4 justify-between items-center">
-            <h2 class="text-2xl font-bold">
+            <h2 id="tasks-coach-heading" class="text-2xl font-bold">
                 {{ __('pages/tasks/index.coach_title') }}
             </h2>
             @if($canManageTeam)

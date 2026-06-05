@@ -112,10 +112,10 @@ $this->scrim->team->name.
 $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
 @endphp
 
-<section class="flex flex-col gap-8">
+<section class="flex flex-col gap-8" aria-labelledby="scrims-games-edit-heading">
     <div class="flex flex-row flex-wrap items-center justify-between gap-4">
         <div class="flex flex-col gap-2">
-            <h2 class="text-[32px] fnt-bold text-text-primary">
+            <h2 id="scrims-games-edit-heading" class="text-[32px] fnt-bold text-text-primary">
                 {{ __('pages/scrims/games/create.page_title') }}
             </h2>
             <p class="text-base text-text-secondary">
@@ -236,9 +236,9 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                     <span class="font-semibold text-gold">— {{ __('pages/scrims/games/create.score_draft_legend') }}</span>
                 </h3>
 
-                <div class="flex flex-col gap-4">
+                <div class="flex flex-col gap-4" role="list">
                     @foreach ($this->memberOfScrimsGame as $member)
-                    <article class="flex flex-col gap-4 bg-bg-card p-4 shadow-basic">
+                    <article class="flex flex-col gap-4 bg-bg-card p-4 shadow-basic" role="listitem">
                         <div class="flex flex-wrap items-center gap-2">
                             <div class="flex items-center gap-2">
                                 <x-user-avatar :user="$member->teamMember->user" preset="thumbnail" class="w-10 h-10" />
@@ -331,9 +331,9 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                     <span class="font-semibold text-gold">— {{ __('pages/scrims/games/create.score_draft_legend') }}</span>
                 </h3>
 
-                <div class="flex flex-col gap-4">
+                <div class="flex flex-col gap-4" role="list">
                     @foreach ($this->form->opponentTeamMembersStarters as $role => $player)
-                    <article class="flex flex-col gap-4 bg-bg-card p-4 shadow-basic">
+                    <article class="flex flex-col gap-4 bg-bg-card p-4 shadow-basic" role="listitem">
                         <div class="flex flex-wrap items-center gap-2">
                             <div class="flex items-center gap-2">
                                 <h4 class="text-xl font-semibold text-gold">

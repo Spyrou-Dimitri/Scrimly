@@ -184,9 +184,9 @@ new #[Layout('layouts::team')] class extends Component
     $ddragonVersion = config('riot.ddragon_version');
     $canManageTeam = Gate::allows('manageTeam', User::class);
     @endphp
-    <section class="flex flex-col gap-8">
+    <section class="flex flex-col gap-8" aria-labelledby="scrims-show-heading">
         <div class="flex flex-row flex-wrap items-center justify-between gap-4">
-            <h2 class="text-[32px] font-bold">
+            <h2 id="scrims-show-heading" class="text-[32px] font-bold">
                 <span class="text-text-primary">{{ __('pages/scrims/show.title_prefix') }}</span>
                 <span class="text-gold">{{ $this->scrim->opponentTeam?->name ?? __('pages/scrims/show.opponent_unknown') }}</span>
             </h2>
@@ -292,9 +292,9 @@ new #[Layout('layouts::team')] class extends Component
             </div>
         </div>
     </section>
-    <section class="flex flex-col gap-8">
+    <section class="flex flex-col gap-8" aria-labelledby="scrims-games-heading">
         <div class="flex flex-row flex-wrap items-center justify-between gap-4">
-            <h2 class="text-[32px] font-bold">
+            <h2 id="scrims-games-heading" class="text-[32px] font-bold">
                 {{ __('pages/scrims/show.games_title') }} <span class="text-gold font-bold">({{ $this->scrimGames->count() }})</span>
             </h2>
             @if ($canManageTeam)

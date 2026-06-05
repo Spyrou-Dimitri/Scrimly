@@ -85,14 +85,14 @@ new class extends Component
                     class="size-20 shrink-0 object-contain sm:size-24" />
                 <div class="flex flex-col items-center gap-2 text-center sm:items-start sm:text-left">
                     <h3 class="text-2xl font-bold text-gold">{{ $this->invitation->team->name }}</h3>
-                    <div class="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
-                        <span class="inline-flex items-center bg-tag-server/20 px-3 py-1 text-xs font-medium text-tag-server">
+                    <div class="flex flex-wrap items-center justify-center gap-2 sm:justify-start" role="list">
+                        <span role="listitem" class="inline-flex items-center bg-tag-server/20 px-3 py-1 text-xs font-medium text-tag-server">
                             {{ $this->invitation->team->server->label() }}
                         </span>
-                        <span class="inline-flex items-center bg-tag-language/20 px-3 py-1 text-xs font-medium text-tag-language">
+                        <span role="listitem" class="inline-flex items-center bg-tag-language/20 px-3 py-1 text-xs font-medium text-tag-language">
                             {{ $this->invitation->team->language->label() }}
                         </span>
-                        <span class="inline-flex items-center {{ $this->invitation->team->goal->macaron() }} px-3 py-1 text-xs font-medium">
+                        <span role="listitem" class="inline-flex items-center {{ $this->invitation->team->goal->macaron() }} px-3 py-1 text-xs font-medium">
                             {{ $this->invitation->team->goal->label() }}
                         </span>
                     </div>
@@ -113,8 +113,8 @@ new class extends Component
                 </div>
             </dl>
 
-            <section class="flex flex-col gap-2">
-                <h4 class="text-2xl font-bold text-gold">
+            <section class="flex flex-col gap-2" aria-labelledby="team-invitation-motivation">
+                <h4 id="team-invitation-motivation" class="text-2xl font-bold text-gold">
                     {{ __('modals/team-invitation.motivation') }}
                 </h4>
                 <p class="text-white">

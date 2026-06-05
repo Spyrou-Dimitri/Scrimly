@@ -3,7 +3,13 @@
 'value',
 ])
 
-<div x-data="{incrementor: 0}"
+@php
+    $headingId = 'stats-dashboard-'.md5($title);
+@endphp
+
+<section
+    aria-labelledby="{{ $headingId }}"
+    x-data="{incrementor: 0}"
     x-init="
     let start = null;
     const duration = 1000;
@@ -16,9 +22,9 @@
     } 
     requestAnimationFrame(animate);"
     {{ $attributes->merge(['class' => 'flex w-full flex-col gap-2 bg-bg-widget justify-center p-6 shadow-basic']) }}>
-    <p class="text-text-secondary">
+    <p id="{{ $headingId }}" class="text-text-secondary">
         {{ $title }}
     </p>
     <p class="text-[40px] leading-none text-center text-gold font-bold tabular-nums" x-text="incrementor"></p>
 
-</div>
+</section>

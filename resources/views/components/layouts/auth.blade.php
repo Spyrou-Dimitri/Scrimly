@@ -11,7 +11,12 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body class="bg-bg-main text-text-primary font-sans">
+    <a href="#main-content"
+        class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 focus:rounded-lg focus:bg-bg-widget focus:px-4 focus:py-2 focus:text-white focus:shadow-basic">
+        {{ __('accessibility.skip_to_content') }}
+    </a>
+
     {{ $slot }}
 </body>
 

@@ -9,7 +9,7 @@
         {{ __('pages/calendar/index.legend_title') }}
     </h3>
 
-    <ul class="flex flex-wrap gap-x-8 gap-y-3">
+    <ul class="flex flex-wrap gap-x-8 gap-y-3" aria-label="{{ __('pages/calendar/index.legend_title') }}">
         <li class="flex items-center gap-2.5">
             <span
                 class="size-2.5 shrink-0 rounded-full"
@@ -37,7 +37,7 @@
         <p class="mb-3 text-sm font-medium text-text-secondary">
             {{ __('pages/calendar/index.legend_formats_title') }}
         </p>
-        <ul class="flex flex-wrap gap-x-8 gap-y-3">
+        <ul class="flex flex-wrap gap-x-8 gap-y-3" aria-label="{{ __('pages/calendar/index.legend_formats_title') }}">
             <li class="flex items-center gap-2.5">
                 <span
                     class="h-3 w-8 shrink-0 rounded-sm bg-gold"

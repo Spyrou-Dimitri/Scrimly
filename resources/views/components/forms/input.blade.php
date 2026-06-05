@@ -16,9 +16,14 @@
     $paddingClass = $type === 'search' ? 'pl-10 pr-4' : 'px-4';
     $inputClass = $baseInputClass.' '.$paddingClass;
     $labelClass = $srOnlyLabel ? 'sr-only' : 'block text-white font-medium';
+    $hasError = $errors->has($name);
+    $errorId = $name.'-error';
+    $ariaAttributes = $hasError
+        ? ['aria-invalid' => 'true', 'aria-describedby' => $errorId]
+        : [];
 @endphp
 
-<div class="flex flex-col gap-2 w-full"> 
+<div class="flex flex-col gap-2 w-full">
     <label
         for="{{ $name }}"
         class="{{ $labelClass }}">
@@ -35,6 +40,7 @@
             <flux:icon
                 name="magnifying-glass"
                 class="pointer-events-none absolute left-3 top-1/2 size-5 -translate-y-1/2 text-text-secondary"
+                aria-hidden="true"
             />
             <input
                 {{ $attributes->whereStartsWith('wire:model')}}
@@ -47,7 +53,7 @@
                     required
                 @endif
                 value="{{ old($name) ?? $value }}"
-
+                @foreach($ariaAttributes as $attr => $val) {{ $attr }}="{{ $val }}" @endforeach
                 {{ $attributes->merge(['class' => $inputClass]) }}
             >
         </div>
@@ -63,10 +69,16 @@
                 required
             @endif
             value="{{ old($name) ?? $value }}"
-
+            @foreach($ariaAttributes as $attr => $val) {{ $attr }}="{{ $val }}" @endforeach
             {{ $attributes->merge(['class' => $inputClass]) }}
         >
     @endif
+
+    @error($name)
+        <span id="{{ $errorId }}" role="alert" class="font-spaceGrotesk text-input-error font-semibold">
+            {{ $message }}
+        </span>
+    @enderror
 
     {{$slot}}
 

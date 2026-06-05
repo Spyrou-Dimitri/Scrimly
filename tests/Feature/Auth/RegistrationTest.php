@@ -14,6 +14,9 @@ test('registration screen can be rendered', function () {
 
     $response->assertOk();
     $response->assertSee(__('register/register.preview_placeholder'));
+    $response->assertSee('id="main-content"', false);
+    $response->assertSee('id="register-heading"', false);
+    $response->assertSee('aria-labelledby="register-heading"', false);
 });
 
 test('new users can register without a riot tag', function () {

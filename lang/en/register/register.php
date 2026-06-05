@@ -22,6 +22,7 @@ return [
     'login' => 'Sign in!',
     'avatar_section_image' => 'Profile picture',
     'upload_photo' => 'Upload a photo',
+    'delete_avatar' => 'Remove uploaded photo',
     'preview_placeholder' => 'Your photo will appear here after upload.',
     'password_rules' => [
         'length' => 'Must contain at least 8 characters',

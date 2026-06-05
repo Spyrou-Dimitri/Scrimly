@@ -3,13 +3,13 @@ use App\Enums\DefaultAvatar;
 @endphp
 
 <x-layouts.auth title="Inscription • Scrimly">
-    <main class="flex min-h-screen flex-col items-center justify-center gap-6 bg-bg-main p-6">
+    <main id="main-content" aria-labelledby="register-heading" class="flex min-h-screen flex-col items-center justify-center gap-6 bg-bg-main p-6">
         <section class="mx-auto flex w-full max-w-4xl flex-col gap-6">
             <div class="bg-bg-widget shadow-basic flex flex-col p-6 sm:p-10">
                 <form method="POST" action="{{ route('register.store') }}" enctype="multipart/form-data" class="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-start lg:gap-x-0 lg:gap-y-0">
                     @csrf
                     <div class="flex flex-col gap-2 lg:col-start-1 lg:row-start-1 lg:pr-8">
-                        <h1 class="text-center text-[32px] font-bold text-white lg:text-left">{!! __('register/register.welcome') !!}</h1>
+                        <h1 id="register-heading" class="text-center text-[32px] font-bold text-white lg:text-left">{!! __('register/register.welcome') !!}</h1>
                         <p class="text-center text-text-secondary lg:text-left">
                             {{ __('register/register.welcome_description') }}
                         </p>
@@ -22,12 +22,12 @@ use App\Enums\DefaultAvatar;
                         </div>
                         <div class="flex flex-col gap-4">
                             <div class="relative mx-auto flex w-full max-w-44 flex-col gap-3">
-                                <x-destructive type="button" id="deleteAvatar" class="absolute -top-2 -right-2 z-[1] hidden" :only-icon="true">
-                                    <flux:icon name="trash" class="size-5 shrink-0 opacity-70" />
+                                <x-destructive type="button" id="deleteAvatar" class="absolute -top-2 -right-2 z-[1] hidden" :only-icon="true" :title="__('register/register.delete_avatar')">
+                                    <flux:icon name="trash" class="size-5 shrink-0 opacity-70" aria-hidden="true" />
                                 </x-destructive>
                                 <div class="relative aspect-square w-full overflow-hidden rounded-lg bg-input-bg ring-2 ring-input-border">
                                     <div id="avatar-preview-placeholder" class="absolute inset-0 flex flex-col items-center justify-center gap-3 px-4 text-center text-text-secondary">
-                                        <flux:icon name="user-circle" class="size-12 shrink-0 opacity-70" />
+                                        <flux:icon name="user-circle" class="size-12 shrink-0 opacity-70" aria-hidden="true" />
                                         <p class="text-xs leading-snug font-medium">{{ __('register/register.preview_placeholder') }}</p>
                                     </div>
                                     <img
@@ -89,27 +89,9 @@ use App\Enums\DefaultAvatar;
                     <fieldset class="m-0 flex min-w-0 flex-col gap-4 border-0 p-0 lg:col-start-1 lg:mt-4 lg:row-start-2 lg:pr-8">
                         <legend class="sr-only">{{ __('register/register.form_title') }}</legend>
                         <div class="flex flex-col gap-4">
-                            <x-forms.input :name="'username'" :label="__('register/register.username')" :type="'text'" :required="true" :placeholder="'Faker'">
-                                @error('username')
-                                <span class="font-spaceGrotesk font-semibold text-input-error">
-                                    {{ $message }}
-                                </span>
-                                @enderror
-                            </x-forms.input>
-                            <x-forms.input :name="'riot_tag'" :label="__('register/register.riot_id')" :type="'text'" :placeholder="'HideOnBush#KR'">
-                                @error('riot_tag')
-                                <span class="font-spaceGrotesk font-semibold text-input-error">
-                                    {{ $message }}
-                                </span>
-                                @enderror
-                            </x-forms.input>
-                            <x-forms.input :name="'email'" :label="__('register/register.email')" :type="'email'" :required="true" :placeholder="'email@example.com'">
-                                @error('email')
-                                <span class="font-spaceGrotesk font-semibold text-input-error">
-                                    {{ $message }}
-                                </span>
-                                @enderror
-                            </x-forms.input>
+                            <x-forms.input :name="'username'" :label="__('register/register.username')" :type="'text'" :required="true" :placeholder="'Faker'" />
+                            <x-forms.input :name="'riot_tag'" :label="__('register/register.riot_id')" :type="'text'" :placeholder="'HideOnBush#KR'" />
+                            <x-forms.input :name="'email'" :label="__('register/register.email')" :type="'email'" :required="true" :placeholder="'email@example.com'" />
                             <div class="flex flex-col gap-2">
                                 <label class="block font-medium text-white" for="password">
                                     {{ __('register/register.password') }}<span class="font-semibold text-gold">*</span>

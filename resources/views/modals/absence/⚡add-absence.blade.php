@@ -43,6 +43,8 @@ new class extends Component
 <div>
     <x-layout.head-modal :width="'xl'" :title="__('modals/absence/add-absence.title')">
         <form wire:submit.prevent="store" class="flex flex-col gap-4" wire:click.stop>
+            <fieldset class="m-0 flex flex-col gap-4 border-0 p-0">
+                <legend class="sr-only">{{ __('modals/absence/add-absence.title') }}</legend>
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div class="flex flex-col gap-1">
                     <x-forms.input
@@ -68,6 +70,7 @@ new class extends Component
                     @enderror
                 </div>
             </div>
+            </fieldset>
 
             <div class="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-between sm:pt-4">
                 <button

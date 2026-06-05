@@ -44,6 +44,8 @@ new class extends Component
 <div class="w-full">
     <x-layout.head-modal :width="'3xl'" :title="__('modals/scrims/propose-scrim.title') . ' ' . $team->name">
         <form wire:submit="proposeScrim" class="flex w-full flex-col gap-6 pt-2" wire:click.stop>
+            <fieldset class="m-0 flex w-full flex-col gap-6 border-0 p-0">
+                <legend class="sr-only">{{ __('modals/scrims/propose-scrim.title') }} {{ $team->name }}</legend>
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <x-forms.input
                     class="cursor-pointer"
@@ -74,9 +76,9 @@ new class extends Component
                     {{ __('modals/scrims/propose-scrim.game_count') }}
                     <span class="text-gold font-bold">*</span>
                 </p>
-                <div class="grid grid-cols-7 gap-2 sm:gap-6">
+                <div class="grid grid-cols-7 gap-2 sm:gap-6" role="list">
                     @foreach (range(2, 8) as $count)
-                        <label class="relative w-full cursor-pointer col-span-1">
+                        <label role="listitem" class="relative w-full cursor-pointer col-span-1">
                             <input
                                 type="radio"
                                 name="game_count"
@@ -116,6 +118,7 @@ new class extends Component
                 @error('form.error')
                     <p class="text-red-500">{{ $message }}</p>
                 @enderror
+            </fieldset>
             <div class="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-between sm:pt-4">
                 <button
                     type="button"

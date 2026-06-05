@@ -2,6 +2,9 @@
 
 return [
     'scrimly' => 'Scrimly',
+    'sidebar_heading' => 'Sidebar navigation',
+    'team_switcher_aria' => 'Switch team',
+    'logout_aria' => 'Log out',
     'main_navigation_aria' => 'Main navigation',
     'open_menu_aria' => 'Open menu',
     'notifications_aria' => 'Notifications',

@@ -74,10 +74,10 @@ new #[Layout('layouts::team')] class extends Component
 ?>
 
 <div>
-    <section class="flex flex-col gap-6">
+    <section class="flex flex-col gap-6" aria-labelledby="scrims-find-heading">
         <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-                <h2 class="text-2xl font-bold text-white md:text-[32px]">
+                <h2 id="scrims-find-heading" class="text-2xl font-bold text-white md:text-[32px]">
                     {{ __('pages/scrims/find.title') }}
                 </h2>
                 <p class="mt-1 text-sm text-text-secondary">

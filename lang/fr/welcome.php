@@ -3,8 +3,10 @@
 return [
     'title' => 'Accueil',
     'navigation_title' => 'Navigation principale',
+    'skip_to_content' => 'Aller au contenu principal',
     'nav' => [
         'title' => 'Navigation principale',
+        'home_title' => 'Retour à l\'accueil Scrimly',
         'features' => 'Fonctionnalités',
         'features_title' => 'Découvrir les fonctionnalités de Scrimly',
         'how_it_works' => 'Comment ça marche ?',
@@ -26,6 +28,8 @@ return [
         'teams' => 'Équipes',
         'users' => 'Utilisateurs',
         'scrims' => 'Scrims planifiés',
+        'stats_label' => 'Statistiques de la plateforme',
+        'actions_label' => 'Actions principales',
     ],
     'Features' => [
         'title' => 'Tous les <span class="text-gold">outils</span> pour une <span class="text-gold">équipe performante</span>',
@@ -55,10 +59,11 @@ return [
                 'title' => 'Checklist',
                 'description' => 'Assurez-vous que tout le monde est prêt avec des checklists personnalisables avant chaque match important.',
             ],
-        ]
+        ],
     ],
     'how-it-works' => [
         'title' => '<span class="text-gold">Lancez-vous</span> en quelques clics',
+        'steps_label' => 'Étapes pour démarrer avec Scrimly',
         'description' => 'Découvrez comment utiliser Scrimly pour organiser votre équipe et progresser ensemble.',
         'steps' => [
             'invite_join' => [
@@ -74,7 +79,6 @@ return [
                 'description' => 'Planifiez vos scrims et événements à venir grâce à un calendrier partagé accessible à toute l’équipe. Communiquez rapidement avec vos joueurs et votre staff via le chat d’équipe, assignez des tâches, définissez des objectifs et suivez leur progression. Toutes les informations essentielles sont centralisées au même endroit pour simplifier l’organisation et permettre à chacun de rester informé et impliqué.',
             ],
 
-
         ],
     ],
     'invitation' => [
@@ -84,7 +88,9 @@ return [
         'cta' => 'Commencer maintenant',
     ],
     'footer' => [
+        'label' => 'Pied de page',
         'Copyright' => 'Copyright © 2026 ScrimlyLol. Tous droits réservés.',
-        'created_by' => 'Créé par <a href="https://dimitri-spyrou.com/" target="_blank" class="text-white hover:text-gold">Dimitri Spyrou</a>',
+        'creator_link_label' => 'Site de Dimitri Spyrou (s\'ouvre dans un nouvel onglet)',
+        'created_by' => 'Créé par <a href="https://dimitri-spyrou.com/" target="_blank" rel="noopener noreferrer" aria-label=":label" class="text-white hover:text-gold">Dimitri Spyrou</a>',
     ],
 ];

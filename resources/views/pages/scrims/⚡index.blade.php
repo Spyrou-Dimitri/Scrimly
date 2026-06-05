@@ -206,7 +206,7 @@ new #[Layout('layouts::team')] class extends Component
     $activeScrimWins = $activeScrim->scrimGames->where('is_victory', true)->count();
     $activeScrimLosses = $activeScrim->scrimGames->where('is_victory', false)->count();
     @endphp
-    <section  class="relative flex flex-col gap-8 bg-bg-widget p-6 shadow-basic md:p-8">
+    <section class="relative flex flex-col gap-8 bg-bg-widget p-6 shadow-basic md:p-8" aria-labelledby="scrims-index-heading">
         <div class="absolute right-6 top-6 inline-flex rounded-full items-center gap-2 bg-bg-card px-3 py-1.5">
             <span class="size-2 shrink-0 rounded-full bg-green-500" aria-hidden="true"></span>
             <span class="text-sm font-semibold text-text-primary">{{ __('pages/scrims/index.in_progress_badge') }}</span>
@@ -269,9 +269,9 @@ new #[Layout('layouts::team')] class extends Component
     </div>
     
 
-    <section class="flex flex-col gap-8">
+    <section class="flex flex-col gap-8" aria-labelledby="scrims-index-heading">
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <h2 class="text-[32px] font-bold">
+            <h2 id="scrims-index-heading" class="text-[32px] font-bold">
                 {{ __('pages/scrims/index.title') }}
             </h2>
             <x-cta :href="route('scrims.find', ['slug' => currentTeam()->slug])" :title="__('pages/scrims/index.create_scrim')" :class="'cta-primary'">
@@ -446,8 +446,8 @@ new #[Layout('layouts::team')] class extends Component
         </div>
     </section>
 
-    <section class="flex flex-col gap-6">
-        <h2 class="text-[32px] font-bold">
+    <section class="flex flex-col gap-6" aria-labelledby="scrims-history-heading">
+        <h2 id="scrims-history-heading" class="text-[32px] font-bold">
             {{ __('pages/scrims/index.history_title') }}
         </h2>
         <div class="flex flex-col gap-4 md:flex-row md:items-end p-6 bg-bg-widget shadow-basic">

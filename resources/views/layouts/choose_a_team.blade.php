@@ -12,6 +12,11 @@ $currentUser = auth()->user();
 
 <body
     class="min-h-screen flex flex-col bg-bg-main text-text-primary font-sans">
+    <a href="#main-content"
+        class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 focus:rounded-lg focus:bg-bg-widget focus:px-4 focus:py-2 focus:text-white focus:shadow-basic">
+        {{ __('accessibility.skip_to_content') }}
+    </a>
+
     <header class="flex items-center shadow-basic justify-between bg-bg-widget px-8 py-6">
         <h1 class="sr-only">
             <a href="{{ route('team.index') }}" wire:navigate>
@@ -23,12 +28,13 @@ $currentUser = auth()->user();
             Scrimly
         </a>
 
-        <nav class="flex items-center gap-6">
+        <nav class="flex items-center gap-6" aria-label="{{ __('layouts/choose_a_team.navigation_title') }}">
             <h2 class="sr-only">{{ __('layouts/choose_a_team.navigation_title') }}</h2>
             @if ($currentUser)
             <div class="flex items-center gap-2 lg:gap-3">
                 <a href="{{ route('profile.show') }}"
                     title="{{ __('layouts/team.edit_profile_cta_title') }}"
+                    aria-label="{{ __('layouts/team.edit_profile_cta_title') }} : {{ $currentUser->username }}"
                     class="flex items-center gap-2 lg:gap-3 group">
 
                     <x-user-avatar
@@ -53,8 +59,9 @@ $currentUser = auth()->user();
                     <button
                         type="submit"
                         title="{{ __('layouts/team.logout') }}"
+                        aria-label="{{ __('layouts/team.logout_aria') }}"
                         class="cta-danger cta-danger--outline rounded-full size-10">
-                        <flux:icon name="power" class="size-6" />
+                        <flux:icon name="power" class="size-6" aria-hidden="true" />
                     </button>
                 </form>
             </div>
@@ -63,11 +70,11 @@ $currentUser = auth()->user();
         </nav>
     </header>
 
-    <main class="flex-1 flex max-w-[1600px] mx-auto w-full flex-col items-center justify-center py-12 px-6">
+    <main id="main-content" aria-label="{{ __('accessibility.main_content') }}" class="flex-1 flex max-w-[1600px] mx-auto w-full flex-col items-center justify-center py-12 px-6">
         {{ $slot }}
     </main>
 
-    <footer class="flex bg-bg-widget shadow-basic flex-col md:flex-row md:items-center md:justify-between gap-2 px-8 py-6 text-sm text-text-secondary">
+    <footer aria-label="{{ __('layouts/choose_a_team.footer_label') }}" class="flex bg-bg-widget shadow-basic flex-col md:flex-row md:items-center md:justify-between gap-2 px-8 py-6 text-sm text-text-secondary">
         <p>
             &copy; {{ date('Y') }} {!! __('layouts/choose_a_team.copyright') !!}
         </p>

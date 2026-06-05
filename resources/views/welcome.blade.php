@@ -13,6 +13,11 @@ $currentUser = auth()->user();
 @endphp
 
 <body class="bg-bg-main text-text-primary">
+    <a href="#hero-heading"
+        class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 focus:rounded-lg focus:bg-bg-widget focus:px-4 focus:py-2 focus:text-white focus:shadow-basic">
+        {{ __('welcome.skip_to_content') }}
+    </a>
+
     <header class="sticky top-0 z-20 shrink-0 flex items-center shadow-basic bg-bg-widget px-8 py-6">
         <h1 class="sr-only">
             ScrimlyLol
@@ -22,7 +27,10 @@ $currentUser = auth()->user();
                 {{ __('welcome.nav.title') }}
             </h2>
             <div class="flex items-center gap-8">
-                <a href="{{ route('home') }}" class="text-gold text-2xl font-bold shrink-0">
+                <a href="{{ route('home') }}"
+                    aria-label="{{ __('welcome.nav.home_title') }}"
+                    aria-current="page"
+                    class="text-gold text-2xl font-bold shrink-0">
                     Scrimly
                 </a>
 
@@ -30,14 +38,16 @@ $currentUser = auth()->user();
                     <x-cta
                         href="#fonctionnalites"
                         :title="__('welcome.nav.features_title')"
-                        :class="'nav'">
+                        :class="'nav'"
+                        aria-label="{{ __('welcome.nav.features_title') }}">
                         {{ __('welcome.nav.features') }}
                     </x-cta>
 
                     <x-cta
                         href="#how-it-works"
                         :title="__('welcome.nav.how_it_works_title')"
-                        :class="'nav'">
+                        :class="'nav'"
+                        aria-label="{{ __('welcome.nav.how_it_works_title') }}">
                         {{ __('welcome.nav.how_it_works') }}
                     </x-cta>
                 </div>
@@ -47,6 +57,7 @@ $currentUser = auth()->user();
                 @if ($currentUser)
                 <a href="{{ route('profile.show') }}"
                     title="{{ __('layouts/team.edit_profile_cta_title') }}"
+                    aria-label="{{ __('layouts/team.edit_profile_cta_title') }} : {{ $currentUser->username }}"
                     class="flex items-center gap-2 lg:gap-3 group">
 
                     <x-user-avatar
@@ -70,8 +81,9 @@ $currentUser = auth()->user();
                     <button
                         type="submit"
                         title="{{ __('layouts/team.logout') }}"
+                        aria-label="{{ __('layouts/team.logout') }}"
                         class="cta-danger cta-danger--outline rounded-full size-10">
-                        <flux:icon name="power" class="size-6" />
+                        <flux:icon name="power" class="size-6" aria-hidden="true" />
                     </button>
                 </form>
                 @else
@@ -95,6 +107,7 @@ $currentUser = auth()->user();
 
     <main>
         <section id="hero"
+            aria-labelledby="hero-heading"
             itemscope
             itemtype="https://schema.org/SoftwareApplication"
             class="relative h-[calc(100dvh-5.5rem)] overflow-hidden bg-bg-main">
@@ -110,6 +123,7 @@ $currentUser = auth()->user();
                     <div class="relative z-10 pb-6 border-b border-white/60 flex flex-col  items-center gap-6">
                         <div class="text-center">
                             <h2
+                                id="hero-heading"
                                 itemprop="name"
                                 class="welcome-heading-hero text-gold flex flex-col items-center justify-center gap-2">
                                 {{ __('welcome.hero.title') }}
@@ -125,7 +139,7 @@ $currentUser = auth()->user();
                                 {{ __('welcome.hero.description_2') }}
                             </span>
                         </p>
-                        <div class="flex flex-wrap items-center justify-center gap-4">
+                        <div role="group" aria-label="{{ __('welcome.hero.actions_label') }}" class="flex flex-wrap items-center justify-center gap-4">
                             <x-cta
                                 href="{{ route('register') }}"
                                 :title="__('welcome.hero.cta_register_title')"
@@ -141,31 +155,43 @@ $currentUser = auth()->user();
                         </div>
 
                     </div>
-                    <ul itemprop="aggregateRating" class="flex flex-row flex-wrap items-center justify-between gap-4">
-                        <li itemprop="contentRating" class="text-gold flex flex-row items-center gap-1">
-                            <flux:icon name="user-group" class="size-6" />
-                            <span class="text-text-secondary">
+                    <ul
+                        itemprop="aggregateRating"
+                        aria-label="{{ __('welcome.hero.stats_label') }}"
+                        class="flex flex-row flex-wrap items-center justify-between gap-4">
+                        <li
+                            itemprop="contentRating"
+                            aria-label="{{ $numbersTeams }} {{ __('welcome.hero.teams') }}"
+                            class="text-gold flex flex-row items-center gap-1">
+                            <flux:icon name="user-group" class="size-6" aria-hidden="true" />
+                            <span class="text-text-secondary" aria-hidden="true">
                                 {{ $numbersTeams }}
                             </span>
-                            <span class="text-text-secondary">
+                            <span class="text-text-secondary" aria-hidden="true">
                                 {{ __('welcome.hero.teams') }}
                             </span>
                         </li>
-                        <li itemprop="contentRating" class="text-gold flex flex-row items-center gap-1">
-                            <flux:icon name="user" class="size-6" />
-                            <span class="text-text-secondary">
+                        <li
+                            itemprop="contentRating"
+                            aria-label="{{ $numbersUsers }} {{ __('welcome.hero.users') }}"
+                            class="text-gold flex flex-row items-center gap-1">
+                            <flux:icon name="user" class="size-6" aria-hidden="true" />
+                            <span class="text-text-secondary" aria-hidden="true">
                                 {{ $numbersUsers }}
                             </span>
-                            <span class="text-text-secondary">
+                            <span class="text-text-secondary" aria-hidden="true">
                                 {{ __('welcome.hero.users') }}
                             </span>
                         </li>
-                        <li itemprop="contentRating" class="text-gold flex flex-row items-center gap-1">
-                            <flux:icon name="trophy" class="size-6" />
-                            <span class="text-text-secondary">
+                        <li
+                            itemprop="contentRating"
+                            aria-label="{{ $numbersScrims }} {{ __('welcome.hero.scrims') }}"
+                            class="text-gold flex flex-row items-center gap-1">
+                            <flux:icon name="trophy" class="size-6" aria-hidden="true" />
+                            <span class="text-text-secondary" aria-hidden="true">
                                 {{ $numbersScrims }}
                             </span>
-                            <span class="text-text-secondary">
+                            <span class="text-text-secondary" aria-hidden="true">
                                 {{ __('welcome.hero.scrims') }}
                             </span>
                         </li>
@@ -173,13 +199,15 @@ $currentUser = auth()->user();
                 </div>
             </div>
         </section>
-        <section id="fonctionnalites" class="scroll-mt-[5.5rem] bg-bg-main-2 py-12"
+        <section id="fonctionnalites"
+            aria-labelledby="features-heading"
+            class="scroll-mt-[5.5rem] bg-bg-main-2 py-12"
             itemscope
             itemtype="https://schema.org/ItemList">
             <div class="mx-auto flex w-full max-w-[1600px] flex-col items-center justify-center gap-10 px-6">
                 <div class="flex flex-col items-center justify-center gap-4">
                     <h2
-
+                        id="features-heading"
                         itemprop="name"
                         class="welcome-heading-section text-center">
                         {!! __('welcome.Features.title') !!}
@@ -188,48 +216,56 @@ $currentUser = auth()->user();
                         {{ __('welcome.Features.slogan') }}
                     </p>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <ul role="list" aria-labelledby="features-heading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <x-cards.feature
+                        role="listitem"
                         itemprop="itemListElement"
                         icon="calendar-days"
                         title="{{ __('welcome.Features.cards.calendar.title') }}"
                         description="{{ __('welcome.Features.cards.calendar.description') }}" />
                     <x-cards.feature
+                        role="listitem"
                         itemprop="itemListElement"
                         icon="book-open"
                         title="{{ __('welcome.Features.cards.tasks.title') }}"
                         description="{{ __('welcome.Features.cards.tasks.description') }}" />
                     <x-cards.feature
+                        role="listitem"
                         itemprop="itemListElement"
                         icon="user-group"
                         title="{{ __('welcome.Features.cards.roster.title') }}"
                         description="{{ __('welcome.Features.cards.roster.description') }}" />
                     <x-cards.feature
+                        role="listitem"
                         itemprop="itemListElement"
                         icon="chart-bar"
                         title="{{ __('welcome.Features.cards.followData.title') }}"
                         description="{{ __('welcome.Features.cards.followData.description') }}" />
                     <x-cards.feature
+                        role="listitem"
                         itemprop="itemListElement"
                         icon="chat-bubble-left-right"
                         title="{{ __('welcome.Features.cards.chat.title') }}"
                         description="{{ __('welcome.Features.cards.chat.description') }}" />
                     <x-cards.feature
+                        role="listitem"
                         itemprop="itemListElement"
                         icon="check-circle"
                         title="{{ __('welcome.Features.cards.Checklist.title') }}"
                         description="{{ __('welcome.Features.cards.Checklist.description') }}" />
-                </div>
+                </ul>
             </div>
         </section>
         <section
-
+            id="how-it-works"
+            aria-labelledby="how-it-works-heading"
             itemscope
             itemtype="https://schema.org/HowTo"
-            id="how-it-works" class="bg-bg-main py-12">
+            class="bg-bg-main py-12">
             <div class="mx-auto flex w-full max-w-[1600px] flex-col items-center justify-center gap-10 px-6">
                 <div class="flex flex-col items-center justify-center gap-4">
                     <h2
+                        id="how-it-works-heading"
                         itemprop="name"
                         class="welcome-heading-section text-center">
                         {!! __('welcome.how-it-works.title') !!}
@@ -239,7 +275,7 @@ $currentUser = auth()->user();
                         {{ __('welcome.how-it-works.description') }}
                     </p>
                 </div>
-                <ul class="flex flex-col gap-20">
+                <ul aria-label="{{ __('welcome.how-it-works.steps_label') }}" class="flex flex-col gap-20">
                     <li itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
                         <x-text-media
                             :number="'1'"
@@ -292,11 +328,11 @@ $currentUser = auth()->user();
                 </ul>
             </div>
         </section>
-        <section id="invitation" class="overflow-visible bg-bg-main-2 py-24 md:pb-32">
+        <section id="invitation" aria-labelledby="invitation-heading" class="overflow-visible bg-bg-main-2 py-24 md:pb-32">
             <div class="mx-auto flex w-full max-w-[1200px] flex-col items-center justify-center gap-10 px-6">
                 <div class="grid shadow-basic w-full grid-cols-1 gap-10 overflow-visible bg-bg-widget p-10 md:grid-cols-2">
                     <div class="flex flex-col items-start justify-center gap-4">
-                        <h2 class="welcome-heading-section">
+                        <h2 id="invitation-heading" class="welcome-heading-section">
                             {!! __('welcome.invitation.title') !!}
                         </h2>
                         <p class="text-text-secondary">
@@ -320,24 +356,25 @@ $currentUser = auth()->user();
             </div>
         </section>
         <footer
+            aria-label="{{ __('welcome.footer.label') }}"
             itemscope
             itemtype="https://schema.org/Organization"
             class="bg-bg-widget py-6">
             <div class="mx-auto flex w-full max-w-[1600px] flex-row items-center justify-between gap-4 px-6">
-                <p  
-                itemprop="copyrightNotice"
-                class="w-full text-text-secondary">
+                <p
+                    itemprop="copyrightNotice"
+                    class="w-full text-text-secondary">
                     {{ __('welcome.footer.Copyright') }}
                 </p>
-                <p 
-                
-                itemprop="creator"
-                itemscope
-                itemtype="https://schema.org/Person"
-                class="w-full text-right">
-                <span itemprop="name">
-                    {!! __('welcome.footer.created_by') !!}
-                </span>
+                <p
+
+                    itemprop="creator"
+                    itemscope
+                    itemtype="https://schema.org/Person"
+                    class="w-full text-right">
+                    <span itemprop="name">
+                        {!! __('welcome.footer.created_by', ['label' => __('welcome.footer.creator_link_label')]) !!}
+                    </span>
                 </p>
             </div>
         </footer>

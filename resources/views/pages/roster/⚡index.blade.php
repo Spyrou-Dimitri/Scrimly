@@ -128,9 +128,9 @@ new #[Layout('layouts::team')] class extends Component {
     @php
     $canManageTeam = Gate::allows('manageTeam', User::class);
     @endphp
-    <section class="flex flex-col gap-6">
+    <section class="flex flex-col gap-6" aria-labelledby="roster-index-heading">
         <div class="flex items-center gap-4 justify-between">
-            <h2 class="text-[32px] font-bold">
+            <h2 id="roster-index-heading" class="text-[32px] font-bold">
                 {{ __('pages/roster/index.title') }}
             </h2>
             @if ($canManageTeam)

@@ -15,7 +15,11 @@
     };
 @endphp
 
-<article {{ $attributes->merge(['class' => 'relative flex min-h-full flex-col border-l-2 border-gold bg-bg-widget p-4 basic-shadow md:p-5 card-animated-border']) }}>
+@php
+    $teamCardHeadingId = 'team-finder-'.$team->id;
+@endphp
+
+<article aria-labelledby="{{ $teamCardHeadingId }}" {{ $attributes->merge(['class' => 'relative flex min-h-full flex-col border-l-2 border-gold bg-bg-widget p-4 basic-shadow md:p-5 card-animated-border']) }}>
     <span class="card-animated-border-right-edge" aria-hidden="true"></span>
     <a
         href="{{ route('team.show', ['slug' => currentTeam()->slug, 'id' => $team->id]) }}"
@@ -35,16 +39,18 @@
                 />
             </div>
             <div class="flex-1">
-                <h3 class="truncate text-2xl font-bold text-white">{{ $team->name }}</h3>
-                <div class="mt-2 flex flex-wrap gap-2">
-                    <span class="inline-flex items-center text-tag-server bg-tag-server/20 rounded-full px-3 py-2 text-xs font-medium">
+                <h3 id="{{ $teamCardHeadingId }}" class="truncate text-2xl font-bold text-white">{{ $team->name }}</h3>
+                <div class="mt-2 flex flex-wrap gap-2" role="list">
+                    <span role="listitem" class="inline-flex items-center text-tag-server bg-tag-server/20 rounded-full px-3 py-2 text-xs font-medium">
                         {{ $team->server->label() }}
                     </span>
                     <span
+                        role="listitem"
                         class="inline-flex items-center text-tag-language bg-tag-language/20 rounded-full px-3 py-2 text-xs font-medium">
                         {{ $team->language->label() }}
                     </span>
                     <span
+                        role="listitem"
                         class="inline-flex items-center {{ $team->goal->macaron() }} rounded-full px-3 py-2 text-xs font-medium"
                         >
                         {{ $team->goal->label() }}

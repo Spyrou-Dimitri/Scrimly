@@ -59,7 +59,8 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
 ?>
 
 <div class="w-full max-w-[1600px] mx-auto">
-    <section class="flex flex-col gap-8">
+    <section class="flex flex-col gap-8" aria-labelledby="team-create-heading">
+        <h2 id="team-create-heading" class="sr-only">{!! __('pages/team/create.title') !!}</h2>
 
         <form wire:submit="createTeam" class="flex flex-col gap-6 lg:grid lg:grid-cols-12 lg:items-start">
             <div class="flex flex-col gap-2 lg:hidden">

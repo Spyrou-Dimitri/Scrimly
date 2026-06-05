@@ -82,7 +82,7 @@ $canManageTeam = Gate::allows('manageTeam', User::class);
 @endphp
 
 <div class="flex flex-col gap-12 lg:gap-16">
-    <section class="flex flex-col gap-8">
+    <section class="flex flex-col gap-8" aria-labelledby="team-show-heading">
         <div class="grid grid-cols-12 items-start gap-6 lg:gap-8">
             <div class="col-span-12 flex justify-center self-start lg:col-span-3 lg:justify-start">
                 <div class="relative size-40 shrink-0 overflow-hidden  sm:size-44 lg:w-full lg:size-48">
@@ -96,7 +96,7 @@ $canManageTeam = Gate::allows('manageTeam', User::class);
             <div class="col-span-12 flex flex-col gap-4 lg:col-span-9">
                 <div class="flex  justify-between gap-4 flex-row  flex-wrap items-center">
                     <div class="flex flex-wrap items-center gap-4">
-                        <h2 class="text-[32px] font-bold text-gold">
+                        <h2 id="team-show-heading" class="text-[32px] font-bold text-gold">
                             {{ $team->name }}
                         </h2>
                         @if ($team->code && currentTeam()->id === $team->id)
@@ -233,7 +233,7 @@ $canManageTeam = Gate::allows('manageTeam', User::class);
         </div>
     </section>
 
-    <section class="flex flex-col gap-6">
+    <section class="flex flex-col gap-6" aria-labelledby="team-roster-heading">
         <h2 id="team-roster-heading" class="text-[32px] font-bold text-white">
             {{ __('pages/team/show.roster_title') }}
         </h2>
@@ -241,9 +241,9 @@ $canManageTeam = Gate::allows('manageTeam', User::class);
         @if ($this->starterMembers->isEmpty())
         <p class="text-text-secondary">{{ __('pages/team/show.roster_empty') }}</p>
         @else
-        <div class="grid grid-cols-12 gap-4 sm:gap-6">
+        <div class="grid grid-cols-12 gap-4 sm:gap-6" role="list">
             @foreach ($this->starterMembers as $member)
-            <div class="col-span-12 flex gap-3 bg-bg-widget p-4 basic-shadow md:col-span-6 lg:col-span-4">
+            <div class="col-span-12 flex gap-3 bg-bg-widget p-4 basic-shadow md:col-span-6 lg:col-span-4" role="listitem">
                 <x-user-avatar
                     :user="$member"
                     preset="team-row"
