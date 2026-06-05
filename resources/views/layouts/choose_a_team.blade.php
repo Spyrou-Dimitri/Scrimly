@@ -2,6 +2,9 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 
 <head>
+    @php
+    $title = __('layouts/choose_a_team.default_title');
+    @endphp
     @include('partials.head')
 
 </head>
