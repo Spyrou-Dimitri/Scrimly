@@ -13,57 +13,26 @@ use App\Models\TeamMember;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Livewire\Livewire;
+use Tests\Support\TeamPlayer;
 
 test('la modal show-scrim-request s’affiche pour un membre de l’équipe destinataire', function (): void {
-    $creatorReceiver = User::factory()->create();
-    $creatorRequester = User::factory()->create();
-
-    $receiverTeam = Team::create([
-        'name' => Str::random(10),
-        'slug' => Str::random(10),
-        'tag' => Str::upper(Str::random(4)),
-        'language' => Language::FR,
-        'server' => LolServeur::EUW,
-        'goal' => LolGoal::FUN,
-        'creator_id' => $creatorReceiver->id,
-    ]);
-
-    $requesterTeam = Team::create([
-        'name' => Str::random(10),
-        'slug' => Str::random(10),
-        'tag' => Str::upper(Str::random(4)),
-        'language' => Language::FR,
-        'server' => LolServeur::EUW,
-        'goal' => LolGoal::FUN,
-        'creator_id' => $creatorRequester->id,
-    ]);
-
-    $receiverMember = User::factory()->create(['current_team_id' => $receiverTeam->id]);
-
-    TeamMember::create([
-        'team_id' => $receiverTeam->id,
-        'user_id' => $receiverMember->id,
-        'roleInTeam' => RoleInTeam::PLAYER,
-        'roleInGame' => RoleInGame::MID,
-        'is_starter' => true,
-        'status' => StatusInTeam::ACCEPTED,
-        'joined_at' => now(),
-    ]);
+    $receiver = TeamPlayer::create();
+    $requester = TeamPlayer::create();
 
     $scrimRequest = ScrimRequest::create([
         'status' => StatusScrimRequest::PENDING,
         'scheduled_date' => now()->addDay()->toDateString(),
         'scheduled_time' => '21:00:00',
-        'number_of_games' => 3,
-        'message' => 'Message test scrim',
-        'requester_team_id' => $requesterTeam->id,
-        'receiver_team_id' => $receiverTeam->id,
+        'number_of_games' => 2,
+        'message' => null,
+        'requester_team_id' => $requester->team->id,
+        'receiver_team_id' => $receiver->team->id,
     ]);
 
-    Livewire::actingAs($receiverMember)
+    Livewire::actingAs($receiver->user)
         ->test('scrims.show-scrim-request', ['model_id' => $scrimRequest->id])
         ->assertSuccessful()
-        ->assertSee($requesterTeam->name)
+        ->assertSee($requester->team->name)
         ->assertSee(__('modals/scrims/show-scrim-request.accept'))
         ->assertSee(__('modals/scrims/show-scrim-request.refuse'));
 });
