@@ -46,7 +46,6 @@
                 type="button"
                 class="group shrink-0 cursor-pointer"
                 x-on:click.prevent="open = !open"
-                :aria-expanded="open"
                 aria-controls="{{ $panelId }}"
                 aria-label="{{ $toggleLabel }}">
                 <flux:icon.chevron-down

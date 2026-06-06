@@ -122,7 +122,6 @@ new class extends Component
                     @click="openTeams = !openTeams; if (openTeams) $wire.loadTeams(); if (!openTeams) $wire.unloadTeams()"
                     aria-label="{{ __('layouts/team.team_switcher_aria') }}"
                     aria-haspopup="listbox"
-                    :aria-expanded="openTeams"
                     class="flex  items-center text-white gap-3 min-w-0 hover:text-gold transition-colors cursor-pointer">
                     <x-team-logo
                         :team="$team"
@@ -130,12 +129,12 @@ new class extends Component
                         class="w-9 h-9 object-contain"
                     />
 
-                    <div class="flex items-center relative gap-2 transition ease-in-out duration-150 hover:text-gold">
+                    <span class="flex items-center relative gap-2 transition ease-in-out duration-150 hover:text-gold">
                         <span class="font-semibold sr-only sm:not-sr-only text-base lg:text-lg truncate">
                             {{ $team->name }}
                         </span>
                         <flux:icon.chevron-down class="size-4" />
-                    </div>
+</span>
 
                 </button>
             <ul
@@ -189,20 +188,19 @@ new class extends Component
                 @click="openLocale = !openLocale"
                 class="flex items-center text-white gap-2 min-w-0 hover:text-gold transition-colors cursor-pointer"
                 aria-label="{{ __('layouts/team.language_aria') }}"
-                aria-haspopup="listbox"
-                :aria-expanded="openLocale">
+                aria-haspopup="listbox">
                 <span
                     @class([ 'fi fis shrink-0 rounded-sm ring-1 ring-white/10' , 'fi-fr'=> $currentLocale === 'fr',
                     'fi-gb' => $currentLocale === 'en',
                     ])
                     style="font-size: 1.5rem; line-height: 1.5rem;"
                     aria-hidden="true"></span>
-                <div class="flex items-center relative gap-2 transition ease-in-out duration-150">
+                <span class="flex items-center relative gap-2 transition ease-in-out duration-150">
                     <span class="text-inherit font-semibold text-sm lg:text-base sr-only sm:not-sr-only truncate">
                         {{ $currentLocale === 'en' ? __('layouts/team.language_en') : __('layouts/team.language_fr') }}
                     </span>
                     <flux:icon.chevron-down class="size-4" />
-                </div>
+                </span>
             </button>
             <ul
                 x-show="openLocale"

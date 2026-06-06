@@ -7,7 +7,7 @@
     $headingId = 'stats-dashboard-'.md5($title);
 @endphp
 
-<section
+<div
     aria-labelledby="{{ $headingId }}"
     x-data="{incrementor: 0}"
     x-init="
@@ -27,4 +27,4 @@
     </p>
     <p class="text-[40px] leading-none text-center text-gold font-bold tabular-nums" x-text="incrementor"></p>
 
-</section>
+</div>
