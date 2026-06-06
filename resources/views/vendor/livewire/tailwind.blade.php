@@ -20,7 +20,7 @@ $activeMobile = 'cursor-pointer border-input-border bg-bg-card text-text-primary
 
 <div>
     @if ($paginator->hasPages())
-        <nav role="navigation" aria-label="Pagination Navigation" class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <nav  aria-label="Pagination Navigation" class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div class="flex flex-1 justify-between sm:hidden">
                 <span>
                     @if ($paginator->onFirstPage())
@@ -28,7 +28,7 @@ $activeMobile = 'cursor-pointer border-input-border bg-bg-card text-text-primary
                             {!! __('pagination.previous') !!}
                         </span>
                     @else
-                        <button type="button" wire:click="previousPage('{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" wire:loading.attr="disabled" dusk="previousPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.before" class="{{ $btnMobile }} {{ $activeMobile }}">
+                        <button type="button" wire:click="previousPage('{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" wire:loading.attr="disabled"  class="{{ $btnMobile }} {{ $activeMobile }}">
                             {!! __('pagination.previous') !!}
                         </button>
                     @endif
@@ -36,7 +36,8 @@ $activeMobile = 'cursor-pointer border-input-border bg-bg-card text-text-primary
 
                 <span>
                     @if ($paginator->hasMorePages())
-                        <button type="button" wire:click="nextPage('{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" wire:loading.attr="disabled" dusk="nextPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.before" class="{{ $btnMobile }} ml-3 {{ $activeMobile }}">
+                        <button type="button" wire:click="nextPage('{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" wire:loading.attr="disabled" 
+                        aria-label="{{ __('pagination.next') }}" class="{{ $btnMobile }} ml-3 {{ $activeMobile }}">
                             {!! __('pagination.next') !!}
                         </button>
                     @else
@@ -65,7 +66,7 @@ $activeMobile = 'cursor-pointer border-input-border bg-bg-card text-text-primary
                         {{-- Previous (séparé des numéros) --}}
                         <span class="inline-flex overflow-hidden shadow-basic ring-1 ring-input-border bg-bg-card">
                             @if ($paginator->onFirstPage())
-                                <span aria-disabled="true" aria-label="{{ __('pagination.previous') }}">
+                                <span aria-disabled="true">
                                     <span class="{{ $btnNav }} {{ $disabledNav }}" aria-hidden="true">
                                         <svg class="size-5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                                             <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
@@ -73,7 +74,7 @@ $activeMobile = 'cursor-pointer border-input-border bg-bg-card text-text-primary
                                     </span>
                                 </span>
                             @else
-                                <button type="button" wire:click="previousPage('{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" dusk="previousPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.after" class="{{ $btnNav }} {{ $activeNav }}" aria-label="{{ __('pagination.previous') }}">
+                                <button type="button" wire:click="previousPage('{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" aria-label="{{ __('pagination.previous') }}" class="{{ $btnNav }} {{ $activeNav }}">
                                     <svg class="size-5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                                         <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
                                     </svg>
@@ -113,7 +114,7 @@ $activeMobile = 'cursor-pointer border-input-border bg-bg-card text-text-primary
                         {{-- Next (séparé des numéros) --}}
                         <span class="inline-flex overflow-hidden shadow-basic ring-1 ring-input-border bg-bg-card">
                             @if ($paginator->hasMorePages())
-                                <button type="button" wire:click="nextPage('{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" dusk="nextPage{{ $paginator->getPageName() == 'page' ? '' : '.' . $paginator->getPageName() }}.after" class="{{ $btnNav }} {{ $activeNav }}" aria-label="{{ __('pagination.next') }}">
+                                <button type="button" wire:click="nextPage('{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" aria-label="{{ __('pagination.next') }}" class="{{ $btnNav }} {{ $activeNav }}">
                                     <svg class="size-5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                                         <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                                     </svg>

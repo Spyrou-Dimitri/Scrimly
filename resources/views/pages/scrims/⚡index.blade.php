@@ -211,8 +211,8 @@ new #[Layout('layouts::team')] class extends Component
     $activeScrimWins = $activeScrim->scrimGames->where('is_victory', true)->count();
     $activeScrimLosses = $activeScrim->scrimGames->where('is_victory', false)->count();
     @endphp
-    <section class="relative flex flex-col gap-8 bg-bg-widget p-6 shadow-basic md:p-8" aria-labelledby="scrims-index-heading">
-        <h2 id="scrims-index-heading" class="sr-only">
+    <section class="relative flex flex-col gap-8 bg-bg-widget p-6 shadow-basic md:p-8" aria-labelledby="scrims-in-progress-heading">
+        <h2 id="scrims-in-progress-heading" class="sr-only">
             {{ __('pages/scrims/index.in_progress_title') }}
         </h2>
         <div class="absolute right-6 top-6 inline-flex rounded-full items-center gap-2 bg-bg-card px-3 py-1.5">

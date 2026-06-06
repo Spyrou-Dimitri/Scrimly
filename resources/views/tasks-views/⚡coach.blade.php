@@ -63,6 +63,11 @@ new class extends Component
             ->toArray();
     }
 
+    public function updated(string $property): void
+    {
+        $this->resetPage();
+    }
+
     #[On('refresh_tasks')]
     public function refreshTasks(): void
     {
