@@ -104,7 +104,7 @@ new #[Layout('layouts::team')] class extends Component
                         <img
                             :src="member.avatar_url"
                             :alt="member.username"
-                            class="size-full object-cover rounded-full" />
+                            class="size-full object-cover rounded-full">
                         <span
                             x-show="index === previewOnlineMembers.length - 1"
                             class="absolute bottom-0 right-0 size-2 rounded-full bg-green-500 ring-1 ring-bg-main"

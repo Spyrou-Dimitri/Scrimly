@@ -33,9 +33,7 @@ new #[Layout('layouts::team')] class extends Component
 
     public function updated(string $property): void
     {
-        if (in_array($property, ['term', 'selected_status', 'selected_result'], true)) {
-            $this->resetPage();
-        }
+        $this->resetPage();
     }
 
     private function scrimHistoryQuery(): Builder
@@ -45,13 +43,13 @@ new #[Layout('layouts::team')] class extends Component
             ->whereIn('status', StatusScrim::historyCases())
             ->with(['opponentTeam'])
             ->withCount([
-                'scrimGames as wins_count' => fn ($q) => $q->where('is_victory', true),
-                'scrimGames as losses_count' => fn ($q) => $q->where('is_victory', false),
+                'scrimGames as wins_count' => fn($q) => $q->where('is_victory', true),
+                'scrimGames as losses_count' => fn($q) => $q->where('is_victory', false),
                 'scrimGames as games_count',
             ]);
 
         if ($this->term !== '') {
-            $query->whereHas('opponentTeam', fn ($q) => $q->where('name', 'like', '%'.$this->term.'%'));
+            $query->whereHas('opponentTeam', fn($q) => $q->where('name', 'like', '%' . $this->term . '%'));
         }
 
         if ($this->selected_status !== '') {
@@ -205,77 +203,75 @@ new #[Layout('layouts::team')] class extends Component
     $canManageTeam = Gate::allows('manageTeam', User::class);
     @endphp
     <div wire:poll.10s class="contents">
-    @if ($this->scrimInProgress)
-    @php
-    $activeScrim = $this->scrimInProgress;
-    $activeScrimWins = $activeScrim->scrimGames->where('is_victory', true)->count();
-    $activeScrimLosses = $activeScrim->scrimGames->where('is_victory', false)->count();
-    @endphp
-    <section class="relative flex flex-col gap-8 bg-bg-widget p-6 shadow-basic md:p-8" aria-labelledby="scrims-in-progress-heading">
-        <h2 id="scrims-in-progress-heading" class="sr-only">
-            {{ __('pages/scrims/index.in_progress_title') }}
-        </h2>
-        <div class="absolute right-6 top-6 inline-flex rounded-full items-center gap-2 bg-bg-card px-3 py-1.5">
-            <span class="size-2 shrink-0 rounded-full bg-green-500" aria-hidden="true"></span>
-            <span class="text-sm font-semibold text-text-primary">{{ __('pages/scrims/index.in_progress_badge') }}</span>
-        </div>
-
-        <div class="grid grid-cols-1 items-center gap-8 pt-8 lg:grid-cols-3 lg:pt-0">
-            <div class="flex flex-col items-center gap-4">
-                <x-team-logo
-                    :team="$activeScrim->team"
-                    preset="team-finder"
-                    class="size-20 object-cover md:size-24"
-                />
-                <p class="text-center text-xl font-bold text-text-primary md:text-2xl">
-                    {{ $activeScrim->team->name }}
-                </p>
+        @if ($this->scrimInProgress)
+        @php
+        $activeScrim = $this->scrimInProgress;
+        $activeScrimWins = $activeScrim->scrimGames->where('is_victory', true)->count();
+        $activeScrimLosses = $activeScrim->scrimGames->where('is_victory', false)->count();
+        @endphp
+        <section class="relative flex flex-col gap-8 bg-bg-widget p-6 shadow-basic md:p-8" aria-labelledby="scrims-in-progress-heading">
+            <h2 id="scrims-in-progress-heading" class="sr-only">
+                {{ __('pages/scrims/index.in_progress_title') }}
+            </h2>
+            <div class="absolute right-6 top-6 inline-flex rounded-full items-center gap-2 bg-bg-card px-3 py-1.5">
+                <span class="size-2 shrink-0 rounded-full bg-green-500" aria-hidden="true"></span>
+                <span class="text-sm font-semibold text-text-primary">{{ __('pages/scrims/index.in_progress_badge') }}</span>
             </div>
 
-            <div class="flex flex-col items-center gap-2">
-                <p class="text-5xl font-bold tabular-nums text-text-primary md:text-6xl">
-                    <span class="text-victory">{{ $activeScrimWins }}</span>
-                    <span class="text-text-secondary"> - </span>
-                    <span class="text-defeat">{{ $activeScrimLosses }}</span>
-                </p>
-                <p class="text-sm bg-bg-card px-3 py-1 rounded-full  font-semibold text-text-secondary">
-                    BO{{ $activeScrim->number_of_games }}
-                </p>
+            <div class="grid grid-cols-1 items-center gap-8 pt-8 lg:grid-cols-3 lg:pt-0">
+                <div class="flex flex-col items-center gap-4">
+                    <x-team-logo
+                        :team="$activeScrim->team"
+                        preset="team-finder"
+                        class="size-20 object-cover md:size-24" />
+                    <p class="text-center text-xl font-bold text-text-primary md:text-2xl">
+                        {{ $activeScrim->team->name }}
+                    </p>
+                </div>
+
+                <div class="flex flex-col items-center gap-2">
+                    <p class="text-5xl font-bold tabular-nums text-text-primary md:text-6xl">
+                        <span class="text-victory">{{ $activeScrimWins }}</span>
+                        <span class="text-text-secondary"> - </span>
+                        <span class="text-defeat">{{ $activeScrimLosses }}</span>
+                    </p>
+                    <p class="text-sm bg-bg-card px-3 py-1 rounded-full  font-semibold text-text-secondary">
+                        BO{{ $activeScrim->number_of_games }}
+                    </p>
+                </div>
+
+                <div class="flex flex-col items-center gap-4">
+                    @if ($activeScrim->opponentTeam)
+                    <x-team-logo
+                        :team="$activeScrim->opponentTeam"
+                        preset="team-finder"
+                        class="size-20 object-cover md:size-24" />
+                    @endif
+                    <p class="text-center text-xl font-bold text-text-primary md:text-2xl">
+                        {{ $activeScrim->opponentTeam?->name ?? __('pages/scrims/index.upcoming_opponent_unknown') }}
+                    </p>
+                </div>
             </div>
 
-            <div class="flex flex-col items-center gap-4">
-                @if ($activeScrim->opponentTeam)
-                <x-team-logo
-                    :team="$activeScrim->opponentTeam"
-                    preset="team-finder"
-                    class="size-20 object-cover md:size-24"
-                />
-                @endif
-                <p class="text-center text-xl font-bold text-text-primary md:text-2xl">
-                    {{ $activeScrim->opponentTeam?->name ?? __('pages/scrims/index.upcoming_opponent_unknown') }}
-                </p>
+            <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
+                <x-cta
+                    wire:navigate
+                    :href="route('scrims.show', ['slug' => currentTeam()->slug, 'id' => $activeScrim->id])"
+                    :title="__('pages/scrims/index.show_scrim_title')"
+                    :class="'primary'">
+                    {{ __('pages/scrims/index.show_scrim') }}
+                </x-cta>
+                <button
+                    wire:click="finishScrim({{ $activeScrim->id }})"
+                    title="__('pages/scrims/index.finish_scrim_title')"
+                    class="cta-secondary">
+                    {{ __('pages/scrims/index.finish_scrim') }}
+                </button>
             </div>
-        </div>
-
-        <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <x-cta
-                wire:navigate
-                :href="route('scrims.show', ['slug' => currentTeam()->slug, 'id' => $activeScrim->id])"
-                :title="__('pages/scrims/index.show_scrim_title')"
-                :class="'primary'">
-                {{ __('pages/scrims/index.show_scrim') }}
-            </x-cta>
-            <button
-                wire:click="finishScrim({{ $activeScrim->id }})"
-                title="__('pages/scrims/index.finish_scrim_title')"
-                class="cta-secondary">
-                {{ __('pages/scrims/index.finish_scrim') }}
-            </button>
-        </div>
-    </section>
-    @endif
+        </section>
+        @endif
     </div>
-    
+
 
     <section class="flex flex-col gap-8" aria-labelledby="scrims-index-heading">
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -320,8 +316,7 @@ new #[Layout('layouts::team')] class extends Component
                                         <x-team-logo
                                             :team="$opponent"
                                             preset="scrim-row"
-                                            class="size-14 shrink-0 object-cover md:size-16"
-                                        />
+                                            class="size-14 shrink-0 object-cover md:size-16" />
                                         <div class="flex flex-col gap-1">
                                             <h4 class="text-xl font-bold text-white">{{ $opponent->name }}</h4>
                                             <p class="text-sm text-text-secondary">
@@ -368,8 +363,7 @@ new #[Layout('layouts::team')] class extends Component
                                     <x-team-logo
                                         :team="$otherTeam"
                                         preset="scrim-row"
-                                        class="size-14 shrink-0 rounded object-cover md:size-16"
-                                    />
+                                        class="size-14 shrink-0 rounded object-cover md:size-16" />
                                     <div class="min-w-0">
                                         <h4 class="truncate text-[20px] font-bold text-white">{{ $otherTeam->name }}</h4>
                                         <p class="mt-1 text-sm text-text-secondary">
@@ -421,8 +415,7 @@ new #[Layout('layouts::team')] class extends Component
                                     <x-team-logo
                                         :team="$otherTeam"
                                         preset="scrim-row"
-                                        class="size-14 shrink-0 rounded object-cover md:size-16"
-                                    />
+                                        class="size-14 shrink-0 rounded object-cover md:size-16" />
                                     <div class="min-w-0">
                                         <h4 class="truncate text-[20px] font-bold text-white">{{ $otherTeam->name }}</h4>
                                         <p class="mt-1 text-sm text-text-secondary">
@@ -464,100 +457,97 @@ new #[Layout('layouts::team')] class extends Component
                 wire:model.live.debounce.150ms="term"
                 :name="'history_search'"
                 :label="__('pages/scrims/index.history_search_label')"
-                :placeholder="__('pages/scrims/index.history_search_placeholder')"
-            />
+                :placeholder="__('pages/scrims/index.history_search_placeholder')" />
             <x-forms.select
                 wire:model.live.debounce.150ms="selected_status"
                 :name="'selected_status'"
                 :label="__('pages/scrims/index.history_status_label')"
                 :options="StatusScrim::historyCases()"
-                :disabled="__('pages/scrims/index.history_status_placeholder')"
-            />
+                :disabled="__('pages/scrims/index.history_status_placeholder')" />
             <x-forms.select
                 wire:model.live.debounce.150ms="selected_result"
                 :name="'selected_result'"
                 :label="__('pages/scrims/index.history_result_label')"
                 :options="ScrimOutcome::cases()"
-                :disabled="__('pages/scrims/index.history_result_placeholder')"
-            />
+                :disabled="__('pages/scrims/index.history_result_placeholder')" />
         </div>
         <div class="overflow-x-auto">
-        <table class="w-full shadow-basic min-w-[680px]">
-            <thead class="bg-[#0D0E12]">
-                <tr>
-                    <th class="text-left p-6">{{ __('pages/scrims/index.history_column_opponent') }}</th>
-                    <th class="text-left p-6">{{ __('pages/scrims/index.history_column_status') }}</th>
-                    <th class="text-left p-6">{{ __('pages/scrims/index.history_column_result') }}</th>
-                    <th class="text-left p-6">{{ __('pages/scrims/index.history_column_score') }}</th>
-                    <th class="text-left p-6">{{ __('pages/scrims/index.history_column_games') }}</th>
-                    <th class="text-left p-6">{{ __('pages/scrims/index.history_column_actions') }}</th>
-                </tr>
-            </thead>
-            <tbody class="bg-bg-widget">
-                @foreach ($this->scrimHistory as $scrim)
-                <tr wire:key="scrim-history-{{ $scrim->id }}">
-                    <td class="p-6">
-                        <p class="block truncate font-bold text-gold">
-                            {{ $scrim->opponentTeam?->name ?? __('pages/scrims/index.upcoming_opponent_unknown') }}
-                        </p>
-                        <p class="text-xs font-bold text-text-secondary">
-                            {{ $scrim->scheduled_at->translatedFormat('d M Y') }} - {{ $scrim->scheduled_at->format('H:i') }}
-                        </p>
-                    </td>
-                    <td class="p-6">
-                        <span class="{{ $scrim->status->macaron() }} text-sm">{{ $scrim->status->label() }}</span>
-                    </td>
-                    <td class="p-6">
-                        @if ($scrim->outcome)
-                        <span class="{{ $scrim->outcome->macaron() }}">{{ $scrim->outcome->label() }}</span>
-                        @else
-                        <span class="text-text-secondary">-</span>
-                        @endif
-                    </td>
-                    <td class="p-6">
-                        @if ($scrim->games_count > 0)
-                        <span class="font-bold tabular-nums">
-                            <span class="text-victory">{{ $scrim->wins_count }}</span>
-                            <span class="text-text-secondary"> - </span>
-                            <span class="text-defeat">{{ $scrim->losses_count }}</span>
-                        </span>
-                        @else
-                        <span class="text-text-secondary">-</span>
-                        @endif
-                    </td>
-                    <td class="p-6 tabular-nums">
-                        {{ $scrim->games_count }}/{{ $scrim->number_of_games }}
-                    </td>
-                    <td class="p-6">
-                        <div class="flex items-center gap-4">
-                            <a
-                                wire:navigate
-                                href="{{ route('scrims.show', ['slug' => currentTeam()->slug, 'id' => $scrim->id]) }}"
-                                title="{{ __('pages/scrims/index.history_view_title') }}"
-                                class="hover:text-gold transition-all duration-150">
-                                <flux:icon name="eye" class="w-5 h-5" />
-                            </a>
-                            @if ($canManageTeam)
-                            <a
-                                wire:navigate
-                                href="{{ route('scrims.show', ['slug' => currentTeam()->slug, 'id' => $scrim->id]) }}"
-                                title="{{ __('pages/scrims/index.history_edit_title') }}"
-                                class="hover:text-gold transition-all duration-150">
-                                <flux:icon name="pencil" class="w-5 h-5" />
-                            </a>
-                            <button
-                                wire:click="openModalDeleteScrim({{ $scrim->id }})"
-                                title="{{ __('pages/scrims/index.history_delete_title') }}"
-                                class="hover:text-red-700/90 transition-all duration-150 cursor-pointer">
-                                <flux:icon name="trash" class="w-5 h-5" />
-                            </button>
+            <table class="w-full shadow-basic min-w-[680px]">
+                <thead class="bg-[#0D0E12]">
+                    <tr>
+                        <th class="text-left p-6">{{ __('pages/scrims/index.history_column_opponent') }}</th>
+                        <th class="text-left p-6">{{ __('pages/scrims/index.history_column_status') }}</th>
+                        <th class="text-left p-6">{{ __('pages/scrims/index.history_column_result') }}</th>
+                        <th class="text-left p-6">{{ __('pages/scrims/index.history_column_score') }}</th>
+                        <th class="text-left p-6">{{ __('pages/scrims/index.history_column_games') }}</th>
+                        <th class="text-left p-6">{{ __('pages/scrims/index.history_column_actions') }}</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-bg-widget">
+                    @foreach ($this->scrimHistory as $scrim)
+                    <tr wire:key="scrim-history-{{ $scrim->id }}">
+                        <td class="p-6">
+                            <p class="block truncate font-bold text-gold">
+                                {{ $scrim->opponentTeam?->name ?? __('pages/scrims/index.upcoming_opponent_unknown') }}
+                            </p>
+                            <p class="text-xs font-bold text-text-secondary">
+                                {{ $scrim->scheduled_at->translatedFormat('d M Y') }} - {{ $scrim->scheduled_at->format('H:i') }}
+                            </p>
+                        </td>
+                        <td class="p-6">
+                            <span class="{{ $scrim->status->macaron() }} text-sm">{{ $scrim->status->label() }}</span>
+                        </td>
+                        <td class="p-6">
+                            @if ($scrim->outcome)
+                            <span class="{{ $scrim->outcome->macaron() }}">{{ $scrim->outcome->label() }}</span>
+                            @else
+                            <span class="text-text-secondary">-</span>
                             @endif
-                        </div>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+                        </td>
+                        <td class="p-6">
+                            @if ($scrim->games_count > 0)
+                            <span class="font-bold tabular-nums">
+                                <span class="text-victory">{{ $scrim->wins_count }}</span>
+                                <span class="text-text-secondary"> - </span>
+                                <span class="text-defeat">{{ $scrim->losses_count }}</span>
+                            </span>
+                            @else
+                            <span class="text-text-secondary">-</span>
+                            @endif
+                        </td>
+                        <td class="p-6 tabular-nums">
+                            {{ $scrim->games_count }}/{{ $scrim->number_of_games }}
+                        </td>
+                        <td class="p-6">
+                            <div class="flex items-center gap-4">
+                                <a
+                                    wire:navigate
+                                    href="{{ route('scrims.show', ['slug' => currentTeam()->slug, 'id' => $scrim->id]) }}"
+                                    title="{{ __('pages/scrims/index.history_view_title') }}"
+                                    class="hover:text-gold transition-all duration-150">
+                                    <flux:icon name="eye" class="w-5 h-5" />
+                                </a>
+                                @if ($canManageTeam)
+                                <a
+                                    wire:navigate
+                                    href="{{ route('scrims.show', ['slug' => currentTeam()->slug, 'id' => $scrim->id]) }}"
+                                    title="{{ __('pages/scrims/index.history_edit_title') }}"
+                                    class="hover:text-gold transition-all duration-150">
+                                    <flux:icon name="pencil" class="w-5 h-5" />
+                                </a>
+                                <button
+                                    wire:click="openModalDeleteScrim({{ $scrim->id }})"
+                                    title="{{ __('pages/scrims/index.history_delete_title') }}"
+                                    class="hover:text-red-700/90 transition-all duration-150 cursor-pointer">
+                                    <flux:icon name="trash" class="w-5 h-5" />
+                                </button>
+                                @endif
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
         {{ $this->scrimHistory->links() }}
     </section>

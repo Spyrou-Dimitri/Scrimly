@@ -33,4 +33,4 @@
         sizes="{{ $resolvedSizes }}"
     @endif
     {{ $attributes }}
-/>
+>

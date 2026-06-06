@@ -403,7 +403,7 @@ new class extends Component
                                                 src="https://ddragon.leagueoflegends.com/cdn/{{ $ddragonVersion }}/img/champion/{{ $champion }}.png"
                                                 alt="{{ $champion }}"
                                                 title="{{ $champion }}"
-                                                class="aspect-square size-10 shrink-0 rounded border border-[#2C2D34] bg-bg-card/60 md:size-12" />
+                                                class="aspect-square size-10 shrink-0 rounded border border-[#2C2D34] bg-bg-card/60 md:size-12">
                                             @endforeach
                                         </div>
                                     </div>

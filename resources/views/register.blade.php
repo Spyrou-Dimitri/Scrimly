@@ -37,7 +37,7 @@ use App\Enums\DefaultAvatar;
                                         id="imagePreview"
                                         class="absolute inset-0 hidden size-full object-cover"
                                         width="320"
-                                        height="320" />
+                                        height="320">
                                 </div>
                             </div>
                             <div class="mx-auto w-fit">
@@ -80,7 +80,7 @@ use App\Enums\DefaultAvatar;
                                         <img
                                             src="{{ $avatar->url() }}"
                                             alt="{{ $avatar->label() }}"
-                                            class="aspect-square w-full object-cover" />
+                                            class="aspect-square w-full object-cover">
                                     </label>
                                 </div>
                                 @endforeach
