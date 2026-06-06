@@ -40,7 +40,6 @@
             <flux:icon
                 name="magnifying-glass"
                 class="pointer-events-none absolute left-3 top-1/2 size-5 -translate-y-1/2 text-text-secondary"
-                aria-hidden="true"
             />
             <input
                 {{ $attributes->whereStartsWith('wire:model')}}

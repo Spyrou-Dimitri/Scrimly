@@ -51,7 +51,6 @@
                 aria-label="{{ $toggleLabel }}">
                 <flux:icon.chevron-down
                     class="size-8 transition-all duration-150 ease-in-out group-hover:text-gold"
-                    aria-hidden="true"
                     ::class="open ? 'rotate-0 text-gold' : '-rotate-90 text-text-gray'" />
             </button>
         </div>

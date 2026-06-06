@@ -25,11 +25,11 @@ use App\Enums\DefaultAvatar;
                         <div class="flex flex-col gap-4">
                             <div class="relative mx-auto flex w-full max-w-44 flex-col gap-3">
                                 <x-destructive type="button" id="deleteAvatar" class="absolute -top-2 -right-2 z-[1] hidden" :only-icon="true" :title="__('register/register.delete_avatar')">
-                                    <flux:icon name="trash" class="size-5 shrink-0 opacity-70" aria-hidden="true" />
+                                    <flux:icon name="trash" class="size-5 shrink-0 opacity-70" />
                                 </x-destructive>
                                 <div class="relative aspect-square w-full overflow-hidden rounded-lg bg-input-bg ring-2 ring-input-border">
                                     <div id="avatar-preview-placeholder" class="absolute inset-0 flex flex-col items-center justify-center gap-3 px-4 text-center text-text-secondary">
-                                        <flux:icon name="user-circle" class="size-12 shrink-0 opacity-70" aria-hidden="true" />
+                                        <flux:icon name="user-circle" class="size-12 shrink-0 opacity-70" />
                                         <p class="text-xs leading-snug font-medium">{{ __('register/register.preview_placeholder') }}</p>
                                     </div>
                                     <img

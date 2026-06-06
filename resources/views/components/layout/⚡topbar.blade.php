@@ -110,7 +110,7 @@ new class extends Component
             @click="$dispatch('sidebar-toggle')"
             class="lg:hidden p-2 -ml-2 text-white hover:text-gold  transition-colors cursor-pointer"
             aria-label="{{ __('layouts/team.open_menu_aria') }}">
-            <flux:icon.bars-3 class="size-6" aria-hidden="true" />
+            <flux:icon.bars-3 class="size-6" />
         </button>
 
         @if ($team)
@@ -134,7 +134,7 @@ new class extends Component
                         <span class="font-semibold sr-only sm:not-sr-only text-base lg:text-lg truncate">
                             {{ $team->name }}
                         </span>
-                        <flux:icon.chevron-down class="size-4" aria-hidden="true" />
+                        <flux:icon.chevron-down class="size-4" />
                     </div>
 
                 </button>
@@ -147,7 +147,7 @@ new class extends Component
                 class="absolute max-h-[240px] overflow-y-auto top-full mt-3 left-12 flex flex-col gap-4 w-56 origin-top shadow-lg bg-bg-widget p-4 z-50">
                 <li class="">
                     <a href="{{ route('team.index') }}" wire:navigate title="{{ __('layouts/team.team_lobby_cta_title') }}" class="px-3 hover:text-gold transition ease-in-out duration-150 flex items-center gap-2 cursor-pointer">
-                        <flux:icon.squares-2x2 class="size-4" aria-hidden="true" />
+                        <flux:icon.squares-2x2 class="size-4" />
                         {{ __('layouts/team.team_lobby') }}
                     </a>
                 </li>
@@ -201,7 +201,7 @@ new class extends Component
                     <span class="text-inherit font-semibold text-sm lg:text-base sr-only sm:not-sr-only truncate">
                         {{ $currentLocale === 'en' ? __('layouts/team.language_en') : __('layouts/team.language_fr') }}
                     </span>
-                    <flux:icon.chevron-down class="size-4" aria-hidden="true" />
+                    <flux:icon.chevron-down class="size-4" />
                 </div>
             </button>
             <ul
@@ -251,7 +251,7 @@ new class extends Component
 
             class="relative p-2 text-white hover:text-gold transition-colors cursor-pointer"
             aria-label="{{ __('layouts/team.notifications_aria') }}">
-            <flux:icon.bell class="size-6" aria-hidden="true" />
+            <flux:icon.bell class="size-6" />
 
             <span aria-hidden="true" class="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1
                      flex items-center justify-center

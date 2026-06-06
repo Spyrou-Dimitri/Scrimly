@@ -59,17 +59,17 @@ new class extends Component {
         class="px-4 bg-bg-widget py-3 shadow-basic min-w-[280px]">
         <div class="flex items-center gap-2">
             @if($toast['type'] === 'success')
-            <flux:icon.check-circle class="w-6 h-6 text-green-500" aria-hidden="true" />
+            <flux:icon.check-circle class="w-6 h-6 text-green-500" />
             @elseif($toast['type'] === 'wifi')
-            <flux:icon.wifi class="w-6 h-6 text-green-500" aria-hidden="true" />
+            <flux:icon.wifi class="w-6 h-6 text-green-500" />
             @elseif($toast['type'] === 'no-symbol')
-            <flux:icon.no-symbol class="w-6 h-6 text-red-500" aria-hidden="true" />
+            <flux:icon.no-symbol class="w-6 h-6 text-red-500" />
             @elseif($toast['type'] === 'error')
-            <flux:icon.x-circle class="w-6 h-6 text-red-500" aria-hidden="true" />
+            <flux:icon.x-circle class="w-6 h-6 text-red-500" />
             @elseif($toast['type'] === 'trash')
-            <flux:icon.trash class="w-6 h-6 text-red-500" aria-hidden="true" />
+            <flux:icon.trash class="w-6 h-6 text-red-500" />
             @else
-            <flux:icon.information-circle class="w-6 h-6 text-blue-500" aria-hidden="true" />
+            <flux:icon.information-circle class="w-6 h-6 text-blue-500" />
             @endif
             <span class="text-white">{{ $toast['message'] }}</span>
         </div>

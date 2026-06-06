@@ -125,7 +125,7 @@ new class extends Component
                 ])
                 @if ($isActive) aria-current="page" @endif
                 >
-                <flux:icon name="{{ $item['icon'] }}" class="size-5 flex-shrink-0" aria-hidden="true" />
+                <flux:icon name="{{ $item['icon'] }}" class="size-5 flex-shrink-0" />
                 <span class="font-medium">{{ $item['label'] }}</span>
             </a>
             @endforeach
@@ -171,7 +171,7 @@ new class extends Component
                 aria-label="{{ __('layouts/team.logout_aria') }}"
                 wire:click="logout"
                 class="cta-danger cta-danger--outline">
-                <flux:icon name="power" class="size-4 shrink-0" aria-hidden="true" />
+                <flux:icon name="power" class="size-4 shrink-0" />
                 <span class="font-medium">{{ __('layouts/team.logout') }}</span>
             </button>
         </div>

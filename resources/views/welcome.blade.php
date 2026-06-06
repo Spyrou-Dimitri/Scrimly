@@ -83,7 +83,7 @@ $currentUser = auth()->user();
                         title="{{ __('layouts/team.logout') }}"
                         aria-label="{{ __('layouts/team.logout') }}"
                         class="cta-danger cta-danger--outline rounded-full size-10">
-                        <flux:icon name="power" class="size-6" aria-hidden="true" />
+                        <flux:icon name="power" class="size-6" />
                     </button>
                 </form>
                 @else
@@ -163,7 +163,7 @@ $currentUser = auth()->user();
                             itemprop="contentRating"
                             aria-label="{{ $numbersTeams }} {{ __('welcome.hero.teams') }}"
                             class="text-gold flex flex-row items-center gap-1">
-                            <flux:icon name="user-group" class="size-6" aria-hidden="true" />
+                            <flux:icon name="user-group" class="size-6" />
                             <span class="text-text-secondary" aria-hidden="true">
                                 {{ $numbersTeams }}
                             </span>
@@ -175,7 +175,7 @@ $currentUser = auth()->user();
                             itemprop="contentRating"
                             aria-label="{{ $numbersUsers }} {{ __('welcome.hero.users') }}"
                             class="text-gold flex flex-row items-center gap-1">
-                            <flux:icon name="user" class="size-6" aria-hidden="true" />
+                            <flux:icon name="user" class="size-6" />
                             <span class="text-text-secondary" aria-hidden="true">
                                 {{ $numbersUsers }}
                             </span>
@@ -187,7 +187,7 @@ $currentUser = auth()->user();
                             itemprop="contentRating"
                             aria-label="{{ $numbersScrims }} {{ __('welcome.hero.scrims') }}"
                             class="text-gold flex flex-row items-center gap-1">
-                            <flux:icon name="trophy" class="size-6" aria-hidden="true" />
+                            <flux:icon name="trophy" class="size-6" />
                             <span class="text-text-secondary" aria-hidden="true">
                                 {{ $numbersScrims }}
                             </span>

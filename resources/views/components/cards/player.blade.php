@@ -78,7 +78,7 @@ $tierLine .= ' • '.$memberUser->rank;
                         role="menuitem"
                         wire:click="openModalPromoteToStarter({{ $teamMember->id }})"
                         @click="open = false">
-                        <flux:icon name="star" class="size-4 hover:text-gold" aria-hidden="true" />
+                        <flux:icon name="star" class="size-4 hover:text-gold" />
                         {{ __('pages/roster/index.menu_promote_starter') }}
                     </button>
                     @else
@@ -88,7 +88,7 @@ $tierLine .= ' • '.$memberUser->rank;
                         role="menuitem"
                         wire:click="openModalSendToBench({{ $teamMember->id }})"
                         @click="open = false">
-                        <flux:icon name="user-minus" class="size-4 hover:text-gold" aria-hidden="true" />
+                        <flux:icon name="user-minus" class="size-4 hover:text-gold" />
                         {{ __('pages/roster/index.menu_demote_to_bench') }}
                     </button>
                     @endif
@@ -99,7 +99,7 @@ $tierLine .= ' • '.$memberUser->rank;
                         role="menuitem"
                         wire:click="openModalKickTeamMember({{ $teamMember->id }})"
                         @click="open = false">
-                        <flux:icon name="trash" class="size-4 hover:text-gold" aria-hidden="true" />
+                        <flux:icon name="trash" class="size-4 hover:text-gold" />
                         {{ __('pages/roster/index.menu_kick_member') }}
                     </button>
                     @endif

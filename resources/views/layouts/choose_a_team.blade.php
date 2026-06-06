@@ -64,7 +64,7 @@ $currentUser = auth()->user();
                         title="{{ __('layouts/team.logout') }}"
                         aria-label="{{ __('layouts/team.logout_aria') }}"
                         class="cta-danger cta-danger--outline rounded-full size-10">
-                        <flux:icon name="power" class="size-6" aria-hidden="true" />
+                        <flux:icon name="power" class="size-6" />
                     </button>
                 </form>
             </div>

@@ -30,11 +30,11 @@
         <div class="flex gap-4 flex-wrap justify-between">
             <div class="flex gap-4 items-center">
                 <div class="flex items-center gap-2">
-                    <flux:icon name="chat-bubble-left-ellipsis" class="w-5 h-5" aria-hidden="true" />
+                    <flux:icon name="chat-bubble-left-ellipsis" class="w-5 h-5" />
                     {{ $task->comments->count() }}
                 </div>
                 <div class="flex items-center gap-2">
-                    <flux:icon name="paper-clip" class="w-5 h-5" aria-hidden="true" />
+                    <flux:icon name="paper-clip" class="w-5 h-5" />
                     {{ $task->links->count() }}
                 </div>
             </div>

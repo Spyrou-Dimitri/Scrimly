@@ -214,7 +214,7 @@ new class extends Component
                 </div>
                 @if ($this->existingStarterRoleInGame)
                 <div class="flex items-center bg-red-900/60 mt-2 text-white p-2 gap-2">
-                    <flux:icon name="exclamation-triangle" variant="outline" class="w-12 h-12" aria-hidden="true" />
+                    <flux:icon name="exclamation-triangle" variant="outline" class="w-12 h-12" />
                     <p>
                         <span class="font-bold">{{$this->existingStarterRoleInGame->user->username}}</span> est déjà titulaire <span class="font-bold">{{$this->existingStarterRoleInGame->roleInGame->label()}}</span>. Il sera automatiquement passé en remplaçant si vous acceptez <span class="font-bold">{{$this->candidate->user->username}}</span> comme titulaire.
                     </p>
