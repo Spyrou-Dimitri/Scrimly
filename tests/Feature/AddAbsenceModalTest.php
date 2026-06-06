@@ -37,9 +37,10 @@ test('la modal add-absence crée une absence en base lorsque le formulaire est v
         'status' => StatusInTeam::ACCEPTED,
         'joined_at' => now(),
     ]);
+    $absenceDay = now()->addDays(15)->toDateString();
 
-    Livewire::test('modals::absence.add-absence', ['model_id' => $teamMember->id])
-        ->set('form.absenceDay', '2026-05-15')
+    Livewire::actingAs($player)->test('modals::absence.add-absence', ['model_id' => $teamMember->id])
+        ->set('form.absenceDay', $absenceDay)
         ->set('form.justification', AbsenceJustification::MEDICAL)
         ->call('store');
 
@@ -47,7 +48,7 @@ test('la modal add-absence crée une absence en base lorsque le formulaire est v
 
     expect($absence)->not->toBeNull()
         ->and($absence->team_member_id)->toBe($teamMember->id)
-        ->and($absence->date->toDateString())->toBe('2026-05-15')
+        ->and($absence->date->toDateString())->toBe($absenceDay)
         ->and($absence->justification)->toBe(AbsenceJustification::MEDICAL);
 });
 
@@ -75,7 +76,7 @@ test('la modal add-absence refuse une soumission sans données', function (): vo
         'joined_at' => now(),
     ]);
 
-    Livewire::test('modals::absence.add-absence', ['model_id' => $teamMember->id])
+    Livewire::actingAs($player)->test('modals::absence.add-absence', ['model_id' => $teamMember->id])
         ->call('store')
         ->assertHasErrors(['form.absenceDay', 'form.justification']);
 
