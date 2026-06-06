@@ -64,16 +64,11 @@ new #[Layout('layouts::team')] class extends Component
         $this->chatMessages->push($message);
         $this->dispatch('scroll-to-the-end');
     }
-
-    public function render()
-    {
-        return $this->view()->title(__('pages/chats/index.title'));
-    }
 };
 ?>
 
 <div
-    class="-mx-6 -my-8 flex h-[calc(100dvh-4rem)] max-h-[calc(100dvh-4rem)] flex-col gap-6 overflow-hidden px-6 py-8"
+    class="-mx-6 -my-8 flex h-[calc(100dvh-4rem)] max-h-[calc(100dvh-4rem)] flex-col overflow-hidden px-6 py-8"
     x-data="chat(
         {{ currentTeam()->id }},
         {{ currentMember()->user_id }},
@@ -85,6 +80,7 @@ new #[Layout('layouts::team')] class extends Component
             'onlineAndOthers' => __('pages/chats/index.online_and_others'),
         ])
     )">
+    <section class="flex min-h-0 flex-1 flex-col gap-6" aria-labelledby="chats-index-heading">
     <div class="flex shrink-0 items-center justify-between gap-4">
         <h2 id="chats-index-heading" class="text-[32px] font-bold text-white">
             {{ __('pages/chats/index.title') }}
@@ -104,7 +100,7 @@ new #[Layout('layouts::team')] class extends Component
                         <img
                             :src="member.avatar_url"
                             :alt="member.username"
-                            class="size-full object-cover rounded-full">
+                            class="size-full object-cover rounded-full" />
                         <span
                             x-show="index === previewOnlineMembers.length - 1"
                             class="absolute bottom-0 right-0 size-2 rounded-full bg-green-500 ring-1 ring-bg-main"
@@ -119,9 +115,8 @@ new #[Layout('layouts::team')] class extends Component
         </div>
     </div>
 
-    <section
-        class="flex min-h-0 flex-1 flex-col overflow-hidden bg-bg-widget shadow-basic"
-        aria-labelledby="chats-index-heading">
+    <div
+        class="flex min-h-0 flex-1 flex-col overflow-hidden bg-bg-widget shadow-basic">
         <div
             x-data="{
         scroll() {
@@ -208,5 +203,6 @@ new #[Layout('layouts::team')] class extends Component
                 </x-forms.submit>
             </div>
         </form>
+    </div>
     </section>
 </div>
