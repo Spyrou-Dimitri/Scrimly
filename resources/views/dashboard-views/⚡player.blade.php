@@ -30,25 +30,26 @@ new class extends Component
         if ($this->statsScrim) {
             return $this->member->overallScrimKda($this->team->id);
         }
-        return $this->member->user->riotProfile->getGeneralKda();
+
+        return $this->member->user->riotProfile?->getGeneralKda() ?? 0;
     }
     #[Computed]
     public function winrate(): float
     {
         if ($this->statsScrim) {
             return $this->team->overallScrimWinrate();
-        } else {
-            return $this->member->user->riotProfile->getWinratePercentage();
         }
+
+        return $this->member->user->riotProfile?->getWinratePercentage() ?? 0;
     }
     #[Computed]
     public function favoriteChampion(): ?string
     {
         if ($this->statsScrim) {
             return $this->member->favoriteChampionScrim();
-        } else {
-            return $this->member->user->riotProfile->favoriteChampion();
         }
+
+        return $this->member->user->riotProfile?->favoriteChampion();
     }
     #[Computed]
     public function totalGames(): int
