@@ -358,7 +358,7 @@ $currentUser = auth()->user();
         <footer
             aria-label="{{ __('welcome.footer.label') }}"
             itemscope
-            itemtype="https://schema.org/Organization"
+            itemtype="https://schema.org/Website"
             class="bg-bg-widget py-6">
             <div class="mx-auto flex w-full max-w-[1600px] flex-row items-center justify-between gap-4 px-6">
                 <p
@@ -372,7 +372,7 @@ $currentUser = auth()->user();
                     itemscope
                     itemtype="https://schema.org/Person"
                     class="w-full text-right">
-                    <span itemprop="name">
+                    <span itemprop="name" itemprop="url">
                         {!! __('welcome.footer.created_by', ['label' => __('welcome.footer.creator_link_label')]) !!}
                     </span>
                 </p>
