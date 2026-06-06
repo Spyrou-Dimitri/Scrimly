@@ -53,7 +53,6 @@ $tierLine .= ' • '.$memberUser->rank;
                     class="flex cursor-pointer size-8 items-center justify-center bg-bg-widget border border-transparent hover:border-gold transition-all duration-150 ease-in-out group text-white"
                     aria-label="{{ __('pages/roster/index.member_menu') }}"
                     aria-haspopup="menu"
-                    :aria-expanded="open"
                     @click="open = ! open">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 transition-all duration-150 ease-in-out group-hover:text-gold" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
