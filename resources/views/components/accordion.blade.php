@@ -11,7 +11,12 @@
     $isHeadingH3 = $headingLevel === 'h3';
     $hasHeaderSlot = isset($header) && $header->isNotEmpty();
     $hasActionsSlot = isset($actions) && $actions->isNotEmpty();
-    $panelId = 'accordion-panel-'.md5(($title ?? 'section').($attributes->get('id') ?? ''));
+
+    $uniqueKey = $attributes->get('wire:key')
+        ?? $attributes->get('id')
+        ?? ($title ? md5($title) : uniqid());
+
+    $panelId = 'accordion-panel-'.$uniqueKey;
     $toggleLabel = $title
         ? __('accessibility.toggle_section', ['title' => strip_tags($title)])
         : __('accessibility.toggle_section', ['title' => __('accessibility.main_content')]);
