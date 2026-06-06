@@ -51,8 +51,8 @@ test('basculer vers un avatar illustré après un téléversement supprime les f
 
     $filename = 'previous.jpg';
 
-    Storage::disk('public')->put(config('avatar.original_path').'/'.$filename, 'dummy');
-    Storage::disk('public')->put(sprintf(config('avatar.variant_pattern'), 400, 400).'/'.$filename, 'dummy');
+    Storage::disk('public')->put(config('avatar.original_path').'/'.$filename, 'Yahouuu');
+    Storage::disk('public')->put(sprintf(config('avatar.variant_pattern'), 400, 400).'/'.$filename, 'Yahouuu');
 
     $user = User::factory()->create([
         'avatar_type' => 'upload',
