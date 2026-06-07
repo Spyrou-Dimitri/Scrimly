@@ -33,6 +33,7 @@ use App\Enums\DefaultAvatar;
                                         <p class="text-xs leading-snug font-medium">{{ __('register/register.preview_placeholder') }}</p>
                                     </div>
                                     <img
+                                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
                                         alt="{{ __('register/register.avatar_section_image') }}"
                                         id="imagePreview"
                                         class="absolute inset-0 hidden size-full object-cover"
@@ -72,7 +73,7 @@ use App\Enums\DefaultAvatar;
                                         value="{{ $avatar->value }}"
                                         class="peer absolute inset-0 opacity-0 pointer-events-none"
                                         @checked(old('default_avatar', DefaultAvatar::cases()[0]->value) === $avatar->value)
-                                    />
+                                    >
                                     <label
                                         for="default-avatar-{{ $avatar->value }}"
                                         class="block cursor-pointer overflow-hidden rounded-lg ring-2 ring-transparent transition-all 
@@ -91,8 +92,8 @@ use App\Enums\DefaultAvatar;
                     <fieldset class="m-0 flex min-w-0 flex-col gap-4 border-0 p-0 lg:col-start-1 lg:mt-4 lg:row-start-2 lg:pr-8">
                         <legend class="sr-only">{{ __('register/register.form_title') }}</legend>
                         <div class="flex flex-col gap-4">
-                            <x-forms.input :name="'username'" :label="__('register/register.username')" :type="'text'" :required="true" :placeholder="'Faker'" />
-                            <x-forms.input :name="'riot_tag'" :label="__('register/register.riot_id')" :type="'text'" :placeholder="'HideOnBush#KR'" />
+                            <x-forms.input :name="'username'" :label="__('register/register.username')" :type="'text'" :required="true" :placeholder="'Faker'"/>
+                            <x-forms.input :name="'riot_tag'" :label="__('register/register.riot_id')" :type="'text'" :placeholder="'HideOnBush#KR'"/>
                             <x-forms.input :name="'email'" :label="__('register/register.email')" :type="'email'" :required="true" :placeholder="'email@example.com'" />
                             <div class="flex flex-col gap-2">
                                 <label class="block font-medium text-white" for="password">
