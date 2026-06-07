@@ -217,42 +217,58 @@ $currentUser = auth()->user();
                     </p>
                 </div>
                 <ul role="list" aria-labelledby="features-heading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <x-cards.feature
-                        role="listitem"
-                        itemprop="itemListElement"
-                        icon="calendar-days"
-                        title="{{ __('welcome.Features.cards.calendar.title') }}"
-                        description="{{ __('welcome.Features.cards.calendar.description') }}" />
-                    <x-cards.feature
-                        role="listitem"
-                        itemprop="itemListElement"
-                        icon="book-open"
-                        title="{{ __('welcome.Features.cards.tasks.title') }}"
-                        description="{{ __('welcome.Features.cards.tasks.description') }}" />
-                    <x-cards.feature
-                        role="listitem"
-                        itemprop="itemListElement"
-                        icon="user-group"
-                        title="{{ __('welcome.Features.cards.roster.title') }}"
-                        description="{{ __('welcome.Features.cards.roster.description') }}" />
-                    <x-cards.feature
-                        role="listitem"
-                        itemprop="itemListElement"
-                        icon="chart-bar"
-                        title="{{ __('welcome.Features.cards.followData.title') }}"
-                        description="{{ __('welcome.Features.cards.followData.description') }}" />
-                    <x-cards.feature
-                        role="listitem"
-                        itemprop="itemListElement"
-                        icon="chat-bubble-left-right"
-                        title="{{ __('welcome.Features.cards.chat.title') }}"
-                        description="{{ __('welcome.Features.cards.chat.description') }}" />
-                    <x-cards.feature
-                        role="listitem"
-                        itemprop="itemListElement"
-                        icon="check-circle"
-                        title="{{ __('welcome.Features.cards.Checklist.title') }}"
-                        description="{{ __('welcome.Features.cards.Checklist.description') }}" />
+                    <li>
+
+                        <x-cards.feature
+                            role="listitem"
+                            itemprop="itemListElement"
+                            icon="calendar-days"
+                            title="{{ __('welcome.Features.cards.calendar.title') }}"
+                            description="{{ __('welcome.Features.cards.calendar.description') }}" />
+                    </li>
+                    <li>
+                        <x-cards.feature
+                            role="listitem"
+                            itemprop="itemListElement"
+                            icon="book-open"
+                            title="{{ __('welcome.Features.cards.tasks.title') }}"
+                            description="{{ __('welcome.Features.cards.tasks.description') }}" />
+                    </li>
+
+                    <li>
+                        <x-cards.feature
+                            role="listitem"
+                            itemprop="itemListElement"
+                            icon="user-group"
+                            title="{{ __('welcome.Features.cards.roster.title') }}"
+                            description="{{ __('welcome.Features.cards.roster.description') }}" />
+                    </li>
+                    <li>
+                        <x-cards.feature
+                            role="listitem"
+                            itemprop="itemListElement"
+                            icon="chart-bar"
+                            title="{{ __('welcome.Features.cards.followData.title') }}"
+                            description="{{ __('welcome.Features.cards.followData.description') }}" />
+                    </li>
+                    <li>
+                        <x-cards.feature
+                            role="listitem"
+                            itemprop="itemListElement"
+                            icon="chat-bubble-left-right"
+                            title="{{ __('welcome.Features.cards.chat.title') }}"
+                            description="{{ __('welcome.Features.cards.chat.description') }}" />
+                    </li>
+
+                    <li>
+                        <x-cards.feature
+                            role="listitem"
+                            itemprop="itemListElement"
+                            icon="check-circle"
+                            title="{{ __('welcome.Features.cards.Checklist.title') }}"
+                            description="{{ __('welcome.Features.cards.Checklist.description') }}" />
+                    </li>
+
                 </ul>
             </div>
         </section>
@@ -372,9 +388,7 @@ $currentUser = auth()->user();
                     itemscope
                     itemtype="https://schema.org/Person"
                     class="w-full text-right">
-                    <span itemprop="name" itemprop="url">
-                        {!! __('welcome.footer.created_by', ['label' => __('welcome.footer.creator_link_label')]) !!}
-                    </span>
+                    {!! __('welcome.footer.created_by', ['label' => __('welcome.footer.creator_link_label')]) !!}
                 </p>
             </div>
         </footer>

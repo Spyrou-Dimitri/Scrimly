@@ -91,6 +91,6 @@ return [
         'label' => 'Pied de page',
         'Copyright' => 'Copyright © 2026 ScrimlyLol. Tous droits réservés.',
         'creator_link_label' => 'Site de Dimitri Spyrou (s\'ouvre dans un nouvel onglet)',
-        'created_by' => 'Créé par <a href="https://dimitri-spyrou.com/" target="_blank" rel="noopener noreferrer" aria-label=":label" class="text-white hover:text-gold">Dimitri Spyrou</a>',
+        'created_by' => 'Créé par <a itemprop="url" href="https://dimitri-spyrou.com/" target="_blank" rel="noopener noreferrer" aria-label=":label" class="text-white hover:text-gold"><span itemprop="name">Dimitri Spyrou</span></a>',
     ],
 ];
