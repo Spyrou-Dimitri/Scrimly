@@ -30,6 +30,7 @@
         "nunomaduro/collision": "^8.9.3",
         "nunomaduro/pao": "^1.0.3",
         "pestphp/pest": "^4.6",
+        "pestphp/pest-plugin-browser": "^4.3",
         "pestphp/pest-plugin-laravel": "^4.1"
     },
     "autoload": {
