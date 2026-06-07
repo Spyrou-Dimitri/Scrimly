@@ -217,7 +217,7 @@ $currentUser = auth()->user();
                     </p>
                 </div>
                 <ul role="list" aria-labelledby="features-heading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <li role="listitem">
+                    <li>
 
                         <x-cards.feature
                             
@@ -226,7 +226,7 @@ $currentUser = auth()->user();
                             title="{{ __('welcome.Features.cards.calendar.title') }}"
                             description="{{ __('welcome.Features.cards.calendar.description') }}" />
                     </li>
-                    <li role="listitem">
+                    <li>
                         <x-cards.feature
                             
                             itemprop="itemListElement"
@@ -235,7 +235,7 @@ $currentUser = auth()->user();
                             description="{{ __('welcome.Features.cards.tasks.description') }}" />
                     </li>
 
-                    <li role="listitem">
+                    <li>
                         <x-cards.feature
                             
                             itemprop="itemListElement"
@@ -243,7 +243,7 @@ $currentUser = auth()->user();
                             title="{{ __('welcome.Features.cards.roster.title') }}"
                             description="{{ __('welcome.Features.cards.roster.description') }}" />
                     </li>
-                    <li role="listitem">
+                    <li>
                         <x-cards.feature
                             
                             itemprop="itemListElement"
@@ -251,7 +251,7 @@ $currentUser = auth()->user();
                             title="{{ __('welcome.Features.cards.followData.title') }}"
                             description="{{ __('welcome.Features.cards.followData.description') }}" />
                     </li>
-                    <li role="listitem">
+                    <li>
                         <x-cards.feature
                             
                             itemprop="itemListElement"
@@ -260,7 +260,7 @@ $currentUser = auth()->user();
                             description="{{ __('welcome.Features.cards.chat.description') }}" />
                     </li>
 
-                    <li role="listitem">
+                    <li>
                         <x-cards.feature
                             itemprop="itemListElement"
                             icon="check-circle"
