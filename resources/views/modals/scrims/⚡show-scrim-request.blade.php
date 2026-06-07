@@ -44,35 +44,56 @@ new class extends Component
             return;
         }
 
-        DB::transaction(function () {
+        $created = DB::transaction(function (): bool {
+            $scrimRequest = ScrimRequest::query()
+                ->whereKey($this->scrimRequest->id)
+                ->lockForUpdate()
+                ->first();
 
+            if ($scrimRequest === null || $scrimRequest->status !== StatusScrimRequest::PENDING) {
+                return false;
+            }
 
-            $this->scrimRequest->update([
+            $scrimRequest->update([
                 'status' => StatusScrimRequest::ACCEPTED,
             ]);
 
             $scrimForReceiverTeam = Scrim::create([
-                'scheduled_date' => $this->scrimRequest->scheduled_date,
-                'scheduled_time' => $this->scrimRequest->scheduled_time,
-                'number_of_games' => $this->scrimRequest->number_of_games,
+                'scheduled_date' => $scrimRequest->scheduled_date,
+                'scheduled_time' => $scrimRequest->scheduled_time,
+                'number_of_games' => $scrimRequest->number_of_games,
                 'status' => StatusScrim::SCHEDULED,
-                'scrim_request_id' => $this->scrimRequest->id,
-                'opponent_team_id' => $this->scrimRequest->requester_team_id,
+                'scrim_request_id' => $scrimRequest->id,
+                'opponent_team_id' => $scrimRequest->requester_team_id,
                 'team_id' => currentTeam()?->id,
             ]);
 
             $scrimForRequesterTeam = Scrim::create([
-                'scheduled_date' => $this->scrimRequest->scheduled_date,
-                'scheduled_time' => $this->scrimRequest->scheduled_time,
-                'number_of_games' => $this->scrimRequest->number_of_games,
+                'scheduled_date' => $scrimRequest->scheduled_date,
+                'scheduled_time' => $scrimRequest->scheduled_time,
+                'number_of_games' => $scrimRequest->number_of_games,
                 'status' => StatusScrim::SCHEDULED,
-                'scrim_request_id' => $this->scrimRequest->id,
+                'scrim_request_id' => $scrimRequest->id,
                 'opponent_team_id' => currentTeam()?->id,
-                'team_id' => $this->scrimRequest->requester_team_id,
+                'team_id' => $scrimRequest->requester_team_id,
             ]);
+
+            return true;
         });
+
         $this->dispatch('close_modal');
         $this->dispatch('refresh_scrims');
+
+        if (! $created) {
+            $this->dispatch('toast', [
+                'title' => __('policies/scrim.error_title'),
+                'message' => __('modals/scrims/show-scrim-request.already_handled'),
+                'type' => 'error',
+            ]);
+
+            return;
+        }
+
         $this->dispatch('toast', [
             'title' => __('modals/scrims/show-scrim-request.success_title'),
             'message' => __('modals/scrims/show-scrim-request.success_message'),

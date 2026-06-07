@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\TeamMember;
 use Illuminate\Support\Collection;
 use App\Livewire\Forms\Scrim\CreateScrimGameForm;
+use App\Enums\StatusScrim;
 use App\Enums\TypeScrimGameNote;
 
 new #[Layout('layouts::team')] class extends Component
@@ -32,6 +33,17 @@ new #[Layout('layouts::team')] class extends Component
                 'team',
             ])
             ->firstOrFail();
+
+        if (! in_array($this->scrim->status, [StatusScrim::SCHEDULED, StatusScrim::IN_PROGRESS], true)) {
+            session()->flash('toast', [
+                'type' => 'error',
+                'message' => __('pages/scrims/games/create.error_invalid_status'),
+            ]);
+
+            $this->redirect(route('scrims.show', ['id' => $this->scrim->id, 'slug' => currentTeam()->slug]));
+
+            return;
+        }
 
         $this->teamMembersStarters = TeamMember::query()
             ->where('team_id', currentTeam()->id)
@@ -260,7 +272,7 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                             <div class="flex items-center gap-2">
                                 <x-user-avatar :user="$teamMember->user" preset="thumbnail" class="w-10 h-10" />
                                 <h4 class="text-xl font-semibold text-gold">
-                                    {{ $teamMember->user->username }} - {{ $teamMember->roleInGame->label() }}
+                                    {{ $teamMember->user->username }} - {{ $teamMember->roleInGame?->label() }}
                                 </h4>
                             </div>
                         </div>

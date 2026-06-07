@@ -248,7 +248,7 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                             <div class="flex items-center gap-2">
                                 <x-user-avatar :user="$member->teamMember->user" preset="thumbnail" class="w-10 h-10" />
                                 <h4 class="text-xl font-semibold text-gold">
-                                    {{ $member->teamMember->user->username }} - {{ $member->teamMember->roleInGame->label() }}
+                                    {{ $member->teamMember->user->username }} - {{ $member->teamMember->roleInGame?->label() }}
                                 </h4>
                             </div>
                         </div>

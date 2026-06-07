@@ -416,7 +416,7 @@ new #[Layout('layouts::team')] class extends Component
                                             {{ $player->teamMember->user->username }}
                                         </h5>
                                         <p @class(['text-sm font-bold', 'text-victory'=> $game->is_victory, 'text-defeat' => !$game->is_victory])>
-                                            {{ $player->champion }} • {{ $player->teamMember->roleInGame->label() }}
+                                            {{ $player->champion }} • {{ $player->teamMember->roleInGame?->label() }}
                                         </p>
                                     </div>
                                 </div>

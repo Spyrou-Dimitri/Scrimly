@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Forms\Scrim;
 
+use App\Enums\StatusScrim;
 use App\Enums\TypeScrimGameNote;
+use App\Models\Scrim;
 use App\Models\ScrimGame;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -62,6 +64,12 @@ class CreateScrimGameForm extends Form
         $validated = $this->validate();
 
         if (Gate::denies('manageTeam', User::class)) {
+            return false;
+        }
+
+        $scrim = Scrim::query()->findOrFail($scrimId);
+
+        if (! in_array($scrim->status, [StatusScrim::SCHEDULED, StatusScrim::IN_PROGRESS], true)) {
             return false;
         }
         $opponentStarters = [

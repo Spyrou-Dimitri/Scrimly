@@ -14,6 +14,7 @@ return [
     'success_message' => 'La proposition de scrim a été acceptée avec succès.',
     'refuse_title' => 'Proposition de scrim refusée',
     'refuse_message' => 'La proposition de scrim a été refusée avec succès.',
+    'already_handled' => 'Cette proposition de scrim a déjà été traitée.',
     'expiration' => 'Expiration dans :time',
     'expiration_elapsed' => 'Délai de réponse dépassé',
     'close' => 'Fermer',

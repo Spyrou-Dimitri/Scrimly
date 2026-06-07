@@ -14,6 +14,7 @@ return [
     'success_message' => 'The scrim proposal was accepted successfully.',
     'refuse_title' => 'Scrim proposal declined',
     'refuse_message' => 'The scrim proposal was declined successfully.',
+    'already_handled' => 'This scrim proposal has already been handled.',
     'expiration' => 'Expires in :time',
     'expiration_elapsed' => 'Response deadline passed',
     'close' => 'Close',

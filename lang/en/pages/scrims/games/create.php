@@ -49,4 +49,5 @@ return [
     'field_note_content' => 'Note',
     'field_note_placeholder' => 'Excellent vision control around Baron at 20 min',
     'error_too_short_note' => 'Note too short (minimum 3 characters)',
+    'error_invalid_status' => 'You cannot add a game to this scrim in its current state.',
 ];

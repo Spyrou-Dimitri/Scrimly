@@ -49,4 +49,5 @@ return [
     'field_note_content' => 'Note',
     'field_note_placeholder' => 'Excellente gestion de la vision autour du Baron à 20 min',
     'error_too_short_note' => 'Note trop courte (minimum 3 caractères)',
+    'error_invalid_status' => 'Vous ne pouvez pas ajouter de game à ce scrim dans son état actuel.',
 ];
