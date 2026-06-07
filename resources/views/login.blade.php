@@ -6,7 +6,7 @@
         <div class="lg:col-span-5 w-full max-w-md mx-auto flex flex-col gap-6">
             <div class="flex flex-col gap-2">
                 <x-auth.back-to-home />
-                <h2 id="login-heading" class="text-[40px] text-white font-bold">{!! __('login/login.welcome') !!}</h1>
+                <h2 id="login-heading" class="text-[40px] text-white font-bold">{!! __('login/login.welcome') !!}</h2>
                 <p class="text-white text-xl">{{ __('login/login.welcome_description') }}</p>
             </div>
             <div class="bg-bg-widget p-6 shadow-basic flex flex-col gap-8 lg:pr-6">
