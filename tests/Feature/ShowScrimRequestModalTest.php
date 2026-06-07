@@ -39,7 +39,6 @@ test('la modal show-scrim-request s’affiche pour un membre de l’équipe dest
 
 test('la modal show-scrim-request renvoie une erreur 403 pour une équipe non concernée', function (): void {
     $creator = User::factory()->create();
-
     $receiverTeam = Team::create([
         'name' => Str::random(10),
         'slug' => Str::random(10),
@@ -49,7 +48,6 @@ test('la modal show-scrim-request renvoie une erreur 403 pour une équipe non co
         'goal' => LolGoal::FUN,
         'creator_id' => $creator->id,
     ]);
-
     $requesterTeam = Team::create([
         'name' => Str::random(10),
         'slug' => Str::random(10),
@@ -59,7 +57,6 @@ test('la modal show-scrim-request renvoie une erreur 403 pour une équipe non co
         'goal' => LolGoal::FUN,
         'creator_id' => $creator->id,
     ]);
-
     $otherTeam = Team::create([
         'name' => Str::random(10),
         'slug' => Str::random(10),
@@ -69,9 +66,7 @@ test('la modal show-scrim-request renvoie une erreur 403 pour une équipe non co
         'goal' => LolGoal::FUN,
         'creator_id' => $creator->id,
     ]);
-
     $intruder = User::factory()->create(['current_team_id' => $otherTeam->id]);
-
     TeamMember::create([
         'team_id' => $otherTeam->id,
         'user_id' => $intruder->id,

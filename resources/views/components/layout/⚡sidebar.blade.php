@@ -4,6 +4,8 @@ use App\Livewire\Actions\Logout;
 use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use App\Enums\RoleInTeam;
+use App\Enums\LolTier;
 
 new class extends Component
 {
@@ -132,13 +134,41 @@ new class extends Component
         </nav>
 
         @php
-            use App\Enums\LolTier;
+            
 
             $team = currentTeam();
+            $member = currentMember();
             $averageEloTier = LolTier::fromStarterAverageElo($team->starter_average_elo);
         @endphp
 
         <div class="flex flex-shrink-0 flex-col gap-3 p-4">
+            @if ($member)
+            <a
+                href="{{ route('roster.show', ['slug' => $team->slug, 'id' => $member->id]) }}"
+                wire:navigate
+                title="{{ __('layouts/team.view_member_profile_title') }}"
+                data-test="sidebar-member-profile-link"
+                @click="open = false"
+                class="flex items-center gap-3 bg-bg-card p-3 transition-colors duration-150 hover:bg-white/5">
+                <x-user-avatar
+                    :user="$member->user"
+                    preset="thumbnail"
+                    class="size-10 shrink-0 rounded-lg object-cover"
+                />
+                <div class="min-w-0 flex-1">
+                    <p class="truncate font-semibold text-white">{{ $member->user->username }}</p>
+                    @if ($member->roleInTeam === RoleInTeam::COACH || $member->roleInTeam === RoleInTeam::STAFF)
+                        <p class="truncate text-sm text-text-secondary">{{ $member->roleInTeam->label() }}</p>
+                    @elseif ($member->roleInGame)
+                        <div class="flex items-center gap-2">
+                            <img src="{{ asset($member->roleInGame->icon()) }}" class="size-5 shrink-0" alt="{{ $member->roleInGame->label() }}">
+                            <p class="truncate text-sm text-text-secondary">{{ $member->roleInGame->label() }}</p>
+                        </div>
+                    @endif
+                </div>
+            </a>
+            @endif
+
             <a
                 href="{{ route('team.show', ['slug' => $team->slug, 'id' => $team->id]) }}"
                 wire:navigate

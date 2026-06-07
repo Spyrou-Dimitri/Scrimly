@@ -259,29 +259,65 @@ new class extends Component
         </button>
 
         @if ($this->currentUser)
-        <div class="flex items-center gap-2 lg:gap-3">
-            <a href="{{ route('profile.show') }}"
-                title="{{ __('layouts/team.edit_profile_cta_title') }}"
-                aria-label="{{ __('layouts/team.edit_profile_cta_title') }} : {{ $this->currentUser->username }}"
-                class="flex items-center gap-2 lg:gap-3 group">
-
+        @php
+            $member = currentMember();
+        @endphp
+        <div
+            x-data="{ openUserMenu: false }"
+            @click.outside="openUserMenu = false"
+            class="relative flex items-center gap-2 lg:gap-3">
+            <button
+                type="button"
+                @click="openUserMenu = !openUserMenu"
+                aria-label="{{ __('layouts/team.user_menu_aria') }} : {{ $this->currentUser->username }}"
+                aria-haspopup="menu"
+                class="flex items-center gap-2 lg:gap-3 group cursor-pointer">
                 <x-user-avatar
                     :user="$this->currentUser"
                     preset="topbar"
                     class="size-9 rounded-full object-cover flex-shrink-0"
                 />
 
-
-                <span class="hidden sm:inline-block relative text-white font-medium max-w-[160px]
-                 before:content-[''] before:absolute before:bottom-0 before:left-0 
-                 group-hover:text-gold
-                 before:w-full before:h-[2px] before:bg-gold
-                 before:scale-x-0 before:origin-left
-                 before:transition-transform before:duration-150 before:ease-in-out 
-                 group-hover:before:scale-x-100">
-                    {{ $this->currentUser->username }}
+                <span class="hidden sm:inline-flex items-center gap-2 relative text-white font-medium max-w-[160px] group-hover:text-gold transition-colors duration-150">
+                    <span class="truncate">{{ $this->currentUser->username }}</span>
+                    <flux:icon.chevron-down class="size-4 shrink-0" />
                 </span>
-            </a>
+            </button>
+
+            <ul
+                x-show="openUserMenu"
+                x-transition
+                x-cloak
+                role="menu"
+                aria-label="{{ __('layouts/team.user_menu_aria') }}"
+                class="absolute top-full right-0 mt-3 flex flex-col gap-1 w-56 origin-top shadow-lg bg-bg-widget p-2 z-50">
+                @if ($member)
+                <li role="none">
+                    <a
+                        href="{{ route('roster.show', ['slug' => $team->slug, 'id' => $member->id]) }}"
+                        wire:navigate
+                        role="menuitem"
+                        data-test="topbar-team-member-profile-link"
+                        @click="openUserMenu = false"
+                        class="flex items-center gap-2 px-3 py-2.5 text-sm font-medium text-white transition-colors duration-150 hover:bg-white/5 hover:text-gold">
+                        <flux:icon name="user-circle" class="size-4 shrink-0" />
+                        {{ __('layouts/team.view_member_profile_title') }}
+                    </a>
+                </li>
+                @endif
+                <li role="none">
+                    <a
+                        href="{{ route('profile.show') }}"
+                        wire:navigate
+                        role="menuitem"
+                        data-test="topbar-account-settings-link"
+                        @click="openUserMenu = false"
+                        class="flex items-center gap-2 px-3 py-2.5 text-sm font-medium text-white transition-colors duration-150 hover:bg-white/5 hover:text-gold">
+                        <flux:icon name="cog-6-tooth" class="size-4 shrink-0" />
+                        {{ __('layouts/team.account_settings_title') }}
+                    </a>
+                </li>
+            </ul>
         </div>
         @endif
     </div>

@@ -10,7 +10,7 @@ test('Utilisateurs non authentifiés sont redirigés vers la page de connexion',
     $response->assertRedirect(route('login'));
 });
 
-test('authenticated users can visit the dashboard', function () {
+test('Utilisateurs authentifiés peuvent visiter le tableau de bord', function () {
     $player = TeamPlayer::create();
 
     $response = $this->actingAs($player->user)

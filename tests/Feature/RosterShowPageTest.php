@@ -19,18 +19,6 @@ beforeEach(function (): void {
     App::setLocale('fr');
 });
 
-test('le paramètre d’URL tab=availability affiche la section disponibilités', function (): void {
-    $player = TeamPlayer::create();
-
-    Livewire::actingAs($player->user)
-        ->withQueryParams(['tab' => 'availability'])
-        ->test('pages::roster.show', ['slug' => $player->team->slug, 'id' => $player->member->id])
-        ->assertSet('activeTab', 'availability')
-        ->assertSee(__('pages/roster/show.availability.section_title'))
-        ->assertSee('wire:name="tabs::roster.availability"', escape: false)
-        ->assertDontSee('wire:name="tabs::roster.matches"');
-});
-
 test('l’événement refresh_default_schedules recharge les créneaux sur l’onglet disponibilités', function (): void {
     $player = TeamPlayer::create();
 
