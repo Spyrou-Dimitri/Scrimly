@@ -45,14 +45,14 @@ class CreateScrimGameForm extends Form
             'is_victory' => ['required', 'boolean'],
             'players' => ['required', 'array', 'min:5', 'max:5'],
             'players.*.champion' => ['required', 'string', Rule::in(collect(getChampionsList())->pluck('name'))],
-            'players.*.kills' => ['nullable', 'integer', 'min:0'],
-            'players.*.deaths' => ['nullable', 'integer', 'min:0'],
-            'players.*.assists' => ['nullable', 'integer', 'min:0'],
+            'players.*.kills' => ['nullable', 'numeric', 'min:0'],
+            'players.*.deaths' => ['nullable', 'numeric', 'min:0'],
+            'players.*.assists' => ['nullable', 'numeric', 'min:0'],
             'opponentTeamMembersStarters' => ['required', 'array', 'min:5', 'max:5'],
             'opponentTeamMembersStarters.*.champion' => ['required', 'string', Rule::in(collect(getChampionsList())->pluck('name'))],
-            'opponentTeamMembersStarters.*.kills' => ['nullable', 'integer', 'min:0'],
-            'opponentTeamMembersStarters.*.deaths' => ['nullable', 'integer', 'min:0'],
-            'opponentTeamMembersStarters.*.assists' => ['nullable', 'integer', 'min:0'],
+            'opponentTeamMembersStarters.*.kills' => ['nullable', 'numeric', 'min:0'],
+            'opponentTeamMembersStarters.*.deaths' => ['nullable', 'numeric', 'min:0'],
+            'opponentTeamMembersStarters.*.assists' => ['nullable', 'numeric', 'min:0'],
             'scrimGameNotes' => ['array'],
             'scrimGameNotes.*.type' => ['required', Rule::enum(TypeScrimGameNote::class)],
             'scrimGameNotes.*.note' => ['required', 'string', 'min:3', 'max:500'],
@@ -92,9 +92,9 @@ class CreateScrimGameForm extends Form
                 $scrimGame->scrimGamePlayers()->create([
                     'team_member_id' => $teamMemberId,
                     'champion' => $player['champion'],
-                    'kills' => $player['kills'],
-                    'deaths' => $player['deaths'],
-                    'assists' => $player['assists'],
+                    'kills' => (int) ($player['kills'] ?? 0),
+                    'deaths' => (int) ($player['deaths'] ?? 0),
+                    'assists' => (int) ($player['assists'] ?? 0),
                 ]);
             }
 
