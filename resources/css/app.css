@@ -88,7 +88,7 @@
 
     /* Scrimly - Typographie */
 
-    --font-space-grotesk: 'Space Grotesk', sans-serif;
+    --font-space-grotesk: 'Space Grotesk', Helvetica, sans-serif;
 
     /* Border colors */
     --border-gold: #F0E6D2;

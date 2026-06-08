@@ -18,7 +18,7 @@ return [
     ],
     'hero' => [
         'title' => 'ScrimlyLol',
-        'slogan' => 'Votre équipe, organisée pour gagner !',
+        'slogan' => 'Organisez vos scrims League of Legends. Analysez. Progressez',
         'description' => 'Calendrier, scrims, objectifs, devoirs et communication.',
         'description_2' => 'Tout ce dont votre équipe a besoin pour progresser !',
         'cta_register' => 'Rejoindre ScrimlyLol',
