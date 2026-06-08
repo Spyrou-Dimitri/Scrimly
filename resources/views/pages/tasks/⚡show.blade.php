@@ -559,7 +559,7 @@ new #[Layout('layouts::team')] class extends Component
             <li class="bg-bg-widget p-6 shadow-basic flex flex-col gap-3">
                 <div class="flex flex-row flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                     <div class="flex items-center gap-4">
-                        <x-user-avatar :user="$comment->teamMember->user" :preset="'team-row'" class="size-9 rounded-full object-cover" />
+                        <x-user-avatar :user="$comment->teamMember->user" :preset="'team-row'" class="size-9 rounded-full object-cover" wid />
                         <p class="text-gold font-semibold text-sm sm:text-base">
                             {{ $comment->teamMember->roleInTeam->label() }}
                             @if ($comment->teamMember->user)
