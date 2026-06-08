@@ -33,7 +33,7 @@ class ScrimGamePlayer extends Model
         $totalKda = $this->kills + $this->assists;
         $totalDeaths = $this->deaths;
         if ($totalDeaths === 0) {
-            return 0;
+            return round($totalKda / 1, 2);
         }
 
         return round($totalKda / $totalDeaths, 2);
