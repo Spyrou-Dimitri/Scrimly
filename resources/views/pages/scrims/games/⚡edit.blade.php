@@ -271,55 +271,45 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                             <div class="flex items-center justify-center gap-2 sm:justify-start">
                                 <div class="flex-1">
                                     <x-forms.input
+                                        :score="true"
                                         wire:model.live="form.players.{{ $member->teamMember->id }}.kills"
                                         :srOnlyLabel="true"
                                         :required="false"
-                                        min="0"
                                         class="text-center px-2"
                                         :label="__('pages/scrims/games/create.kda_kill_placeholder')"
                                         :name="$member->teamMember->user->username.'_kills'"
-                                        :type="'number'"
-                                        :placeholder="__('pages/scrims/games/create.kda_kill_placeholder')">
-                                        @error("form.players.{{ $member->teamMember->id }}.kills")
-                                        <p class="text-red-500">{{ $message }}</p>
-                                        @enderror
-                                    </x-forms.input>
+                                        :placeholder="__('pages/scrims/games/create.kda_kill_placeholder')" />
                                 </div>
                                 <span class="text-text-secondary" aria-hidden="true">/</span>
                                 <div class="flex-1">
                                     <x-forms.input
+                                        :score="true"
                                         wire:model.live="form.players.{{ $member->teamMember->id }}.deaths"
                                         :srOnlyLabel="true"
                                         :required="false"
-                                        min="0"
                                         class="text-center px-2"
                                         :label="__('pages/scrims/games/create.kda_death_placeholder')"
                                         :name="$member->teamMember->user->username.'_deaths'"
-                                        :type="'number'"
-                                        :placeholder="__('pages/scrims/games/create.kda_death_placeholder')">
-                                        @error("form.players.{{ $member->teamMember->id }}.deaths")
-                                        <p class="text-red-500">{{ $message }}</p>
-                                        @enderror
-                                    </x-forms.input>
+                                        :placeholder="__('pages/scrims/games/create.kda_death_placeholder')" />
                                 </div>
                                 <span class="text-text-secondary" aria-hidden="true">/</span>
                                 <div class="flex-1">
                                     <x-forms.input
+                                        :score="true"
                                         :srOnlyLabel="true"
                                         wire:model.live="form.players.{{ $member->teamMember->id }}.assists"
                                         :required="false"
-                                        min="0"
                                         class="text-center px-2"
                                         :label="__('pages/scrims/games/create.kda_assist_placeholder')"
                                         :name="$member->teamMember->user->username.'_assists'"
-                                        :type="'number'"
-                                        :placeholder="__('pages/scrims/games/create.kda_assist_placeholder')">
-                                        @error("form.players.{{ $member->teamMember->id }}.assists")
-                                        <p class="text-red-500">{{ $message }}</p>
-                                        @enderror
-                                    </x-forms.input>
+                                        :placeholder="__('pages/scrims/games/create.kda_assist_placeholder')" />
                                 </div>
                             </div>
+                            <x-forms.score-errors :fields="[
+                                'form.players.'.$member->teamMember->id.'.kills',
+                                'form.players.'.$member->teamMember->id.'.deaths',
+                                'form.players.'.$member->teamMember->id.'.assists',
+                            ]" />
                         </div>
                     </article>
                     @endforeach
@@ -369,43 +359,45 @@ $champions = collect(getChampionsList())->sortBy('name')->pluck('name');
                             <div class="flex items-center justify-center gap-2 sm:justify-start">
                                 <div class="flex-1">
                                     <x-forms.input
+                                        :score="true"
                                         wire:model.live="form.opponentTeamMembersStarters.{{ $role }}.kills"
                                         :srOnlyLabel="true"
                                         :required="false"
-                                        min="0"
                                         class="text-center px-2"
                                         :label="__('pages/scrims/games/create.kda_kill_placeholder')"
                                         :name="'opponent_team_members_starters_'.$role.'_kills'"
-                                        :type="'number'"
                                         :placeholder="__('pages/scrims/games/create.kda_kill_placeholder')" />
                                 </div>
                                 <span class="text-text-secondary" aria-hidden="true">/</span>
                                 <div class="flex-1">
                                     <x-forms.input
+                                        :score="true"
                                         wire:model.live="form.opponentTeamMembersStarters.{{ $role }}.deaths"
                                         :srOnlyLabel="true"
                                         :required="false"
-                                        min="0"
                                         class="text-center px-2"
                                         :label="__('pages/scrims/games/create.kda_death_placeholder')"
                                         :name="'opponent_team_members_starters_'.$role.'_deaths'"
-                                        :type="'number'"
                                         :placeholder="__('pages/scrims/games/create.kda_death_placeholder')" />
                                 </div>
                                 <span class="text-text-secondary" aria-hidden="true">/</span>
                                 <div class="flex-1">
                                     <x-forms.input
+                                        :score="true"
                                         wire:model.live="form.opponentTeamMembersStarters.{{ $role }}.assists"
                                         :srOnlyLabel="true"
                                         :required="false"
-                                        min="0"
                                         class="text-center px-2"
                                         :label="__('pages/scrims/games/create.kda_assist_placeholder')"
                                         :name="'opponent_team_members_starters_'.$role.'_assists'"
-                                        :type="'number'"
                                         :placeholder="__('pages/scrims/games/create.kda_assist_placeholder')" />
                                 </div>
                             </div>
+                            <x-forms.score-errors :fields="[
+                                'form.opponentTeamMembersStarters.'.$role.'.kills',
+                                'form.opponentTeamMembersStarters.'.$role.'.deaths',
+                                'form.opponentTeamMembersStarters.'.$role.'.assists',
+                            ]" />
                         </div>
                     </article>
                     @endforeach
