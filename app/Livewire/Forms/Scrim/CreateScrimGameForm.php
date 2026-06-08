@@ -4,6 +4,7 @@ namespace App\Livewire\Forms\Scrim;
 
 use App\Enums\StatusScrim;
 use App\Enums\TypeScrimGameNote;
+use App\Livewire\Forms\Scrim\Concerns\SanitizesScrimGameScores;
 use App\Models\Scrim;
 use App\Models\ScrimGame;
 use App\Models\User;
@@ -15,6 +16,8 @@ use Livewire\Form;
 
 class CreateScrimGameForm extends Form
 {
+    use SanitizesScrimGameScores;
+
     #[Validate]
     public string $title = '';
 
