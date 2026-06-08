@@ -22,43 +22,38 @@ new class extends Component
             [
                 'label' => __('layouts/team.nav.dashboard'),
                 'icon' => 'squares-2x2',
-                'route' => 'dashboard',
+                'activeRoute' => 'dashboard',
                 'href' => route('dashboard', ['slug' => currentTeam()->slug]),
             ],
             [
                 'label' => __('layouts/team.nav.calendar'),
                 'icon' => 'calendar-days',
-                'route' => 'calendar.index',
+                'activeRoute' => 'calendar.*',
                 'href' => route('calendar.index', ['slug' => currentTeam()->slug]),
             ],
             [
                 'label' => __('layouts/team.nav.scrims'),
                 'icon' => 'trophy',
-                'route' => 'scrims.index',
+                'activeRoute' => 'scrims.*',
                 'href' => route('scrims.index', ['slug' => currentTeam()->slug]),
             ],
             [
                 'label' => __('layouts/team.nav.roster'),
                 'icon' => 'user-group',
-                'route' => 'roster.index',
+                'activeRoute' => 'roster.*',
                 'href' => route('roster.index', ['slug' => currentTeam()->slug]),
             ],
             [
                 'label' => __('layouts/team.nav.homework'),
                 'icon' => 'book-open',
-                'route' => null,
+                'activeRoute' => 'tasks.*',
                 'href' => route('tasks.index', ['slug' => currentTeam()->slug]),
             ],
-            [
-                'label' => __('layouts/team.nav.statistics'),
-                'icon' => 'chart-bar',
-                'route' => null,
-                'href' => '#',
-            ],
+            
             [
                 'label' => __('layouts/team.nav.chat'),
                 'icon' => 'chat-bubble-left-right',
-                'route' => 'chats.index',
+                'activeRoute' => 'chats.*',
                 'href' => route('chats.index', ['slug' => currentTeam()->slug]),
             ],
         ];
@@ -115,12 +110,12 @@ new class extends Component
             </h3>
             @foreach ($this->navItems() as $item)
             @php
-            $isActive = $item['route'] !== null && request()->routeIs($item['route']);
+            $isActive = $item['activeRoute'] !== null && request()->routeIs($item['activeRoute']);
             @endphp
 
             <a
                 href="{{ $item['href'] }}"
-                @if ($item['route']) wire:navigate @endif
+                @if ($item['activeRoute']) wire:navigate @endif
                 @click="open = false"
                 @class([ 'flex items-center gap-3 px-4 py-3 transition-colors duration-150' , 'border border-gold bg-bg-card text-gold'=> $isActive,
                 'text-white hover:text-gold hover:bg-white/5' => ! $isActive,
