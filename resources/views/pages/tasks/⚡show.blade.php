@@ -125,9 +125,9 @@ new #[Layout('layouts::team')] class extends Component
         ]);
         if ($this->isTaskCompleted && $this->task->status !== StatusTask::DONE) {
             $this->openCompleteTaskModal();
-        } else if(!$this->isTaskCompleted && $this->task->status === StatusTask::DONE){
+        } else if (!$this->isTaskCompleted && $this->task->status === StatusTask::DONE) {
             $this->task->update(['status' => StatusTask::IN_PROGRESS]);
-        } else if($this->task->status === StatusTask::TODO && $this->task->subtasks->contains('is_completed', true)){
+        } else if ($this->task->status === StatusTask::TODO && $this->task->subtasks->contains('is_completed', true)) {
             $this->task->update(['status' => StatusTask::IN_PROGRESS]);
         }
     }
@@ -171,9 +171,6 @@ new #[Layout('layouts::team')] class extends Component
 
     public function submitComment(): void
     {
-        if ($this->denyIfCannotManageTask()) {
-            return;
-        }
 
         $this->validate([
             'newCommentContent' => ['required', 'string', 'max:2000'],
@@ -247,7 +244,7 @@ new #[Layout('layouts::team')] class extends Component
                     </span>
                 </div>
                 @if ($this->canManageTask && $this->isTaskCompleted && $this->task->status !== StatusTask::DONE)
-                <button type="button"  wire:click="openCompleteTaskModal" class="cta-secondary group inline-flex shrink-0 flex-row items-center gap-2">
+                <button type="button" wire:click="openCompleteTaskModal" class="cta-secondary group inline-flex shrink-0 flex-row items-center gap-2">
                     <flux:icon name="check" class="size-6 text-gold group-hover:text-black transition-colors duration-150" />
                     {{ __('pages/tasks/show.action_complete_task') }}
                 </button>
@@ -561,12 +558,16 @@ new #[Layout('layouts::team')] class extends Component
             @foreach ($this->taskComments as $comment)
             <li class="bg-bg-widget p-6 shadow-basic flex flex-col gap-3">
                 <div class="flex flex-row flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                    <p class="text-gold font-semibold text-sm sm:text-base">
-                        {{ $comment->teamMember->roleInTeam->label() }}
-                        @if ($comment->teamMember->user)
-                        - {{ $comment->teamMember->user->username }}
-                        @endif
-                    </p>
+                    <div class="flex items-center gap-4">
+                        <x-user-avatar :user="$comment->teamMember->user" :preset="'team-row'" class="size-9 rounded-full object-cover" />
+                        <p class="text-gold font-semibold text-sm sm:text-base">
+                            {{ $comment->teamMember->roleInTeam->label() }}
+                            @if ($comment->teamMember->user)
+                            - {{ $comment->teamMember->user->username }}
+                            @endif
+                        </p>
+                    </div>
+
                     <time
                         datetime="{{ $comment->created_at->toIso8601String() }}"
                         class="text-white text-sm shrink-0 ml-auto">
@@ -582,7 +583,6 @@ new #[Layout('layouts::team')] class extends Component
         {{ $this->taskComments->links() }}
         @endif
 
-        @if ($this->canManageTask)
         <form wire:submit.prevent="submitComment" class="flex flex-col bg-bg-widget p-6 shadow-basic sm:flex-row sm:items-stretch gap-3 sm:gap-4">
             <div class="flex flex-1 min-w-0">
                 <x-forms.input
@@ -601,6 +601,5 @@ new #[Layout('layouts::team')] class extends Component
                 {{ __('pages/tasks/show.comment_send') }}
             </x-forms.submit>
         </form>
-        @endif
     </section>
 </div>
