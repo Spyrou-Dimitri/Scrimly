@@ -6,16 +6,21 @@ document.addEventListener('alpine:init', () => {
             const channel = window.Echo.join(`presence.${teamId}`);
             const detectionReload = 3000;
             const pendingReload = {};
-            
+
+            channel.here((members) => {
+                this.onlineMembers = members;
+            });
+
             channel.leaving((member) => {
                 pendingReload[member.id] = setTimeout(() => {
                     delete pendingReload[member.id];
 
                     this.onlineMembers = this.onlineMembers.filter((m) => m.id !== member.id);
-                    Livewire.dispatch('toast', [{
-                        type: 'no-symbol',
-                        message: `${member.username} ${this.labels.isOffline}`,
-                    }]);
+
+                        Livewire.dispatch('toast', [{
+                            type: 'no-symbol',
+                            message: `${member.username} ${this.labels.isOffline}`,
+                        }]);
                 }, detectionReload);
             });
             channel.joining((member) => {
@@ -24,15 +29,16 @@ document.addEventListener('alpine:init', () => {
                     delete pendingReload[member.id];
                     return;
                 }
-                if (member.id !== currentUserId && ! this.onlineMembers.includes(member)) {
-                    Livewire.dispatch('toast', [{
-                        type: 'wifi',
-                        message: `${member.username} ${this.labels.isOnline}`,
-                    }]);
+                if (member.id !== currentUserId && ! this.onlineMembers.some((m) => m.id === member.id)) {
+                   
+                        Livewire.dispatch('toast', [{
+                            type: 'wifi',
+                            message: `${member.username} ${this.labels.isOnline}`,
+                        }]);
                 }
-                    this.onlineMembers.push(member);
+                this.onlineMembers.push(member);
             });
-            
+
         }
     }));
 });

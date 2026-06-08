@@ -19,7 +19,7 @@ $tierLine .= ' • '.$memberUser->rank;
 }
 @endphp
 
-<article x-data="chatPresence({{ currentTeam()->id }}, {{ currentMember()->user_id }})" @click="$el.querySelector('[data-profil-link]')?.click()" {{ $attributes->merge(['class' => 'relative cursor-pointer border-l-2 border-gold flex min-h-full flex-col bg-bg-card p-4 basic-shadow md:p-5 card-animated-border']) }}>
+<article @click="$el.querySelector('[data-profil-link]')?.click()" {{ $attributes->merge(['class' => 'relative cursor-pointer border-l-2 border-gold flex min-h-full flex-col bg-bg-card p-4 basic-shadow md:p-5 card-animated-border']) }}>
     <span class="card-animated-border-right-edge" aria-hidden="true"></span>
     <div class="relative">
         <div class="relative overflow-hidden">
@@ -31,14 +31,15 @@ $tierLine .= ' • '.$memberUser->rank;
         </div>
         <div class="absolute right-2 top-2 z-10 flex items-center gap-2" @click.stop>
             <template x-if="onlineMembers.some(member => member.id === {{ $memberUser->id }})">
-                <span class="inline-flex flex-1 items-center gap-1.5 bg-bg-widget px-3 py-2 text-xs font-medium text-white">
-                    <span class="size-1.5 shrink-0 rounded-full bg-green-500" aria-hidden="true"></span>
+                <span class="relative inline-flex flex-1 items-center gap-1.5 bg-bg-widget px-3 py-2 text-xs font-medium text-white">
+                    <span class="absolute opacity-75 animate-ping size-2.5 shrink-0 rounded-full bg-green-500" aria-hidden="true"></span>
+                    <span class="relative size-2.5 shrink-0 rounded-full bg-green-500" aria-hidden="true"></span>
                     {{ __('pages/roster/index.online') }}
                 </span>
             </template>
             <template x-if="!onlineMembers.some(member => member.id === {{ $memberUser->id }})">
                 <span class="inline-flex flex-1 items-center gap-1.5 bg-bg-widget px-3 py-2 text-xs font-medium text-white">
-                    <span class="size-1.5 shrink-0 rounded-full bg-red-500" aria-hidden="true"></span>
+                    <span class="size-2.5 shrink-0 rounded-full bg-red-500" aria-hidden="true"></span>
                     {{ __('pages/roster/index.offline') }}
                 </span>
             </template>
@@ -61,6 +62,7 @@ $tierLine .= ' • '.$memberUser->rank;
                 <div
                     x-show="open"
                     x-transition:enter="transition ease-out duration-100"
+                    x-transition:enter-start="opacity-0 scale-95"
                     x-transition:enter-start="opacity-0 scale-95"
                     x-transition:enter-end="opacity-100 scale-100"
                     x-transition:leave="transition ease-in duration-75"
