@@ -23,6 +23,9 @@ export const Password = {
     },
 
     init() {
+        if (!this.toggleButton || !this.passwordInput || !this.passwordRules || !this.passwordRulesIconsError || !this.passwordRulesIconsSuccess) {
+            return;
+        }
         this.isToggle();
         this.securePassword();
     },
