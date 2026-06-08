@@ -7,9 +7,9 @@ use App\Models\ScrimGame;
 use App\Models\ScrimGamePlayer;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Validate;
-use Illuminate\Support\Facades\Gate;
 use Livewire\Form;
 
 class EditScrimGameForm extends Form
@@ -44,14 +44,14 @@ class EditScrimGameForm extends Form
             'is_victory' => ['required', 'boolean'],
             'players' => ['required', 'array', 'min:5', 'max:5'],
             'players.*.champion' => ['required', 'string', Rule::in(collect(getChampionsList())->pluck('name'))],
-            'players.*.kills' => ['nullable', 'integer', 'min:0'],
-            'players.*.deaths' => ['nullable', 'integer', 'min:0'],
-            'players.*.assists' => ['nullable', 'integer', 'min:0'],
+            'players.*.kills' => ['nullable', 'numeric', 'min:0'],
+            'players.*.deaths' => ['nullable', 'numeric', 'min:0'],
+            'players.*.assists' => ['nullable', 'numeric', 'min:0'],
             'opponentTeamMembersStarters' => ['required', 'array', 'min:5', 'max:5'],
             'opponentTeamMembersStarters.*.champion' => ['required', 'string', Rule::in(collect(getChampionsList())->pluck('name'))],
-            'opponentTeamMembersStarters.*.kills' => ['nullable', 'integer', 'min:0'],
-            'opponentTeamMembersStarters.*.deaths' => ['nullable', 'integer', 'min:0'],
-            'opponentTeamMembersStarters.*.assists' => ['nullable', 'integer', 'min:0'],
+            'opponentTeamMembersStarters.*.kills' => ['nullable', 'numeric', 'min:0'],
+            'opponentTeamMembersStarters.*.deaths' => ['nullable', 'numeric', 'min:0'],
+            'opponentTeamMembersStarters.*.assists' => ['nullable', 'numeric', 'min:0'],
             'scrimGameNotes' => ['array'],
             'scrimGameNotes.*.type' => ['required', Rule::enum(TypeScrimGameNote::class)],
             'scrimGameNotes.*.note' => ['required', 'string', 'min:3', 'max:500'],
@@ -64,7 +64,6 @@ class EditScrimGameForm extends Form
         if (Gate::denies('manageTeam', User::class)) {
             return false;
         }
-
 
         DB::transaction(function () use ($scrimGameId, $validated) {
             $scrimGame = ScrimGame::findOrFail($scrimGameId);
@@ -81,9 +80,9 @@ class EditScrimGameForm extends Form
                     ->where('team_member_id', $teamMemberId)
                     ->update([
                         'champion' => $player['champion'],
-                        'kills' => $player['kills'] ?? 0,
-                        'deaths' => $player['deaths'] ?? 0,
-                        'assists' => $player['assists'] ?? 0,
+                        'kills' => (int) ($player['kills'] ?? 0),
+                        'deaths' => (int) ($player['deaths'] ?? 0),
+                        'assists' => (int) ($player['assists'] ?? 0),
                     ]);
             }
 
