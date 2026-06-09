@@ -78,7 +78,7 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
                             </span>
                             @enderror
                         </x-forms.input>
-                        <x-forms.select wire:model.live="form.roleInTeam" :required="true" :disabled="'-- Sélectionnez le rôle --'" :name="'roleInTeam'" :label="__('pages/team/join.roleInTeam')" :options="RoleInTeam::cases()">
+                        <x-forms.select wire:model.live="form.roleInTeam" :required="true" :disabled="__('pages/team/join.role_disabled')" :name="'roleInTeam'" :label="__('pages/team/join.roleInTeam')" :options="RoleInTeam::cases()">
                             @error('form.roleInTeam')
                             <span class="font-spaceGrotesk text-input-error font-semibold">
                                 {{ $message }}
@@ -86,7 +86,7 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
                             @enderror
                         </x-forms.select>
                         @if($form->roleInTeam === RoleInTeam::PLAYER)
-                        <x-forms.select wire:model.live="form.roleInGame" :required="true" :disabled="'-- Sélectionnez le rôle --'" :name="'roleInGame'" :label="__('pages/team/join.roleInGame')" :options="RoleInGame::cases()">
+                        <x-forms.select wire:model.live="form.roleInGame" :required="true" :disabled="__('pages/team/join.role_disabled')" :name="'roleInGame'" :label="__('pages/team/join.roleInGame')" :options="RoleInGame::cases()">
                             @error('form.roleInGame')
                             <span class="font-spaceGrotesk text-input-error font-semibold">
                                 {{ $message }}
@@ -116,9 +116,9 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
             <div class="flex flex-col gap-4 bg-bg-widget p-6 shadow-basic lg:col-span-4 w-full self-start">
                 <h3 class="text-[20px] font-bold text-center">
                     @if($this->teamFinder)
-                    Equipe sélectionnée :
+                    {{ __('pages/team/join.team_selected') }}
                     @else
-                    Equipe non trouvée
+                    {{ __('pages/team/join.team_not_found') }}
                     @endif
                 </h3>
                 @if($this->teamFinder)

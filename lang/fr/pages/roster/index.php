@@ -19,4 +19,6 @@ return [
     'empty_bench' => 'Aucun remplaçant pour le moment.',
     'empty_staff' => 'Aucun coach ou membre du staff pour le moment.',
     'empty_candidates' => 'Aucune candidature pour le moment.',
+    'desired_role' => 'Rôle souhaité',
+    'current_rank' => 'Rang actuel',
 ];

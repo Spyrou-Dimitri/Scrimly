@@ -21,7 +21,7 @@
 
     $resolvedSrc = $src ?? $team->logo_url;
     $resolvedSizes = $sizesPresets[$preset] ?? $sizesPresets['thumbnail'];
-    $resolvedAlt = $alt ?? 'Logo de l\'équipe '.$team->name;
+    $resolvedAlt = $alt ?? __('pages/team/create.logo_image_alt_named', ['name' => $team->name]);
     $resolvedLoading = $loading ?? ($preset === 'topbar' ? 'eager' : 'lazy');
     $useSrcset = $src === null && filled($team->logo_srcset);
 @endphp

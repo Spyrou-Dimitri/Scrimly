@@ -11,4 +11,9 @@ return [
     'coach_status_placeholder_disabled' => '-- Sélectionner un statut --',
     'coach_team_member_placeholder' => 'Assigné à',
     'coach_team_member_placeholder_disabled' => '-- Sélectionner un membre --',
+    'coach_column_task' => 'Devoir',
+    'coach_column_assignee' => 'Assigné à',
+    'coach_column_status' => 'Statut',
+    'coach_column_progress' => 'Progression',
+    'coach_column_actions' => 'Actions',
 ];

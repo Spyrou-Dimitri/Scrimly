@@ -69,14 +69,17 @@ return [
             'invite_join' => [
                 'title' => 'Create or join a team',
                 'description' => 'Sign up for free and create your team in a few clicks. A unique code is generated automatically to invite your players. You can also join an existing team by entering its code.',
+                'image_alt' => 'Vitality team photo waving to the crowd',
             ],
             'manage_players' => [
                 'title' => 'Invite and manage your players',
                 'description' => 'Share your team code with your players. They sign up, enter the code, and request to join. You approve requests in one click, manage starters and substitutes, and organize your staff for complete team management.',
+                'image_alt' => 'Photo of players planning a strategy',
             ],
             'plan_scrims' => [
                 'title' => 'Manage and improve',
                 'description' => 'Plan upcoming scrims and events with a shared calendar for the whole team. Communicate quickly with players and staff via team chat, assign tasks, set goals, and track progress. All essential information is centralized in one place so everyone stays informed and engaged.',
+                'image_alt' => 'Photo of esports players focused on their screens',
             ],
         ],
     ],

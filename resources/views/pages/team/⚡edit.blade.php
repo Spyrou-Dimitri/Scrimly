@@ -230,14 +230,14 @@ new #[Layout('layouts::team')] class extends Component
                             @enderror
                         </x-forms.input>
                         <div class="flex flex-col gap-4 sm:flex-row sm:gap-6">
-                            <x-forms.select wire:model.live="form.server" :required="true" :disabled="'-- Sélectionnez le serveur --'" :name="'server'" :label="__('pages/team/edit.server')" :options="LolServeur::cases()">
+                            <x-forms.select wire:model.live="form.server" :required="true" :disabled="__('pages/team/edit.server_disabled')" :name="'server'" :label="__('pages/team/edit.server')" :options="LolServeur::cases()">
                                 @error('form.server')
                                 <span class="font-spaceGrotesk text-input-error font-semibold">
                                     {{ $message }}
                                 </span>
                                 @enderror
                             </x-forms.select>
-                            <x-forms.select wire:model.live="form.goal" :required="true" :name="'goal'" :label="__('pages/team/edit.goal')" :options="LolGoal::cases()" :disabled="'-- Quel est le but de votre équipe ? --'">
+                            <x-forms.select wire:model.live="form.goal" :required="true" :name="'goal'" :label="__('pages/team/edit.goal')" :options="LolGoal::cases()" :disabled="__('pages/team/edit.goal_disabled')">
                                 @error('form.goal')
                                 <span class="font-spaceGrotesk text-input-error font-semibold">
                                     {{ $message }}
@@ -245,7 +245,7 @@ new #[Layout('layouts::team')] class extends Component
                                 @enderror
                             </x-forms.select>
                         </div>
-                        <x-forms.select wire:model.live="form.language" :required="true" :disabled="'-- Sélectionnez la langue --'" :name="'language'" :label="__('pages/team/edit.language')" :options="Language::cases()">
+                        <x-forms.select wire:model.live="form.language" :required="true" :disabled="__('pages/team/edit.language_disabled')" :name="'language'" :label="__('pages/team/edit.language')" :options="Language::cases()">
                             @error('form.language')
                             <span class="font-spaceGrotesk text-input-error font-semibold">
                                 {{ $message }}

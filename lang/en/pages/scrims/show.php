@@ -44,4 +44,5 @@ return [
     'note_menu' => 'Note actions',
     'note_menu_edit' => 'Edit',
     'note_menu_delete' => 'Delete',
+    'kda_label' => 'K/D/A:',
 ];

@@ -20,6 +20,7 @@ return [
     'already_registered' => 'Vous avez déjà un compte ?',
     'title_cta' => 'Accéder à l\'espace de connexion',
     'login' => 'Connectez-vous !',
+    'page_title' => 'Inscription • Scrimly',
     'avatar_section_image' => 'Image de profil',
     'upload_photo' => 'Importer une photo',
     'delete_avatar' => 'Supprimer la photo importée',

@@ -52,7 +52,7 @@ new class extends Component
         $this->dispatch('close_modal');
         $this->dispatch('toast', [
             'type' => 'error',
-            'message' => 'Candidature refusée',
+            'message' => __('toasts/toasts.application_refused'),
         ]);
     }
 
@@ -75,7 +75,7 @@ new class extends Component
                 'boolean',
             ],
         ], [
-            'is_starter.required' => 'Veuillez choisir un statut (Titulaire ou Remplacant).',
+            'is_starter.required' => __('modals/team-application.is_starter_required'),
         ]);
 
 
@@ -102,7 +102,7 @@ new class extends Component
         $this->dispatch('close_modal');
         $this->dispatch('toast', [
             'type' => 'success',
-            'message' => 'Candidature acceptée',
+            'message' => __('toasts/toasts.application_accepted'),
         ]);
     }
     #[Computed]
@@ -135,7 +135,7 @@ new class extends Component
             </div>
             <div class="flex flex-wrap justify-around gap-6 md:flex-1 lg:contents" role="list">
                 <div role="listitem" class="text-center lg:col-span-3 flex flex-col gap-1">
-                    <p class="text-text-gray">Role souhaite</p>
+                    <p class="text-text-gray">{{ __('modals/team-application.desired_role') }}</p>
                     <div class="text-xl font-bold text-white flex justify-center items-center gap-2">
                         @if ($candidate->roleInTeam === RoleInTeam::COACH || $candidate->roleInTeam === RoleInTeam::STAFF)
                         <p>{{ $candidate->roleInTeam->label() }}</p>
@@ -146,7 +146,7 @@ new class extends Component
                     </div>
                 </div>
                 <div role="listitem" class="text-center lg:col-span-3 flex flex-col gap-1">
-                    <p class="text-text-gray">Rang actuel</p>
+                    <p class="text-text-gray">{{ __('modals/team-application.current_rank') }}</p>
                     <div class="text-xl font-bold text-white flex justify-center items-center gap-2">
                         @if ($this->candidate->user->tier)
                         <img src="{{ asset($this->candidate->user->tier->icon()) }}" class="w-8 h-8" alt="{{ $this->candidate->user->tier->label() }}">
@@ -159,7 +159,7 @@ new class extends Component
                     </div>
                 </div>
                 <div role="listitem" class="text-center lg:col-span-3 flex flex-col gap-1">
-                    <p class="text-text-gray">Winrate</p>
+                    <p class="text-text-gray">{{ __('modals/team-application.winrate_label') }}</p>
                     <div class="flex flex-col gap-0.5">
                         <p class="text-gold text-xl font-bold">
                             @if ($this->candidate->user->riotProfile)
@@ -170,7 +170,7 @@ new class extends Component
                         </p>
                         <p class="text-text-white text-sm">
                             @if ($this->candidate->user->riotProfile)
-                            {{ $this->candidate->user->riotProfile->wins }}V / {{ $this->candidate->user->riotProfile->losses }}D
+                            {{ __('modals/team-application.win_loss_format', ['wins' => $this->candidate->user->riotProfile->wins, 'losses' => $this->candidate->user->riotProfile->losses]) }}
                             @else
                             -
                             @endif
@@ -181,7 +181,7 @@ new class extends Component
             </div>
         </div>
         <div class="flex flex-col gap-2 mb-6">
-            <h3 class="text-gold font-bold text-2xl">Motivation</h3>
+            <h3 class="text-gold font-bold text-2xl">{{ __('modals/team-application.motivation_heading') }}</h3>
             @if ($this->candidate->motivation)
             <p class="text-white">{{ $this->candidate->motivation }}</p>
             @else
@@ -193,19 +193,19 @@ new class extends Component
         <div class="border-t-2 border-gray-500 pt-6">
             <fieldset>
                 <legend class="mb-2 text-gold font-bold text-xl lg:text-2xl">
-                    Gestion de la candidature
+                    {{ __('modals/team-application.management_legend') }}
                 </legend>
                 <div class="grid gap-4">
                     <div>
                         <x-forms.radio
                             name="is_starter"
-                            label="Statut"
+                            label="{{ __('modals/team-application.status_label') }}"
                             wire:model.live="is_starter"
                             :columns="2"
                             :required="true"
                             :options="[
-                            ['value' => '1', 'label' => 'Titulaire'],
-                            ['value' => '0', 'label' => 'Remplaçant'],
+                            ['value' => '1', 'label' => __('modals/team-application.starter')],
+                            ['value' => '0', 'label' => __('modals/team-application.substitute')],
                         ]" />
                         @error('is_starter')
                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -216,16 +216,20 @@ new class extends Component
                 <div class="flex items-center bg-red-900/60 mt-2 text-white p-2 gap-2">
                     <flux:icon name="exclamation-triangle" variant="outline" class="w-12 h-12" />
                     <p>
-                        <span class="font-bold">{{$this->existingStarterRoleInGame->user->username}}</span> est déjà titulaire <span class="font-bold">{{$this->existingStarterRoleInGame->roleInGame->label()}}</span>. Il sera automatiquement passé en remplaçant si vous acceptez <span class="font-bold">{{$this->candidate->user->username}}</span> comme titulaire.
+                        {{ __('modals/promote-to-starter.conflict_notice', [
+                            'existing_username' => $this->existingStarterRoleInGame->user->username,
+                            'role_label' => $this->existingStarterRoleInGame->roleInGame->label(),
+                            'member_username' => $this->candidate->user->username,
+                        ]) }}
                     </p>
                 </div>
                 @endif
                 <div class="flex justify-between gap-2 mt-6">
                     <button wire:click="refuse" class="cta-secondary">
-                        Refuser
+                        {{ __('modals/team-application.refuse') }}
                     </button>
                     <button wire:click="accept" class="cta-primary">
-                        Accepter
+                        {{ __('modals/team-application.accept') }}
                     </button>
                 </div>
             </fieldset>
@@ -235,10 +239,10 @@ new class extends Component
         @can('manageTeam', User::class)
         <div class="flex justify-between gap-2">
             <x-destructive wire:click="refuse">
-                Refuser
+                {{ __('modals/team-application.refuse') }}
             </x-destructive>
             <x-accept wire:click="accept">
-                Accepter
+                {{ __('modals/team-application.accept') }}
             </x-accept>
         </div>
         @endcan

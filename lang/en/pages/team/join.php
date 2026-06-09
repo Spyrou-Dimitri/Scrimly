@@ -11,4 +11,7 @@ return [
     'motivation_placeholder' => 'Enter your motivation',
     'cancel' => 'Cancel',
     'join' => 'Apply',
+    'role_disabled' => '-- Select a role --',
+    'team_selected' => 'Selected team:',
+    'team_not_found' => 'Team not found',
 ];

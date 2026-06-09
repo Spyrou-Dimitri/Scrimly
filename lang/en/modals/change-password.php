@@ -9,4 +9,5 @@ return [
     'save' => 'Save',
     'success_title' => 'Password changed',
     'success_message' => 'Your password was changed successfully.',
+    'old_password_incorrect' => 'The current password is incorrect.',
 ];

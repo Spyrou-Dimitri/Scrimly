@@ -425,7 +425,7 @@ new #[Layout('layouts::team')] class extends Component
                                         {{ $player->kills }} / {{ $player->deaths }} / {{ $player->assists }}
                                     </p>
                                     <p @class(['text-sm font-bold', 'text-victory'=> $game->is_victory, 'text-defeat' => !$game->is_victory])>
-                                        K/D/A : {{ $player->general_kda }}
+                                        {{ __('pages/scrims/show.kda_label') }} {{ $player->general_kda }}
                                     </p>
                                 </div>
 
@@ -456,7 +456,7 @@ new #[Layout('layouts::team')] class extends Component
                                         {{ $opponentPlayer['kills'] }} / {{ $opponentPlayer['deaths'] }} / {{ $opponentPlayer['assists'] }}
                                     </p>
                                     <p @class(['text-sm font-bold', 'text-victory'=> ! $game->is_victory, 'text-defeat' => $game->is_victory])>
-                                        K/D/A : {{ $game->calculateKda($opponentPlayer['kills'], $opponentPlayer['deaths'], $opponentPlayer['assists']) }}
+                                        {{ __('pages/scrims/show.kda_label') }} {{ $game->calculateKda($opponentPlayer['kills'], $opponentPlayer['deaths'], $opponentPlayer['assists']) }}
                                     </p>
                                 </div>
                             </li>

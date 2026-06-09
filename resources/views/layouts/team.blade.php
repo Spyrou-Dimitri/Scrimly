@@ -24,7 +24,7 @@
         {{ __('accessibility.skip_to_content') }}
     </a>
 
-    <h1 class="sr-only">Scrimly</h1>
+    <h1 class="sr-only">{{ __('layouts/team.scrimly') }}</h1>
 
     <livewire:layout.sidebar />
 

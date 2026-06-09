@@ -20,6 +20,7 @@ return [
     'already_registered' => 'Already have an account?',
     'title_cta' => 'Go to the sign-in area',
     'login' => 'Sign in!',
+    'page_title' => 'Sign up • Scrimly',
     'avatar_section_image' => 'Profile picture',
     'upload_photo' => 'Upload a photo',
     'delete_avatar' => 'Remove uploaded photo',

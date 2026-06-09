@@ -70,13 +70,13 @@ class EditTeamForm extends Form
     public function attributes(): array
     {
         return [
-            'team_name' => 'pages/team/edit.team_name',
-            'server' => 'pages/team/edit.server',
-            'goal' => 'pages/team/edit.goal',
-            'language' => 'pages/team/edit.language',
-            'description' => 'pages/team/edit.description',
-            'logo' => 'pages/team/edit.logo',
-            'default_logo' => 'pages/team/edit.default_logo',
+            'team_name' => __('pages/team/edit.team_name'),
+            'server' => __('pages/team/edit.server'),
+            'goal' => __('pages/team/edit.goal'),
+            'language' => __('pages/team/edit.language'),
+            'description' => __('pages/team/edit.description'),
+            'logo' => __('pages/team/edit.logo'),
+            'default_logo' => __('pages/team/edit.default_logo'),
         ];
     }
 

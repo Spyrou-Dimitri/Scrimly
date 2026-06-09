@@ -25,4 +25,10 @@ return [
     'upload_logo' => 'Importer un logo',
     'choose_logo_preset' => 'Ou choisissez un logo prédéfini',
     'logo_image_alt' => 'Logo de l\'équipe',
+    'logo_image_alt_named' => 'Logo de l\'équipe :name',
+    'information_section_title' => 'Informations de l\'équipe',
+    'server_disabled' => '-- Sélectionnez le serveur --',
+    'goal_disabled' => '-- Quel est le but de votre équipe ? --',
+    'language_disabled' => '-- Sélectionnez la langue --',
+    'role_disabled' => '-- Sélectionnez le rôle --',
 ];

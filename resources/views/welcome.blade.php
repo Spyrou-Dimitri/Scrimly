@@ -302,7 +302,7 @@ $currentUser = auth()->user();
                                     <source media="(min-width: 1000px)" srcset="{{ asset('img/welcome/how-it-work/first-step/create-600.jpg') }}">
                                     <source media="(min-width: 768px)" srcset="{{ asset('img/welcome/how-it-work/first-step/create-800.jpg') }}">
                                     <source media="(min-width: 530px)" srcset="{{ asset('img/welcome/how-it-work/first-step/create-800.jpg') }}">
-                                    <img src="{{ asset('img/welcome/how-it-work/first-step/create-480.jpg') }}" alt="Photo de l'équipe Vitality qui salue le public" class="w-full aspect-video object-cover" aria-hidden="true">
+                                    <img src="{{ asset('img/welcome/how-it-work/first-step/create-480.jpg') }}" alt="{{ __('welcome.how-it-works.steps.invite_join.image_alt') }}" class="w-full aspect-video object-cover" aria-hidden="true">
                                 </picture>
                             </x-slot:media>
                         </x-text-media>
@@ -319,7 +319,7 @@ $currentUser = auth()->user();
                                     <source media="(min-width: 1000px)" srcset="{{ asset('img/welcome/how-it-work/second-step/roster-600.jpg') }}">
                                     <source media="(min-width: 768px)" srcset="{{ asset('img/welcome/how-it-work/second-step/roster-800.jpg') }}">
                                     <source media="(min-width: 530px)" srcset="{{ asset('img/welcome/how-it-work/second-step/roster-800.jpg') }}">
-                                    <img src="{{ asset('img/welcome/how-it-work/second-step/roster-800.jpg') }}" alt="Photo de joueurs qui planifient une stratégie" class="w-full aspect-video object-cover" aria-hidden="true">
+                                    <img src="{{ asset('img/welcome/how-it-work/second-step/roster-800.jpg') }}" alt="{{ __('welcome.how-it-works.steps.manage_players.image_alt') }}" class="w-full aspect-video object-cover" aria-hidden="true">
                                 </picture>
                             </x-slot:media>
                         </x-text-media>
@@ -335,7 +335,7 @@ $currentUser = auth()->user();
                                     <source media="(min-width: 1000px)" srcset="{{ asset('img/welcome/how-it-work/third-step/manage-600.jpg') }}">
                                     <source media="(min-width: 768px)" srcset="{{ asset('img/welcome/how-it-work/third-step/manage-800.jpg') }}">
                                     <source media="(min-width: 530px)" srcset="{{ asset('img/welcome/how-it-work/third-step/manage-800.jpg') }}">
-                                    <img src="{{ asset('img/welcome/how-it-work/third-step/manage-800.jpg') }}" alt="Photo de joueurs d'esport concentré sur leur écran" class="w-full aspect-video object-cover" aria-hidden="true">
+                                    <img src="{{ asset('img/welcome/how-it-work/third-step/manage-800.jpg') }}" alt="{{ __('welcome.how-it-works.steps.plan_scrims.image_alt') }}" class="w-full aspect-video object-cover" aria-hidden="true">
                                 </picture>
                             </x-slot:media>
                         </x-text-media>

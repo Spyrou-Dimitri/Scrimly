@@ -25,4 +25,10 @@ return [
     'upload_logo' => 'Upload a logo',
     'choose_logo_preset' => 'Or choose a preset logo',
     'logo_image_alt' => 'Team logo',
+    'logo_image_alt_named' => 'Team logo :name',
+    'information_section_title' => 'Team information',
+    'server_disabled' => '-- Select a server --',
+    'goal_disabled' => '-- What is your team\'s goal? --',
+    'language_disabled' => '-- Select a language --',
+    'role_disabled' => '-- Select a role --',
 ];

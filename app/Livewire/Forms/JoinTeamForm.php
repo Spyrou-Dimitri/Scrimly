@@ -40,10 +40,10 @@ class JoinTeamForm extends Form
     protected function attributes(): array
     {
         return [
-            'team_code' => 'Code de l\'équipe',
-            'roleInTeam' => 'Rôle dans l\'équipe',
-            'roleInGame' => 'Rôle dans le jeu',
-            'motivation' => 'Motivation',
+            'team_code' => __('pages/team/join.team_code'),
+            'roleInTeam' => __('pages/team/join.roleInTeam'),
+            'roleInGame' => __('pages/team/join.roleInGame'),
+            'motivation' => __('pages/team/join.motivation'),
         ];
     }
 

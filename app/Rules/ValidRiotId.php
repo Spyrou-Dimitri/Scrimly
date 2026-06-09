@@ -34,7 +34,7 @@ class ValidRiotId implements ValidationRule
         $account = $this->client->getAccount($gameName, $tagLine);
 
         if ($account === null) {
-            $fail('The :attribute is not a valid Riot ID.');
+            $fail(__('profil/profil.riot_id_invalid'));
 
             return;
         }

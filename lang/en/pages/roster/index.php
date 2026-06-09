@@ -19,4 +19,6 @@ return [
     'empty_bench' => 'No substitutes at the moment.',
     'empty_staff' => 'No coaches or staff members at the moment.',
     'empty_candidates' => 'No applications at the moment.',
+    'desired_role' => 'Desired role',
+    'current_rank' => 'Current rank',
 ];

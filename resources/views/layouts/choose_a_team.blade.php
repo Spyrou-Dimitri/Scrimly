@@ -83,8 +83,8 @@ $currentUser = auth()->user();
         </p>
 
         <div class="flex items-center gap-6">
-            <x-cta href="#" :title="__('layouts/choose_a_team.mentions_legales_title')" :class="'nav'">Mentions légales</x-cta>
-            <x-cta href="#" :title="__('layouts/choose_a_team.conditions_utilisation_title')" :class="'nav'">Conditions d'utilisation</x-cta>
+            <x-cta href="#" :title="__('layouts/choose_a_team.mentions_legales_title')" :class="'nav'">{{ __('layouts/choose_a_team.mentions_legales') }}</x-cta>
+            <x-cta href="#" :title="__('layouts/choose_a_team.conditions_utilisation_title')" :class="'nav'">{{ __('layouts/choose_a_team.conditions_utilisation') }}</x-cta>
         </div>
     </footer>
     <livewire:widgets::toast />

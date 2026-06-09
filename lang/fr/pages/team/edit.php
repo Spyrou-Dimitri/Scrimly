@@ -22,4 +22,7 @@ return [
     'choose_logo_preset' => 'Ou choisissez un logo prédéfini',
     'logo_image_alt' => 'Logo de l\'équipe',
     'default_logo' => 'Logo prédéfini',
+    'server_disabled' => '-- Sélectionnez le serveur --',
+    'goal_disabled' => '-- Quel est le but de votre équipe ? --',
+    'language_disabled' => '-- Sélectionnez la langue --',
 ];

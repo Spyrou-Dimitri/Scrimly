@@ -111,7 +111,7 @@ new class extends Component
             @endif
         </div>
         <div class="flex flex-col gap-4 md:flex-row md:items-end p-6 bg-bg-widget shadow-basic">
-            <x-forms.input :type="'search'" wire:model.live.debounce.150ms="term" placeholder="Rechercher un devoir" :name="'searchbar'" :label="__('pages/tasks/index.coach_search_task_placeholder')" />
+            <x-forms.input :type="'search'" wire:model.live.debounce.150ms="term" :placeholder="__('pages/tasks/index.coach_search_task_placeholder')" :name="'searchbar'" :label="__('pages/tasks/index.coach_search_task_placeholder')" />
             <x-forms.select wire:model.live.debounce.150ms="selected_status" :name="'selected_status'" :label="__('pages/tasks/index.coach_status_placeholder')" :options="StatusTask::cases()" :disabled="__('pages/tasks/index.coach_status_placeholder_disabled')" />
             <x-forms.select wire:model.live.debounce.150ms="selected_member" :name="'selected_member'" :label="__('pages/tasks/index.coach_team_member_placeholder')"
                 :options="$this->memberFilterOptions"
@@ -121,11 +121,11 @@ new class extends Component
             <table class="w-full shadow-basic min-w-[680px]">
                 <thead class="bg-[#0D0E12]">
                     <tr class="">
-                        <th class="text-left p-6 ">Devoir</th>
-                        <th class="text-left p-6">Assigné à</th>
-                        <th class="text-left p-6">Statut</th>
-                        <th class="text-left p-6">Progression</th>
-                        <th class="text-left p-6">Actions</th>
+                        <th class="text-left p-6 ">{{ __('pages/tasks/index.coach_column_task') }}</th>
+                        <th class="text-left p-6">{{ __('pages/tasks/index.coach_column_assignee') }}</th>
+                        <th class="text-left p-6">{{ __('pages/tasks/index.coach_column_status') }}</th>
+                        <th class="text-left p-6">{{ __('pages/tasks/index.coach_column_progress') }}</th>
+                        <th class="text-left p-6">{{ __('pages/tasks/index.coach_column_actions') }}</th>
                     </tr>
                 </thead>
                 <tbody class="bg-bg-widget">
@@ -134,7 +134,7 @@ new class extends Component
                     <tr>
                         <td class="p-6">
                             <p class="block truncate font-bold text-gold">{{ $task->title }} </p>
-                            <p class="text-xs font-bold text-text-secondary">Echéance : @if($task->deadline) {{ $task->deadline->translatedFormat('d M Y') }} @else - @endif</p>
+                            <p class="text-xs font-bold text-text-secondary">{{ __('components/cards/task.deadline_label') }} @if($task->deadline) {{ $task->deadline->translatedFormat('d M Y') }} @else - @endif</p>
                         </td>
                         <td class="p-6">{{ $task->teamMember->user->username }}</td>
                         <td class="p-6"> <span class="{{ $task->status->macaron() }} text-sm">{{ $task->status->label() }}</span></td>

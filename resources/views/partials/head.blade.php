@@ -2,8 +2,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <meta name="author" content="Dimitri Spyrou">
-<meta name="description" content="Scrimly : calendrier, scrims, objectifs, devoirs et communication. La plateforme pour organiser votre équipe esport et progresser ensemble.">
-<meta name="keywords" content="Scrimly, ScrimlyLol, Dimitri Spyrou, esport, équipe esport, scrims, League of Legends, LoL, calendrier, gestion d'équipe, roster, organisation, compétition">
+<meta name="description" content="{{ __('layouts/seo.description') }}">
+<meta name="keywords" content="{{ __('layouts/seo.keywords') }}">
 
 <title>
     {{ filled($title ?? null) ? config('app.name', 'Laravel').' - '.$title : config('app.name', 'Laravel') }}

@@ -13,4 +13,6 @@ return [
     'not_registered' => 'Pas encore inscrit ?',
     'register' => 'Inscrivez-vous !',
     'title_cta' => 'Accéder à la page d\'inscription',
+    'page_title' => 'Connexion • Scrimly',
+    'hero_image_alt' => 'Splash-art de Riven Heraut de l\'aube',
 ];

@@ -176,7 +176,7 @@ new #[Layout('layouts::team')] class extends Component {
 
                         <div class="grid min-w-0 flex-1 grid-cols-2 gap-3  md:gap-4 md:p-4 xl:flex xl:max-w-none xl:flex-initial xl:items-stretch xl:gap-0 xl:border-0 xl:bg-transparent xl:p-0">
                             <div class="flex min-w-0 flex-col justify-center xl:pr-8">
-                                <p class="text-center text-xs text-text-gray md:text-sm xl:text-center">Role souhaité</p>
+                                <p class="text-center text-xs text-text-gray md:text-sm xl:text-center">{{ __('pages/roster/index.desired_role') }}</p>
                                 <div class="mt-1 flex items-center justify-center gap-2 text-base font-bold text-gold md:text-lg xl:text-xl">
                                     @if ($candidate->roleInTeam === RoleInTeam::COACH || $candidate->roleInTeam === RoleInTeam::STAFF)
                                     <p class="min-w-0 truncate text-center">{{ $candidate->roleInTeam->label() }}</p>
@@ -187,7 +187,7 @@ new #[Layout('layouts::team')] class extends Component {
                                 </div>
                             </div>
                             <div class="flex min-w-0 flex-col justify-center border-l border-border-gold pl-3 md:pl-4 xl:border-l xl:pl-8">
-                                <p class="text-center text-xs text-text-gray md:text-sm xl:text-center">Rang actuel</p>
+                                <p class="text-center text-xs text-text-gray md:text-sm xl:text-center">{{ __('pages/roster/index.current_rank') }}</p>
                                 <div class="mt-1 flex items-center justify-center gap-2 text-base font-bold text-white md:text-lg xl:text-xl">
                                     @if ($candidate->user->tier)
                                     <img src="{{ asset($candidate->user->tier->icon()) }}" class="size-7 shrink-0 md:size-8" alt="{{ $candidate->user->tier->label() }}">

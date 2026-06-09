@@ -40,10 +40,10 @@ class CreateInvitationTeamForm extends Form
     protected function attributes(): array
     {
         return [
-            'username' => 'Nom d\'utilisateur',
-            'roleInTeam' => 'Rôle dans l\'équipe',
-            'roleInGame' => 'Rôle dans le jeu',
-            'motivation' => 'Motivation',
+            'username' => __('pages/roster/invitations.username'),
+            'roleInTeam' => __('pages/roster/invitations.roleInTeam'),
+            'roleInGame' => __('pages/roster/invitations.roleInGame'),
+            'motivation' => __('pages/roster/invitations.motivation'),
         ];
     }
 

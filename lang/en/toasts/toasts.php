@@ -18,4 +18,6 @@ return [
     'application_cancelled' => 'Application cancelled',
     'application_cancelled_message' => 'Your request to join :team has been withdrawn.',
     'too_many_attempts' => 'Too many attempts. Please try again in a minute.',
+    'application_refused' => 'Application declined',
+    'application_accepted' => 'Application accepted',
 ];

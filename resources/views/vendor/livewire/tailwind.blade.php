@@ -20,7 +20,7 @@ $activeMobile = 'cursor-pointer border-input-border bg-bg-card text-text-primary
 
 <div>
     @if ($paginator->hasPages())
-        <nav  aria-label="Pagination Navigation" class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <nav  aria-label="{{ __('pagination.aria_label') }}" class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div class="flex flex-1 justify-between sm:hidden">
                 <span>
                     @if ($paginator->onFirstPage())
@@ -51,13 +51,13 @@ $activeMobile = 'cursor-pointer border-input-border bg-bg-card text-text-primary
             <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
                 <div>
                     <p class="text-sm leading-5 text-text-secondary">
-                        <span>{!! __('Showing') !!}</span>
+                        <span>{!! __('pagination.showing') !!}</span>
                         <span class="font-semibold text-text-primary">{{ $paginator->firstItem() }}</span>
-                        <span>{!! __('to') !!}</span>
+                        <span>{!! __('pagination.to') !!}</span>
                         <span class="font-semibold text-text-primary">{{ $paginator->lastItem() }}</span>
-                        <span>{!! __('of') !!}</span>
+                        <span>{!! __('pagination.of') !!}</span>
                         <span class="font-semibold text-text-primary">{{ $paginator->total() }}</span>
-                        <span>{!! __('results') !!}</span>
+                        <span>{!! __('pagination.results') !!}</span>
                     </p>
                 </div>
 
@@ -101,7 +101,7 @@ $activeMobile = 'cursor-pointer border-input-border bg-bg-card text-text-primary
                                                     <span class="{{ $btnPage }} bg-gold font-semibold text-gold-contrast">{{ $page }}</span>
                                                 </span>
                                             @else
-                                                <button type="button" wire:click="gotoPage({{ $page }}, '{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" class="{{ $btnPage }} bg-bg-card text-text-gray hover:bg-bg-widget hover:text-gold" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">
+                                                <button type="button" wire:click="gotoPage({{ $page }}, '{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" class="{{ $btnPage }} bg-bg-card text-text-gray hover:bg-bg-widget hover:text-gold" aria-label="{{ __('pagination.goto_page', ['page' => $page]) }}">
                                                     {{ $page }}
                                                 </button>
                                             @endif

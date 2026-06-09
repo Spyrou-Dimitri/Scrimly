@@ -52,11 +52,11 @@ class EditProfilForm extends Form
     public function attributes(): array
     {
         return [
-            'username' => 'pages/profile/edit.username',
-            'email' => 'pages/profile/edit.email',
-            'riot_tag' => 'pages/profile/edit.riot_tag',
-            'avatar' => 'pages/profile/edit.avatar',
-            'default_avatar' => 'pages/profile/edit.default_avatar',
+            'username' => __('pages/profile/edit.username'),
+            'email' => __('pages/profile/edit.email'),
+            'riot_tag' => __('pages/profile/edit.riot_tag'),
+            'avatar' => __('pages/profile/edit.avatar'),
+            'default_avatar' => __('pages/profile/edit.default_avatar'),
         ];
     }
 

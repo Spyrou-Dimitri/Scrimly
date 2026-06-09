@@ -2,7 +2,7 @@
 use App\Enums\DefaultAvatar;
 @endphp
 
-<x-layouts.auth title="Inscription • Scrimly">
+<x-layouts.auth :title="__('register/register.page_title')">
     <main id="main-content" aria-labelledby="register-heading" class="flex flex-1 flex-col items-center justify-center gap-6 bg-bg-main p-6">
     <x-auth.back-to-home />
 

@@ -19,7 +19,7 @@
 
     $resolvedSrc = $src ?? $user->avatar_url;
     $resolvedSizes = $sizesPresets[$preset] ?? $sizesPresets['thumbnail'];
-    $resolvedAlt = $alt ?? 'Photo de profil de '.$user->username;
+    $resolvedAlt = $alt ?? __('profil/profil.avatar_alt', ['username' => $user->username]);
     $resolvedLoading = $loading ?? ($preset === 'topbar' ? 'eager' : 'lazy');
     $useSrcset = $src === null && filled($user->avatar_srcset);
 @endphp

@@ -161,7 +161,7 @@ new #[Layout('layouts::team')] class extends Component
                         <span class="text-base text-white">{{ __('pages/roster/show.recent_champions_label') }}</span>
                         <div class="flex items-center justify-center lg:justify-start gap-2" aria-hidden="true">
                             @foreach ($recentChampions as $champion)
-                            <img src="https://ddragon.leagueoflegends.com/cdn/{{ $ddragonVersion }}/img/champion/{{ $champion }}.png" alt="Champion" class="aspect-square w-12 shrink-0 rounded border border-[#2C2D34] bg-bg-card/60">
+                            <img src="https://ddragon.leagueoflegends.com/cdn/{{ $ddragonVersion }}/img/champion/{{ $champion }}.png" alt="{{ __('pages/roster/show.champion_image_alt', ['name' => $champion]) }}" class="aspect-square w-12 shrink-0 rounded border border-[#2C2D34] bg-bg-card/60">
                             @endforeach
                         </div>
                     </div>

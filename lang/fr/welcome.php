@@ -69,13 +69,16 @@ return [
             'invite_join' => [
                 'title' => 'Créer ou rejoignez une équipe',
                 'description' => 'Inscrivez-vous gratuitement et créez votre équipe en quelques clics. Un code unique est généré automatiquement pour inviter vos joueurs. Vous pouvez également rejoindre une équipe existante en saisissant le code qui lui est associé.',
+                'image_alt' => 'Photo de l\'équipe Vitality qui salue le public',
             ],
             'manage_players' => [
                 'title' => 'Invitez et gérer vos joueurs',
                 'description' => 'Partagez le code de votre équipe à vos joueurs. Ils s\'inscrivent, saisissent le code et demandent à rejoindre l\'équipe. Vous validez les demandes en un clic, gérez votre effectif en définissant les titulaires et les remplaçants, et organisez également votre staff pour une gestion complète de votre équipe.',
+                'image_alt' => 'Photo de joueurs qui planifient une stratégie',
             ],
             'plan_scrims' => [
                 'title' => 'Gérez et progressez',
+                'image_alt' => 'Photo de joueurs d\'esport concentré sur leur écran',
                 'description' => 'Planifiez vos scrims et événements à venir grâce à un calendrier partagé accessible à toute l’équipe. Communiquez rapidement avec vos joueurs et votre staff via le chat d’équipe, assignez des tâches, définissez des objectifs et suivez leur progression. Toutes les informations essentielles sont centralisées au même endroit pour simplifier l’organisation et permettre à chacun de rester informé et impliqué.',
             ],
 

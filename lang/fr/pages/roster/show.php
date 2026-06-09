@@ -9,6 +9,7 @@ return [
     'recent_champions_label' => 'Champions récents',
     'rank_unknown' => '—',
     'member_since_unknown' => '—',
+    'champion_image_alt' => 'Champion :name',
     'tabs' => [
         'title' => 'Navigation par onglets',
         'matches' => 'Historique des parties',

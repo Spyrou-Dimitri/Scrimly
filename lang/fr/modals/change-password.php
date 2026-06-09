@@ -9,4 +9,5 @@ return [
     'save' => 'Enregistrer',
     'success_title' => 'Mot de passe changé',
     'success_message' => 'Le mot de passe a été changé avec succès.',
+    'old_password_incorrect' => 'L\'ancien mot de passe est incorrect.',
 ];

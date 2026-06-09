@@ -75,15 +75,15 @@ class CreateTeamForm extends Form
     public function attributes(): array
     {
         return [
-            'team_name' => 'pages/team/create.team_name',
-            'tag' => 'pages/team/create.tag',
-            'server' => 'pages/team/create.server',
-            'goal' => 'pages/team/create.goal',
-            'language' => 'pages/team/create.language',
-            'roleInTeam' => 'pages/team/create.roleInTeam',
-            'description' => 'pages/team/create.description',
-            'logo' => 'pages/team/create.logo',
-            'default_logo' => 'pages/team/create.default_logo',
+            'team_name' => __('pages/team/create.team_name'),
+            'tag' => __('pages/team/create.team_tag'),
+            'server' => __('pages/team/create.server'),
+            'goal' => __('pages/team/create.goal'),
+            'language' => __('pages/team/create.language'),
+            'roleInTeam' => __('pages/team/create.roleInTeam'),
+            'description' => __('pages/team/create.description'),
+            'logo' => __('pages/team/create.logo'),
+            'default_logo' => __('pages/team/create.choose_logo_preset'),
         ];
     }
 

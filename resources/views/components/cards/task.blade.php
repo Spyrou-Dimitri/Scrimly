@@ -16,7 +16,7 @@
         <div class="flex flex-col gap-3">
             <div class="flex justify-between gap-2">
                 <p class="text-text-secondary">
-                    Tâches : {{ $task->subtasks->where('is_completed', true)->count() }} / {{ $task->subtasks->count() }}
+                    {{ __('components/cards/task.subtasks_label') }} {{ $task->subtasks->where('is_completed', true)->count() }} / {{ $task->subtasks->count() }}
                 </p>
                 <p class="text-text-secondary">
                     {{ $task->subtasks->count() > 0 ? round($task->subtasks->where('is_completed', true)->count() / $task->subtasks->count() * 100) : 0 }}%
@@ -40,9 +40,9 @@
             </div>
             <p>
                 @if ($task->status === StatusTask::DONE)
-                Terminé : {{ $task->completed_at->translatedFormat('d M Y') }}
+                {{ __('components/cards/task.completed_label') }} {{ $task->completed_at->translatedFormat('d M Y') }}
                 @else
-                Echéance : @if($task->deadline) {{ $task->deadline->translatedFormat('d M Y') }} @else -
+                {{ __('components/cards/task.deadline_label') }} @if($task->deadline) {{ $task->deadline->translatedFormat('d M Y') }} @else -
                 @endif
                 @endif
             </p>

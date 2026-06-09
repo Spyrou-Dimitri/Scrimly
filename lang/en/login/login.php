@@ -13,4 +13,6 @@ return [
     'not_registered' => 'Not registered yet?',
     'register' => 'Sign up!',
     'title_cta' => 'Go to the registration page',
+    'page_title' => 'Log in • Scrimly',
+    'hero_image_alt' => 'Riven Dawnbringer splash art',
 ];

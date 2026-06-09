@@ -23,16 +23,16 @@ class ChangePasswordForm extends Form
     protected function validationAttributes()
     {
         return [
-            'old_password' => 'Ancien mot de passe',
-            'new_password' => 'Nouveau mot de passe',
-            'new_password_confirmation' => 'Confirmer le nouveau mot de passe',
+            'old_password' => __('modals/change-password.old_password'),
+            'new_password' => __('modals/change-password.new_password'),
+            'new_password_confirmation' => __('modals/change-password.confirm_password'),
         ];
     }
 
     protected function messages()
     {
         return [
-            'old_password.current_password' => 'L\'ancien mot de passe est incorrect.',
+            'old_password.current_password' => __('modals/change-password.old_password_incorrect'),
         ];
     }
 

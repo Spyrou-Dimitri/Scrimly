@@ -18,4 +18,6 @@ return [
     'application_cancelled' => 'Candidature annulée',
     'application_cancelled_message' => 'Votre demande pour rejoindre :team a été retirée.',
     'too_many_attempts' => 'Trop de tentatives. Veuillez réessayer dans une minute.',
+    'application_refused' => 'Candidature refusée',
+    'application_accepted' => 'Candidature acceptée',
 ];

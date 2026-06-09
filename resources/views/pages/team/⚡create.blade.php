@@ -157,9 +157,7 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
             </fieldset>
             <div class="flex min-w-0 flex-col gap-6 border-0 bg-bg-widget p-6 shadow-basic lg:col-span-8 lg:col-start-5 lg:row-start-1 lg:row-span-2 lg:pr-8">
                 <fieldset class="m-0 flex flex-col gap-6 border-0 bg-transparent p-0 shadow-none">
-                    <legend class="sr-only">
-                        Informations de l'équipe
-                    </legend>
+                    <legend class="sr-only">{{ __('pages/team/create.information_section_title') }}</legend>
                     <div class="hidden flex-col gap-2 lg:flex">
                         <h2 class="text-[32px] font-bold ">
                             {!! __('pages/team/create.title') !!}
@@ -186,14 +184,14 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
                             </x-forms.input>
                         </div>
                         <div class="flex flex-col gap-4 sm:flex-row sm:gap-6">
-                            <x-forms.select wire:model.live="form.server" :required="true" :disabled="'-- Sélectionnez le serveur --'" :name="'server'" :label="__('pages/team/create.server')" :options="LolServeur::cases()">
+                            <x-forms.select wire:model.live="form.server" :required="true" :disabled="__('pages/team/create.server_disabled')" :name="'server'" :label="__('pages/team/create.server')" :options="LolServeur::cases()">
                                 @error('form.server')
                                 <span class="font-spaceGrotesk text-input-error font-semibold">
                                     {{ $message }}
                                 </span>
                                 @enderror
                             </x-forms.select>
-                            <x-forms.select wire:model.live="form.goal" :required="true" :name="'goal'" :label="__('pages/team/create.goal')" :options="LolGoal::cases()" :disabled="'-- Quel est le but de votre équipe ? --'">
+                            <x-forms.select wire:model.live="form.goal" :required="true" :name="'goal'" :label="__('pages/team/create.goal')" :options="LolGoal::cases()" :disabled="__('pages/team/create.goal_disabled')">
                                 @error('form.goal')
                                 <span class="font-spaceGrotesk text-input-error font-semibold">
                                     {{ $message }}
@@ -202,14 +200,14 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
                             </x-forms.select>
                         </div>
                         <div class="flex flex-col gap-4 sm:flex-row sm:gap-6">
-                            <x-forms.select wire:model.live="form.language" :required="true" :disabled="'-- Sélectionnez la langue --'" :name="'language'" :label="__('pages/team/create.language')" :options="Language::cases()">
+                            <x-forms.select wire:model.live="form.language" :required="true" :disabled="__('pages/team/create.language_disabled')" :name="'language'" :label="__('pages/team/create.language')" :options="Language::cases()">
                                 @error('form.language')
                                 <span class="font-spaceGrotesk text-input-error font-semibold">
                                     {{ $message }}
                                 </span>
                                 @enderror
                             </x-forms.select>
-                            <x-forms.select wire:model.live="form.roleInTeam" :required="true" :disabled="'-- Sélectionnez le rôle --'" :name="'roleInTeam'" :label="__('pages/team/create.roleInTeam')" :options="RoleInTeam::cases()">
+                            <x-forms.select wire:model.live="form.roleInTeam" :required="true" :disabled="__('pages/team/create.role_disabled')" :name="'roleInTeam'" :label="__('pages/team/create.roleInTeam')" :options="RoleInTeam::cases()">
                                 @error('form.roleInTeam')
                                 <span class="font-spaceGrotesk text-input-error font-semibold">
                                     {{ $message }}
@@ -217,7 +215,7 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
                                 @enderror
                             </x-forms.select>
                             @if($form->roleInTeam === RoleInTeam::PLAYER)
-                            <x-forms.select wire:model.live="form.roleInGame" :required="true" :disabled="'-- Sélectionnez le rôle --'" :name="'roleInGame'" :label="__('pages/team/create.roleInGame')" :options="RoleInGame::cases()">
+                            <x-forms.select wire:model.live="form.roleInGame" :required="true" :disabled="__('pages/team/create.role_disabled')" :name="'roleInGame'" :label="__('pages/team/create.roleInGame')" :options="RoleInGame::cases()">
                                 @error('form.roleInGame')
                                 <span class="font-spaceGrotesk text-input-error font-semibold">
                                     {{ $message }}

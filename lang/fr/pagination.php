@@ -15,5 +15,11 @@ return [
 
     'previous' => '&laquo; Précédent',
     'next' => 'Suivant &raquo;',
+    'aria_label' => 'Navigation de pagination',
+    'showing' => 'Affichage de',
+    'to' => 'à',
+    'of' => 'sur',
+    'results' => 'résultats',
+    'goto_page' => 'Aller à la page :page',
 
 ];

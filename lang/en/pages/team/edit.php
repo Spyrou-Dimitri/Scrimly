@@ -22,4 +22,7 @@ return [
     'logo_image_alt' => 'Team logo',
     'default_logo' => 'Preset logo',
     'delete_team_cta' => 'Delete team',
+    'server_disabled' => '-- Select a server --',
+    'goal_disabled' => '-- What is your team\'s goal? --',
+    'language_disabled' => '-- Select a language --',
 ];
