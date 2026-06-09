@@ -11,4 +11,5 @@ return [
     'body_legend_aborted' => 'The scrim will be marked as stopped because the number of recorded games is less than the number of planned games.',
     'summary' => 'Scrim summary',
     'summary_placeholder' => 'Key takeaways, lessons learned, session vibe…',
+    'summary_legend' => 'You can always set or edit the scrim summary later.',
 ];

@@ -21,4 +21,5 @@ return [
     'choose_logo_preset' => 'Or choose a preset logo',
     'logo_image_alt' => 'Team logo',
     'default_logo' => 'Preset logo',
+    'delete_team_cta' => 'Delete team',
 ];

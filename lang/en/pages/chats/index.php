@@ -10,4 +10,6 @@ return [
     'online_suffix' => ' are online',
     'online_and_one_other' => ' and 1 other are online',
     'online_and_others' => ' and :count others are online',
+    'is_online' => 'is online',
+    'is_offline' => 'is offline',
 ];

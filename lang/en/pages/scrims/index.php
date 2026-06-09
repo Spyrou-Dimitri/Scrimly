@@ -34,6 +34,8 @@ return [
     'history_view_title' => 'View scrim',
     'history_edit_title' => 'Edit scrim',
     'history_delete_title' => 'Delete scrim',
+    'in_progress_title' => 'Scrims in progress',
+    'no_scrim_in_progress' => 'No scrims in progress',
     'empty_upcoming_scrims' => 'No upcoming scrims at the moment.',
     'empty_received_requests' => 'No invitations received at the moment.',
     'empty_sent_requests' => 'No invitations sent at the moment.',

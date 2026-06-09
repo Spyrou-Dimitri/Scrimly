@@ -182,6 +182,14 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'newFiles' => [
+            'uploaded' => 'The file could not be uploaded. Make sure it is under 10 MB and in PDF, JPG, PNG, or WebP format.',
+        ],
+        'newFiles.*' => [
+            'max' => 'The file must not exceed 10 MB.',
+            'mimes' => 'Unsupported format. Use PDF, JPG, PNG, or WebP.',
+            'uploaded' => 'The file could not be uploaded. Make sure it is under 10 MB and in PDF, JPG, PNG, or WebP format.',
+        ],
     ],
 
     /*
@@ -227,6 +235,8 @@ return [
         'links.*.url' => 'link',
         'links.*.title' => 'link title',
 
+        'newFiles' => 'file',
+        'newFiles.*' => 'file',
     ],
 
 ];

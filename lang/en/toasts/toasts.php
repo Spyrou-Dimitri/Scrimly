@@ -17,4 +17,5 @@ return [
     'invitation_refused_message' => 'You have declined the invitation from :team.',
     'application_cancelled' => 'Application cancelled',
     'application_cancelled_message' => 'Your request to join :team has been withdrawn.',
+    'too_many_attempts' => 'Too many attempts. Please try again in a minute.',
 ];

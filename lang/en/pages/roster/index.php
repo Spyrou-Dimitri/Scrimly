@@ -2,6 +2,8 @@
 
 return [
     'title' => 'Roster management',
+    'create_invitation_cta' => 'Invite a player',
+    'create_invitation_title' => 'Invite a player to join the team',
     'application_title' => 'Application',
     'is_starter_title' => 'Main roster',
     'online' => 'Online',
