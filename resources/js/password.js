@@ -31,9 +31,11 @@ export const Password = {
     },
 
     isToggle() {
-        this.toggleButton.addEventListener('click', () => {
-            this.passwordInput.type = this.passwordInput.type === 'password' ? 'text' : 'password';
-        });
+        if (this.toggleButton) {
+            this.toggleButton.addEventListener('click', () => {
+                this.passwordInput.type = this.passwordInput.type === 'password' ? 'text' : 'password';
+            });
+        }
     },
 
     setRuleState(ruleKey, isValid) {

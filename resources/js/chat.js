@@ -8,10 +8,17 @@ document.addEventListener('alpine:init', () => {
         init(){
             const channel = window.Echo.join(`chat.${teamId}`);
             
+            channel.joining((member) => {
+                this.onlineMembers.push(member);
+            });
+            channel.leaving((member) => {
+                this.onlineMembers = this.onlineMembers.filter((m) => m.id !== member.id);
+            });
             channel.here((members) => {
                 this.onlineMembers = members;
-            });
+            console.log(this.previewOnlineMembers.length);
 
+            });
 
             channel.listenForWhisper('typing', (e) => {
                 if (e.id === currentUserId){
@@ -49,25 +56,23 @@ document.addEventListener('alpine:init', () => {
             return this.previewOnlineMembers.map((member) => member.username).join(', ');
         },
 
-        get remainingOnlineCount() {
-            return Math.max(0, this.onlineMembers.length - this.previewOnlineMembers.length);
-        },
+        
 
         get onlineStatusSuffix() {
             if (this.onlineMembers.length === 0) {
                 return '';
             }
 
-            if (this.remainingOnlineCount === 0) {
+            if (this.onlineMembers.length === 1) {
                 return this.labels.onlineSuffix ?? ' sont en ligne';
             }
 
-            if (this.remainingOnlineCount === 1) {
+            if (this.onlineMembers.length === 2) {
                 return this.labels.onlineAndOneOther ?? ' et 1 autre sont en ligne';
             }
 
-            return (this.labels.onlineAndOthers ?? ' et :count autres sont en ligne')
-                .replace(':count', this.remainingOnlineCount);
+            return (this.labels.onlineAndOthers ?? ' :count joueurs sont en ligne')
+                .replace(':count', this.onlineMembers.length);
         },
     }));
 

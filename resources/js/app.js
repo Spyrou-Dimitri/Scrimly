@@ -20,6 +20,11 @@ function initCalendarIfNeeded() {
 document.addEventListener('livewire:navigated', initCalendarIfNeeded);
 
 AvatarPreview.init();
-Password.init();
+function initPasswordIfNeeded() {
+    if (! document.querySelector(settings.passwordInput)) {
+        return;
+    }
+    Password.init();
+}
 
 

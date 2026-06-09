@@ -7,9 +7,9 @@ return [
     'send' => 'Envoyer',
     'you' => 'Vous',
     'sent_toast' => 'Message envoyé.',
-    'online_suffix' => ' sont en ligne',
-    'online_and_one_other' => ' et 1 autre sont en ligne',
-    'online_and_others' => ' et :count autres sont en ligne',
+    'online_suffix' => ' est en ligne',
+    'online_and_one_other' => ' sont en ligne',
+    'online_and_others' => ' :count joueurs sont en ligne',
     'is_online' => 'est en ligne',
     'is_offline' => 'est hors ligne',
 ];
