@@ -1,7 +1,11 @@
 <x-layouts.auth title="Connexion • Scrimly">
     <main id="main-content" aria-labelledby="login-heading" class="lg:grid lg:grid-cols-12 bg-bg-main flex-1 p-6 gap-6 lg:p-0 flex flex-col items-center justify-center">
         <div class="hidden lg:block lg:col-span-7" aria-hidden="true">
-            <img src="{{ asset('/img/SejuHextech.jpg') }}" alt="" class="min-h-screen w-full object-cover">
+            <picture>
+                <source media="(min-width: 1800px)" srcset="{{ asset('/img/SejuHextech.jpg') }}">
+                <source media="(min-width: 1536px)" srcset="{{ asset('/img/SejuHextech1000x1000.jpg') }}">
+                <img src="{{ asset('/img/SejuHextech800x800.jpg') }}" alt="Splash-art de Riven Heraut de l'aube" class="min-h-screen w-full object-cover">
+            </picture>
         </div>
         <div class="lg:col-span-5 w-full max-w-md mx-auto flex flex-col gap-6">
             <div class="flex flex-col gap-2">
