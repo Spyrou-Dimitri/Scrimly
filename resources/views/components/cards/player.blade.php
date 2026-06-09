@@ -38,7 +38,7 @@ $tierLine .= ' • '.$memberUser->rank;
                 {{ __('pages/roster/index.online') }}
             </span>
             @else
-            <template x-if="onlineMembers.some(member => member.id === {{ $memberUser->id }})">
+            <template x-if="$store.presence.isOnline({{ $memberUser->id }})">
                 <span class="relative inline-flex flex-1 items-center gap-1.5 bg-bg-widget px-3 py-2 text-xs font-medium text-white">
                     <span class="absolute opacity-75 animate-ping size-2.5 shrink-0 rounded-full bg-green-500" aria-hidden="true"></span>
                     <span class="relative size-2.5 shrink-0 rounded-full bg-green-500" aria-hidden="true"></span>
@@ -46,7 +46,7 @@ $tierLine .= ' • '.$memberUser->rank;
                 </span>
             </template>
 
-            <template x-if="!onlineMembers.some(member => member.id === {{ $memberUser->id }})">
+            <template x-if="!$store.presence.isOnline({{ $memberUser->id }})">
                 <span class="inline-flex flex-1 items-center gap-1.5 bg-bg-widget px-3 py-2 text-xs font-medium text-white">
                     <span class="size-2.5 shrink-0 rounded-full bg-red-500" aria-hidden="true"></span>
                     {{ __('pages/roster/index.offline') }}

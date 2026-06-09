@@ -33,7 +33,7 @@
     <main
     id="main-content"
     aria-label="{{ __('accessibility.main_content') }}"
-    x-data="presence(
+    x-init="$store.presence.connect(
         {{ currentTeam()->id }},
         {{ currentMember()->user_id }},
         @js([
