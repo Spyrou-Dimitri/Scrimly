@@ -20,4 +20,5 @@ return [
     'availability_legend_absent' => 'Absent',
     'availability_time_format' => ':start – :end',
     'opponent_unknown' => 'Adversaire inconnu',
+    'manage_your_disponibilities' => 'Gérer vos disponibilités',
 ];

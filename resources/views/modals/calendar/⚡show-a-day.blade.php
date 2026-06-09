@@ -191,6 +191,15 @@ new class extends Component
                 :count="$allTeamMembersAvailabilitiesThisDay->count()"
                 heading-level="h3"
                 panel-class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                <x-slot:actions>
+                    <x-cta
+                        :href="route('roster.show', ['slug' => currentTeam()->slug, 'id' => Auth::user()->id]).'?tab=availability'"
+                        wire:navigate
+                        :class="'primary'"
+                        :title="__('modals/calendar/show-a-day.manage_your_disponibilities_title')">
+                        {{ __('modals/calendar/show-a-day.manage_your_disponibilities') }}
+                    </x-cta>
+                </x-slot:actions>
                 <li class="col-span-2 sm:col-span-3">
                     <ul class="mb-2 flex flex-wrap gap-x-6 gap-y-2" aria-label="{{ __('modals/calendar/show-a-day.availabilities_title') }}">
                         <li class="flex items-center gap-2">
