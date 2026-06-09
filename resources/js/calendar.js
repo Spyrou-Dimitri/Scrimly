@@ -41,6 +41,11 @@ export const Calendar = {
 
         calendarInstance.render();
 
+        Livewire.on('calendar-refreshed', ({ events }) => {
+            calendarInstance.removeAllEvents();
+            calendarInstance.addEventSource(events);
+        });
+
         window.addEventListener('resize', () => {
             let newView = '';
 

@@ -5,17 +5,18 @@ use Livewire\Attributes\Layout;
 use App\Models\Scrim;
 use Carbon\Carbon;
 use App\Models\Event;
-
+use Livewire\Attributes\On;
+use Livewire\Attributes\Computed;
 new #[Layout('layouts::team')] class extends Component
 {
-    public array $events;
 
     public function render()
     {
         return $this->view()->title(__('pages/calendar/index.title'));
     }
 
-    public function mount(): void
+    #[Computed]
+    public function events(): array
     {
         $scrims = Scrim::where('team_id', currentTeam()->id)
             ->with('opponentTeam:id,name')
@@ -35,12 +36,13 @@ new #[Layout('layouts::team')] class extends Component
             ->get()
             ->map(fn (Event $event) => [
                 'title' => $event->title,
-                'start' => $event->date->format('Y-m-d'),
+                'start' => $event->scheduled_start,
+                'end' => $event->scheduled_end,
                 'allDay' => $event->all_day,
                 'backgroundColor' => $event->type->color(),
                 'extendedProps' => ['type' => $event->type->label()],
             ]);
-        $this->events = collect($scrims)->concat(collect($events))->values()->all();
+        return collect($scrims)->concat(collect($events))->values()->all();
     }
 
     public function handleDateClick(string $date): void
@@ -50,6 +52,14 @@ new #[Layout('layouts::team')] class extends Component
             'model_id' => Carbon::parse($date)->format('Y-m-d'),
         ]);
     }
+    #[On('event-created')]
+    public function refreshCalendar(): void
+    {
+        unset($this->events);
+        $this->dispatch('calendar-refreshed', events: $this->events);
+    }
+    
+    
 };
 ?>
 
@@ -59,6 +69,6 @@ new #[Layout('layouts::team')] class extends Component
             {{ __('pages/calendar/index.title') }}
         </h2>
         <x-calendar.legend />
-        <div id="calendar" wire:ignore data-events='@json($events)'></div>
+        <div id="calendar" wire:ignore data-events='@json($this->events)'></div>
     </section>
 </div>
