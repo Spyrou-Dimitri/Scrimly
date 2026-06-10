@@ -245,6 +245,7 @@ new class extends Component
             </ul>
         </div>
 
+        <!--
         <button
 
             class="relative p-2 text-white hover:text-gold transition-colors cursor-pointer"
@@ -257,7 +258,7 @@ new class extends Component
                      bg-red-600 rounded-full">
             </span>
         </button>
-
+        -->
         @if ($this->currentUser)
         @php
             $member = currentMember();

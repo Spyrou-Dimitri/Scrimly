@@ -21,14 +21,8 @@
                         <p class="text-2xl text-gold border-b border-gold pb-4 font-bold" aria-hidden="true">{{ __('login/login.form_title') }}</p>
                         <div class="flex flex-col gap-4">
                             <x-forms.input :name="'email'" :label="__('login/login.email')" :type="'email'" :required="true" :placeholder="'john.doe@example.com'" />
-                            <x-forms.input :name="'password'" :label="__('login/login.password')" :type="'password'" :required="true" :placeholder="'**************'">
-                                <div class="flex flex-row gap-2">
-                                    <input type="checkbox" name="remember" id="remember" class="accent-gold">
-                                    <label for="remember" class="text-white">
-                                        {{ __('login/login.remember_me') }}
-                                    </label>
-                                </div>
-                            </x-forms.input>
+                            <x-forms.input :name="'password'" :label="__('login/login.password')" :type="'password'" :required="true" :placeholder="'**************'"/>
+                                
                         </div>
 
                         <x-forms.submit class="w-full lg:w-fit lg:self-start">{{ __('login/login.login') }}</x-forms.submit>

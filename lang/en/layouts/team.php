@@ -29,6 +29,9 @@ return [
         'statistics' => 'Statistics',
         'chat' => 'Chat',
     ],
+    'nav_badge_scrims_aria' => ':count new scrim request(s)',
+    'nav_badge_roster_aria' => ':count new application(s)',
+    'nav_badge_homework_aria' => ':count homework item(s) to do',
 
     'logout' => 'Log out',
     'view_team_profile_title' => 'View team profile',

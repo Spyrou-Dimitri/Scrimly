@@ -1,11 +1,18 @@
 <?php
 
-use App\Livewire\Actions\Logout;
-use App\Models\User;
-use Livewire\Component;
-use Illuminate\Support\Facades\Auth;
-use App\Enums\RoleInTeam;
 use App\Enums\LolTier;
+use App\Enums\RoleInTeam;
+use App\Enums\StatusApplication;
+use App\Enums\StatusScrimRequest;
+use App\Enums\StatusTask;
+use App\Livewire\Actions\Logout;
+use App\Models\ScrimRequest;
+use App\Models\TeamApplication;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 new class extends Component
 {
@@ -14,6 +21,50 @@ new class extends Component
     public function mount(): void
     {
         $this->currentUser = Auth::user();
+    }
+
+    #[Computed]
+    public function pendingScrimRequestsCount(): int
+    {
+        return ScrimRequest::query()
+            ->where('receiver_team_id', currentTeam()->id)
+            ->where('status', StatusScrimRequest::PENDING)
+            ->count();
+    }
+
+    #[Computed]
+    public function pendingCandidatesCount(): int
+    {
+        return TeamApplication::query()
+            ->where('team_id', currentTeam()->id)
+            ->where('status', StatusApplication::PENDING)
+            ->count();
+    }
+
+    #[Computed]
+    public function pendingHomeworkCount(): int
+    {
+        $member = currentMember();
+
+        if (! $member) {
+            return 0;
+        }
+
+        return $member->tasks()
+            ->whereIn('status', [StatusTask::TODO, StatusTask::IN_PROGRESS])
+            ->count();
+    }
+
+    #[On('refresh_scrims')]
+    #[On('refresh_candidates')]
+    #[On('refresh_tasks')]
+    public function refreshNavBadges(): void
+    {
+        unset(
+            $this->pendingScrimRequestsCount,
+            $this->pendingCandidatesCount,
+            $this->pendingHomeworkCount,
+        );
     }
 
     public function navItems(): array
@@ -36,20 +87,28 @@ new class extends Component
                 'icon' => 'trophy',
                 'activeRoute' => 'scrims.*',
                 'href' => route('scrims.index', ['slug' => currentTeam()->slug]),
+                'badge' => $this->pendingScrimRequestsCount,
+                'badgeTest' => 'sidebar-nav-badge-scrims',
+                'badgeAria' => __('layouts/team.nav_badge_scrims_aria', ['count' => $this->pendingScrimRequestsCount]),
             ],
             [
                 'label' => __('layouts/team.nav.roster'),
                 'icon' => 'user-group',
                 'activeRoute' => 'roster.*',
                 'href' => route('roster.index', ['slug' => currentTeam()->slug]),
+                'badge' => $this->pendingCandidatesCount,
+                'badgeTest' => 'sidebar-nav-badge-roster',
+                'badgeAria' => __('layouts/team.nav_badge_roster_aria', ['count' => $this->pendingCandidatesCount]),
             ],
             [
                 'label' => __('layouts/team.nav.homework'),
                 'icon' => 'book-open',
                 'activeRoute' => 'tasks.*',
                 'href' => route('tasks.index', ['slug' => currentTeam()->slug]),
+                'badge' => $this->pendingHomeworkCount,
+                'badgeTest' => 'sidebar-nav-badge-homework',
+                'badgeAria' => __('layouts/team.nav_badge_homework_aria', ['count' => $this->pendingHomeworkCount]),
             ],
-            
             [
                 'label' => __('layouts/team.nav.chat'),
                 'icon' => 'chat-bubble-left-right',
@@ -58,7 +117,6 @@ new class extends Component
             ],
         ];
     }
-
 
     public function logout(Logout $logout): void
     {
@@ -124,6 +182,15 @@ new class extends Component
                 >
                 <flux:icon name="{{ $item['icon'] }}" class="size-5 flex-shrink-0" />
                 <span class="font-medium">{{ $item['label'] }}</span>
+
+                @if (($item['badge'] ?? 0) > 0)
+                    <span
+                        @isset($item['badgeTest']) data-test="{{ $item['badgeTest'] }}" @endisset
+                        aria-label="{{ $item['badgeAria'] ?? '' }}"
+                        class="ml-auto flex size-5 shrink-0 items-center justify-center rounded-full bg-input-error text-xs font-bold text-white">
+                        {{ ($item['badge'] ?? 0) > 99 ? '99+' : $item['badge'] }}
+                    </span>
+                @endif
             </a>
             @endforeach
         </nav>
