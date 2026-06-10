@@ -49,6 +49,9 @@ new class extends Component
         if (! $member) {
             return 0;
         }
+        if ($member->roleInTeam === RoleInTeam::COACH || $member->roleInTeam === RoleInTeam::STAFF) {
+            return 0;
+        }
 
         return $member->tasks()
             ->whereIn('status', [StatusTask::TODO, StatusTask::IN_PROGRESS])
@@ -155,7 +158,7 @@ new class extends Component
         </h2>
         <div class="flex h-16 items-center px-6 flex-shrink-0">
             <a
-                href="{{ route('home')}}"
+                href="{{ route('home')}}"`
                 wire:navigate
                 class="text-gold text-2xl font-bold tracking-wide">
                 ScrimlyLol
