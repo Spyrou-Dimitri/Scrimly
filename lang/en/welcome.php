@@ -6,6 +6,8 @@ return [
     'skip_to_content' => 'Skip to main content',
     'nav' => [
         'title' => 'Main navigation',
+        'menu_open' => 'Open menu',
+        'menu_close' => 'Close menu',
         'home_title' => 'Back to Scrimly home',
         'features' => 'Features',
         'features_title' => 'Discover Scrimly features',

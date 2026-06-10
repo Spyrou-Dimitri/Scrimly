@@ -10,6 +10,7 @@
 
 @php
 $currentUser = auth()->user();
+$currentLocale = in_array(app()->getLocale(), ['fr', 'en'], true) ? app()->getLocale() : 'fr';
 @endphp
 
 <body class="bg-bg-main text-text-primary">
@@ -27,6 +28,149 @@ $currentUser = auth()->user();
                 {{ __('welcome.nav.title') }}
             </h2>
             <div class="flex items-center gap-8">
+                <div class="md:hidden absolute right-8 inset-y-0 z-50 flex items-center">
+                    <input type="checkbox" id="welcome-burger" class="peer/nav sr-only">
+                    <label
+                        for="welcome-burger"
+                        class="relative z-50 flex p-2 -mr-2 text-white hover:text-gold transition-colors cursor-pointer
+                               peer-checked/nav:[&_.icon-open]:hidden peer-checked/nav:[&_.icon-close]:block"
+                        aria-label="{{ __('welcome.nav.menu_open') }}">
+                        <flux:icon.bars-3 class="icon-open size-6" />
+                        <flux:icon.x-mark class="icon-close size-6 hidden" />
+                    </label>
+
+                    <label
+                        for="welcome-burger"
+                        aria-hidden="true"
+                        class="fixed inset-0 z-30 bg-black/70 opacity-0 pointer-events-none transition-opacity duration-150 peer-checked/nav:opacity-100 peer-checked/nav:pointer-events-auto"></label>
+
+                    <nav
+                        aria-label="{{ __('welcome.nav.title') }}"
+                        class="fixed inset-y-0 right-0 z-40 flex w-72 max-w-[80vw] flex-col gap-4 overflow-y-auto
+                               bg-bg-widget border-l basic-shadow border-[#2C2D34] p-4 pt-16
+                               translate-x-full transition-transform duration-150 ease-in-out
+                               peer-checked/nav:translate-x-0">
+                        <ul class="flex flex-col gap-1">
+                            <li>
+                                <a href="#fonctionnalites"
+                                    class="flex items-center gap-3 px-4 py-3 text-white transition-colors duration-150 hover:bg-white/5 hover:text-gold">
+                                    <flux:icon name="squares-2x2" class="size-5 shrink-0" />
+                                    <span class="font-medium">{{ __('welcome.nav.features') }}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#how-it-works"
+                                    class="flex items-center gap-3 px-4 py-3 text-white transition-colors duration-150 hover:bg-white/5 hover:text-gold">
+                                    <flux:icon name="map" class="size-5 shrink-0" />
+                                    <span class="font-medium">{{ __('welcome.nav.how_it_works') }}</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="mt-auto flex flex-col gap-4 border-t border-[#2C2D34] pt-4">
+                            <div class="flex flex-col gap-1">
+                                <a href="{{ route('locale.update', ['locale' => 'fr']) }}"
+                                    class="flex items-center gap-3 px-4 py-3 transition-colors duration-150 hover:bg-white/5 {{ $currentLocale === 'fr' ? 'text-gold' : 'text-white hover:text-gold' }}">
+                                    <span class="fi fi-fr fis shrink-0 rounded-sm ring-1 ring-white/10" style="font-size: 1.5rem; line-height: 1.5rem;" aria-hidden="true"></span>
+                                    <span class="font-medium">{{ __('layouts/team.language_fr') }}</span>
+                                </a>
+                                <a href="{{ route('locale.update', ['locale' => 'en']) }}"
+                                    class="flex items-center gap-3 px-4 py-3 transition-colors duration-150 hover:bg-white/5 {{ $currentLocale === 'en' ? 'text-gold' : 'text-white hover:text-gold' }}">
+                                    <span class="fi fi-gb fis shrink-0 rounded-sm ring-1 ring-white/10" style="font-size: 1.5rem; line-height: 1.5rem;" aria-hidden="true"></span>
+                                    <span class="font-medium">{{ __('layouts/team.language_en') }}</span>
+                                </a>
+                            </div>
+
+                            <div class="flex flex-col gap-3 border-t border-[#2C2D34] pt-4">
+                            @if ($currentUser)
+                            @if (currentTeam())
+                            <x-cta
+                                href="{{ route('dashboard', ['slug' => currentTeam()->slug]) }}"
+                                :title="__('welcome.back_to_team')"
+                                :class="'primary'"
+                                :widthFull="true"
+                                aria-label="{{ __('welcome.back_to_team') }}">
+                                {{ __('welcome.back_to_team') }}
+                            </x-cta>
+                            @else
+                            <x-cta
+                                href="{{ route('team.index') }}"
+                                :title="__('welcome.nav.teams_title')"
+                                :class="'primary'"
+                                :widthFull="true"
+                                aria-label="{{ __('welcome.nav.teams_title') }}">
+                                {{ __('welcome.back_to_team') }}
+                            </x-cta>
+                            @endif
+
+                            @php($welcomeMember = currentTeam() ? currentMember() : null)
+                            @if ($welcomeMember)
+                            <a
+                                href="{{ route('roster.show', ['slug' => currentTeam()->slug, 'id' => $welcomeMember->id]) }}"
+                                title="{{ __('layouts/team.view_member_profile_title') }}"
+                                class="flex items-center gap-3 bg-bg-card p-3 transition-colors duration-150 hover:bg-white/5">
+                                <x-user-avatar
+                                    :user="$welcomeMember->user"
+                                    preset="thumbnail"
+                                    class="size-10 shrink-0 rounded-lg object-cover" />
+                                <div class="min-w-0 flex-1">
+                                    <p class="truncate font-semibold text-white">{{ $welcomeMember->user->username }}</p>
+                                    @if ($welcomeMember->roleInTeam === \App\Enums\RoleInTeam::COACH || $welcomeMember->roleInTeam === \App\Enums\RoleInTeam::STAFF)
+                                        <p class="truncate text-sm text-text-secondary">{{ $welcomeMember->roleInTeam->label() }}</p>
+                                    @elseif ($welcomeMember->roleInGame)
+                                        <div class="flex items-center gap-2">
+                                            <img src="{{ asset($welcomeMember->roleInGame->icon()) }}" class="size-5 shrink-0" alt="{{ $welcomeMember->roleInGame->label() }}">
+                                            <p class="truncate text-sm text-text-secondary">{{ $welcomeMember->roleInGame->label() }}</p>
+                                        </div>
+                                    @endif
+                                </div>
+                            </a>
+                            @else
+                            <a
+                                href="{{ route('profile.show') }}"
+                                title="{{ __('layouts/team.edit_profile_cta_title') }}"
+                                class="flex items-center gap-3 bg-bg-card p-3 transition-colors duration-150 hover:bg-white/5">
+                                <x-user-avatar
+                                    :user="$currentUser"
+                                    preset="thumbnail"
+                                    class="size-10 shrink-0 rounded-lg object-cover" />
+                                <div class="min-w-0 flex-1">
+                                    <p class="truncate font-semibold text-white">{{ $currentUser->username }}</p>
+                                </div>
+                            </a>
+                            @endif
+
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button
+                                    type="submit"
+                                    aria-label="{{ __('layouts/team.logout') }}"
+                                    class="cta-danger cta-danger--outline w-full">
+                                    <flux:icon name="power" class="size-4 shrink-0" />
+                                    <span class="font-medium">{{ __('layouts/team.logout') }}</span>
+                                </button>
+                            </form>
+                            @else
+                            <x-cta
+                                href="{{ route('login') }}"
+                                :title="__('welcome.nav.login_title')"
+                                :class="'secondary'"
+                                :widthFull="true">
+                                {{ __('welcome.nav.login') }}
+                            </x-cta>
+                            <x-cta
+                                href="{{ route('register') }}"
+                                :title="__('welcome.nav.register_title')"
+                                :class="'primary'"
+                                :widthFull="true">
+                                {{ __('welcome.nav.register') }}
+                            </x-cta>
+                            @endif
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+
                 <a href="{{ route('home') }}"
                     aria-label="{{ __('welcome.nav.home_title') }}"
                     aria-current="page"
@@ -34,26 +178,29 @@ $currentUser = auth()->user();
                     ScrimlyLol
                 </a>
 
-                <div class="hidden md:flex items-center gap-6">
-                    <x-cta
-                        href="#fonctionnalites"
-                        :title="__('welcome.nav.features_title')"
-                        :class="'nav'"
-                        aria-label="{{ __('welcome.nav.features_title') }}">
-                        {{ __('welcome.nav.features') }}
-                    </x-cta>
-
-                    <x-cta
-                        href="#how-it-works"
-                        :title="__('welcome.nav.how_it_works_title')"
-                        :class="'nav'"
-                        aria-label="{{ __('welcome.nav.how_it_works_title') }}">
-                        {{ __('welcome.nav.how_it_works') }}
-                    </x-cta>
-                </div>
+                <ul class="hidden md:flex items-center gap-6">
+                    <li>
+                        <x-cta
+                            href="#fonctionnalites"
+                            :title="__('welcome.nav.features_title')"
+                            :class="'nav'"
+                            aria-label="{{ __('welcome.nav.features_title') }}">
+                            {{ __('welcome.nav.features') }}
+                        </x-cta>
+                    </li>
+                    <li>
+                        <x-cta
+                            href="#how-it-works"
+                            :title="__('welcome.nav.how_it_works_title')"
+                            :class="'nav'"
+                            aria-label="{{ __('welcome.nav.how_it_works_title') }}">
+                            {{ __('welcome.nav.how_it_works') }}
+                        </x-cta>
+                    </li>
+                </ul>
             </div>
 
-            <div class="flex items-center gap-6">
+            <div class="hidden md:flex items-center gap-6">
                 @if ($currentUser)
                 @if (currentTeam())
                 <x-cta
@@ -104,6 +251,63 @@ $currentUser = auth()->user();
                     </button>
                 </form>
                 @else
+                <div class="relative">
+                    <input type="checkbox" id="welcome-locale-toggle" class="peer sr-only">
+                    <label
+                        for="welcome-locale-toggle"
+                        class="flex items-center text-white gap-2 min-w-0 hover:text-gold transition-colors cursor-pointer peer-checked:[&_svg]:rotate-180"
+                        aria-label="{{ __('layouts/team.language_aria') }}">
+                        <span
+                            @class([ 'fi fis shrink-0 rounded-sm ring-1 ring-white/10' , 'fi-fr'=> $currentLocale === 'fr',
+                            'fi-gb' => $currentLocale === 'en',
+                            ])
+                            style="font-size: 1.5rem; line-height: 1.5rem;"
+                            aria-hidden="true"></span>
+                        <span class="flex items-center relative gap-2 transition ease-in-out duration-150">
+                            <span class="text-inherit font-semibold text-sm lg:text-base sr-only sm:not-sr-only truncate">
+                                {{ $currentLocale === 'en' ? __('layouts/team.language_en') : __('layouts/team.language_fr') }}
+                            </span>
+                            <flux:icon.chevron-down class="size-4 transition-transform duration-150" />
+                        </span>
+                    </label>
+                    <ul
+                        role="listbox"
+                        class="hidden peer-checked:flex absolute top-full right-0 mt-3 flex-col gap-4 w-48 origin-top shadow-lg bg-bg-widget p-4 z-50">
+                        <li>
+                            <a
+                                href="{{ route('locale.update', ['locale' => 'fr']) }}"
+                                class="w-full px-3 hover:text-gold transition ease-in-out duration-150 flex items-center gap-2 cursor-pointer {{ $currentLocale === 'fr' ? 'text-gold' : 'text-white' }}">
+                                <span class="fi fi-fr fis shrink-0 rounded-sm ring-1 ring-white/10 text-2xl" aria-hidden="true"></span>
+                                <span class="relative font-medium
+                                    before:content-[''] before:w-full before:h-[2px]
+                                    before:scale-x-0 before:bg-gold
+                                    before:absolute before:-bottom-0.5 before:left-0
+                                    before:origin-left
+                                    before:transition-transform before:duration-150 before:ease-in-out
+                                    hover:before:scale-x-100">
+                                    {{ __('layouts/team.language_fr') }}
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="{{ route('locale.update', ['locale' => 'en']) }}"
+                                class="w-full px-3 hover:text-gold transition ease-in-out duration-150 flex items-center gap-2 cursor-pointer {{ $currentLocale === 'en' ? 'text-gold' : 'text-white' }}">
+                                <span class="fi fi-gb fis shrink-0 rounded-sm ring-1  text-2xl ring-white/10" aria-hidden="true"></span>
+                                <span class="relative font-medium
+                                    before:content-[''] before:w-full before:h-[2px]
+                                    before:scale-x-0 before:bg-gold
+                                    before:absolute before:-bottom-0.5 before:left-0
+                                    before:origin-left
+                                    before:transition-transform before:duration-150 before:ease-in-out
+                                    hover:before:scale-x-100">
+                                    {{ __('layouts/team.language_en') }}
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
                 <x-cta
                     href="{{ route('login') }}"
                     :title="__('welcome.nav.login_title')"

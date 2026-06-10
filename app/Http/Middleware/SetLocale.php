@@ -16,13 +16,18 @@ class SetLocale
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $supported = config('locales.supported');
+        $default = config('locales.default');
+
         if ($request->user()) {
-            $locale = in_array($request->user()?->locale, config('locales.supported'), true) ? $request->user()?->locale : config('locales.default');
+            $locale = in_array($request->user()->locale, $supported, true) ? $request->user()->locale : $default;
         } else {
-            $locale = config('locales.default');
+            $sessionLocale = $request->session()->get('locale');
+            $locale = in_array($sessionLocale, $supported, true) ? $sessionLocale : $default;
         }
+
         App::setLocale($locale);
-        session(['locale' => $locale]);
+        $request->session()->put('locale', $locale);
 
         return $next($request);
     }

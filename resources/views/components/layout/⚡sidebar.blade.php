@@ -139,14 +139,14 @@ new class extends Component
         x-show="open"
         x-cloak
         x-transition.opacity.duration.150ms
-        @click="open = false"
+        @click="$dispatch('sidebar-close')"
         class="fixed inset-0 z-30 bg-black/70 lg:hidden"
         aria-hidden="true"></div>
 
     <aside
-        :class="open ? 'translate-x-0' : '-translate-x-full'"
-        class="fixed inset-y-0 flex flex-col justify-between left-0 z-40 w-64
-               bg-bg-widget border-r basic-shadow border-[#2C2D34]
+        :class="open ? 'translate-x-0' : 'translate-x-full'"
+        class="fixed inset-y-0 flex flex-col justify-between right-0 z-40 w-64
+               bg-bg-widget border-l lg:border-l-0 lg:border-r basic-shadow border-[#2C2D34]
                transform transition-transform duration-150 ease-in-out
                lg:static lg:translate-x-0 lg:row-span-2 lg:col-start-1 lg:row-start-1"
         aria-label="{{ __('layouts/team.main_navigation_aria') }}">

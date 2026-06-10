@@ -104,15 +104,6 @@ new class extends Component
            px-4 lg:px-6
            bg-bg-main border-b basic-shadow border-[#2C2D34]">
     <div class="flex items-center gap-3 min-w-0">
-        <button
-            type="button"
-            x-data
-            @click="$dispatch('sidebar-toggle')"
-            class="lg:hidden p-2 -ml-2 text-white hover:text-gold  transition-colors cursor-pointer"
-            aria-label="{{ __('layouts/team.open_menu_aria') }}">
-            <flux:icon.bars-3 class="size-6" />
-        </button>
-
         @if ($team)
         <div x-data="{ openTeams: false }" @click.outside="if (openTeams) { openTeams = false; $wire.unloadTeams() }" class="relative">
             <h2 class="sr-only">
@@ -321,5 +312,19 @@ new class extends Component
             </ul>
         </div>
         @endif
+
+        <button
+            type="button"
+            x-data="{ open: false }"
+            @sidebar-toggle.window="open = ! open"
+            @sidebar-close.window="open = false"
+            @keydown.escape.window="open = false"
+            @click="$dispatch('sidebar-toggle')"
+            :aria-expanded="open.toString()"
+            class="relative z-50 lg:hidden p-2 -mr-2 text-white hover:text-gold transition-colors cursor-pointer"
+            aria-label="{{ __('layouts/team.open_menu_aria') }}">
+            <flux:icon.bars-3 class="size-6" x-show="! open" />
+            <flux:icon.x-mark class="size-6" x-show="open" x-cloak />
+        </button>
     </div>
 </header>

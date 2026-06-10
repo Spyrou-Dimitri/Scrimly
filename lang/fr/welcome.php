@@ -7,6 +7,8 @@ return [
     'back_to_team' => 'Retour à l\'équipe',
     'nav' => [
         'title' => 'Navigation principale',
+        'menu_open' => 'Ouvrir le menu',
+        'menu_close' => 'Fermer le menu',
         'home_title' => 'Retour à l\'accueil Scrimly',
         'features' => 'Fonctionnalités',
         'features_title' => 'Découvrir les fonctionnalités de Scrimly',

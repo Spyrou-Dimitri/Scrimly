@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
+Route::get('/locale/{locale}', [LocaleController::class, 'update'])->name('locale.update');
 Route::view('/login', 'login')->name('login')->middleware('guest');
 Route::view('/register', 'register')->name('register')->middleware('guest');
 
