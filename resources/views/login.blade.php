@@ -22,7 +22,7 @@
                         <div class="flex flex-col gap-4">
                             <x-forms.input :name="'email'" :label="__('login/login.email')" :type="'email'" :required="true" :placeholder="'john.doe@example.com'" />
                             <x-forms.input :name="'password'" :label="__('login/login.password')" :type="'password'" :required="true" :placeholder="'**************'"/>
-                                
+                            <x-cta :href="route('password.request')" :title="__('login/login.forgot_password')" :class="'underline'">{{ __('login/login.forgot_password') }}</x-cta>
                         </div>
 
                         <x-forms.submit class="w-full lg:w-fit lg:self-start">{{ __('login/login.login') }}</x-forms.submit>

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
 Route::get('/locale/{locale}', [LocaleController::class, 'update'])->name('locale.update');
 Route::view('/login', 'login')->name('login')->middleware('guest');
-Route::view('/forgot-password', 'forgot-password')->name('forgot-password')->middleware('guest');
+
 Route::view('/register', 'register')->name('register')->middleware('guest');
 
 Route::middleware(['auth', 'verified'])->group(function () {
