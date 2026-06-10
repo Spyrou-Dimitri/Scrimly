@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
 Route::get('/locale/{locale}', [LocaleController::class, 'update'])->name('locale.update');
 Route::view('/login', 'login')->name('login')->middleware('guest');
+Route::view('/forgot-password', 'forgot-password')->name('forgot-password')->middleware('guest');
 Route::view('/register', 'register')->name('register')->middleware('guest');
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -15,7 +16,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::livewire('team/create', 'pages::team.create')->name('team.create');
     Route::livewire('team/join', 'pages::team.join')->name('team.join');
     Route::livewire('profile.show', 'pages::profile.show')->name('profile.show');
-
     Route::middleware('ensure.user.has.active.team')->group(function () {
 
         // Dashboard
