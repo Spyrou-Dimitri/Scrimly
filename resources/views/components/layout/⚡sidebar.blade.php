@@ -97,10 +97,10 @@ new class extends Component
         </h2>
         <div class="flex h-16 items-center px-6 flex-shrink-0">
             <a
-                href="{{ route('dashboard', ['slug' => currentTeam()->slug]) }}"
+                href="{{ route('home')}}"
                 wire:navigate
                 class="text-gold text-2xl font-bold tracking-wide">
-                Scrimly
+                ScrimlyLol
             </a>
         </div>
 

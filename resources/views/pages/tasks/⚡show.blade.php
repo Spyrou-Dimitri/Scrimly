@@ -313,12 +313,12 @@ new #[Layout('layouts::team')] class extends Component
                     <ul class="flex flex-col gap-2" role="list">
                         @foreach ($this->task->links as $link)
                         <li class="flex items-center bg-bg-card px-6 py-4 gap-3 min-w-0">
-                            <flux:icon name="play" class="size-6 shrink-0 text-gold" />
                             <a
                                 href="{{ $link->url }}"
-                                class="truncate hover:text-gold transition-colors duration-150"
+                                class="flex items-center gap-2 truncate hover:text-gold transition-colors duration-150"
                                 target="_blank"
                                 rel="noopener noreferrer">
+                                <flux:icon name="play" class="size-6 shrink-0 text-gold" />
                                 {{ $link->title ?? $link->url }}
                             </a>
                         </li>

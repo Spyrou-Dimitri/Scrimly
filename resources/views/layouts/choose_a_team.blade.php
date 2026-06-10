@@ -19,16 +19,13 @@ $currentUser = auth()->user();
         class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 focus:rounded-lg focus:bg-bg-widget focus:px-4 focus:py-2 focus:text-white focus:shadow-basic">
         {{ __('accessibility.skip_to_content') }}
     </a>
-
+    <h1 class="sr-only">
+        ScrimlyLol
+    </h1>
     <header class="flex items-center shadow-basic justify-between bg-bg-widget px-8 py-6">
-        <h1 class="sr-only">
-            <a href="{{ route('team.index') }}" wire:navigate>
-                Scrimly
-                <span class="sr-only"> - {{ $pageTitle ?? __('layouts/choose_a_team.default_title') }}</span>
-            </a>
-        </h1>
-        <a href="{{ route('team.index') }}" class="text-gold text-2xl font-bold" wire:navigate>
-            Scrimly
+        
+        <a href="{{ route('home') }}" class="text-gold text-2xl font-bold" wire:navigate>
+            ScrimlyLol
         </a>
 
         <nav class="flex items-center gap-6" aria-label="{{ __('layouts/choose_a_team.navigation_title') }}">
@@ -43,8 +40,7 @@ $currentUser = auth()->user();
                     <x-user-avatar
                         :user="$currentUser"
                         preset="topbar"
-                        class="size-9 rounded-full object-cover flex-shrink-0"
-                    />
+                        class="size-9 rounded-full object-cover flex-shrink-0" />
 
                     <span class="hidden sm:inline-block relative text-white font-medium max-w-[160px]
                  before:content-[''] before:absolute before:bottom-0 before:left-0 

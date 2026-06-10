@@ -17,11 +17,11 @@ $currentUser = auth()->user();
         class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 focus:rounded-lg focus:bg-bg-widget focus:px-4 focus:py-2 focus:text-white focus:shadow-basic">
         {{ __('welcome.skip_to_content') }}
     </a>
-
-    <header class="sticky top-0 z-20 shrink-0 flex items-center shadow-basic bg-bg-widget px-8 py-6">
-        <h1 class="sr-only">
+    <h1 class="sr-only">
             ScrimlyLol
         </h1>
+    <header class="sticky top-0 z-20 shrink-0 flex items-center shadow-basic bg-bg-widget px-8 py-6">
+        
         <nav class="flex w-full items-center justify-between gap-8" aria-label="{{ __('welcome.navigation_title') }}">
             <h2 class="sr-only">
                 {{ __('welcome.nav.title') }}
@@ -55,13 +55,23 @@ $currentUser = auth()->user();
 
             <div class="flex items-center gap-6">
                 @if ($currentUser)
+                @if (currentTeam())
                 <x-cta
-                    href="{{ route('team.index') }}"
+                    href="{{ route('dashboard', ['slug' => currentTeam()->slug]) }}"
                     :title="__('welcome.back_to_team')"
                     :class="'primary'"
                     aria-label="{{ __('welcome.back_to_team') }}">
                     {{ __('welcome.back_to_team') }}
                 </x-cta>
+                @else
+                <x-cta
+                    href="{{ route('team.index') }}"
+                    :title="__('welcome.nav.teams_title')"
+                    :class="'primary'"
+                    aria-label="{{ __('welcome.nav.teams_title') }}">
+                    {{ __('welcome.back_to_team') }}
+                </x-cta>
+                @endif
                 <a href="{{ route('profile.show') }}"
                     title="{{ __('layouts/team.edit_profile_cta_title') }}"
                     aria-label="{{ __('layouts/team.edit_profile_cta_title') }} : {{ $currentUser->username }}"
