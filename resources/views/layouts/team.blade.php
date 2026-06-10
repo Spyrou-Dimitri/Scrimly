@@ -7,9 +7,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ __('layouts/team.scrimly') }} — {{ currentTeam()->name }}@if (filled($title ?? null)) • {{ $title }}@endif</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ asset('favicon/favicon-96x96.png') }}" sizes="96x96">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon/favicon.svg') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon/favicon.ico') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicon/apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ asset('favicon/site.webmanifest') }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -31,9 +33,9 @@
     <livewire:layout.topbar />
 
     <main
-    id="main-content"
-    aria-label="{{ __('accessibility.main_content') }}"
-    x-init="$store.presence.connect(
+        id="main-content"
+        aria-label="{{ __('accessibility.main_content') }}"
+        x-init="$store.presence.connect(
         {{ currentTeam()->id }},
         {{ currentMember()->user_id }},
         @js([
@@ -41,13 +43,13 @@
             'isOffline' => __('pages/chats/index.is_offline'),
         ])
     )"
-    class="flex-1 overflow-y-auto bg-bg-main max-w-[1600px] w-full  mx-auto lg:col-start-2 lg:row-start-2">
+        class="flex-1 overflow-y-auto bg-bg-main max-w-[1600px] w-full  mx-auto lg:col-start-2 lg:row-start-2">
         <div class="px-6 py-8">
             {{ $slot }}
         </div>
     </main>
 
-    
+
     @livewireScripts
 
 

@@ -4,6 +4,7 @@ return [
     'title' => 'Accueil',
     'navigation_title' => 'Navigation principale',
     'skip_to_content' => 'Aller au contenu principal',
+    'back_to_team' => 'Retour à l\'équipe',
     'nav' => [
         'title' => 'Navigation principale',
         'home_title' => 'Retour à l\'accueil Scrimly',

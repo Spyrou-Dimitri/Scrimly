@@ -31,7 +31,7 @@ $currentUser = auth()->user();
                     aria-label="{{ __('welcome.nav.home_title') }}"
                     aria-current="page"
                     class="text-gold text-2xl font-bold shrink-0">
-                    Scrimly
+                    ScrimlyLol
                 </a>
 
                 <div class="hidden md:flex items-center gap-6">
@@ -55,6 +55,13 @@ $currentUser = auth()->user();
 
             <div class="flex items-center gap-6">
                 @if ($currentUser)
+                <x-cta
+                    href="{{ route('team.index') }}"
+                    :title="__('welcome.back_to_team')"
+                    :class="'primary'"
+                    aria-label="{{ __('welcome.back_to_team') }}">
+                    {{ __('welcome.back_to_team') }}
+                </x-cta>
                 <a href="{{ route('profile.show') }}"
                     title="{{ __('layouts/team.edit_profile_cta_title') }}"
                     aria-label="{{ __('layouts/team.edit_profile_cta_title') }} : {{ $currentUser->username }}"
