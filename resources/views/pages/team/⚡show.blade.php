@@ -173,7 +173,10 @@ $canManageTeam = Gate::allows('manageTeam', User::class);
 
                 @if (filled($team->description))
                 <div x-data="{ expanded: false, clamped: false }"
-                    x-init="nextTick() = $refs.description.scrollHeight > $refs.description.clientHeight"
+                    x-init="$nextTick(() => {
+                        clamped = $refs.description.scrollHeight > $refs.description.clientHeight
+                    })"
+                    x-cloak
                     class="max-w-3xl">
                     <p
                         x-ref="description"
