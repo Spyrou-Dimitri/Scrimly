@@ -1,0 +1,912 @@
+[
+  {
+    "title": "Analyse de VOD - Dernier scrim",
+    "description": "Regarder la VOD de notre dernier scrim et identifier les erreurs individuelles et collectives commises. L'objectif est de comprendre pourquoi certaines phases de jeu ont mal tourné et de proposer des corrections concrètes.",
+    "subtasks": [
+      "Regarder la VOD complète sans interruption",
+      "Identifier les erreurs de positionnement",
+      "Noter les moments clés (teamfights, objectifs ratés)",
+      "Rédiger un résumé des points à améliorer"
+    ]
+  },
+  {
+    "title": "Analyse de draft adverse",
+    "description": "Étudier la composition jouée par l'équipe adverse lors du dernier scrim. Comprendre leurs win conditions et préparer des réponses pour le prochain affrontement.",
+    "subtasks": [
+      "Lister les champions joués par l'adversaire",
+      "Identifier les win conditions de leur composition",
+      "Préparer des contre-picks potentiels",
+      "Partager ses conclusions avec le coach"
+    ]
+  },
+  {
+    "title": "Travailler un champion du méta",
+    "description": "Se familiariser avec un champion fort dans le méta actuel. L'objectif est d'être capable de le sortir lors d'un scrim si la draft le demande.",
+    "subtasks": [
+      "Regarder 3 games de pros sur ce champion",
+      "Faire 5 parties en solo queue",
+      "Analyser ses statistiques après les parties",
+      "Identifier les points faibles à corriger"
+    ]
+  },
+  {
+    "title": "Étudier un matchup difficile",
+    "description": "Approfondir la connaissance d'un matchup défavorable pour son champion principal. L'objectif est de ne plus subir ce matchup mais de savoir comment le gérer.",
+    "subtasks": [
+      "Rechercher des guides sur ce matchup",
+      "Regarder des VODs de joueurs pros dans ce matchup",
+      "Pratiquer le matchup en solo queue",
+      "Noter les erreurs commises et les corrections apportées"
+    ]
+  },
+  {
+    "title": "Améliorer son CS (Creep Score)",
+    "description": "Travailler la régularité du last hit afin d'améliorer son score de CS par minute. Un bon CS est la base d'une économie solide en lane.",
+    "subtasks": [
+      "Faire une session de CS en partie personnalisée",
+      "Viser 8 CS par minute minimum",
+      "Analyser les vagues où des CS ont été ratés",
+      "Refaire la session jusqu'à atteindre l'objectif"
+    ]
+  },
+  {
+    "title": "Revoir un scrim perdu",
+    "description": "Analyser en profondeur un scrim que l'équipe a perdu. L'objectif n'est pas de pointer des coupables mais d'identifier les schémas d'erreurs récurrents à corriger collectivement.",
+    "subtasks": [
+      "Regarder la VOD du scrim perdu",
+      "Identifier les erreurs individuelles",
+      "Identifier les erreurs collectives",
+      "Proposer des solutions concrètes au coach"
+    ]
+  },
+  {
+    "title": "Apprendre un nouveau rôle",
+    "description": "Explorer un rôle différent de son rôle principal afin d'élargir sa compréhension du jeu et d'apporter une flexibilité supplémentaire à l'équipe.",
+    "subtasks": [
+      "Regarder des guides sur le rôle",
+      "Étudier les champions clés de ce rôle",
+      "Faire 10 parties dans ce rôle",
+      "Rédiger un bilan de l'expérience"
+    ]
+  },
+  {
+    "title": "Préparer la composition pour le prochain scrim",
+    "description": "En amont du prochain scrim, analyser l'adversaire et proposer des compositions adaptées à leur style de jeu. L'objectif est d'arriver en draft avec un plan clair.",
+    "subtasks": [
+      "Analyser le style de jeu de l'adversaire",
+      "Proposer 3 compositions adaptées",
+      "Étudier les win conditions de chaque composition",
+      "Présenter ses choix au coach avant le scrim"
+    ]
+  },
+  {
+    "title": "Travailler son wave management",
+    "description": "Maîtriser les concepts de gestion de vague : freeze, slow push et fast push. Savoir quand appliquer chaque technique est une compétence fondamentale pour dominer sa lane.",
+    "subtasks": [
+      "Étudier les concepts de freeze, slow push et fast push",
+      "Regarder des VODs axées sur la gestion de vague",
+      "Pratiquer en partie personnalisée",
+      "Analyser les résultats obtenus en solo queue"
+    ]
+  },
+  {
+    "title": "Améliorer son ward placement",
+    "description": "Optimiser le placement des wards afin d'améliorer la vision de l'équipe et réduire les morts par manque d'information. La vision est l'une des ressources les plus sous-estimées du jeu.",
+    "subtasks": [
+      "Étudier les zones de ward prioritaires selon son rôle",
+      "Regarder des VODs axées sur la gestion de vision",
+      "Appliquer les nouveaux placements en solo queue",
+      "Comparer son vision score avant et après"
+    ]
+  },
+  {
+    "title": "Analyser les objectifs dans un scrim",
+    "description": "Passer en revue la gestion des objectifs (Dragon, Baron, Tourelles) lors d'un scrim récent. Comprendre pourquoi certains objectifs ont été perdus et comment mieux les contester.",
+    "subtasks": [
+      "Revoir la VOD du scrim sur les objectifs",
+      "Lister tous les objectifs pris et perdus",
+      "Analyser pourquoi chaque objectif a été perdu",
+      "Proposer des rotations alternatives"
+    ]
+  },
+  {
+    "title": "Travailler son macro-game",
+    "description": "Améliorer sa prise de décision en dehors des combats : savoir où aller après un kill, quand pousser une vague ou quand contester un objectif.",
+    "subtasks": [
+      "Étudier les rotations après un kill ou un objectif",
+      "Regarder des VODs axées sur le macro-game",
+      "Appliquer les concepts en solo queue",
+      "Faire un bilan avec le coach"
+    ]
+  },
+  {
+    "title": "Préparer un champion pool",
+    "description": "Construire un champion pool cohérent et complémentaire pour son rôle. L'objectif est d'avoir des options adaptées à différentes situations de draft.",
+    "subtasks": [
+      "Choisir 3 champions complémentaires pour son rôle",
+      "Étudier le style de jeu de chacun",
+      "Faire 5 parties sur chaque champion",
+      "Présenter son champion pool au coach"
+    ]
+  },
+  {
+    "title": "Étudier les timings de jungle",
+    "description": "Apprendre les timings de respawn des camps de jungle et les routes optimales pour maximiser son farm tout en ayant un impact sur les lanes.",
+    "subtasks": [
+      "Apprendre les timings des camps neutres",
+      "Étudier les routes de jungle efficaces",
+      "Regarder des VODs de junglers pros",
+      "Pratiquer en partie personnalisée"
+    ]
+  },
+  {
+    "title": "Analyser ses deaths dans un scrim",
+    "description": "Passer en revue chaque mort subie lors d'un scrim pour en comprendre la cause. L'objectif est de réduire les morts évitables et d'améliorer sa survie en jeu.",
+    "subtasks": [
+      "Revoir la VOD en se concentrant sur ses morts",
+      "Identifier la cause de chaque death",
+      "Classer les deaths par type d'erreur",
+      "Proposer des corrections concrètes au coach"
+    ]
+  },
+  {
+    "title": "Améliorer sa communication en jeu",
+    "description": "Travailler la qualité et la clarté des informations communiquées à l'équipe pendant les parties. Une bonne communication réduit les malentendus et améliore la réactivité collective.",
+    "subtasks": [
+      "Lister les informations à communiquer en priorité",
+      "Pratiquer le callout d'objectifs et de positions ennemies",
+      "Demander un retour à ses coéquipiers après le scrim",
+      "Appliquer les corrections lors du prochain scrim"
+    ]
+  },
+  {
+    "title": "Étudier un adversaire avant un scrim",
+    "description": "Préparer un briefing complet sur l'équipe adverse en analysant leurs derniers matchs. L'objectif est d'arriver au scrim avec une connaissance claire du style de jeu ennemi.",
+    "subtasks": [
+      "Regarder les derniers matchs de l'équipe adverse",
+      "Identifier leurs champions favoris",
+      "Analyser leur style de jeu et leurs patterns",
+      "Préparer un briefing pour l'équipe"
+    ]
+  },
+  {
+    "title": "Travailler son early game",
+    "description": "Améliorer ses performances en début de partie, de la phase de lane aux premières rotations. L'early game conditionne souvent l'avantage de ressources pour le reste de la partie.",
+    "subtasks": [
+      "Revoir ses stats d'early game sur les dernières parties",
+      "Identifier les erreurs récurrentes en early",
+      "Regarder des VODs axées sur l'early game",
+      "Appliquer les corrections en solo queue"
+    ]
+  },
+  {
+    "title": "Améliorer ses réflexes en teamfight",
+    "description": "Travailler la prise de décision rapide en combat d'équipe : savoir sur qui se focus, quand utiliser ses sorts et comment se positionner pour maximiser son impact.",
+    "subtasks": [
+      "Regarder des VODs de teamfights pros",
+      "Identifier les bonnes et mauvaises décisions",
+      "Pratiquer les combos de son champion",
+      "Analyser ses teamfights lors du prochain scrim"
+    ]
+  },
+  {
+    "title": "Apprendre à jouer depuis une position de défaite",
+    "description": "Développer sa capacité à jouer en mode défensif lorsque l'équipe est en retard. Savoir staller, split push et trouver des fenêtres de comeback est une compétence qui peut renverser des parties.",
+    "subtasks": [
+      "Étudier les concepts de split push et de stalling",
+      "Regarder des VODs de comebacks réussis",
+      "Pratiquer les scénarios défensifs en solo queue",
+      "Faire un bilan avec le coach"
+    ]
+  },
+  {
+    "title": "Travailler le roaming en mid",
+    "description": "Améliorer sa capacité à quitter sa lane pour impacter les autres lanes au bon moment. Un bon roaming peut désequilibrer une partie entière en faveur de son équipe.",
+    "subtasks": [
+      "Étudier les timings de roam selon la vague",
+      "Regarder des VODs de midlaners reconnus pour leur roaming",
+      "Pratiquer en solo queue avec un objectif de roam par partie",
+      "Analyser l'impact de ses roams sur le résultat"
+    ]
+  },
+  {
+    "title": "Améliorer sa gestion du tilt",
+    "description": "Travailler sur sa résilience mentale pour maintenir un niveau de jeu constant même après une erreur ou une série de défaites. Le mental est aussi important que la technique.",
+    "subtasks": [
+      "Lire un article sur la gestion mentale en esport",
+      "Identifier ses déclencheurs de tilt personnels",
+      "Pratiquer des techniques de recentrage entre les parties",
+      "Faire un retour au coach sur ses progrès"
+    ]
+  },
+  {
+    "title": "Analyser les visions de l'équipe",
+    "description": "Revoir la gestion de la vision dans un scrim récent pour identifier les zones où l'équipe était aveugle et comprendre comment cela a influencé les décisions prises.",
+    "subtasks": [
+      "Revoir la minimap sur une VOD de scrim",
+      "Identifier les zones où la vision faisait défaut",
+      "Proposer des placements de ward alternatifs",
+      "Appliquer les corrections lors du prochain scrim"
+    ]
+  },
+  {
+    "title": "Étudier les priorités d'objectifs selon la composition",
+    "description": "Comprendre quels objectifs favoriser en fonction de la composition jouée. Toutes les compositions ne jouent pas de la même façon et les priorités d'objectifs varient en conséquence.",
+    "subtasks": [
+      "Apprendre quels objectifs favorisent quelle composition",
+      "Étudier des exemples issus du jeu compétitif",
+      "Appliquer les concepts en solo queue",
+      "Présenter ses conclusions au coach"
+    ]
+  },
+  {
+    "title": "Préparer un guide sur un champion pour l'équipe",
+    "description": "Rédiger un guide complet sur un champion à destination de l'équipe. L'objectif est de partager ses connaissances et d'aider ses coéquipiers à mieux comprendre ce champion.",
+    "subtasks": [
+      "Rédiger les forces et faiblesses du champion",
+      "Lister les matchups favorables et défavorables",
+      "Décrire les win conditions",
+      "Partager le guide avec l'équipe"
+    ]
+  },
+  {
+    "title": "Analyser le shotcalling dans un scrim",
+    "description": "Passer en revue la qualité du shotcalling lors d'un scrim récent. Identifier les moments où des décisions importantes ont manqué et comment améliorer la prise de décision collective.",
+    "subtasks": [
+      "Réécouter la communication vocale du scrim",
+      "Identifier les moments où le shotcalling a manqué",
+      "Identifier les bonnes décisions prises",
+      "Proposer des améliorations concrètes"
+    ]
+  },
+  {
+    "title": "Travailler les engage et disengage",
+    "description": "Améliorer le timing des initiations et des retraits en combat. Savoir quand engager et quand se retirer est souvent la différence entre gagner et perdre un teamfight.",
+    "subtasks": [
+      "Étudier les compositions qui forcent l'engage",
+      "Regarder des VODs axées sur les initiations",
+      "Pratiquer le timing d'engage en solo queue",
+      "Faire un bilan après le prochain scrim"
+    ]
+  },
+  {
+    "title": "Étudier les nouvelles modifications de patch",
+    "description": "Analyser les dernières notes de patch et comprendre leur impact sur le méta. Se tenir informé des changements permet d'adapter rapidement son champion pool et son style de jeu.",
+    "subtasks": [
+      "Lire les notes de patch complètes",
+      "Identifier les changements qui impactent son rôle",
+      "Identifier les champions avantagés et désavantagés",
+      "Partager ses conclusions avec le coach"
+    ]
+  },
+  {
+    "title": "Améliorer sa gestion de ressources en jungle",
+    "description": "Optimiser l'ordre et la fréquence de farm des camps de jungle pour maximiser son gain d'or et d'expérience sans négliger l'impact sur les lanes.",
+    "subtasks": [
+      "Étudier les priorités de farm selon la situation de jeu",
+      "Regarder des VODs de junglers axés sur le farm",
+      "Comparer son farm de jungle par rapport aux pros",
+      "Appliquer les corrections en solo queue"
+    ]
+  },
+  {
+    "title": "Travailler les trades en lane",
+    "description": "Identifier et exploiter les fenêtres de trade favorables pour son champion. Savoir quand trader et quand éviter le combat est essentiel pour dominer sa lane.",
+    "subtasks": [
+      "Étudier les fenêtres de trade favorables pour son champion",
+      "Regarder des VODs axées sur les trades de lane",
+      "Pratiquer en solo queue en se concentrant sur les trades",
+      "Analyser ses résultats avec le coach"
+    ]
+  },
+  {
+    "title": "Analyser les erreurs de rotation dans un scrim",
+    "description": "Revoir les mouvements de l'équipe dans un scrim récent pour identifier les rotations manquées ou tardives qui ont conduit à des pertes d'objectifs ou de ressources.",
+    "subtasks": [
+      "Revoir la VOD du scrim sur les mouvements d'équipe",
+      "Identifier les rotations manquées",
+      "Proposer les rotations alternatives",
+      "Appliquer les corrections lors du prochain scrim"
+    ]
+  },
+  {
+    "title": "Préparer un rapport sur le méta actuel",
+    "description": "Dresser un état des lieux du méta compétitif actuel et analyser comment les tendances observées impactent le style de jeu de l'équipe.",
+    "subtasks": [
+      "Lister les champions les plus joués en compétitif",
+      "Identifier les tendances de composition",
+      "Analyser comment ces tendances impactent notre style de jeu",
+      "Présenter le rapport lors de la prochaine réunion d'équipe"
+    ]
+  },
+  {
+    "title": "Travailler la synchronisation des ultimates",
+    "description": "Améliorer la coordination des sorts ultimes de l'équipe pour maximiser leur impact en combat. Des ultimates bien synchronisés peuvent instantanément renverser un teamfight.",
+    "subtasks": [
+      "Identifier les combos d'ultimates disponibles dans la composition",
+      "Regarder des VODs où ces combos sont réalisés en compétitif",
+      "Pratiquer les timings en partie personnalisée avec l'équipe",
+      "Analyser l'utilisation des ultimates lors du prochain scrim"
+    ]
+  },
+  {
+    "title": "Améliorer son CS sous tourelle",
+    "description": "Travailler le last hit des minions sous la protection de sa tourelle, une compétence essentielle lorsque l'on est en difficulté en lane et que l'on doit rester défensif.",
+    "subtasks": [
+      "Étudier les timings de tir de tourelle selon les champions",
+      "Pratiquer en partie personnalisée uniquement sous tourelle",
+      "Viser 90% de CS sous tourelle",
+      "Refaire la session jusqu'à atteindre l'objectif"
+    ]
+  },
+  {
+    "title": "Étudier les positions de vision en mid game",
+    "description": "Apprendre où placer la vision en phase de mid game pour prévenir les embuscades et permettre à l'équipe de prendre des décisions informées sur les objectifs à contester.",
+    "subtasks": [
+      "Identifier les zones de vision critiques en mid game",
+      "Regarder des VODs axées sur le contrôle de vision",
+      "Appliquer les placements en solo queue",
+      "Comparer l'impact sur les résultats"
+    ]
+  },
+  {
+    "title": "Analyser les pertes de Baron dans les scrims",
+    "description": "Passer en revue les situations où l'équipe a perdu le Baron Nashor lors des scrims récents. Comprendre les erreurs de décision ou de positionnement qui ont mené à ces défaites.",
+    "subtasks": [
+      "Revoir les VODs des scrims où le Baron a été perdu",
+      "Identifier les erreurs de décision et de positionnement",
+      "Proposer des stratégies alternatives",
+      "Présenter ses conclusions au coach"
+    ]
+  },
+  {
+    "title": "Travailler l'adaptation selon le score",
+    "description": "Développer sa capacité à adapter son style de jeu en fonction du score. Jouer en avance est différent de jouer en retard, et savoir switcher entre les deux est une compétence avancée.",
+    "subtasks": [
+      "Étudier les stratégies à adopter en avance et en retard",
+      "Regarder des VODs illustrant cette adaptation",
+      "Pratiquer les deux scenarios en solo queue",
+      "Faire un bilan avec le coach"
+    ]
+  },
+  {
+    "title": "Apprendre les mécaniques avancées de son champion principal",
+    "description": "Maîtriser les interactions et mécaniques avancées de son champion principal pour en tirer le maximum de son potentiel lors des scrims.",
+    "subtasks": [
+      "Rechercher les mécaniques avancées du champion",
+      "Regarder des VODs de joueurs experts sur ce champion",
+      "Pratiquer les mécaniques en partie personnalisée",
+      "Les appliquer en solo queue"
+    ]
+  },
+  {
+    "title": "Analyser les erreurs de draft de l'équipe",
+    "description": "Revoir les drafts des derniers scrims et identifier les erreurs de sélection ou d'interdiction qui ont mis l'équipe en difficulté avant même le début de la partie.",
+    "subtasks": [
+      "Lister les drafts des derniers scrims",
+      "Identifier les erreurs de pick et de ban",
+      "Analyser comment la draft a influencé le résultat",
+      "Proposer des améliorations pour les prochains drafts"
+    ]
+  },
+  {
+    "title": "Étudier le jeu en équipe lors des objectifs",
+    "description": "Comprendre comment l'équipe doit se positionner et agir de concert lors des combats pour les objectifs majeurs comme le Dragon et le Baron.",
+    "subtasks": [
+      "Étudier les formations optimales pour chaque objectif",
+      "Regarder des VODs de jeu compétitif autour des objectifs",
+      "Pratiquer les positionnements en partie personnalisée",
+      "Analyser les prochains combats d'objectifs en scrim"
+    ]
+  },
+  {
+    "title": "Travailler sa gestion du temps de mort",
+    "description": "Optimiser ce que l'équipe fait pendant les temps morts entre les teamfights : push de lanes, achat d'objets, placement de wards. Chaque seconde morte est du temps perdu.",
+    "subtasks": [
+      "Étudier les priorités après un teamfight gagné",
+      "Regarder des VODs de teams qui gèrent bien leurs temps morts",
+      "Appliquer les concepts en solo queue",
+      "Analyser les temps morts lors du prochain scrim"
+    ]
+  },
+  {
+    "title": "Préparer un guide sur la gestion de la pression de map",
+    "description": "Comprendre comment créer et maintenir une pression sur la carte pour forcer l'adversaire à des décisions sous contrainte. La pression de map est un levier stratégique puissant.",
+    "subtasks": [
+      "Étudier les concepts de pression de map",
+      "Regarder des VODs illustrant ce concept",
+      "Identifier les moments de pression dans un scrim récent",
+      "Partager ses conclusions avec l'équipe"
+    ]
+  },
+  {
+    "title": "Analyser les heralds dans les scrims",
+    "description": "Passer en revue la gestion du Héraut de la Faille lors des scrims récents. Identifier quand le prendre et comment l'utiliser pour maximiser son impact sur la partie.",
+    "subtasks": [
+      "Revoir les VODs des moments autour du Héraut",
+      "Identifier les bonnes et mauvaises décisions prises",
+      "Proposer des stratégies d'utilisation",
+      "Appliquer les corrections lors du prochain scrim"
+    ]
+  },
+  {
+    "title": "Améliorer son freeze de lane",
+    "description": "Maîtriser la technique du freeze pour maintenir la vague de minions près de sa tourelle et priver l'adversaire de farm tout en le mettant en danger.",
+    "subtasks": [
+      "Étudier les conditions nécessaires pour réaliser un freeze",
+      "Regarder des VODs axées sur le freeze",
+      "Pratiquer en partie personnalisée",
+      "Analyser ses freezes en solo queue"
+    ]
+  },
+  {
+    "title": "Travailler la coordination du duo bot",
+    "description": "Améliorer la synchronisation entre l'ADC et le Support pour maximiser leur efficacité en lane et lors des engages en dehors de la lane.",
+    "subtasks": [
+      "Identifier les points faibles dans la coordination actuelle",
+      "Étudier des duos pros efficaces",
+      "Pratiquer des scénarios de trade en partie personnalisée",
+      "Faire un debrief après chaque scrim"
+    ]
+  },
+  {
+    "title": "Étudier le concept de inting de lane",
+    "description": "Comprendre quand et comment sacrifier délibérément sa lane pour permettre à ses coéquipiers de prendre des avantages ailleurs sur la carte.",
+    "subtasks": [
+      "Étudier les situations où l'inting de lane est bénéfique",
+      "Regarder des VODs illustrant ce concept",
+      "Appliquer le concept en solo queue",
+      "Partager ses conclusions avec le coach"
+    ]
+  },
+  {
+    "title": "Analyser les Trophées de Dragon dans les scrims",
+    "description": "Revoir la gestion des objectifs Dragon lors des scrims récents. Comprendre l'impact des âmes de dragon sur la partie et prioriser leur obtention en conséquence.",
+    "subtasks": [
+      "Revoir les VODs des moments autour des dragons",
+      "Analyser l'impact des âmes de dragon obtenues",
+      "Identifier les dragons perdus et leurs conséquences",
+      "Proposer des stratégies pour mieux les contester"
+    ]
+  },
+  {
+    "title": "Travailler son ultime de façon optimale",
+    "description": "S'assurer que l'utilisation de son sort ultime est toujours justifiée et au bon moment. Les ultimates mal utilisés peuvent faire perdre des teamfights qui auraient dû être gagnés.",
+    "subtasks": [
+      "Revoir ses utilisations d'ultime dans un scrim récent",
+      "Identifier les utilisations gaspillées ou ratées",
+      "Définir des règles personnelles d'utilisation",
+      "Appliquer ces règles lors du prochain scrim"
+    ]
+  },
+  {
+    "title": "Préparer une analyse individuelle de ses performances",
+    "description": "Dresser un bilan honnête de ses propres performances sur les derniers scrims. Identifier ses forces pour les consolider et ses faiblesses pour les travailler en priorité.",
+    "subtasks": [
+      "Revoir ses statistiques sur les derniers scrims",
+      "Identifier ses 3 principales forces",
+      "Identifier ses 3 principales faiblesses",
+      "Présenter son analyse au coach"
+    ]
+  },
+  {
+    "title": "Étudier les compositions de type poke",
+    "description": "Comprendre le fonctionnement des compositions axées sur le harcèlement à distance avant un teamfight. Apprendre à jouer avec et contre ces compositions.",
+    "subtasks": [
+      "Identifier les champions clés des compositions poke",
+      "Regarder des VODs de compositions poke en compétitif",
+      "Analyser comment contrer ce style de jeu",
+      "Partager ses conclusions avec le coach"
+    ]
+  },
+  {
+    "title": "Travailler les transitions de phase de jeu",
+    "description": "Améliorer la capacité de l'équipe à passer efficacement de l'early game au mid game, puis du mid game au late game. Ces transitions sont souvent des moments de vulnérabilité.",
+    "subtasks": [
+      "Identifier les moments de transition dans un scrim récent",
+      "Analyser comment ces transitions ont été gérées",
+      "Regarder des VODs de teams qui gèrent bien ces transitions",
+      "Proposer des améliorations au coach"
+    ]
+  },
+  {
+    "title": "Analyser les smites raté en jungle",
+    "description": "Revoir les moments où le smite a été raté sur un objectif lors des scrims. Comprendre les causes et s'entraîner à améliorer la précision de ce sort crucial pour les junglers.",
+    "subtasks": [
+      "Identifier les smites ratés dans les VODs de scrim",
+      "Analyser les conditions dans lesquelles ils ont été ratés",
+      "S'entraîner au timing du smite en partie personnalisée",
+      "Vérifier les progrès lors du prochain scrim"
+    ]
+  },
+  {
+    "title": "Préparer des stratégies de split push",
+    "description": "Développer des stratégies de split push adaptées à la composition de l'équipe. Savoir quand envoyer un joueur en solo et comment l'équipe doit réagir en conséquence.",
+    "subtasks": [
+      "Identifier les champions adaptés au split push dans le roster",
+      "Étudier les conditions optimales pour un split push",
+      "Regarder des VODs de split push efficaces en compétitif",
+      "Tester la stratégie lors d'un prochain scrim"
+    ]
+  },
+  {
+    "title": "Travailler son positionnement en tant qu'ADC",
+    "description": "Améliorer le positionnement en combat pour maximiser les dégâts infligés tout en minimisant les risques d'être ciblé. L'ADC doit rester en vie le plus longtemps possible pour être efficace.",
+    "subtasks": [
+      "Revoir ses positionnements dans les teamfights d'un scrim",
+      "Identifier les moments où le positionnement était mauvais",
+      "Regarder des VODs d'ADC reconnus pour leur positionnement",
+      "Appliquer les corrections lors du prochain scrim"
+    ]
+  },
+  {
+    "title": "Étudier les compositions de type dive",
+    "description": "Comprendre comment fonctionnent les compositions axées sur le dive de tourelle et comment les contrer. Ces compositions sont fréquentes en compétitif et nécessitent une réponse adaptée.",
+    "subtasks": [
+      "Identifier les champions clés des compositions dive",
+      "Regarder des VODs de compositions dive en compétitif",
+      "Analyser comment contrer ce style de jeu",
+      "Partager ses conclusions avec le coach"
+    ]
+  },
+  {
+    "title": "Analyser les performances individuelles sur 10 parties",
+    "description": "Passer en revue 10 parties de solo queue pour identifier des tendances dans ses performances. L'objectif est d'avoir une vision statistique de sa progression sur une période récente.",
+    "subtasks": [
+      "Sélectionner 10 parties récentes sur OP.GG",
+      "Relever les statistiques clés de chaque partie",
+      "Identifier les tendances positives et négatives",
+      "Présenter ses conclusions au coach"
+    ]
+  },
+  {
+    "title": "Travailler la gestion de l'Hextech Dragon Soul",
+    "description": "Comprendre l'impact de l'âme dragon Hextech sur le style de jeu de l'équipe et adapter la stratégie en conséquence lorsque cette âme est en jeu.",
+    "subtasks": [
+      "Étudier les effets de l'âme dragon Hextech",
+      "Regarder des VODs de parties où cette âme a été déterminante",
+      "Identifier comment adapter la stratégie en fonction",
+      "Partager ses conclusions avec le coach"
+    ]
+  },
+  {
+    "title": "Améliorer sa gestion du slow push",
+    "description": "Maîtriser la technique du slow push pour créer une vague de minions conséquente et forcer l'adversaire à gérer sa lane pendant que son équipe peut prendre des objectifs ailleurs.",
+    "subtasks": [
+      "Étudier les conditions idéales pour un slow push",
+      "Regarder des VODs illustrant cette technique",
+      "Pratiquer en partie personnalisée",
+      "Analyser ses utilisations en solo queue"
+    ]
+  },
+  {
+    "title": "Préparer des réponses aux compositions de scale",
+    "description": "Développer des stratégies pour battre les compositions axées sur le late game avant qu'elles n'atteignent leur pic de puissance. La clé est de créer de l'avantage tôt dans la partie.",
+    "subtasks": [
+      "Identifier les compositions de scale les plus courantes",
+      "Étudier les fenêtres de victoire contre ces compositions",
+      "Regarder des VODs de parties où ces compositions ont été battues",
+      "Partager ses conclusions avec le coach"
+    ]
+  },
+  {
+    "title": "Analyser sa lane dominance ou soumission",
+    "description": "Revoir ses performances en lane pour évaluer dans quelle mesure il domine ou subit sa lane. L'objectif est de comprendre les causes d'une lane perdue ou gagnée.",
+    "subtasks": [
+      "Comparer ses statistiques de lane avec son adversaire dans les scrims",
+      "Identifier les phases de lane où il perd l'avantage",
+      "Regarder des VODs axées sur la domination de lane",
+      "Proposer des corrections au coach"
+    ]
+  },
+  {
+    "title": "Travailler la flexibilité de champion pool",
+    "description": "Étendre son champion pool pour proposer une plus grande flexibilité lors de la phase de draft. Un joueur capable de jouer plusieurs types de champions est un atout majeur pour l'équipe.",
+    "subtasks": [
+      "Identifier les types de champions manquants dans son pool",
+      "Choisir un champion à apprendre en priorité",
+      "Faire 10 parties sur ce champion",
+      "Évaluer ses progrès avec le coach"
+    ]
+  },
+  {
+    "title": "Étudier les counter-picks de son rôle",
+    "description": "Construire une liste de counter-picks fiables pour son rôle afin de pouvoir répondre aux picks adverses lors de la phase de draft et ne pas se retrouver dans des matchups défavorables.",
+    "subtasks": [
+      "Lister les champions les plus joués en face de son rôle",
+      "Identifier les meilleures réponses pour chacun",
+      "Pratiquer ces counter-picks en solo queue",
+      "Présenter sa liste au coach"
+    ]
+  },
+  {
+    "title": "Travailler la gestion de la pression psychologique",
+    "description": "Développer des stratégies pour gérer la pression mentale lors des moments importants d'un scrim. Rester concentré et efficace dans les situations de haute pression est une compétence essentielle.",
+    "subtasks": [
+      "Lire un article sur la gestion du stress en compétition",
+      "Identifier ses réactions habituelles sous pression",
+      "Pratiquer des techniques de recentrage",
+      "Appliquer ces techniques lors du prochain scrim"
+    ]
+  },
+  {
+    "title": "Analyser les lanes perdues dans les scrims",
+    "description": "Passer en revue les lanes qui ont été perdues lors des derniers scrims pour identifier les patterns d'erreurs récurrents et trouver des solutions adaptées à chaque situation.",
+    "subtasks": [
+      "Identifier les lanes perdues dans les derniers scrims",
+      "Analyser les causes de chaque défaite de lane",
+      "Proposer des corrections spécifiques à chaque cas",
+      "Mettre en place un plan d'action avec le coach"
+    ]
+  },
+  {
+    "title": "Préparer une revue de mi-saison",
+    "description": "Dresser un bilan complet de la progression de l'équipe depuis le début de la saison. Identifier les axes d'amélioration prioritaires pour la seconde partie de la saison.",
+    "subtasks": [
+      "Compiler les statistiques de scrims de la saison",
+      "Identifier les points forts et faibles de l'équipe",
+      "Définir 3 objectifs prioritaires pour la suite",
+      "Présenter la revue lors d'une réunion d'équipe"
+    ]
+  },
+  {
+    "title": "Travailler son adaptation selon le style d'adversaire",
+    "description": "Développer sa capacité à adapter son jeu en fonction du style de l'adversaire. Certains joueurs sont agressifs, d'autres passifs, et chaque profil demande une approche différente.",
+    "subtasks": [
+      "Étudier les différents profils d'adversaires",
+      "Regarder des VODs illustrant ces adaptations",
+      "Pratiquer différentes approches en solo queue",
+      "Faire un bilan avec le coach"
+    ]
+  },
+  {
+    "title": "Étudier les compositions de type engage",
+    "description": "Comprendre les mécanismes et les win conditions des compositions axées sur l'initiation de combat. Savoir comment les jouer et comment les contrer.",
+    "subtasks": [
+      "Identifier les champions clés des compositions engage",
+      "Regarder des VODs de compositions engage en compétitif",
+      "Analyser comment contrer ce style de jeu",
+      "Partager ses conclusions avec le coach"
+    ]
+  },
+  {
+    "title": "Analyser ses performances en late game",
+    "description": "Évaluer son efficacité en fin de partie lorsque tous les joueurs sont proches de leur pic de puissance. Le late game exige une prise de décision précise et une gestion des ressources optimale.",
+    "subtasks": [
+      "Revoir ses performances en late game dans les scrims",
+      "Identifier les erreurs commises en late game",
+      "Regarder des VODs axées sur le late game",
+      "Proposer des corrections au coach"
+    ]
+  },
+  {
+    "title": "Travailler la communication en phase de draft",
+    "description": "Améliorer la coordination de l'équipe pendant la phase de draft pour s'assurer que tous les membres sont alignés sur la composition choisie et comprennent leur rôle dans celle-ci.",
+    "subtasks": [
+      "Identifier les points de tension lors des drafts récents",
+      "Définir un protocole de communication pour la draft",
+      "Pratiquer la communication de draft en interne",
+      "Évaluer les améliorations lors du prochain scrim"
+    ]
+  },
+  {
+    "title": "Préparer un briefing post-scrim",
+    "description": "Structurer et présenter un briefing complet après un scrim pour permettre à toute l'équipe d'avoir une vision claire de ce qui a bien fonctionné et de ce qui doit être amélioré.",
+    "subtasks": [
+      "Rédiger les points positifs du scrim",
+      "Lister les erreurs à corriger en priorité",
+      "Proposer des exercices pour chaque point à améliorer",
+      "Présenter le briefing à l'équipe"
+    ]
+  },
+  {
+    "title": "Étudier les compositions de type protect the ADC",
+    "description": "Comprendre le fonctionnement et les win conditions des compositions axées sur la protection d'un carry ADC. Apprendre à jouer avec et contre ce type de composition.",
+    "subtasks": [
+      "Identifier les champions clés de ces compositions",
+      "Regarder des VODs de compositions protect en compétitif",
+      "Analyser comment contrer ce style de jeu",
+      "Partager ses conclusions avec le coach"
+    ]
+  },
+  {
+    "title": "Travailler ses réactions aux ganks",
+    "description": "Améliorer sa capacité à anticiper et réagir aux ganks adverses. Savoir comment survivre ou profiter d'une tentative de gank est une compétence qui peut renverser une lane.",
+    "subtasks": [
+      "Étudier les signes précurseurs d'un gank",
+      "Regarder des VODs axées sur la gestion des ganks",
+      "Pratiquer les réactions aux ganks en solo queue",
+      "Analyser ses comportements lors du prochain scrim"
+    ]
+  },
+  {
+    "title": "Analyser la gestion du Gromp et Krugs en jungle",
+    "description": "Optimiser l'inclusion du Gromp et des Krugs dans ses routes de jungle pour maximiser le farm tout en gardant une présence sur les lanes.",
+    "subtasks": [
+      "Étudier l'impact de ces camps sur les routes de jungle",
+      "Regarder des VODs de junglers qui optimisent leur farm",
+      "Pratiquer des routes incluant ces camps en partie personnalisée",
+      "Analyser ses routes lors du prochain scrim"
+    ]
+  },
+  {
+    "title": "Préparer une analyse de la progression de l'équipe",
+    "description": "Évaluer la progression collective de l'équipe sur une période donnée en comparant les statistiques et les performances avant et après une période d'entraînement intensif.",
+    "subtasks": [
+      "Compiler les statistiques de scrims sur la période",
+      "Comparer avec la période précédente",
+      "Identifier les axes d'amélioration réalisés",
+      "Définir les nouveaux objectifs pour la suite"
+    ]
+  },
+  {
+    "title": "Travailler la gestion de l'avantage de ressources",
+    "description": "Apprendre à convertir un avantage en or ou en kills en avantages concrets sur la carte. Un avantage qui n'est pas exploité est une opportunité gaspillée.",
+    "subtasks": [
+      "Étudier les priorités après avoir obtenu un avantage",
+      "Regarder des VODs de teams qui convertissent bien leurs avantages",
+      "Pratiquer la prise de décision en position avantageuse",
+      "Analyser la gestion de l'avantage dans le prochain scrim"
+    ]
+  },
+  {
+    "title": "Étudier les patrons de jeu de l'adversaire",
+    "description": "Analyser en profondeur les habitudes et les patterns de jeu de l'équipe que l'on va affronter pour anticiper leurs décisions et préparer des réponses adaptées.",
+    "subtasks": [
+      "Regarder au moins 3 matchs récents de l'adversaire",
+      "Identifier leurs patterns récurrents",
+      "Préparer des contre-stratégies",
+      "Présenter l'analyse à l'équipe avant le scrim"
+    ]
+  },
+  {
+    "title": "Travailler la gestion des wards ennemies",
+    "description": "Apprendre à identifier et détruire les wards adverses pour priver l'ennemi d'information et créer des angles d'attaque surprenants.",
+    "subtasks": [
+      "Étudier les zones de ward habituelles des adversaires",
+      "Apprendre à utiliser efficacement l'Oracle Alteration",
+      "Pratiquer le deward en solo queue",
+      "Analyser le contrôle de vision adverse lors du prochain scrim"
+    ]
+  },
+  {
+    "title": "Analyser les moments de pic de puissance",
+    "description": "Identifier les fenêtres de victoire de sa composition et apprendre à forcer des teamfights ou des objectifs précisément lors de ces moments de pic de puissance.",
+    "subtasks": [
+      "Identifier le pic de puissance de la composition actuelle",
+      "Regarder des VODs où cette fenêtre est bien exploitée",
+      "Définir des signaux qui indiquent que le pic est atteint",
+      "Communiquer ces signaux à l'équipe lors du prochain scrim"
+    ]
+  },
+  {
+    "title": "Préparer un guide de communication en équipe",
+    "description": "Rédiger un guide des bonnes pratiques de communication en équipe pour uniformiser les callouts et améliorer la réactivité collective lors des moments importants.",
+    "subtasks": [
+      "Lister les situations nécessitant une communication immédiate",
+      "Définir un vocabulaire commun pour les callouts",
+      "Partager le guide avec l'équipe",
+      "Évaluer son application lors du prochain scrim"
+    ]
+  },
+  {
+    "title": "Travailler sa régularité en solo queue",
+    "description": "Établir une routine d'entraînement en solo queue pour maintenir un niveau de jeu constant et progresser régulièrement en dehors des scrims d'équipe.",
+    "subtasks": [
+      "Définir un nombre minimum de parties par semaine",
+      "Se fixer des objectifs de performance par session",
+      "Tenir un journal de ses parties",
+      "Faire un point hebdomadaire avec le coach"
+    ]
+  },
+  {
+    "title": "Analyser les dive de tourelle adverses dans les scrims",
+    "description": "Passer en revue les moments où l'équipe adverse a réussi à plonger sous les tourelles lors des scrims récents. Identifier comment mieux se défendre contre ce type d'attaque.",
+    "subtasks": [
+      "Identifier les dives adverses dans les VODs de scrim",
+      "Analyser pourquoi ils ont réussi",
+      "Étudier les positions défensives optimales",
+      "Proposer des corrections au coach"
+    ]
+  },
+  {
+    "title": "Travailler son niveau de jeu en situation de 1v1",
+    "description": "Améliorer sa capacité à gérer les duels en situation de 1 contre 1. Connaître ses chances dans un duel et savoir quand le prendre ou l'éviter est une compétence fondamentale.",
+    "subtasks": [
+      "Identifier les situations de duel dans les scrims récents",
+      "Analyser les duels perdus et pourquoi",
+      "Pratiquer les mécaniques de duel en partie personnalisée",
+      "Appliquer les corrections en solo queue"
+    ]
+  },
+  {
+    "title": "Préparer un plan de rotation pour le mid game",
+    "description": "Établir un plan clair de rotations pour la phase de mid game afin que toute l'équipe sache où aller après la phase de lane et comment créer des avantages positionnels.",
+    "subtasks": [
+      "Définir les rotations prioritaires selon la composition",
+      "Regarder des VODs illustrant ces rotations",
+      "Pratiquer les rotations en partie personnalisée avec l'équipe",
+      "Évaluer l'exécution lors du prochain scrim"
+    ]
+  },
+  {
+    "title": "Étudier les compositions de type burst",
+    "description": "Comprendre le fonctionnement et les win conditions des compositions axées sur l'élimination rapide d'un ou plusieurs ennemis. Apprendre à jouer avec et contre ces compositions.",
+    "subtasks": [
+      "Identifier les champions clés des compositions burst",
+      "Regarder des VODs de compositions burst en compétitif",
+      "Analyser comment contrer ce style de jeu",
+      "Partager ses conclusions avec le coach"
+    ]
+  },
+  {
+    "title": "Analyser les inhibiteurs pris et perdus",
+    "description": "Passer en revue les moments où des inhibiteurs ont été pris ou perdus lors des scrims récents. Comprendre l'impact de ces prises sur l'issue des parties.",
+    "subtasks": [
+      "Identifier les moments d'inhibiteur dans les VODs de scrim",
+      "Analyser les décisions prises autour de ces objectifs",
+      "Identifier les erreurs et les bonnes décisions",
+      "Proposer des stratégies améliorées au coach"
+    ]
+  },
+  {
+    "title": "Travailler l'adaptation de build selon la partie",
+    "description": "Apprendre à adapter la construction d'objets en fonction de l'état de la partie et de la composition adverse plutôt que de suivre systématiquement un build standard.",
+    "subtasks": [
+      "Étudier les objets situationnels disponibles pour son champion",
+      "Regarder des VODs d'adaptation de build en compétitif",
+      "Pratiquer les choix d'objets situationnels en solo queue",
+      "Analyser ses choix de build avec le coach"
+    ]
+  },
+  {
+    "title": "Préparer une analyse des tendances de ban",
+    "description": "Étudier les tendances de ban en compétitif et en solo queue pour identifier les champions à prioriser lors des interdictions en phase de draft.",
+    "subtasks": [
+      "Analyser les bans des derniers scrims",
+      "Identifier les champions les plus bannis en compétitif",
+      "Comprendre les raisons de ces bans prioritaires",
+      "Proposer une stratégie de ban au coach"
+    ]
+  },
+  {
+    "title": "Étudier le concept de 1-3-1",
+    "description": "Comprendre et maîtriser la stratégie de split push 1-3-1 qui consiste à envoyer un joueur dans chaque lane latérale pendant que trois joueurs contrôlent le centre de la carte.",
+    "subtasks": [
+      "Étudier les conditions et champions adaptés à cette stratégie",
+      "Regarder des VODs de cette stratégie en compétitif",
+      "Identifier les rôles de chaque joueur dans cette configuration",
+      "Tester la stratégie lors d'un prochain scrim"
+    ]
+  },
+  {
+    "title": "Analyser les moments de surrender vote dans les scrims",
+    "description": "Réfléchir aux moments où l'équipe a voté pour se rendre lors des scrims et analyser si ces décisions étaient justifiées ou si la partie était encore récupérable.",
+    "subtasks": [
+      "Identifier les moments de surrender vote dans les scrims",
+      "Analyser l'état de la partie à ces moments",
+      "Évaluer si le surrender était la bonne décision",
+      "Définir des critères clairs pour les futurs votes"
+    ]
+  },
+  {
+    "title": "Travailler les réactions aux compositions de split push adverse",
+    "description": "Développer des stratégies pour répondre efficacement lorsque l'adversaire envoie un joueur en split push. Trouver l'équilibre entre contrer le split et continuer à jouer sur le reste de la carte.",
+    "subtasks": [
+      "Étudier les réponses possibles face au split push adverse",
+      "Regarder des VODs de gestion du split push adverse",
+      "Définir qui envoie en réponse selon la composition",
+      "Pratiquer lors d'un prochain scrim"
+    ]
+  },
+  {
+    "title": "Préparer un rapport sur ses progrès personnels",
+    "description": "Rédiger un bilan personnel de sa progression depuis le début de la saison en s'appuyant sur les statistiques et les retours du coach. L'objectif est d'avoir une vision claire de son évolution.",
+    "subtasks": [
+      "Compiler ses statistiques personnelles sur la saison",
+      "Relire les retours du coach sur la période",
+      "Identifier les progrès réalisés et les axes encore à travailler",
+      "Présenter le rapport au coach lors d'un entretien individuel"
+    ]
+  }
+]

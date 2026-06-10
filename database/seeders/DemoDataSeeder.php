@@ -37,12 +37,21 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use RuntimeException;
 
 class DemoDataSeeder extends Seeder
 {
+    private const TASKS_PER_MEMBER = 4;
+
+    /**
+     * @var list<array{title: string, description: string, subtasks: list<string>}>|null
+     */
+    private ?array $devoirTemplates = null;
+
     private const RIOT_USERS = [
         ['username' => 'Tokha', 'riot_tag' => 'AmbesseTonFroc#PILOT'],
         ['username' => 'Elise', 'riot_tag' => 'EliseFromWebDev#Web'],
@@ -144,6 +153,14 @@ class DemoDataSeeder extends Seeder
 
         $usersByUsername['testuser'] = $testUser;
 
+        $totalPlayers = count(self::RIOT_USERS) + count(self::RIOT_TAGS_NEWPLAYER_DEMO);
+        $seededPlayers = 0;
+
+        $this->logSeederProgress(sprintf(
+            'Récupération des profils Riot (%d joueur(s))…',
+            $totalPlayers,
+        ));
+
         foreach (self::RIOT_USERS as $row) {
             $user = User::create([
                 'username' => $row['username'],
@@ -157,6 +174,9 @@ class DemoDataSeeder extends Seeder
 
             $this->seedRiotDataForUser($user, $row['riot_tag']);
             $usersByUsername[$row['username']] = $user;
+
+            $seededPlayers++;
+            $this->logPlayerSeeded($row['username'], $seededPlayers, $totalPlayers);
 
             $this->delayBetweenUsers();
         }
@@ -176,8 +196,13 @@ class DemoDataSeeder extends Seeder
             $this->seedRiotDataForUser($user, $riotTag);
             $usersByUsername[$gameName] = $user;
 
+            $seededPlayers++;
+            $this->logPlayerSeeded($gameName, $seededPlayers, $totalPlayers);
+
             $this->delayBetweenUsers();
         }
+
+        $this->logSeederProgress('Création des équipes, devoirs et scrims…');
 
         $teams = [];
         foreach (self::TEAM_BLUEPRINTS as $blueprint) {
@@ -228,6 +253,8 @@ class DemoDataSeeder extends Seeder
             $this->seedTasksForTeam($team, $coachMember);
             $this->seedPlayerAvailabilitiesForTeam($team);
         }
+
+        $teams[] = $this->seedJuryTeam($usersByUsername, $testUser);
 
         $this->seedScrimsAndScrimRequests($teams);
 
@@ -883,6 +910,28 @@ class DemoDataSeeder extends Seeder
         }
     }
 
+    private function logSeederProgress(string $message): void
+    {
+        if (app()->runningUnitTests()) {
+            return;
+        }
+
+        $this->command?->info($message);
+    }
+
+    private function logPlayerSeeded(string $username, int $current, int $total): void
+    {
+        $remaining = $total - $current;
+
+        $this->logSeederProgress(sprintf(
+            'Joueur seedé : %s (%d/%d, %d restant(s))',
+            $username,
+            $current,
+            $total,
+            $remaining,
+        ));
+    }
+
     private function riotGameNameFromTag(string $riotTag): string
     {
         return trim(Str::before($riotTag, '#'));
@@ -1029,6 +1078,61 @@ class DemoDataSeeder extends Seeder
         ]);
     }
 
+    /**
+     * @param  array<string, User>  $usersByUsername
+     */
+    private function seedJuryTeam(array $usersByUsername, User $testUser): Team
+    {
+        $this->logSeederProgress('Création de l\'Equipe du Jury…');
+
+        $team = Team::create([
+            'name' => 'Equipe du Jury',
+            'slug' => 'equipe-du-jury',
+            'tag' => 'JURY',
+            'logo_type' => 'default',
+            'logo_value' => fake()->randomElement(DefaultTeam::cases())->value,
+            'description' => 'Équipe regroupant l\'ensemble des joueurs de démonstration.',
+            'language' => fake()->randomElement(Language::cases())->value,
+            'server' => fake()->randomElement(LolServeur::cases())->value,
+            'goal' => fake()->randomElement(LolGoal::cases())->value,
+            'starter_average_elo' => null,
+            'creator_id' => $testUser->id,
+        ]);
+
+        $coachMember = $this->attachMember(
+            $team,
+            $testUser,
+            RoleInTeam::COACH,
+            null,
+            false
+        );
+
+        $playerUsernames = collect($usersByUsername)
+            ->keys()
+            ->reject(fn (string $username): bool => $username === 'testuser')
+            ->values()
+            ->all();
+
+        foreach ($playerUsernames as $index => $username) {
+            $isStarter = $index < count(self::STARTER_ROLES);
+
+            $this->attachMember(
+                $team,
+                $usersByUsername[$username],
+                RoleInTeam::PLAYER,
+                $isStarter ? self::STARTER_ROLES[$index] : fake()->randomElement(RoleInGame::cases()),
+                $isStarter,
+            );
+        }
+
+        $team->averageEloScore();
+
+        $this->seedTasksForTeam($team, $coachMember);
+        $this->seedPlayerAvailabilitiesForTeam($team);
+
+        return $team;
+    }
+
     private function seedPlayerAvailabilitiesForTeam(Team $team): void
     {
         $players = TeamMember::query()
@@ -1136,26 +1240,27 @@ class DemoDataSeeder extends Seeder
     private function seedTasksForTeam(Team $team, TeamMember $coachMember): void
     {
         $members = TeamMember::where('team_id', $team->id)->get();
+        $templates = $this->devoirTemplates();
 
         foreach ($members as $assignee) {
-            for ($t = 0; $t < 4; $t++) {
-                $status = fake()->randomElement(StatusTask::cases());
+            $devoirs = collect($templates)->shuffle()->take(self::TASKS_PER_MEMBER);
 
-                $subtaskCount = match ($status) {
-                    StatusTask::TODO => fake()->numberBetween(1, 4),
-                    StatusTask::IN_PROGRESS => fake()->numberBetween(2, 5),
-                    StatusTask::DONE => fake()->numberBetween(1, 4),
-                };
+            foreach ($devoirs as $template) {
+                $status = fake()->randomElement(StatusTask::cases());
+                $subtasks = $template['subtasks'];
+                $subtaskCount = count($subtasks);
 
                 $completedPattern = match ($status) {
                     StatusTask::TODO => array_fill(0, $subtaskCount, false),
                     StatusTask::DONE => array_fill(0, $subtaskCount, true),
-                    StatusTask::IN_PROGRESS => $this->randomPartialCompletion($subtaskCount),
+                    StatusTask::IN_PROGRESS => $subtaskCount > 1
+                        ? $this->randomPartialCompletion($subtaskCount)
+                        : [false],
                 };
 
                 $task = Task::create([
-                    'title' => 'Devoir : '.fake()->words(3, true),
-                    'description' => fake()->optional(0.6)->sentence(),
+                    'title' => $template['title'],
+                    'description' => $template['description'],
                     'status' => $status,
                     'deadline' => fake()->boolean(70)
                         ? fake()->dateTimeBetween('now', '+30 days')->format('Y-m-d')
@@ -1166,15 +1271,38 @@ class DemoDataSeeder extends Seeder
                     'completed_at' => $status === StatusTask::DONE ? now() : null,
                 ]);
 
-                foreach ($completedPattern as $done) {
+                foreach ($subtasks as $index => $subtaskTitle) {
                     Subtask::create([
                         'task_id' => $task->id,
-                        'title' => 'Étape : '.fake()->words(2, true),
-                        'is_completed' => $done,
+                        'title' => $subtaskTitle,
+                        'is_completed' => $completedPattern[$index],
                     ]);
                 }
             }
         }
+    }
+
+    /**
+     * @return list<array{title: string, description: string, subtasks: list<string>}>
+     */
+    private function devoirTemplates(): array
+    {
+        if ($this->devoirTemplates !== null) {
+            return $this->devoirTemplates;
+        }
+
+        $path = database_path('seeders/data/devoirs-seeder.json');
+
+        if (! File::exists($path)) {
+            throw new RuntimeException("Catalogue de devoirs introuvable : {$path}");
+        }
+
+        /** @var list<array{title: string, description: string, subtasks: list<string>}> $templates */
+        $templates = File::json($path);
+
+        $this->devoirTemplates = $templates;
+
+        return $this->devoirTemplates;
     }
 
     /**

@@ -7,15 +7,20 @@ document.addEventListener('alpine:init', () => {
         teamId : null,
         pendingReload : {},
         connect(teamId, currentUserId, labels = {}){
-            const pendingReload = {};
-            
             this.labels = labels;
             this.currentUserId = currentUserId;
+
+            if (this.channel && this.teamId === teamId) {
+                return;
+            }
+
+            if (this.channel && this.teamId !== teamId) {
+                window.Echo.leave(`presence.${this.teamId}`);
+            }
+
             this.teamId = teamId;
             this.pendingReload = {};
             this.onlineMembers = [];
-            
-           
 
             this.channel = window.Echo.join(`presence.${teamId}`);
             const detectionReload = 3000;
