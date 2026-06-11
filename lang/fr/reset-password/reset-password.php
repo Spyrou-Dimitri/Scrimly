@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'welcome' => 'Nouveau mot de passe sur <span class="text-gold">Scrimly</span>',
+    'welcome' => 'Nouveau mot de passe',
     'welcome_description' => 'Choisissez un nouveau mot de passe pour votre compte',
     'form_title' => 'Réinitialisation du mot de passe',
     'email' => 'Email',

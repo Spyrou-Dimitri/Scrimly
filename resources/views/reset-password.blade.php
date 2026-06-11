@@ -35,7 +35,7 @@
                 <source media="(min-width: 1536px)" srcset="{{ asset('/img/resetPassword/AurelionSol1000x1000.jpg') }}">
                 <img src="{{ asset('/img/resetPassword/AurelionSol800x800.jpg') }}" alt="{{ __('reset-password/reset-password.hero_image_alt') }}" class="min-h-screen w-full object-cover">
             </picture>
-        </div>
+        </div>`
 
     </main>
 </x-layouts.auth>

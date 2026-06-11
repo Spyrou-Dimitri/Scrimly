@@ -1,6 +1,7 @@
 import { AvatarPreview } from './previewAvatar.js';
 import './charts/winrate.js';
 import { Password } from './password.js';
+import { settings } from './settings.js';
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -26,5 +27,6 @@ function initPasswordIfNeeded() {
     }
     Password.init();
 }
+initPasswordIfNeeded();
 
 
