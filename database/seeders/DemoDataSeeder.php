@@ -57,7 +57,7 @@ class DemoDataSeeder extends Seeder
         ['username' => 'Elise', 'riot_tag' => 'EliseFromWebDev#Web'],
         ['username' => 'Mizuty', 'riot_tag' => 'Mizuty#EUW'],
         ['username' => 'Alucard', 'riot_tag' => 'Alucard#80085'],
-        ['username' => 'Pollo', 'riot_tag' => 'PolloO2#2002'],
+        ['username' => 'Pollo', 'riot_tag' => 'Pollo02#2002'],
         ['username' => 'Nekkore', 'riot_tag' => 'Nekkore#Sus'],
         ['username' => 'eNami', 'riot_tag' => 'eNami#NAMI'],
         ['username' => 'mamou', 'riot_tag' => 'mamou#mamo'],
@@ -82,6 +82,26 @@ class DemoDataSeeder extends Seeder
         'Caliste#Franc',
         'Percy Magic#1234',
         'Lurox#Lurox',
+        'Kantio#6LOCK',
+        'Petter#1520',
+        'Zyzz#Fedja',
+        'CHAD#SUPP',
+        'Hades#225',
+        'amjad#1480',
+        'Xcay#wwwww',
+        'Infinite#SAGA',
+        'Timon#6585',
+        'Kobito#EUW',
+        'Aegis#SUP',
+        'Yoyu#5650',
+        'Keo#420',
+        'Ralhos#EUW',
+        'zvota#2004',
+        'Kapzz#0001',
+        'Walps#EUW',
+        'speed#9027',
+        'pitere1#EUW',
+        'Ziem#8578',
     ];
 
     private const OPPONENT_STARTER_ROLES = ['top', 'jungle', 'mid', 'bot', 'support'];
@@ -89,7 +109,7 @@ class DemoDataSeeder extends Seeder
     private const TARGET_SCRIM_RECORDS = 100;
 
     /**
-     * Composition des 5 équipes : cinq titulaires (TOP→Support) + un pseudo staff (le coach est toujours l’utilisateur test).
+     * Composition des équipes : cinq titulaires (TOP→Support) + un pseudo staff (le coach est toujours l’utilisateur test).
      *
      * @var list<array{name: string, slug: string, tag: string, players: list<string>, staff: string}>
      */
@@ -128,6 +148,27 @@ class DemoDataSeeder extends Seeder
             'tag' => 'WLF',
             'players' => ['Alucard', 'Pollo', 'Lawin', 'Percy Magic', 'Lurox'],
             'staff' => 'mamou',
+        ],
+        [
+            'name' => 'Iron Forge',
+            'slug' => 'iron-forge',
+            'tag' => 'IRON',
+            'players' => ['Kantio', 'Petter', 'Zyzz', 'CHAD', 'Hades'],
+            'staff' => 'amjad',
+        ],
+        [
+            'name' => 'Nova Circuit',
+            'slug' => 'nova-circuit',
+            'tag' => 'NOVA',
+            'players' => ['Infinite', 'Timon', 'Kobito', 'Aegis', 'Yoyu'],
+            'staff' => 'Xcay',
+        ],
+        [
+            'name' => 'Storm Break EUW',
+            'slug' => 'storm-break-euw',
+            'tag' => 'STRM',
+            'players' => ['Ralhos', 'zvota', 'Kapzz', 'Walps', 'speed'],
+            'staff' => 'Keo',
         ],
     ];
 
@@ -254,7 +295,9 @@ class DemoDataSeeder extends Seeder
             $this->seedPlayerAvailabilitiesForTeam($team);
         }
 
-        $teams[] = $this->seedJuryTeam($usersByUsername, $testUser);
+        foreach ($this->seedJuryTeams($usersByUsername, $testUser) as $juryTeam) {
+            $teams[] = $juryTeam;
+        }
 
         $this->seedScrimsAndScrimRequests($teams);
 
@@ -1080,32 +1123,11 @@ class DemoDataSeeder extends Seeder
 
     /**
      * @param  array<string, User>  $usersByUsername
+     * @return list<Team>
      */
-    private function seedJuryTeam(array $usersByUsername, User $testUser): Team
+    private function seedJuryTeams(array $usersByUsername, User $testUser): array
     {
-        $this->logSeederProgress('Création de l\'Equipe du Jury…');
-
-        $team = Team::create([
-            'name' => 'Equipe du Jury',
-            'slug' => 'equipe-du-jury',
-            'tag' => 'JURY',
-            'logo_type' => 'default',
-            'logo_value' => fake()->randomElement(DefaultTeam::cases())->value,
-            'description' => 'Équipe regroupant l\'ensemble des joueurs de démonstration.',
-            'language' => fake()->randomElement(Language::cases())->value,
-            'server' => fake()->randomElement(LolServeur::cases())->value,
-            'goal' => fake()->randomElement(LolGoal::cases())->value,
-            'starter_average_elo' => null,
-            'creator_id' => $testUser->id,
-        ]);
-
-        $coachMember = $this->attachMember(
-            $team,
-            $testUser,
-            RoleInTeam::COACH,
-            null,
-            false
-        );
+        $this->logSeederProgress('Création des équipes Jury A et Jury B…');
 
         $playerUsernames = collect($usersByUsername)
             ->keys()
@@ -1113,11 +1135,51 @@ class DemoDataSeeder extends Seeder
             ->values()
             ->all();
 
-        foreach ($playerUsernames as $index => $username) {
+        $half = (int) ceil(count($playerUsernames) / 2);
+        $juryAPlayerUsernames = array_slice($playerUsernames, 0, $half);
+        $juryBPlayerUsernames = array_slice($playerUsernames, $half);
+
+        $juryA = Team::create([
+            'name' => 'Jury A',
+            'slug' => 'jury-a',
+            'tag' => 'JRYA',
+            'logo_type' => 'default',
+            'logo_value' => fake()->randomElement(DefaultTeam::cases())->value,
+            'description' => 'Équipe de démonstration générée par le seeder.',
+            'language' => fake()->randomElement(Language::cases())->value,
+            'server' => fake()->randomElement(LolServeur::cases())->value,
+            'goal' => fake()->randomElement(LolGoal::cases())->value,
+            'starter_average_elo' => null,
+            'creator_id' => $testUser->id,
+        ]);
+
+        $juryB = Team::create([
+            'name' => 'Jury B',
+            'slug' => 'jury-b',
+            'tag' => 'JRYB',
+            'logo_type' => 'default',
+            'logo_value' => fake()->randomElement(DefaultTeam::cases())->value,
+            'description' => 'Équipe de démonstration générée par le seeder.',
+            'language' => fake()->randomElement(Language::cases())->value,
+            'server' => fake()->randomElement(LolServeur::cases())->value,
+            'goal' => fake()->randomElement(LolGoal::cases())->value,
+            'starter_average_elo' => null,
+            'creator_id' => $testUser->id,
+        ]);
+
+        $juryACoachMember = $this->attachMember(
+            $juryA,
+            $testUser,
+            RoleInTeam::COACH,
+            null,
+            false
+        );
+
+        foreach ($juryAPlayerUsernames as $index => $username) {
             $isStarter = $index < count(self::STARTER_ROLES);
 
             $this->attachMember(
-                $team,
+                $juryA,
                 $usersByUsername[$username],
                 RoleInTeam::PLAYER,
                 $isStarter ? self::STARTER_ROLES[$index] : fake()->randomElement(RoleInGame::cases()),
@@ -1125,12 +1187,63 @@ class DemoDataSeeder extends Seeder
             );
         }
 
-        $team->averageEloScore();
+        foreach ($juryBPlayerUsernames as $username) {
+            $this->attachMember(
+                $juryA,
+                $usersByUsername[$username],
+                RoleInTeam::COACH,
+                null,
+                false
+            );
+        }
 
-        $this->seedTasksForTeam($team, $coachMember);
-        $this->seedPlayerAvailabilitiesForTeam($team);
+        $juryA->averageEloScore();
 
-        return $team;
+        $this->seedTasksForTeam($juryA, $juryACoachMember);
+        $this->seedPlayerAvailabilitiesForTeam($juryA);
+
+        $juryBCoachMember = null;
+
+        foreach ($juryAPlayerUsernames as $index => $username) {
+            $member = $this->attachMember(
+                $juryB,
+                $usersByUsername[$username],
+                RoleInTeam::COACH,
+                null,
+                false
+            );
+
+            if ($index === 0) {
+                $juryBCoachMember = $member;
+            }
+        }
+
+        foreach ($juryBPlayerUsernames as $index => $username) {
+            $isStarter = $index < count(self::STARTER_ROLES);
+
+            $this->attachMember(
+                $juryB,
+                $usersByUsername[$username],
+                RoleInTeam::PLAYER,
+                $isStarter ? self::STARTER_ROLES[$index] : fake()->randomElement(RoleInGame::cases()),
+                $isStarter,
+            );
+        }
+
+        $this->attachMember(
+            $juryB,
+            $testUser,
+            RoleInTeam::PLAYER,
+            fake()->randomElement(RoleInGame::cases()),
+            false
+        );
+
+        $juryB->averageEloScore();
+
+        $this->seedTasksForTeam($juryB, $juryBCoachMember);
+        $this->seedPlayerAvailabilitiesForTeam($juryB);
+
+        return [$juryA, $juryB];
     }
 
     private function seedPlayerAvailabilitiesForTeam(Team $team): void
