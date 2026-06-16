@@ -34,7 +34,7 @@ new class extends Component
 
     public function shouldShowAvalabilityDate():bool {
         $date = Carbon::parse($this->date);
-        return $date->isSameWeek(now(), Carbon::MONDAY);
+        return $date->isSameWeek(now());
     }
 
     public function loadDayData(): void
