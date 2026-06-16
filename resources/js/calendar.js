@@ -3,6 +3,8 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
+import frLocale from '@fullcalendar/core/locales/fr';
+import enLocale from '@fullcalendar/core/locales/en-gb';
 
 let calendarInstance = null;
 
@@ -19,7 +21,8 @@ export const Calendar = {
         }
 
         calendarInstance = new FullCalendar(calendarEl, {
-            locale: 'fr',
+            locales: [frLocale, enLocale],
+            locale: document.documentElement.lang === 'fr' ? frLocale : enLocale,
             plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin],
             initialView: this.getInitialView(),
             slotMinTime: '08:00:00',

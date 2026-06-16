@@ -32,6 +32,11 @@ new class extends Component
         $this->loadDayData();
     }
 
+    public function shouldShowAvalabilityDate():bool {
+        $date = Carbon::parse($this->date);
+        return $date->isSameWeek(now(), Carbon::MONDAY);
+    }
+
     public function loadDayData(): void
     {
         $this->allScrimsThisDay = Scrim::where('team_id', currentTeam()->id)
@@ -185,6 +190,7 @@ new class extends Component
             </x-accordion>
 
             {{-- Disponibilités joueurs --}}
+            @if ($this->shouldShowAvalabilityDate())
             <x-accordion
                 :title="__('modals/calendar/show-a-day.availabilities_title')"
                 :open="true"
@@ -267,6 +273,7 @@ new class extends Component
                 @endforeach
                 @endif
             </x-accordion>
+            @endif
         </div>
     </x-layout.head-modal>
 
