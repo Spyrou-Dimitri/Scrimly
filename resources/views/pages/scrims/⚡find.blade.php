@@ -15,7 +15,7 @@ new #[Layout('layouts::team')] class extends Component
     use WithPagination;
 
     public string $term = '';
-    public ?string $elo = null;
+    public ?LolTier $elo = null;
     public ?LolGoal $goal = null;
     public ?LolServeur $server = null;
     #[Computed]
@@ -36,10 +36,9 @@ new #[Layout('layouts::team')] class extends Component
         if ($this->server !== null) {
             $query->where('server', $this->server);
         }
-        $tierFilter = filled($this->elo) ? LolTier::tryFrom((string)$this->elo) : null;
 
-        if ($tierFilter instanceof LolTier) {
-            ['minInclusive' => $minInclusive, 'maxExclusive' => $maxExclusive] = $tierFilter->starterAverageEloInterval();
+        if ($this->elo) {
+            ['minInclusive' => $minInclusive, 'maxExclusive' => $maxExclusive] = $this->elo->starterAverageEloInterval();
             $query->whereNotNull('starter_average_elo')
                 ->where('starter_average_elo', '>=', $minInclusive);
 

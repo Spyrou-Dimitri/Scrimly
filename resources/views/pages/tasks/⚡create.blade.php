@@ -75,7 +75,7 @@ new #[Layout('layouts::team')] class extends Component
         try {
             $this->validate(
                 [
-                    'newFiles.*' => ['file', 'max:10240', 'mimes:pdf,jpg,jpeg,png,webp'],
+                    'newFiles.*' => ['file', 'max:6000', 'mimes:pdf,jpg,jpeg,png,webp'],
                 ],
                 [
                     'newFiles.*.uploaded' => __('pages/tasks/create.error_file_upload'),
