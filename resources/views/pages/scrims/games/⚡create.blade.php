@@ -5,6 +5,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Component;
 use App\Models\TeamMember;
 use Illuminate\Support\Collection;
+use App\Enums\RoleInTeam;
 use App\Livewire\Forms\Scrim\CreateScrimGameForm;
 use App\Enums\StatusScrim;
 use App\Enums\TypeScrimGameNote;
@@ -46,6 +47,7 @@ new #[Layout('layouts::team')] class extends Component
         }
 
         $this->teamMembersStarters = TeamMember::query()
+            ->where('roleInTeam', RoleInTeam::PLAYER)
             ->where('team_id', currentTeam()->id)
             ->where('is_starter', true)
             ->orderBy('roleInGame')

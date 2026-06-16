@@ -136,7 +136,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Send the password reset notification.
+     * Send a password reset notification to the user.
      */
     public function sendPasswordResetNotification($token): void
     {
