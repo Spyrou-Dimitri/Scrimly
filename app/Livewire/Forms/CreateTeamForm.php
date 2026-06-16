@@ -47,7 +47,7 @@ class CreateTeamForm extends Form
     public $logo = null;
 
     #[Validate]
-    public string $default_logo = 'Demacia';
+    public DefaultTeam $default_logo = DefaultTeam::DEMACIA;
 
     public function updatedRoleInTeam(): void
     {
@@ -109,7 +109,7 @@ class CreateTeamForm extends Form
 
         if ($applyPresetLogo) {
             $logoType = 'default';
-            $logoValue = DefaultTeam::from($validated['default_logo'])->value;
+            $logoValue = $validated['default_logo']->value;
         } else {
             $logoType = 'upload';
             $logoValue = $validated['logo'];

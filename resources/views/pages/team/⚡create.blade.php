@@ -25,7 +25,7 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
         $this->form->logo = null;
     }
 
-    public function choosePresetLogo(string $logo): void
+    public function choosePresetLogo(DefaultTeam $logo): void
     {
         $this->form->logo = null;
         $this->form->default_logo = $logo;
@@ -39,7 +39,7 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
             $this->isChoosingPresetLogo = false;
             return $this->form->logo->temporaryUrl();
         } else {
-            return DefaultTeam::from($this->form->default_logo)->url();
+            return $this->form->default_logo->url();
         }
     }
 
@@ -142,8 +142,8 @@ new #[Layout('layouts::choose_a_team')] class extends Component {
                                 wire:click="choosePresetLogo('{{ $logo->value }}')"
                                 type="button"
                                 title="{{ $logo->label() }}"
-                                @class([ 'block w-full cursor-pointer overflow-hidden rounded-lg transition-all hover:ring-gold-light focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-light' , 'ring-2 ring-gold'=> $form->default_logo === $logo->value,
-                                'ring-2 ring-transparent' => $form->default_logo !== $logo->value,
+                                @class([ 'block w-full cursor-pointer overflow-hidden rounded-lg transition-all hover:ring-gold-light focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-light' , 'ring-2 ring-gold'=> $form->default_logo === $logo,
+                                'ring-2 ring-transparent' => $form->default_logo !== $logo,
                                 ])>
                                 <img
                                     src="{{ $logo->url() }}"
