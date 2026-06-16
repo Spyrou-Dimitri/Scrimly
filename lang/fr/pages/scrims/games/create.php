@@ -20,6 +20,7 @@ return [
     'update_button' => 'Enregistrer les modifications',
     'cancel_button' => 'Annuler',
     'name_placeholder' => 'Game 1',
+    'error_scrim_no_longer_active' => 'Le scrim n\'est plus actif. (Attention au jury : Peut être qu\'un autre jury a démarré un autre scrim pendant que vous créiez la game !)',
 
     'score_draft_legend' => 'Score & draft',
     'draft_home_fieldset_legend' => 'Line-up de votre équipe — score et draft',

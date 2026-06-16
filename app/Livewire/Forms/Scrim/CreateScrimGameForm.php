@@ -65,16 +65,16 @@ class CreateScrimGameForm extends Form
     public function store(int $scrimId): bool
     {
         $validated = $this->validate();
+        
 
         if (Gate::denies('manageTeam', User::class)) {
             return false;
         }
 
+
         $scrim = Scrim::query()->findOrFail($scrimId);
 
-        if (! in_array($scrim->status, [StatusScrim::SCHEDULED, StatusScrim::IN_PROGRESS], true)) {
-            return false;
-        }
+        
         $opponentStarters = [
             'top' => $validated['opponentTeamMembersStarters']['top'],
             'jungle' => $validated['opponentTeamMembersStarters']['jungle'],

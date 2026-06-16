@@ -110,6 +110,14 @@ new #[Layout('layouts::team')] class extends Component
 
     public function createGame(): void
     {
+        if (! in_array($this->scrim->status, [StatusScrim::SCHEDULED, StatusScrim::IN_PROGRESS], true)) {
+            $this->dispatch('toast', [
+                'title' => __('policies/scrim.error_title'),
+                'message' => __('pages/scrims/games/create.error_scrim_no_longer_active'),
+                'type' => 'error',
+            ]);
+            return;
+        }
         if (! $this->form->store($this->scrim->id)) {
             $this->dispatch('toast', [
                 'title' => __('policies/scrim.error_title'),

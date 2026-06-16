@@ -263,7 +263,7 @@ new #[Layout('layouts::team')] class extends Component
                 </x-cta>
                 <button
                     wire:click="finishScrim({{ $activeScrim->id }})"
-                    :title="__('pages/scrims/index.finish_scrim_title')"
+                    title="__('pages/scrims/index.finish_scrim_title')"
                     class="cta-secondary">
                     {{ __('pages/scrims/index.finish_scrim') }}
                 </button>
