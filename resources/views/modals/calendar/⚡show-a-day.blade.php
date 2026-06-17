@@ -237,7 +237,7 @@ new class extends Component
                 @else
                 @foreach ($allTeamMembersAvailabilitiesThisDay as $teamMember)
                 <li wire:key="calendar-availability-{{ $teamMember->id }}">
-                    <article class="flex items-center gap-3 bg-bg-card p-4 basic-shadow">
+                    <div class="flex items-center gap-3 bg-bg-card p-4 basic-shadow">
                         @if ($teamMember->absences->where('date', Carbon::parse($this->date))->isNotEmpty())
                         <span
                             class="mt-1 size-2.5 shrink-0 rounded-full bg-red-500"
@@ -268,7 +268,7 @@ new class extends Component
                             </span>
                             @endif
                         </div>
-                    </article>
+                    </div>
                 </li>
                 @endforeach
                 @endif
