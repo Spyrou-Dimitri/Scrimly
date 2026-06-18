@@ -134,6 +134,7 @@ new class extends Component
 
 <div
     x-data="{ open: false }"
+    x-cloak
     @sidebar-toggle.window="open = ! open"
     @sidebar-close.window="open = false"
     @keydown.escape.window="open = false"
